@@ -1,0 +1,89 @@
+﻿<Window x:Class="HDRProfile.HDRSwitcherHandlerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:HDRProfile.Properties"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:HDRProfile"
+        mc:Ignorable="d"
+        Title="HDR Profile" Name="MainWindow" MinHeight="260" MinWidth="700" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
+        Height="469"
+        Width="502">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadingCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Window.DataContext>
+        <local:HDRProfileHandler/>
+    </Window.DataContext>
+    <Window.Resources>
+
+        <ItemsPanelTemplate x:Key="WrapListViewTemplate">
+            <WrapPanel/>
+        </ItemsPanelTemplate>
+        <ItemsPanelTemplate x:Key="StackListViewTemplate">
+            <StackPanel/>
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="ApplicationItemTemplate" DataType="ApplicationItem">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="32" Height="32" Margin="5" Stretch="Fill"></Image>
+                <TextBlock Text="{Binding ApplicationName}" Margin="5" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"  />
+            <RowDefinition Height="279*" />
+        </Grid.RowDefinitions>
+        <GridSplitter VerticalAlignment="Top" Height="1"  Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" IsEnabled="False"/>
+
+        <ListBox  Grid.Column="0" Grid.Row="2" x:Name="ApplicationList" Margin="10,10,9,35" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#FFF1F1F1" Padding="10" RenderTransformOrigin="0.51,-2.713"/>
+        <Button Grid.Column="0" Grid.Row="2" Width="Auto" Command="{Binding AddApplicationCommand}" Content="{x:Static local:Locale_Texts.AddApplication}" HorizontalAlignment="Left" Margin="10,0,0,10"   Height="20" VerticalAlignment="Bottom" />
+        <Button Grid.Column="0" Grid.Row="2" Width="Auto" Command="{Binding RemoveApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Content="{x:Static local:Locale_Texts.RemoveApplication}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Margin="0,0,10,10"  Height="20" VerticalAlignment="Bottom" RenderTransformOrigin="0.914,0.566" HorizontalAlignment="Right" />
+        <TextBlock Text="{x:Static local:Locale_Texts.Applications}" Grid.Row="0" Margin="10,10,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="15" FontWeight="Bold"/>
+        <GridSplitter HorizontalAlignment="Left" Width="1" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="False"/>
+        <TextBlock Text="{x:Static local:Locale_Texts.Settings}" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" FontSize="15" FontWeight="Bold"/>
+        <Grid Grid.Column="2" Grid.Row="2"  Width="Auto" HorizontalAlignment="Right" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <local:HDRProfileSettingsView Grid.Row="0"   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" Margin="10,10,10,0" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Top" Height="107"/>
+
+            <Button Grid.Column="3" Grid.Row="1" Content="{x:Static local:Locale_Texts.Shutdown}"  Command="{Binding ShutdownCommand}" Margin="5,5,10,5" RenderTransformOrigin="0.914,0.566" HorizontalAlignment="Right" Width="113" Height="20" VerticalAlignment="Bottom"/>
+            <TextBlock  Text="{Binding Mode=OneWay, Source={StaticResource Version}, StringFormat= V\{0\} }"  Width="Auto" Margin="10,5,5,5"  Grid.Row="1"  Grid.Column="0"  Height="13" HorizontalAlignment="Right"  />
+
+            <TextBlock  Width="Auto" Margin="5"  Grid.Row="1"  Grid.Column="1"  Height="13" HorizontalAlignment="Right"  >
+             <Hyperlink  NavigateUri="{Binding Mode=OneWay, Source={StaticResource InfoLink}}" RequestNavigate="Hyperlink_RequestNavigate">
+                 <TextBlock Text="{x:Static local:Locale_Texts.Info}" Width="Auto" />
+             </Hyperlink>
+            </TextBlock>
+            <TextBlock  Width="Auto" Margin="5"  Grid.Row="1"  Grid.Column="2"  Height="13" HorizontalAlignment="Right" >
+                 <Hyperlink  NavigateUri="{Binding Mode=OneWay, Source={StaticResource DonateLink}}" RequestNavigate="Hyperlink_RequestNavigate">
+                     <TextBlock Text="{x:Static local:Locale_Texts.BuyBeer}"  Width="Auto"/>
+                 </Hyperlink>
+            </TextBlock>
+        </Grid>
+    </Grid>
+</Window>
+

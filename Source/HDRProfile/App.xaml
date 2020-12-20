@@ -1,0 +1,37 @@
+﻿<Application x:Class="HDRProfile.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HDRProfile"
+             xmlns:tb="http://www.hardcodet.net/taskbar"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:corewpf="clr-namespace:CodectoryCore.UI.Wpf;assembly=CodectoryCore.UI.Wpf"
+             Exit="Application_Exit"
+             StartupUri="HDRSwitcherHandlerView.xaml">
+    
+    <Application.Resources>
+
+        <system:String x:Key="DonateLink">https://paypal.me/pools/c/8vksshrMln</system:String>
+        <system:String x:Key="InfoLink">https://sourceforge.net/projects/hdr-profile</system:String>
+        <system:String x:Key="Version">1.0.1</system:String>
+        <SolidColorBrush x:Key="ButtonBackground" Color="#FF0086F5"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#FFFF581A"/>
+        <SolidColorBrush x:Key="AccentColor2" Color="#4C87B3"/>
+        <CornerRadius x:Key="CornerRadius">3</CornerRadius>
+        <local:EnumLocaleConverter x:Key="EnumLocaleConverter"/>
+        <corewpf:BitmapToBitmapImageConverter x:Key="BitmapToBitmapImageConverter"/>
+        <corewpf:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+        <corewpf:IsNotNullConverter x:Key="IsNotNullConverter"/>
+        <corewpf:IsNotZeroConverter x:Key="IsNotZeroConverter"/>
+        <corewpf:StringFormatConcatenator x:Key="StringFormatConcatenator"/>
+        <corewpf:VisibilityBooleanConverter x:Key="VisibilityBooleanConverter"/>
+        <corewpf:ConverterChain x:Key="InvertVisibilityBooleanConverter">
+            <corewpf:InvertBooleanConverter />
+            <corewpf:VisibilityBooleanConverter />
+        </corewpf:ConverterChain>
+        <corewpf:ConverterChain x:Key="NotZeroVisibilityBooleanConverter">
+            <corewpf:IsNotZeroConverter />
+            <corewpf:VisibilityBooleanConverter />
+        </corewpf:ConverterChain>
+    </Application.Resources>
+
+</Application>
