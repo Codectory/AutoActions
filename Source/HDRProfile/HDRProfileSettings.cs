@@ -24,6 +24,8 @@ namespace HDRProfile
         public bool StartMinimizedToTray { get => startMinimizedToTray; set { startMinimizedToTray = value; OnPropertyChanged(); }  }
         public bool CloseToTray { get => _closeToTray; set { _closeToTray = value; OnPropertyChanged(); } }
 
+
+
         public HDRMode HDRMode { get => hdrMode; set { hdrMode = value; OnPropertyChanged(); } }
 
         public ObservableCollection<ApplicationItem> ApplicationItems { get => _applicationItems; set {_applicationItems = value; OnPropertyChanged();} }

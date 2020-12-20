@@ -141,6 +141,12 @@
   <data name="DisplayName" xml:space="preserve">
     <value>Anzeigename</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="ExceptionRestartProcess" xml:space="preserve">
+    <value>Anwendung konnte nicht neugestartet werden.</value>
+  </data>
   <data name="FilePath" xml:space="preserve">
     <value>Dateipfad</value>
   </data>
@@ -172,11 +178,17 @@
   <data name="RemoveApplication" xml:space="preserve">
     <value>Anwendung entfernen</value>
   </data>
+  <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
+    <value>Neustart beim ersten Start</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Beenden</value>
+  </data>
+  <data name="StartInHDR" xml:space="preserve">
+    <value>Start in HDR-Modus</value>
   </data>
   <data name="StartToTray" xml:space="preserve">
     <value>In Symbolleiste minimiert starten</value>

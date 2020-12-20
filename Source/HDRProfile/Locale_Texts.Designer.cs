@@ -133,6 +133,24 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Failed to restart application. ähnelt.
+        /// </summary>
+        public static string ExceptionRestartProcess {
+            get {
+                return ResourceManager.GetString("ExceptionRestartProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die File path ähnelt.
         /// </summary>
         public static string FilePath {
@@ -224,6 +242,15 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Restart on first start ähnelt.
+        /// </summary>
+        public static string RestartProccessOnFirstOccurence {
+            get {
+                return ResourceManager.GetString("RestartProccessOnFirstOccurence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Settings ähnelt.
         /// </summary>
         public static string Settings {
@@ -238,6 +265,15 @@ namespace HDRProfile {
         public static string Shutdown {
             get {
                 return ResourceManager.GetString("Shutdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Start in HDR-Mode ähnelt.
+        /// </summary>
+        public static string StartInHDR {
+            get {
+                return ResourceManager.GetString("StartInHDR", resourceCulture);
             }
         }
         

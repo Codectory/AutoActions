@@ -21,8 +21,10 @@ namespace HDRProfile
         readonly object _processesLock = new object();
         readonly object _threadLock = new object();
 
-        ObservableCollection<string> _processNames = new ObservableCollection<string>();
-        public ReadOnlyObservableCollection<string> Processes => new ReadOnlyObservableCollection<string>(_processNames);
+
+
+        Dictionary<ApplicationItem, bool> _applications = new Dictionary<ApplicationItem, bool>();
+        public IReadOnlyDictionary<ApplicationItem, bool> Applications => new ReadOnlyDictionary<ApplicationItem, bool>(_applications);
 
         bool _stopRequested = false;
         bool _isRunning = false;
@@ -32,13 +34,13 @@ namespace HDRProfile
         public event EventHandler OneProcessIsFocusedhanged;
 
 
-        public void AddProcess(string processFilePath)
+        public void AddProcess(ApplicationItem applicationItem)
         {
             lock (_processesLock)
             {
-                if (!_processNames.Contains(processFilePath.ToUpperInvariant()))
+                if (!_applications.ContainsKey(applicationItem))
                 {
-                    _processNames.Add(processFilePath.ToUpperInvariant());
+                    _applications.Add(applicationItem, false);
                 }
             }
         }
@@ -62,6 +64,7 @@ namespace HDRProfile
             {
                 if (WatchMode != ProcessWatchMode.None)
                 {
+                    UpdateRunningProcesses();
                     bool oldValue = WatchMode == ProcessWatchMode.Focused ? OneProcessIsFocused : OneProcessIsRunning;
                     bool newValue = WatchMode == ProcessWatchMode.Focused ? GetIsOneProcessFocused() : GetIsOneProcessRunning();
                     bool changed = oldValue != newValue;
@@ -98,30 +101,48 @@ namespace HDRProfile
         }
 
 
-        public void RemoveProcess(string processFilePath)
+        public void RemoveProcess(ApplicationItem application)
         {
             lock (_processesLock)
             {
-                if (_processNames.Contains(processFilePath.ToUpperInvariant()))
+                if (_applications.ContainsKey(application))
                 {
-                    _processNames.Remove(processFilePath.ToUpperInvariant());
+                    _applications.Remove(application);
+                }
+            }
+        }
+
+
+        private void UpdateRunningProcesses()
+        {
+            Process[] processes = Process.GetProcesses();
+
+            lock (_processesLock)
+            {
+                List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
+                foreach (ApplicationItem application in applications)
+                {
+                    _applications[application] = false;
+                    foreach (var process in processes.Select(p => p.ProcessName))
+                    {
+                        if (process.ToUpperInvariant() == application.ApplicationName.ToUpperInvariant())
+                        {
+                            _applications[application] = true;
+                            break;
+                        } 
+
+                    }
+
                 }
             }
         }
 
         private bool GetIsOneProcessRunning()
         {
-           Process[] processes =   Process.GetProcesses();
-      
-           lock (_processesLock)
-            {
-                foreach(string processName in _processNames)
-                {
-                    if (processes.Any(p => p.ProcessName.ToUpperInvariant().Equals(processName)))
-                        return true;
-                }
-            }
-            return false;
+            if (_applications.Any(a => a.Value == true))
+                return true;
+            else
+                return false;
         }
 
         private bool GetIsOneProcessFocused()
@@ -130,7 +151,7 @@ namespace HDRProfile
             bool result = false;
             lock (_processesLock)
             {
-                if (_processNames.Contains(currentProcessName))
+                if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName)))
                     result = true;
             }
             return result;

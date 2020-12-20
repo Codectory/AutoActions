@@ -11,17 +11,21 @@ using System.Xml.Serialization;
 
 namespace HDRProfile
 {
-    public class ApplicationItem : BaseViewModel
+    public class ApplicationItem : BaseViewModel, IEquatable<ApplicationItem>
     {
         private string displayName;
         private string _applicationFilePath;
         private string _applicationName;
         private System.Drawing.Bitmap icon = null;
+        private bool _restartProcess = false;
+
 
         public string DisplayName { get => displayName; set { displayName = value; OnPropertyChanged(); } }
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
         public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = System.Drawing.Icon.ExtractAssociatedIcon(value).ToBitmap(); } catch { } OnPropertyChanged(); } }
-        
+        public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
+
+
         [XmlIgnore]
         public Bitmap Icon { get => icon; set { icon = value; OnPropertyChanged(); } }
         private ApplicationItem()
@@ -35,5 +39,32 @@ namespace HDRProfile
             ApplicationName = new FileInfo(ApplicationFilePath).Name.Replace(".exe", "");
         }
 
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ApplicationItem);
+        }
+
+        public bool Equals(ApplicationItem other)
+        {
+            return other != null &&
+                   _applicationFilePath == other._applicationFilePath;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 734317580;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(_applicationFilePath);
+            return hashCode;
+        }
+
+        public static bool operator ==(ApplicationItem left, ApplicationItem right)
+        {
+            return EqualityComparer<ApplicationItem>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(ApplicationItem left, ApplicationItem right)
+        {
+            return !(left == right);
+        }
     }
 }

@@ -7,9 +7,9 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:HDRProfile"
         mc:Ignorable="d"
-        Title="HDR Profile" Name="MainWindow" MinHeight="260" MinWidth="700" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
-        Height="469"
-        Width="502">
+        Title="HDR Profile" Name="MainWindow" MinHeight="260" MinWidth="800" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
+        Height="416.456"
+        Width="333.919">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadingCommand}"/>
@@ -30,10 +30,17 @@
             <StackPanel/>
         </ItemsPanelTemplate>
         <DataTemplate x:Key="ApplicationItemTemplate" DataType="ApplicationItem">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="32" Height="32" Margin="5" Stretch="Fill"></Image>
-                <TextBlock Text="{Binding ApplicationName}" Margin="5" VerticalAlignment="Center"/>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="20" Height="20" Margin="5" Stretch="Fill"></Image>
+                <TextBlock Grid.Column="1" Text="{Binding ApplicationName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <CheckBox Grid.Column="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartProcess, Mode=TwoWay}" Margin="5"  />
+            </Grid>
         </DataTemplate>
 
     </Window.Resources>
@@ -47,17 +54,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"  />
-            <RowDefinition Height="279*" />
+            <RowDefinition Height="14*" />
+            <RowDefinition Height="163*"/>
         </Grid.RowDefinitions>
         <GridSplitter VerticalAlignment="Top" Height="1"  Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" IsEnabled="False"/>
 
-        <ListBox  Grid.Column="0" Grid.Row="2" x:Name="ApplicationList" Margin="10,10,9,35" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#FFF1F1F1" Padding="10" RenderTransformOrigin="0.51,-2.713"/>
-        <Button Grid.Column="0" Grid.Row="2" Width="Auto" Command="{Binding AddApplicationCommand}" Content="{x:Static local:Locale_Texts.AddApplication}" HorizontalAlignment="Left" Margin="10,0,0,10"   Height="20" VerticalAlignment="Bottom" />
-        <Button Grid.Column="0" Grid.Row="2" Width="Auto" Command="{Binding RemoveApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Content="{x:Static local:Locale_Texts.RemoveApplication}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Margin="0,0,10,10"  Height="20" VerticalAlignment="Bottom" RenderTransformOrigin="0.914,0.566" HorizontalAlignment="Right" />
+        <ListBox  Grid.Column="0" Grid.Row="3" x:Name="ApplicationList" Margin="10,2.373,9,35" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#FFF1F1F1" Padding="10" RenderTransformOrigin="0.51,-2.713"/>
         <TextBlock Text="{x:Static local:Locale_Texts.Applications}" Grid.Row="0" Margin="10,10,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="15" FontWeight="Bold"/>
-        <GridSplitter HorizontalAlignment="Left" Width="1" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="False"/>
+        <GridSplitter HorizontalAlignment="Left" Width="1" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="False"/>
         <TextBlock Text="{x:Static local:Locale_Texts.Settings}" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" FontSize="15" FontWeight="Bold"/>
-        <Grid Grid.Column="2" Grid.Row="2"  Width="Auto" HorizontalAlignment="Right" >
+        <Grid Grid.Column="2" Grid.Row="2"  Width="Auto" HorizontalAlignment="Right" Grid.RowSpan="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -84,6 +90,20 @@
                  </Hyperlink>
             </TextBlock>
         </Grid>
+        <Grid Grid.Column="0" Grid.Row="3" Height="Auto" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Width="Auto"  IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Content="{x:Static local:Locale_Texts.StartInHDR}" Command="{Binding StartApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Grid.Row="2" Height="20" Margin="5"/>
+            <Button Grid.Column="2"  Width="Auto" Command="{Binding AddApplicationCommand}" Content="{x:Static local:Locale_Texts.AddApplication}"   Height="20" Margin="5" />
+            <Button Grid.Column="4" Width="Auto" Command="{Binding RemoveApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Content="{x:Static local:Locale_Texts.RemoveApplication}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Height="20" Margin="5"  />
+
+        </Grid>
+        <TextBlock Margin="0,9,10,0" Grid.Row="2" TextWrapping="Wrap" Text="{x:Static local:Locale_Texts.RestartProccessOnFirstOccurence}" HorizontalAlignment="Right" Width="Auto" Height="16" VerticalAlignment="Top"/>
     </Grid>
 </Window>
 

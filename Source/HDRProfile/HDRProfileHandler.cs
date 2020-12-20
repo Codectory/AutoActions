@@ -44,6 +44,8 @@ namespace HDRProfile
         public RelayCommand ClosingCommand { get; private set; }
         public RelayCommand ShutdownCommand { get; private set; }
 
+        public RelayCommand<ApplicationItem> StartApplicationCommand { get; private set; }
+
 
         public HDRProfileSettings Settings { get => settings; set { settings = value; OnPropertyChanged(); } }
 
@@ -96,9 +98,10 @@ namespace HDRProfile
             }
             Settings.ApplicationItems.CollectionChanged += ApplicationItems_CollectionChanged;
             settings.PropertyChanged += Settings_PropertyChanged;
-            foreach (var proc in Settings.ApplicationItems)
+            foreach (var application in Settings.ApplicationItems)
             {
-                ProcessWatcher.AddProcess(proc.ApplicationName.ToUpperInvariant());
+                ProcessWatcher.AddProcess(application);
+                application.PropertyChanged += HDRProfileHandler_PropertyChanged;
             }
             SetProcessWatchMode();
 
@@ -189,9 +192,23 @@ namespace HDRProfile
             LoadingCommand = new RelayCommand(Starting);
             ClosingCommand = new RelayCommand(Closing);
             ShutdownCommand = new RelayCommand(Shutdown);
+            StartApplicationCommand = new RelayCommand<ApplicationItem>(StartApplication);
         }
 
-
+        private void StartApplication(ApplicationItem application)
+        {
+            HDRController.SetHDR(true);
+            Process process = new Process();
+            process.StartInfo = new ProcessStartInfo(application.ApplicationFilePath);
+            process.Start();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            while (!process.Responding  && stopwatch.ElapsedMilliseconds < 5000)
+            {
+                System.Threading.Thread.Sleep(50);
+            }
+            System.Threading.Thread.Sleep(5000);
+        }
 
         #region Process handling
 
@@ -203,17 +220,31 @@ namespace HDRProfile
                 {
                     case NotifyCollectionChangedAction.Add:
                         foreach (var applicationItem in e.NewItems)
-                            ProcessWatcher.AddProcess(((ApplicationItem)applicationItem).ApplicationName.ToUpperInvariant());
+                        {
+                            ProcessWatcher.AddProcess(((ApplicationItem)applicationItem));
+                            ((ApplicationItem)applicationItem).PropertyChanged += HDRProfileHandler_PropertyChanged;
+                        }
+
                         break;
                     case NotifyCollectionChangedAction.Remove:
                         foreach (var applicationItem in e.OldItems)
-                            ProcessWatcher.RemoveProcess(((ApplicationItem)applicationItem).ApplicationName.ToUpperInvariant());
+                        {
+                            ProcessWatcher.RemoveProcess(((ApplicationItem)applicationItem));
+                            ((ApplicationItem)applicationItem).PropertyChanged -= HDRProfileHandler_PropertyChanged;
+
+                        }
                         break;
 
                 }
                 Settings.SaveSettings(SettingsPath);
             }
         }
+
+        private void HDRProfileHandler_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Settings.SaveSettings(SettingsPath);
+        }
+
         private void AddAplication()
         {
             ApplicationAdder adder = new ApplicationAdder();
@@ -267,12 +298,42 @@ namespace HDRProfile
         {
             lock (_accessLock)
             {
-                if ((Settings.HDRMode == HDRMode.Running && ProcessWatcher.OneProcessIsRunning) ||Settings.HDRMode == HDRMode.Focused && ProcessWatcher.OneProcessIsFocused)
+                if ((Settings.HDRMode == HDRMode.Running && ProcessWatcher.OneProcessIsRunning) || Settings.HDRMode == HDRMode.Focused && ProcessWatcher.OneProcessIsFocused)
+                {
                     HDRSwitcherHandler.ActivateHDR();
+                    CheckApplicationStates((IDictionary<ApplicationItem,bool>)ProcessWatcher.Applications);
+                }
                 else
                     HDRSwitcherHandler.DeactivateHDR();
             }
 
+        }
+
+        Dictionary<ApplicationItem, bool> _lastApplicationStates = new Dictionary<ApplicationItem, bool>();
+
+        private void CheckApplicationStates(IDictionary<ApplicationItem, bool> applicationStates)
+        {
+            Dictionary<ApplicationItem, bool> newLastStates = new Dictionary<ApplicationItem, bool>();
+            foreach (var applicationState in applicationStates)
+            {
+                if (!applicationState.Key.RestartProcess)
+                    continue;
+                newLastStates.Add(applicationState.Key, applicationState.Value);
+                if (!_lastApplicationStates.ContainsKey(applicationState.Key) && applicationState.Value)
+                    RestartProcess(applicationState.Key);
+                else if (_lastApplicationStates.ContainsKey(applicationState.Key) && applicationState.Value && !_lastApplicationStates[applicationState.Key])
+                    RestartProcess(applicationState.Key);
+            }
+
+            _lastApplicationStates.Clear();
+            _lastApplicationStates = newLastStates;
+        }
+
+        private void RestartProcess(ApplicationItem application)
+        {
+            Process.GetProcessesByName(application.ApplicationName).ToList().ForEach(p => p.Kill());
+            Process proc = new Process();
+            StartApplication(application);
         }
 
         public void Start()
