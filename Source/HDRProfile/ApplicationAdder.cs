@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using System.Windows;
 
 namespace HDRProfile
 {
-    public class ApplicationAdder : BaseViewModel
+    public class ApplicationAdder : DialogViewModelBase
     {
         private bool _canCreate = false;
         private string _displayName = string.Empty;
@@ -20,18 +21,20 @@ namespace HDRProfile
         public ApplicationItem ApplicationItem { get => applicationItem; private set { applicationItem = value; OnPropertyChanged(); } }
 
         public RelayCommand GetFileCommand { get; private set; }
-        public RelayCommand  CreateApplicationItemCommand { get; private set; }
+        public RelayCommand<object>  OKClickCommand { get; private set; }
 
+        public event EventHandler OKClicked;
 
         public ApplicationAdder()
         {
+            Title = Locale_Texts.AddApplication;
             CreateRelayCommands();
         }
 
         private void CreateRelayCommands()
         {
             GetFileCommand = new RelayCommand(GetFile);
-            CreateApplicationItemCommand = new RelayCommand(CreateApplicationItem);
+            OKClickCommand = new RelayCommand<object>(CreateApplicationItem);
         }
 
 
@@ -64,10 +67,12 @@ namespace HDRProfile
                 DisplayName = new FileInfo(FilePath).Name.Replace(".exe", "");
         }
 
-        public void CreateApplicationItem()
+        public void CreateApplicationItem(object parameter)
         {
 
             ApplicationItem = new ApplicationItem(DisplayName, FilePath);
+            OKClicked?.Invoke(this, EventArgs.Empty);
+            CloseDialog(parameter as Window);
         }
     }
 }

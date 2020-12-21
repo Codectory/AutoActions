@@ -17,16 +17,11 @@ namespace HDRProfile
     /// <summary>
     /// Interaktionslogik für ApplicationAdderView.xaml
     /// </summary>
-    public partial class ApplicationAdderView : Window
+    public partial class ApplicationAdderView : UserControl
     {
         public ApplicationAdderView()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-           this.Close();
         }
     }
 }

@@ -14,12 +14,11 @@ namespace HDRProfile
     {
         public bool OneProcessIsRunning { get; private set; } = false;
         public bool OneProcessIsFocused { get; private set; } = false;
-        public ProcessWatchMode WatchMode { get; set; } = ProcessWatchMode.Focused;
 
-        Thread _watchThread = null;
+        Thread _watchProcessThread = null;
 
         readonly object _processesLock = new object();
-        readonly object _threadLock = new object();
+        readonly object _accessLock = new object();
 
 
 
@@ -31,8 +30,52 @@ namespace HDRProfile
         public bool IsRunning { get => _isRunning; private set => _isRunning = value; }
 
         public event EventHandler OneProcessIsRunningChanged;
-        public event EventHandler OneProcessIsFocusedhanged;
+        public event EventHandler OneProcessIsFocusedChanged;
 
+        ManagementEventWatcher startWatch;
+        ManagementEventWatcher stopWatch;
+
+        public ProcessWatcher()
+        {
+            startWatch = new ManagementEventWatcher(
+      new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace"));
+            stopWatch = new ManagementEventWatcher(
+      new WqlEventQuery("SELECT * FROM Win32_ProcessStopTrace"));
+            startWatch.EventArrived += StartWatch_EventArrived;
+            stopWatch.EventArrived += StopWatch_EventArrived;
+
+        }
+
+  
+
+        private void StartWatch_EventArrived(object sender, EventArrivedEventArgs e)
+        {
+            lock (_processesLock)
+            {
+                string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
+                if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
+                {
+                    ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
+                    bool oldValue = _applications[application];
+                    _applications[application] = true;
+                }
+            }
+        }
+
+        private void StopWatch_EventArrived(object sender, EventArrivedEventArgs e)
+        {
+
+            lock (_processesLock)
+            {
+                string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
+                if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
+                {
+                    ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
+                    bool oldValue = _applications[application];
+                    _applications[application] = false;
+                }
+            }
+        }
 
         public void AddProcess(ApplicationItem applicationItem)
         {
@@ -42,64 +85,9 @@ namespace HDRProfile
                 {
                     _applications.Add(applicationItem, false);
                 }
+                UpdateRunningProcessesOnce();
             }
         }
-
-        public void Start()
-        {
-            if (_stopRequested || IsRunning)
-                return;
-            lock (_threadLock)
-            {
-                _isRunning = true;
-                _watchThread = new Thread(WatchLoop);
-                _watchThread.IsBackground = true;
-                _watchThread.Start();
-            }
-        }
-
-        private void WatchLoop()
-        {
-            while (!_stopRequested)
-            {
-                if (WatchMode != ProcessWatchMode.None)
-                {
-                    UpdateRunningProcesses();
-                    bool oldValue = WatchMode == ProcessWatchMode.Focused ? OneProcessIsFocused : OneProcessIsRunning;
-                    bool newValue = WatchMode == ProcessWatchMode.Focused ? GetIsOneProcessFocused() : GetIsOneProcessRunning();
-                    bool changed = oldValue != newValue;
-                    if (WatchMode == ProcessWatchMode.Focused)
-                    {
-                        OneProcessIsFocused = newValue;
-                        if (changed)
-                            OneProcessIsFocusedhanged?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (WatchMode == ProcessWatchMode.Running)
-                    {
-                        OneProcessIsRunning = newValue;
-                        if (changed)
-                            OneProcessIsRunningChanged?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-                Thread.Sleep(50);
-            }
-        }
-
-        public void Stop()
-        {
-            if (_stopRequested || !IsRunning)
-                return;
-            lock (_threadLock)
-            {
-                _stopRequested = true;
-                _watchThread.Join();
-                _stopRequested = false;
-                _isRunning = false;
-                _watchThread = null;
-            }
-        }
-
 
         public void RemoveProcess(ApplicationItem application)
         {
@@ -113,12 +101,47 @@ namespace HDRProfile
         }
 
 
-        private void UpdateRunningProcesses()
+        public void Start()
         {
-            Process[] processes = Process.GetProcesses();
+            if (_stopRequested || IsRunning)
+                return;
+            lock (_accessLock)
+            {
+                UpdateRunningProcessesOnce();
+                startWatch.Start();
+                stopWatch.Start();
+                _isRunning = true;
+                _watchProcessThread = new Thread(WatchProcessLoop);
+                _watchProcessThread.IsBackground = true;
+                _watchProcessThread.Start();
+            }
+        }
 
+        public void Stop()
+        {
+            if (_stopRequested || !IsRunning)
+                return;
+            lock (_accessLock)
+            {
+                startWatch.Stop();
+                stopWatch.Stop();
+
+                _stopRequested = true;
+                _watchProcessThread.Join();
+                _stopRequested = false;
+                _isRunning = false;
+                _watchProcessThread = null;
+            }
+        }
+
+
+        private void UpdateRunningProcessesOnce()
+        {
             lock (_processesLock)
             {
+                Process[] processes = Process.GetProcesses();
+
+
                 List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
                 foreach (ApplicationItem application in applications)
                 {
@@ -129,13 +152,37 @@ namespace HDRProfile
                         {
                             _applications[application] = true;
                             break;
-                        } 
-
+                        }
                     }
-
                 }
             }
         }
+
+
+        private void WatchProcessLoop()
+        {
+            while (!_stopRequested)
+            {
+                lock (_processesLock)
+                {
+                    bool oldIsOneRunning = OneProcessIsRunning;
+                    bool newIsOneRunning = GetIsOneProcessRunning();
+                    OneProcessIsRunning = newIsOneRunning;
+                    if (oldIsOneRunning != newIsOneRunning)
+                        OneProcessIsRunningChanged?.Invoke(this, EventArgs.Empty);
+                    
+                    bool oldIsOneFocused = OneProcessIsFocused;
+                    bool newIsOneFocused = GetIsOneProcessFocused();
+                    OneProcessIsFocused = newIsOneFocused;
+                    if (oldIsOneFocused != newIsOneFocused)
+                        OneProcessIsFocusedChanged?.Invoke(this, EventArgs.Empty);
+                }
+                Thread.Sleep(150);
+            }
+        }
+
+    
+
 
         private bool GetIsOneProcessRunning()
         {

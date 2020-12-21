@@ -1,15 +1,12 @@
-﻿<Window x:Class="HDRProfile.ApplicationAdderView"
+﻿<UserControl x:Class="HDRProfile.ApplicationAdderView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HDRProfile"
         mc:Ignorable="d"
-        Title="{x:Static local:Locale_Texts.HDRProfile}" Height="151.407" Width="414" MinHeight="165" MinWidth="414">
-
-    <Window.DataContext>
-        <local:ApplicationAdder/>
-    </Window.DataContext>
+        d:DataContext="{d:DesignInstance Type=local:ApplicationAdder, IsDesignTimeCreatable=False}"
+         Height="130.159" Width="414" MinWidth="414">
 
     <Grid Margin="0,0,2,-1" VerticalAlignment="Top">
         <Grid.RowDefinitions>
@@ -20,10 +17,10 @@
         <Label Content="{x:Static local:Locale_Texts.FilePath}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="111"/>
         <TextBox Height="23" Margin="126,13,10,0" TextWrapping="Wrap" Text="{Binding DisplayName}" VerticalAlignment="Top"/>
         <TextBlock Text="{Binding FilePath}" Margin="126,41,10,0" VerticalAlignment="Top" Height="26" />
-        <Button Content="{x:Static local:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding CreateApplicationItemCommand}"  Margin="0,103,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" Click="Button_Click" Grid.RowSpan="2" Height="Auto"/>
+        <Button Content="{x:Static local:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" Margin="0,103,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" Grid.RowSpan="2" Height="Auto"/>
         <Button Content="{Binding Source={x:Static local:Locale_Texts.ChooseApplication}, StringFormat={}{0}...}"  Command="{Binding GetFileCommand}"  Margin="10,0,0,0" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Left" Width="Auto" Height="Auto">
 
         </Button>
 
     </Grid>
-</Window>
+</UserControl>

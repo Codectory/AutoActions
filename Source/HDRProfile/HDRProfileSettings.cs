@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace HDRProfile
 {
+    [DataContract]
     public class HDRProfileSettings : BaseViewModel
     {
 
@@ -19,15 +21,20 @@ namespace HDRProfile
         private HDRMode hdrMode;
         private ObservableCollection<ApplicationItem> _applicationItems;
 
+        [DataMember]
         public bool AutoStart { get => autoStart; set { autoStart = value; OnPropertyChanged(); } }
 
+        [DataMember]
         public bool StartMinimizedToTray { get => startMinimizedToTray; set { startMinimizedToTray = value; OnPropertyChanged(); }  }
+
+        [DataMember]
         public bool CloseToTray { get => _closeToTray; set { _closeToTray = value; OnPropertyChanged(); } }
 
 
-
+        [DataMember]
         public HDRMode HDRMode { get => hdrMode; set { hdrMode = value; OnPropertyChanged(); } }
 
+        [DataMember]
         public ObservableCollection<ApplicationItem> ApplicationItems { get => _applicationItems; set {_applicationItems = value; OnPropertyChanged();} }
 
 

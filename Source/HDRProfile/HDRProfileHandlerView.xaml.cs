@@ -1,4 +1,5 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
+﻿using CodectoryCore.UI.Wpf;
+using Hardcodet.Wpf.TaskbarNotification;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,9 +21,9 @@ namespace HDRProfile
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class HDRSwitcherHandlerView : Window
+    public partial class HDRProfileHandlerView : MainWindowBase
     {
-        public HDRSwitcherHandlerView()
+        public HDRProfileHandlerView()
         {
             InitializeComponent();
         }

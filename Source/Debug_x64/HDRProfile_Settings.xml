@@ -1,46 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HDRProfileSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <AutoStart>true</AutoStart>
+  <AutoStart>false</AutoStart>
   <StartMinimizedToTray>false</StartMinimizedToTray>
-  <CloseToTray>true</CloseToTray>
-  <HDRMode>Focused</HDRMode>
+  <CloseToTray>false</CloseToTray>
+  <HDRMode>Running</HDRMode>
   <ApplicationItems>
-    <ApplicationItem>
-      <DisplayName>ModernWarfare</DisplayName>
-      <ApplicationName>ModernWarfare</ApplicationName>
-      <ApplicationFilePath>D:\Games\Call of Duty Modern Warfare\ModernWarfare.exe</ApplicationFilePath>
-      <RestartProcess>false</RestartProcess>
-    </ApplicationItem>
-    <ApplicationItem>
-      <DisplayName>Cyberpunk2077</DisplayName>
-      <ApplicationName>Cyberpunk2077</ApplicationName>
-      <ApplicationFilePath>C:\Games\GOG\Cyberpunk 2077\bin\x64\Cyberpunk2077.exe</ApplicationFilePath>
-      <RestartProcess>true</RestartProcess>
-    </ApplicationItem>
-    <ApplicationItem>
-      <DisplayName>starwarsjedifallenorder</DisplayName>
-      <ApplicationName>starwarsjedifallenorder</ApplicationName>
-      <ApplicationFilePath>C:\Games\Origin\Jedi Fallen Order\SwGame\Binaries\Win64\starwarsjedifallenorder.exe</ApplicationFilePath>
-      <RestartProcess>false</RestartProcess>
-    </ApplicationItem>
-    <ApplicationItem>
-      <DisplayName>ACOdyssey</DisplayName>
-      <ApplicationName>ACOdyssey</ApplicationName>
-      <ApplicationFilePath>C:\Games\UPlay\Assassin's Creed Odyssey\ACOdyssey.exe</ApplicationFilePath>
-      <RestartProcess>false</RestartProcess>
-    </ApplicationItem>
-    <ApplicationItem>
-      <DisplayName>WatchDogsLegion</DisplayName>
-      <ApplicationName>WatchDogsLegion</ApplicationName>
-      <ApplicationFilePath>C:\Games\UPlay\Watch Dogs Legion\bin\WatchDogsLegion.exe</ApplicationFilePath>
-      <RestartProcess>false</RestartProcess>
-    </ApplicationItem>
-    <ApplicationItem>
-      <DisplayName>Anno1800</DisplayName>
-      <ApplicationName>Anno1800</ApplicationName>
-      <ApplicationFilePath>C:\Games\UPlay\Anno 1800\Bin\Win64\Anno1800.exe</ApplicationFilePath>
-      <RestartProcess>false</RestartProcess>
-    </ApplicationItem>
     <ApplicationItem>
       <DisplayName>notepad</DisplayName>
       <ApplicationName>notepad</ApplicationName>
