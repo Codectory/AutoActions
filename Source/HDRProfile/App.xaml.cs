@@ -23,6 +23,7 @@ namespace HDRProfile
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 mutex.ReleaseMutex();
+
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using CodectoryCore.Logging;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace HDRProfile
             else
                 rk.DeleteValue(applicationName, false);
         }
+
     }
 }
 

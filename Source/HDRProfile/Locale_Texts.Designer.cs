@@ -61,6 +61,15 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Activate HDR ähnelt.
+        /// </summary>
+        public static string ActivateHDR {
+            get {
+                return ResourceManager.GetString("ActivateHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add application ähnelt.
         /// </summary>
         public static string AddApplication {
@@ -120,6 +129,15 @@ namespace HDRProfile {
         public static string ChooseApplication {
             get {
                 return ResourceManager.GetString("ChooseApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Deactivate HDR ähnelt.
+        /// </summary>
+        public static string DeactivateHDR {
+            get {
+                return ResourceManager.GetString("DeactivateHDR", resourceCulture);
             }
         }
         
@@ -192,6 +210,15 @@ namespace HDRProfile {
         public static string Info {
             get {
                 return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Logging ähnelt.
+        /// </summary>
+        public static string Logging {
+            get {
+                return ResourceManager.GetString("Logging", resourceCulture);
             }
         }
         
@@ -283,6 +310,15 @@ namespace HDRProfile {
         public static string StartToTray {
             get {
                 return ResourceManager.GetString("StartToTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Volume sync devices ähnelt.
+        /// </summary>
+        public static string VolumeSyncDevices {
+            get {
+                return ResourceManager.GetString("VolumeSyncDevices", resourceCulture);
             }
         }
     }

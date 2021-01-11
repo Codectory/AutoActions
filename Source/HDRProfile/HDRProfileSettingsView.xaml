@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:HDRProfile"
              d:DataContext="{d:DesignInstance local:HDRProfileSettings, IsDesignTimeCreatable=True}"
-             mc:Ignorable="d" Height="116.539"  MinHeight="109.205" MinWidth="229.498">
+             mc:Ignorable="d" MinHeight="109.205" MinWidth="229.498">
+
 
     <UserControl.Resources>
         <DataTemplate x:Key="HDRModeTemplate" DataType="Enum">
@@ -17,7 +19,7 @@
         x:Key="HDRModeValues">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="local:HDRMode" />
-            </ObjectDataProvider.MethodParameters> 
+            </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </UserControl.Resources>
 
@@ -27,7 +29,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" MinHeight="28"/>
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -37,11 +40,14 @@
         <TextBlock  Text="{x:Static local:Locale_Texts.AutoStart}" Grid.Column="0" Grid.Row="0" Margin="10,4,10,2"/>
         <TextBlock  Text="{x:Static local:Locale_Texts.StartToTray}"  Grid.Column="0" Grid.Row="1" Margin="10,3,2,3"/>
         <TextBlock  Text="{x:Static local:Locale_Texts.MinimizeToTray}"  Grid.Column="0" Grid.Row="2" Margin="10,3,2,3"/>
-        <TextBlock  Text="{x:Static local:Locale_Texts.HDRMode}"  Grid.Column="0" Grid.Row="3" Margin="10,5,0,1" HorizontalAlignment="Left" Width="82"/>
+        <TextBlock  Text="{x:Static local:Locale_Texts.Logging}"  Grid.Column="0" Grid.Row="3" Margin="10,3,2,3"/>
+        <TextBlock  Text="{x:Static local:Locale_Texts.HDRMode}"  Grid.Column="0" Grid.Row="4" Margin="10,5,0,1" HorizontalAlignment="Left" Width="82"/>
         <CheckBox  IsChecked="{Binding AutoStart}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Height="15" Width="71"/>
         <CheckBox  IsChecked="{Binding StartMinimizedToTray}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Grid.Row="1" Height="15" Width="71"/>
         <CheckBox  IsChecked="{Binding CloseToTray}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Grid.Row="2" Height="15" Width="71"/>
-        <ComboBox  ItemsSource="{Binding Source={StaticResource HDRModeValues}}" SelectedItem="{Binding HDRMode}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,3,0,0" Grid.Row="3" VerticalAlignment="Top" Width="120" Height="22"/>
+        <CheckBox  IsChecked="{Binding Logging}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" Height="15" Width="71"/>
+        <ComboBox  ItemsSource="{Binding Source={StaticResource HDRModeValues}}" SelectedItem="{Binding HDRMode}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,3,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="22"/>
+
 
     </Grid>
 </UserControl>

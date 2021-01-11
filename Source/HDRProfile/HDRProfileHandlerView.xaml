@@ -82,7 +82,7 @@
                 <RowDefinition />
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <local:HDRProfileSettingsView Grid.Row="0"   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" Margin="10,10,10,0" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Top" Height="107"/>
+            <local:HDRProfileSettingsView Grid.Row="0"   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" Margin="10" Grid.Column="0" Grid.ColumnSpan="4"/>
 
             <Button Grid.Column="3" Grid.Row="1" Content="{x:Static local:Locale_Texts.Shutdown}"  Command="{Binding ShutdownCommand}" Margin="5,5,10,5" RenderTransformOrigin="0.914,0.566" HorizontalAlignment="Right" Width="113" Height="20" VerticalAlignment="Bottom"/>
             <TextBlock  Text="{Binding Mode=OneWay, Source={StaticResource Version}, StringFormat= V\{0\} }"  Width="Auto" Margin="10,5,5,5"  Grid.Row="1"  Grid.Column="0"  Height="13" HorizontalAlignment="Right"  />

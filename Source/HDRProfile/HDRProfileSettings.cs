@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -15,14 +16,21 @@ namespace HDRProfile
     public class HDRProfileSettings : BaseViewModel
     {
 
+        private bool logging = false;
         private bool autoStart;
         private bool startMinimizedToTray;
         private bool _closeToTray;
         private HDRMode hdrMode;
+        readonly object _audioDevicesLock = new object();
         private ObservableCollection<ApplicationItem> _applicationItems;
+
+
 
         [DataMember]
         public bool AutoStart { get => autoStart; set { autoStart = value; OnPropertyChanged(); } }
+
+        [DataMember]
+        public bool Logging { get => logging; set { logging = value; OnPropertyChanged(); } }
 
         [DataMember]
         public bool StartMinimizedToTray { get => startMinimizedToTray; set { startMinimizedToTray = value; OnPropertyChanged(); }  }
@@ -42,6 +50,8 @@ namespace HDRProfile
         {
             ApplicationItems = new ObservableCollection<ApplicationItem>();
         }
+
+
         public static HDRProfileSettings ReadSettings(string path)
         {
             HDRProfileSettings settings = null;
@@ -52,8 +62,6 @@ namespace HDRProfile
             }
             return settings;
         }
-
-
     }
 
     public static class HDRProfileHandlerExtension

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivateHDR" xml:space="preserve">
+    <value>Activate HDR</value>
+  </data>
   <data name="AddApplication" xml:space="preserve">
     <value>Add application</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="ChooseApplication" xml:space="preserve">
     <value>Choose application</value>
+  </data>
+  <data name="DeactivateHDR" xml:space="preserve">
+    <value>Deactivate HDR</value>
   </data>
   <data name="DisplayName" xml:space="preserve">
     <value>Display name</value>
@@ -161,6 +167,9 @@
   </data>
   <data name="Info" xml:space="preserve">
     <value>Info</value>
+  </data>
+  <data name="Logging" xml:space="preserve">
+    <value>Logging</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -192,5 +201,8 @@
   </data>
   <data name="StartToTray" xml:space="preserve">
     <value>Start to tray</value>
+  </data>
+  <data name="VolumeSyncDevices" xml:space="preserve">
+    <value>Volume sync devices</value>
   </data>
 </root>

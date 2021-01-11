@@ -23,6 +23,10 @@ mono_crash.*
 [Rr]eleases/
 x64/
 x86/
+Debug_x64/
+Debug_x86/
+Release_x64/
+Release_x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
@@ -351,3 +355,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+Source/Debug_x64/de/HDRProfile.resources.dll
+Source/Debug_x64/HDRProfile.exe
