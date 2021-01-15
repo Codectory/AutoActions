@@ -36,7 +36,6 @@ namespace HDRProfile
         private bool started = false;
         public bool Started { get => started; private set { started = value; OnPropertyChanged(); } }
         ProcessWatcher ProcessWatcher;
-        HDRController HDRSwitcherHandler;
         private bool _showView = false;
         private HDRProfileSettings settings;
 
@@ -83,7 +82,6 @@ namespace HDRProfile
                     return;
                 Logs.Add("Initializing...", false);
                 ProcessWatcher = new ProcessWatcher();
-                HDRSwitcherHandler = new HDRController();
                 LoadSettings();
                 InitializeTrayMenu();
                 CreateRelayCommands();
@@ -150,13 +148,13 @@ namespace HDRProfile
                 {
                     Header = Locale_Texts.ActivateHDR
                 };
-                activateHDR.Click += (o,e) => HDRController.SetHDR(true);
+                activateHDR.Click += (o, e) => HDRController.ActivateHDR();
 
                 MenuItem deactivateHDR = new MenuItem()
                 {
                     Header = Locale_Texts.DeactivateHDR
                 };
-                deactivateHDR.Click += (o, e) => HDRController.SetHDR(false);
+                deactivateHDR.Click += (o, e) => HDRController.DeactivateHDR();
 
                 contextMenu.Items.Add(open);
                 contextMenu.Items.Add(activateHDR);
@@ -177,8 +175,8 @@ namespace HDRProfile
 
         private void CreateRelayCommands()
         {
-            ActivateHDRCommand = new RelayCommand(HDRSwitcherHandler.ActivateHDR);
-            DeactivateHDRCommand = new RelayCommand(HDRSwitcherHandler.DeactivateHDR);
+            ActivateHDRCommand = new RelayCommand(HDRController.ActivateHDR);
+            DeactivateHDRCommand = new RelayCommand(HDRController.DeactivateHDR);
             AddApplicationCommand = new RelayCommand(AddAplication);
             RemoveApplicationCommand = new RelayCommand<ApplicationItem>(RemoveApplication);
             LoadingCommand = new RelayCommand(Starting);
@@ -217,7 +215,7 @@ namespace HDRProfile
             Logs.Add($"Start application {application.ApplicationName}", false);
             try
             {
-                HDRController.SetHDR(true);
+                HDRController.ActivateHDR();
                 System.Threading.Thread.Sleep(3000);
                 Process process = new Process();
                 process.StartInfo = new ProcessStartInfo(application.ApplicationFilePath);
@@ -287,7 +285,7 @@ namespace HDRProfile
                 ProcessWatcher.OneProcessIsFocusedChanged -= ProcessWatcher_RunningOrFocusedChanged;
 
                 ProcessWatcher.Stop();
-                HDRSwitcherHandler.DeactivateHDR();
+                HDRController.DeactivateHDR();
                 Started = false;
                 Logs.Add($"Process watcher stopped", false);
 
@@ -388,11 +386,11 @@ namespace HDRProfile
 
                     if ((Settings.HDRMode == HDRMode.Running && ProcessWatcher.OneProcessIsRunning) || Settings.HDRMode == HDRMode.Focused && ProcessWatcher.OneProcessIsFocused)
                     {
-                        HDRSwitcherHandler.ActivateHDR();
+                        HDRController.ActivateHDR();
                         CheckIfRestartIsNecessary((IDictionary<ApplicationItem, bool>)ProcessWatcher.Applications);
                     }
                     else if (Settings.HDRMode != HDRMode.None)
-                        HDRSwitcherHandler.DeactivateHDR();
+                        HDRController.DeactivateHDR();
                     Logs.Add($"HDR mode updated to {Settings.HDRMode}", false);
 
                 }

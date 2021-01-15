@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace HDRProfile
 {
-   public  class HDRController
+   public static  class HDRController
     {
         [DllImport("HDRController.dll")]
-        public static extern IntPtr SetHDR(bool enabled);
-        readonly object _dllLock = new object();
+        private static extern IntPtr SetHDR(bool enabled);
+        readonly static object _dllLock = new object();
 
-        public void ActivateHDR()
+        public static void ActivateHDR()
         {
             lock (_dllLock)
                 SetHDR(true);
 
         }
 
-        public void DeactivateHDR()
+        public static  void DeactivateHDR()
         {
             lock (_dllLock)
                 SetHDR(false);
