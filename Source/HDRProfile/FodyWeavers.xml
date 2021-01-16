@@ -1,8 +1,10 @@
 ﻿<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
   <Costura CreateTemporaryAssemblies='true'>
+    <Unmanaged32Assemblies>
+      HDRController
+    </Unmanaged32Assemblies>
     <Unmanaged64Assemblies>
       HDRController
-      nvapi64
     </Unmanaged64Assemblies>
   </Costura>
 </Weavers>

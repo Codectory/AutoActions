@@ -235,7 +235,7 @@
     <EmbeddedResource Include="Costura64\HDRController.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Costura32\HDRController.dll" />
+    <EmbeddedResource Include="Costura32\HDRController.dll" />
     <Content Include="Externals\CodectoryCore.Logging.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
