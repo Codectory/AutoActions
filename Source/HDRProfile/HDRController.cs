@@ -13,20 +13,29 @@ namespace HDRProfile
    public static  class HDRController
     {
         [DllImport("HDRController.dll")]
-        private static extern IntPtr SetHDR(bool enabled);
+        private static extern IntPtr SetHDRState(bool enabled);
+
+        [DllImport("HDRController.dll")]
+        private static extern bool GetHDRState();
+
         readonly static object _dllLock = new object();
+
+        public static bool HDRIsActive()
+        {
+            return GetHDRState();
+        }
 
         public static void ActivateHDR()
         {
             lock (_dllLock)
-                SetHDR(true);
+                SetHDRState(true);
 
         }
 
         public static  void DeactivateHDR()
         {
             lock (_dllLock)
-                SetHDR(false);
+                SetHDRState(false);
         }
     }
 }

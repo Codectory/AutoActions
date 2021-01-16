@@ -3,7 +3,8 @@ namespace core
     class HDRController
     {
     public:
-        void setHdrMode(bool enabled);
+        static void SetHDR(bool enabled);
+        static bool HDRIsOn();
     };
 
 }

@@ -24,15 +24,6 @@
     <ClInclude Include="HDRController.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="sdk_status.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="toggle.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="nvapi_deps.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -42,12 +33,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HDRController.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="sdk_status.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="toggle.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

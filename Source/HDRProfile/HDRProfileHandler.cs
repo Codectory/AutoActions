@@ -283,9 +283,7 @@ namespace HDRProfile
 
                 ProcessWatcher.OneProcessIsRunningChanged -= ProcessWatcher_RunningOrFocusedChanged;
                 ProcessWatcher.OneProcessIsFocusedChanged -= ProcessWatcher_RunningOrFocusedChanged;
-
                 ProcessWatcher.Stop();
-                HDRController.DeactivateHDR();
                 Started = false;
                 Logs.Add($"Process watcher stopped", false);
 
