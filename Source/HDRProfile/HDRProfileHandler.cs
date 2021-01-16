@@ -25,7 +25,7 @@ namespace HDRProfile
     public class HDRProfileHandler : BaseViewModel
     {
 
-        public static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", true);
+        public static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", Assembly.GetExecutingAssembly().GetName().Version.ToString(), true);
 
         Dictionary<ApplicationItem, bool> _lastApplicationStates = new Dictionary<ApplicationItem, bool>();
 
