@@ -12,4 +12,5 @@ Running mode works the same, but as the name says, it is not neccessary for the 
 
 For the moment, the tool is only looking for the process name and not the location of the file.
 
-I disabled the Auto-Start feature for now, as this doesn't work, if the tool requires administrative priviliges and I found no other possibility to monitor the proccesses.
+~~I disabled the Auto-Start feature for now, as this doesn't work, if the tool requires administrative priviliges and I found no other possibility to monitor the proccesses.~~
+Auto-Start setting will create a scheduled task to run this application when the currently logged on user gets logged on.
