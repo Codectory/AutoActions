@@ -2,15 +2,8 @@
 <HDRProfileSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <AutoStart>false</AutoStart>
   <Logging>false</Logging>
-  <StartMinimizedToTray>true</StartMinimizedToTray>
-  <CloseToTray>true</CloseToTray>
-  <HDRMode>Focused</HDRMode>
-  <ApplicationItems>
-    <ApplicationItem>
-      <DisplayName>Notepad</DisplayName>
-      <ApplicationName>notepad</ApplicationName>
-      <ApplicationFilePath>C:\Windows\System32\notepad.exe</ApplicationFilePath>
-      <RestartProcess>false</RestartProcess>
-    </ApplicationItem>
-  </ApplicationItems>
+  <StartMinimizedToTray>false</StartMinimizedToTray>
+  <CloseToTray>false</CloseToTray>
+  <HDRMode>None</HDRMode>
+  <ApplicationItems />
 </HDRProfileSettings>

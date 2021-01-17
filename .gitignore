@@ -21,12 +21,10 @@ mono_crash.*
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
-x86/
-Debug_x64/
-Debug_x86/
-Release_x64/
-Release_x86/
+[Dd]ebug_x64/
+[Dd]ebug_x86/
+[Rr]elease_x64/
+[Rr]elease_x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
@@ -357,3 +355,9 @@ MigrationBackup/
 .ionide/
 Source/Debug_x64/de/HDRProfile.resources.dll
 Source/Debug_x64/HDRProfile.exe
+Source/HDRController/Release_x64/HDRController.dll
+Source/HDRController/Release_x64/HDRController.lib
+Source/Debug_x64/HDRProfile_Settings.xml
+Source/Debug_x64/HDRProfile.exe
+Source/Release_x64/de/HDRProfile.resources.dll
+Source/Release_x64/HDRProfile_Settings.xml

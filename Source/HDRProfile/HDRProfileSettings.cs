@@ -27,7 +27,7 @@ namespace HDRProfile
 
 
         [DataMember]
-        public bool AutoStart { get => false/*autoStart*/; set { autoStart = value; OnPropertyChanged(); } }
+        public bool AutoStart { get => autoStart; set { autoStart = value; OnPropertyChanged(); } }
 
         [DataMember]
         public bool Logging { get => logging; set { logging = value; OnPropertyChanged(); } }

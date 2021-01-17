@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -95,13 +96,27 @@ namespace HDRProfile
 
         private void LoadSettings()
         {
-            Logs.Add("Loading settings..", false);
             try
             {
-                Settings = HDRProfileSettings.ReadSettings(SettingsPath);
+                if (File.Exists(SettingsPath))
+                {
+                    Logs.Add("Loading settings...", false);
+                    Settings = HDRProfileSettings.ReadSettings(SettingsPath);
+                }
+                else
+                {
+                    Logs.Add("Creating settings file", false);
+
+                    Settings = new HDRProfileSettings();
+                    SaveSettings();
+                }
             }
             catch (Exception ex)
             {
+                string backupFile = $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xml.bak";
+                File.Move(SettingsPath, backupFile);
+                Logs.Add($"Created backup of invalid settings file: {backupFile}", false);
+                File.Delete(SettingsPath);
                 Logs.Add("Failed to load settings", false);
                 Logs.AddException(ex);
                 Settings = new HDRProfileSettings();
@@ -191,7 +206,15 @@ namespace HDRProfile
         {
             lock (_accessLock)
             {
-                Tools.SetAutoStart(Locale_Texts.HDRProfile, System.Reflection.Assembly.GetEntryAssembly().Location, settings.AutoStart);
+                try
+                {
+                    Tools.SetAutoStartInScheduler(Locale_Texts.HDRProfile, System.Reflection.Assembly.GetEntryAssembly().Location, settings.AutoStart);
+
+                }
+                catch (Exception ex)
+                {
+                    Logs.AddException(ex);
+                }               
                 if (e.PropertyName.Equals(nameof(Settings.HDRMode)))
                     UpdateHDRMode();
                 Logs.LoggingEnabled = Settings.Logging;

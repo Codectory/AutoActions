@@ -12,10 +12,10 @@ namespace HDRProfile
 {
    public static  class HDRController
     {
-        [DllImport("HDRController.dll")]
+        [DllImport("HDRController.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr SetHDRState(bool enabled);
 
-        [DllImport("HDRController.dll")]
+        [DllImport("HDRController.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern bool GetHDRState();
 
         readonly static object _dllLock = new object();
