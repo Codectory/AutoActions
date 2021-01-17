@@ -31,10 +31,11 @@ namespace HDRProfile
                 // Create a new task definition and assign properties
                 TaskDefinition td = ts.NewTask();
                 td.RegistrationInfo.Description = "Starting HDR-Profile";
+                td.Principal.RunLevel = TaskRunLevel.Highest;
+
 
                 // On logon
-                td.Triggers.Add(new Microsoft.Win32.TaskScheduler.LogonTrigger { UserId = Environment.UserName });
-
+                td.Triggers.Add(new Microsoft.Win32.TaskScheduler.LogonTrigger { UserId = Environment.UserName});
                 // Create an action that will launch Notepad whenever the trigger fires
                 td.Actions.Add(new ExecAction(filePath, null));
 
