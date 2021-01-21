@@ -18,7 +18,7 @@
         ObjectType="{x:Type sys:Enum}"
         x:Key="HDRModeValues">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:HDRMode" />
+                <x:Type TypeName="local:HDRActivationMode" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </UserControl.Resources>

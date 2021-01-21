@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HDRProfile
 {
-    public enum HDRMode
+    public enum HDRActivationMode
     {
         None,
         Running,

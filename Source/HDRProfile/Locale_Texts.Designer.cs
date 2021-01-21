@@ -178,6 +178,15 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die HDR ähnelt.
+        /// </summary>
+        public static string HDR {
+            get {
+                return ResourceManager.GetString("HDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die HDR Mode ähnelt.
         /// </summary>
         public static string HDRMode {
@@ -287,7 +296,7 @@ namespace HDRProfile {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Close ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Exit application ähnelt.
         /// </summary>
         public static string Shutdown {
             get {

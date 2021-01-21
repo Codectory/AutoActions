@@ -156,6 +156,9 @@
   <data name="FilePath" xml:space="preserve">
     <value>Dateipfad</value>
   </data>
+  <data name="HDR" xml:space="preserve">
+    <value>HDR</value>
+  </data>
   <data name="HDRMode" xml:space="preserve">
     <value>HDR-Modus</value>
   </data>

@@ -25,22 +25,23 @@ namespace HDRProfile
 {
     public class HDRProfileHandler : BaseViewModel
     {
-
-        public static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", Assembly.GetExecutingAssembly().GetName().Version.ToString(), true);
+        readonly object _accessLock = new object();
+        private bool _showView = false;
+        private bool hdrIsActive;
+        private static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", Assembly.GetExecutingAssembly().GetName().Version.ToString(), true);
+        private HDRProfileSettings settings;
 
         Dictionary<ApplicationItem, bool> _lastApplicationStates = new Dictionary<ApplicationItem, bool>();
 
         private string SettingsPath => $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings.xml";
-        TaskbarIcon TrayMenu;
-        readonly object _accessLock = new object();
 
         private bool started = false;
         public bool Started { get => started; private set { started = value; OnPropertyChanged(); } }
         ProcessWatcher ProcessWatcher;
-        private bool _showView = false;
-        private HDRProfileSettings settings;
+        TrayMenuHelper TrayMenuHelper;
 
-        public bool ShowView { get => _showView;  set { _showView = value; OnPropertyChanged(); } }
+
+        #region RelayCommands
 
         public RelayCommand ActivateHDRCommand { get; private set; }
         public RelayCommand DeactivateHDRCommand { get; private set; }
@@ -49,17 +50,31 @@ namespace HDRProfile
         public RelayCommand LoadingCommand { get; private set; }
         public RelayCommand ClosingCommand { get; private set; }
         public RelayCommand ShutdownCommand { get; private set; }
-
         public RelayCommand<ApplicationItem> StartApplicationCommand { get; private set; }
 
+        #endregion RelayCommands
 
         public HDRProfileSettings Settings { get => settings; set { settings = value; OnPropertyChanged(); } }
-
         public bool Initialized { get; private set; } = false;
+        public bool ShowView { get => _showView; set { _showView = value; OnPropertyChanged(); } }
+
+        public bool HDRIsActive { get => hdrIsActive; set { hdrIsActive = value; OnPropertyChanged(); } }
+        public string Version
+        {
+            get
+            {
+                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                string version = assembly.GetName().Version.ToString();
+                version = version.Substring(0, version.LastIndexOf('.'));
+                return version;
+            }
+        }
+
+
 
         public HDRProfileHandler()
         {
-           // ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+            // ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Initialize();
         }
 
@@ -67,7 +82,6 @@ namespace HDRProfile
         {
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
-
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(culture.Name);
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(culture.Name);
         }
@@ -83,15 +97,41 @@ namespace HDRProfile
                     return;
                 Logs.Add("Initializing...", false);
                 ProcessWatcher = new ProcessWatcher();
+                HDRController.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
+                HDRIsActive = HDRController.HDRIsActive;
                 LoadSettings();
-                InitializeTrayMenu();
+                InitializeTrayMenuHelper();
                 CreateRelayCommands();
-                SwitchTrayIcon(Settings.StartMinimizedToTray);
                 ShowView = !Settings.StartMinimizedToTray;
                 Initialized = true;
                 Logs.Add("Initialized", false);
 
             }
+        }
+
+        private void HDRController_HDRIsActiveChanged(object sender, EventArgs e)
+        {
+            HDRIsActive = HDRController.HDRIsActive;
+        }
+
+        private void InitializeTrayMenuHelper()
+        {
+            TrayMenuHelper = new TrayMenuHelper();
+            TrayMenuHelper.Initialize();
+            TrayMenuHelper.OpenViewRequested += TrayMenuHelper_OpenViewRequested;
+            TrayMenuHelper.CloseApplicationRequested += TrayMenuHelper_CloseApplicationRequested;
+            TrayMenuHelper.SwitchTrayIcon(Settings.StartMinimizedToTray);
+        }
+
+
+        private void TrayMenuHelper_OpenViewRequested(object sender, EventArgs e)
+        {
+            ShowView = true;
+        }
+
+        private void TrayMenuHelper_CloseApplicationRequested(object sender, EventArgs e)
+        {
+            Shutdown();
         }
 
         private void LoadSettings()
@@ -122,7 +162,6 @@ namespace HDRProfile
                 Settings = new HDRProfileSettings();
                 SaveSettings();
                 Logs.Add("Created new settings file", false);
-
             }
 
             Settings.ApplicationItems.CollectionChanged += ApplicationItems_CollectionChanged;
@@ -136,57 +175,6 @@ namespace HDRProfile
             Logs.Add("Settings loaded", false);
         }
 
-        private void InitializeTrayMenu()
-        {
-            Logs.Add("Initializing tray menu", false);
-            try
-            {
-                TrayMenu = new TaskbarIcon();
-                TrayMenu.Visibility = Visibility.Hidden;
-                TrayMenu.ToolTipText = Locale_Texts.HDRProfile;
-                TrayMenu.Icon = Locale_Texts.Logo;
-                ContextMenu contextMenu = new ContextMenu();
-                MenuItem close = new MenuItem()
-                {
-                    Header = Locale_Texts.Shutdown
-                };
-                close.Click += (o, e) => Shutdown();
-
-                MenuItem open = new MenuItem()
-                {
-                    Header = Locale_Texts.Open
-                };
-                open.Click += (o, e) => SwitchTrayIcon(false);
-
-
-                MenuItem activateHDR = new MenuItem()
-                {
-                    Header = Locale_Texts.ActivateHDR
-                };
-                activateHDR.Click += (o, e) => HDRController.ActivateHDR();
-
-                MenuItem deactivateHDR = new MenuItem()
-                {
-                    Header = Locale_Texts.DeactivateHDR
-                };
-                deactivateHDR.Click += (o, e) => HDRController.DeactivateHDR();
-
-                contextMenu.Items.Add(open);
-                contextMenu.Items.Add(activateHDR);
-                contextMenu.Items.Add(deactivateHDR);
-                contextMenu.Items.Add(close);
-
-                TrayMenu.ContextMenu = contextMenu;
-                TrayMenu.TrayLeftMouseDown += TrayMenu_TrayLeftMouseDown;
-                Logs.Add("Tray menu initialized", false);
-
-            }
-            catch (Exception ex)
-            {
-                Logs.AddException(ex);
-                throw ex;
-            }
-        }
 
         private void CreateRelayCommands()
         {
@@ -214,20 +202,19 @@ namespace HDRProfile
                 catch (Exception ex)
                 {
                     Logs.AddException(ex);
-                }               
+                }
                 if (e.PropertyName.Equals(nameof(Settings.HDRMode)))
                     UpdateHDRMode();
                 Logs.LoggingEnabled = Settings.Logging;
                 SaveSettings();
             }
-        } 
+        }
 
 
 
         private void TrayMenu_TrayLeftMouseDown(object sender, RoutedEventArgs e)
         {
             Logs.Add("Open app from Tray", false);
-            SwitchTrayIcon(false);
             ShowView = true;
 
         }
@@ -264,7 +251,7 @@ namespace HDRProfile
             if (Settings.CloseToTray)
             {
                 Logs.Add($"Minimizing to tray...", false);
-                SwitchTrayIcon(true);
+                TrayMenuHelper.SwitchTrayIcon(true);
             }
             else
             {
@@ -276,7 +263,7 @@ namespace HDRProfile
         private void Shutdown()
         {
             Stop();
-            SwitchTrayIcon(false);
+            TrayMenuHelper.SwitchTrayIcon(false);
             Application.Current.Shutdown();
         }
 
@@ -286,6 +273,9 @@ namespace HDRProfile
             {
                 if (Started)
                     return;
+                Logs.Add($"Starting HDR Monitoring...", false);
+                HDRController.StartMonitoring();
+                Logs.Add($"HDR Monitoring started", false);
                 Logs.Add($"Starting process watcher...", false);
                 ProcessWatcher.OneProcessIsRunningChanged += ProcessWatcher_RunningOrFocusedChanged;
                 ProcessWatcher.OneProcessIsFocusedChanged += ProcessWatcher_RunningOrFocusedChanged;
@@ -302,8 +292,10 @@ namespace HDRProfile
             {
                 if (!Started)
                     return;
+                Logs.Add($"Stopping HDR Monitoring...", false);
+                HDRController.StopMonitoring();
+                Logs.Add($"HDR Monitoring stopped", false);
                 Logs.Add($"Stopping process watcher...", false);
-
                 ProcessWatcher.OneProcessIsRunningChanged -= ProcessWatcher_RunningOrFocusedChanged;
                 ProcessWatcher.OneProcessIsFocusedChanged -= ProcessWatcher_RunningOrFocusedChanged;
                 ProcessWatcher.Stop();
@@ -314,10 +306,6 @@ namespace HDRProfile
 
         }
 
-        private void SwitchTrayIcon(bool showTray)
-        {
-            TrayMenu.Visibility = showTray ? System.Windows.Visibility.Visible : Visibility.Hidden;
-        }
 
         #region Process handling
 
@@ -364,7 +352,7 @@ namespace HDRProfile
             catch (Exception ex)
             {
                 Logs.AddException(ex);
-            }            
+            }
         }
 
         private void ApplicationItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -403,17 +391,23 @@ namespace HDRProfile
             {
                 try
                 {
-                    Logs.Add($"Updating HDR mode to {Settings.HDRMode}...", false);
-
-                    if ((Settings.HDRMode == HDRMode.Running && ProcessWatcher.OneProcessIsRunning) || Settings.HDRMode == HDRMode.Focused && ProcessWatcher.OneProcessIsFocused)
+                    if (!HDRController.HDRIsActive && (Settings.HDRMode == HDRActivationMode.Running && ProcessWatcher.OneProcessIsRunning) || Settings.HDRMode == HDRActivationMode.Focused && ProcessWatcher.OneProcessIsFocused)
                     {
+                        Logs.Add($"Activating HDR...", false);
+
                         HDRController.ActivateHDR();
                         CheckIfRestartIsNecessary((IDictionary<ApplicationItem, bool>)ProcessWatcher.Applications);
-                    }
-                    else if (Settings.HDRMode != HDRMode.None)
-                        HDRController.DeactivateHDR();
-                    Logs.Add($"HDR mode updated to {Settings.HDRMode}", false);
 
+                    }
+                    else if (HDRController.HDRIsActive && Settings.HDRMode != HDRActivationMode.None)
+                    {
+                        Logs.Add($"Deactivating HDR...", false);
+                        HDRController.DeactivateHDR();
+                    }
+                    if (HDRController.HDRIsActive)
+                        Logs.Add($"HDR is active", false);
+                    else
+                        Logs.Add($"HDR is inactive", false);
                 }
                 catch (Exception ex)
                 {

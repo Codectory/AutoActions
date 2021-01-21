@@ -156,6 +156,9 @@
   <data name="FilePath" xml:space="preserve">
     <value>File path</value>
   </data>
+  <data name="HDR" xml:space="preserve">
+    <value>HDR</value>
+  </data>
   <data name="HDRMode" xml:space="preserve">
     <value>HDR Mode</value>
   </data>
@@ -194,7 +197,7 @@
     <value>Settings</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Close</value>
+    <value>Exit application</value>
   </data>
   <data name="StartInHDR" xml:space="preserve">
     <value>Start in HDR-Mode</value>

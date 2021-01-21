@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:HDRProfile"
              xmlns:tb="http://www.hardcodet.net/taskbar"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:corewpf="clr-namespace:CodectoryCore.UI.Wpf;assembly=CodectoryCore.UI.Wpf"
              Exit="Application_Exit"
@@ -12,11 +13,127 @@
 
         <system:String x:Key="DonateLink">https://paypal.me/pools/c/8vksshrMln</system:String>
         <system:String x:Key="InfoLink">https://sourceforge.net/projects/hdr-profile</system:String>
-        <system:String x:Key="Version">1.3.4</system:String>
-        <SolidColorBrush x:Key="ButtonBackground" Color="#FF0086F5"/>
-        <SolidColorBrush x:Key="AccentColor" Color="#FFFF581A"/>
-        <SolidColorBrush x:Key="AccentColor2" Color="#4C87B3"/>
+        <Color x:Key="AccentColor">#5d9ac7</Color>
+        <Color x:Key="HighlightedColor">#6fb3e3</Color>
+        <Color x:Key="ButtonClickedColor">#396585</Color>
+        <SolidColorBrush x:Key="ButtonForegroundBrush">White</SolidColorBrush>
+
+
+        <SolidColorBrush x:Key="AccentBrush"  Color="{StaticResource AccentColor}"/>
+        <SolidColorBrush x:Key="InactiveAccentBrush">#7292a8</SolidColorBrush>
+        <SolidColorBrush x:Key="DisabledAccentBrush">#949ea6</SolidColorBrush>
+        <SolidColorBrush x:Key="HighlightedInactiveAccentBrush" Color="#95bfdb"/>
+        <StaticResource x:Key="ButtonBackgroundBrush"  ResourceKey="AccentBrush"/>
         <CornerRadius x:Key="CornerRadius">3</CornerRadius>
+        
+        <Style TargetType="TextBlock" >
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+
+
+
+        <Style x:Key="DefaultButton" TargetType="Button" >
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                          <Border  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="{StaticResource CornerRadius}">
+                            <TextBlock  Background="Transparent" Padding="5,4,5,5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Padding" Value="5,5"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Background" Value="{StaticResource DisabledAccentBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="{StaticResource HighlightedColor}"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
+                                        FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
+                                            FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+
+                </Trigger>
+
+                <Trigger Property="IsPressed" Value="true">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="{StaticResource ButtonClickedColor}"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
+                                        FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
+                                            FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+
+                </Trigger>
+
+     
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}"/>
+        
+        <Style x:Key="DefaultTabItem" TargetType="TabItem">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border  Height="Auto" Width="Auto" BorderBrush="{StaticResource AccentBrush}" Background="{TemplateBinding Background}" BorderThickness="1 1 1 0" CornerRadius="3 3 0 0">
+                            <TextBlock  Padding="5,5,5,5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" >
+                    <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+                    <Setter Property="BorderThickness" Value="0.8 1 1 1"/>
+
+                </DataTrigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" >
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+
+                </DataTrigger>
+            </Style.Triggers>
+
+        </Style>
+        <Style TargetType="TabItem" BasedOn="{StaticResource DefaultTabItem}"/>
+
+
         <local:EnumLocaleConverter x:Key="EnumLocaleConverter"/>
         <corewpf:DialogService x:Key="DialogService" />
         <corewpf:BitmapToBitmapImageConverter x:Key="BitmapToBitmapImageConverter"/>

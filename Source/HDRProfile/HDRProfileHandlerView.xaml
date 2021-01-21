@@ -8,9 +8,9 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:HDRProfile"
         mc:Ignorable="d"
-        Title="HDR Profile" Name="MainWindow" MinHeight="260" MinWidth="800" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
-        Height="416.456"
-        Width="333.919">
+        Title="HDR Profile" Name="MainWindow" MinHeight="480" MinWidth="640" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
+        Height="480"
+        Width="640" Loaded="MainWindow_Loaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadingCommand}"/>
@@ -30,7 +30,6 @@
         </Binding>
     </corewpf:MainWindowBase.DialogService>
     <Window.Resources>
-
         <ItemsPanelTemplate x:Key="WrapListViewTemplate">
             <WrapPanel/>
         </ItemsPanelTemplate>
@@ -52,66 +51,126 @@
         </DataTemplate>
 
     </Window.Resources>
-
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"  />
-            <RowDefinition Height="14*" />
-            <RowDefinition Height="163*"/>
-        </Grid.RowDefinitions>
-        <GridSplitter VerticalAlignment="Top" Height="1"  Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" IsEnabled="False"/>
+        <TabControl BorderBrush="{StaticResource AccentBrush}" Margin="0,0,0,41" BorderThickness="0 5 0 1">
+            <TabItem Header="{x:Static local:Locale_Texts.Applications}" >
+                <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"  />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{x:Static local:Locale_Texts.Applications}" Grid.Row="0" Margin="10,10,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="15" FontWeight="Bold"/>
+                    <TextBlock Margin="0,9,10,0" Grid.Row="1" TextWrapping="Wrap" Text="{x:Static local:Locale_Texts.RestartProccessOnFirstOccurence}" HorizontalAlignment="Right" Width="Auto" Height="16" VerticalAlignment="Top"/>
+                    <ListBox  Grid.Column="0" Grid.Row="2" x:Name="ApplicationList" Margin="10,2,9,5" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#FFF1F1F1" Padding="10" RenderTransformOrigin="0.51,-2.713"/>
+                    <Grid Grid.Column="0" Grid.Row="3" Height="Auto" VerticalAlignment="Bottom" Margin="10,0,9,0" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Width="Auto"  IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Content="{x:Static local:Locale_Texts.StartInHDR}" Command="{Binding StartApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Grid.Row="2"  Margin="5"/>
+                        <Button Grid.Column="2"  Width="Auto" Command="{Binding AddApplicationCommand}" Content="{x:Static local:Locale_Texts.AddApplication}"    Margin="5"  />
+                        <Button Grid.Column="4" Width="Auto" Command="{Binding RemoveApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Content="{x:Static local:Locale_Texts.RemoveApplication}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5" BorderBrush="#FF1C8580"  />
+                        <TextBlock HorizontalAlignment="Right" Grid.Row="0" Grid.Column="6"  Text="{x:Static local:Locale_Texts.HDR}" TextAlignment="Right" Width="32" VerticalAlignment="Center" />
+                        <Ellipse HorizontalAlignment="Center" Height="11" Grid.Row="0" Grid.Column="7"  Stroke="Black" VerticalAlignment="Center" Width="11" Margin="3,0,6,0" >
+                            <Ellipse.Style>
+                                <Style TargetType="{x:Type Ellipse}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HDRIsActive}" Value="True">
+                                            <Setter Property="Fill" Value="#34eb61"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding HDRIsActive}" Value="False">
+                                            <Setter Property="Fill" Value="Transparent"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+                        <Button HorizontalAlignment="Left"  Grid.Row="0"  Grid.Column="8" Width="Auto" VerticalAlignment="Center" Margin="0,5">
+                            <Button.Style>
+                                <Style  BasedOn="{StaticResource DefaultButton}" TargetType="{x:Type Button}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HDRIsActive}" Value="True">
+                                            <Setter Property="Content" Value="{x:Static local:Locale_Texts.DeactivateHDR }"/>
+                                            <Setter Property="Command" Value="{Binding DeactivateHDRCommand}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding HDRIsActive}" Value="false">
+                                            <Setter Property="Content" Value="{x:Static local:Locale_Texts.ActivateHDR }"/>
+                                            <Setter Property="Command" Value="{Binding ActivateHDRCommand}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
 
-        <ListBox  Grid.Column="0" Grid.Row="3" x:Name="ApplicationList" Margin="10,2.373,9,35" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#FFF1F1F1" Padding="10" RenderTransformOrigin="0.51,-2.713"/>
-        <TextBlock Text="{x:Static local:Locale_Texts.Applications}" Grid.Row="0" Margin="10,10,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="15" FontWeight="Bold"/>
-        <GridSplitter HorizontalAlignment="Left" Width="1" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="False"/>
-        <TextBlock Text="{x:Static local:Locale_Texts.Settings}" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="2" FontSize="15" FontWeight="Bold"/>
-        <Grid Grid.Column="2" Grid.Row="2"  Width="Auto" HorizontalAlignment="Right" Grid.RowSpan="2" >
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{x:Static local:Locale_Texts.Settings}">
+                <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="69*" />
+                        <ColumnDefinition Width="277*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="154*"  />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{x:Static local:Locale_Texts.Settings}" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top"  FontSize="15" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                    <local:HDRProfileSettingsView Grid.Row="1"   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" Margin="10" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                </Grid>
+
+            </TabItem>
+        </TabControl>
+        <Grid Margin="10,0,0,0" Height="36" VerticalAlignment="Bottom" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition />
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <local:HDRProfileSettingsView Grid.Row="0"   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" Margin="10" Grid.Column="0" Grid.ColumnSpan="4"/>
 
-            <Button Grid.Column="3" Grid.Row="1" Content="{x:Static local:Locale_Texts.Shutdown}"  Command="{Binding ShutdownCommand}" Margin="5,5,10,5" RenderTransformOrigin="0.914,0.566" HorizontalAlignment="Right" Width="113" Height="20" VerticalAlignment="Bottom"/>
-            <TextBlock  Text="{Binding Mode=OneWay, Source={StaticResource Version}, StringFormat= V\{0\} }"  Width="Auto" Margin="10,5,5,5"  Grid.Row="1"  Grid.Column="0"  Height="13" HorizontalAlignment="Right"  />
+            <Button Grid.Column="4" Content="{x:Static local:Locale_Texts.Shutdown}"  Command="{Binding ShutdownCommand}"  HorizontalAlignment="Right" Width="68" VerticalAlignment="Bottom" Margin="0,0,11,0"/>
+            <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Width="Auto" Margin="10,5,5,5"  Grid.Row="1"  Grid.Column="0"  Height="Auto"  HorizontalAlignment="Right" VerticalAlignment="Bottom"  />
 
-            <TextBlock  Width="Auto" Margin="5"  Grid.Row="1"  Grid.Column="1"  Height="13" HorizontalAlignment="Right"  >
+            <TextBlock  Width="Auto" Margin="5"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Bottom" >
              <Hyperlink  NavigateUri="{Binding Mode=OneWay, Source={StaticResource InfoLink}}" RequestNavigate="Hyperlink_RequestNavigate">
-                 <TextBlock Text="{x:Static local:Locale_Texts.Info}" Width="Auto" />
+                 <TextBlock  Text="{x:Static local:Locale_Texts.Info}" Width="Auto" HorizontalAlignment="Center" TextDecorations="{x:Null}" >
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                        </TextBlock.Foreground>
+                 </TextBlock>
              </Hyperlink>
             </TextBlock>
-            <TextBlock  Width="Auto" Margin="5"  Grid.Row="1"  Grid.Column="2"  Height="13" HorizontalAlignment="Right" >
+            <TextBlock  Width="Auto" Margin="5"  Grid.Row="1"  Grid.Column="2" Height="Auto"  HorizontalAlignment="Right" VerticalAlignment="Bottom" >
                  <Hyperlink  NavigateUri="{Binding Mode=OneWay, Source={StaticResource DonateLink}}" RequestNavigate="Hyperlink_RequestNavigate">
-                     <TextBlock Text="{x:Static local:Locale_Texts.BuyBeer}"  Width="Auto"/>
+                     <TextBlock Text="{x:Static local:Locale_Texts.BuyBeer}"  Width="Auto" HorizontalAlignment="Left" TextDecorations="{x:Null}">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                        </TextBlock.Foreground>
+                     </TextBlock>
                  </Hyperlink>
             </TextBlock>
         </Grid>
-        <Grid Grid.Column="0" Grid.Row="3" Height="Auto" VerticalAlignment="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Width="Auto"  IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Content="{x:Static local:Locale_Texts.StartInHDR}" Command="{Binding StartApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Grid.Row="2" Height="20" Margin="5"/>
-            <Button Grid.Column="2"  Width="Auto" Command="{Binding AddApplicationCommand}" Content="{x:Static local:Locale_Texts.AddApplication}"   Height="20" Margin="5"  />
-            <Button Grid.Column="4" Width="Auto" Command="{Binding RemoveApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Content="{x:Static local:Locale_Texts.RemoveApplication}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Height="20" Margin="5"  />
 
-        </Grid>
-        <TextBlock Margin="0,9,10,0" Grid.Row="2" TextWrapping="Wrap" Text="{x:Static local:Locale_Texts.RestartProccessOnFirstOccurence}" HorizontalAlignment="Right" Width="Auto" Height="16" VerticalAlignment="Top"/>
+
     </Grid>
+
 </corewpf:MainWindowBase>
 

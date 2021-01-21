@@ -20,7 +20,7 @@ namespace HDRProfile
         private bool autoStart;
         private bool startMinimizedToTray;
         private bool _closeToTray;
-        private HDRMode hdrMode;
+        private HDRActivationMode hdrMode;
         readonly object _audioDevicesLock = new object();
         private ObservableCollection<ApplicationItem> _applicationItems;
 
@@ -40,7 +40,7 @@ namespace HDRProfile
 
 
         [DataMember]
-        public HDRMode HDRMode { get => hdrMode; set { hdrMode = value; OnPropertyChanged(); } }
+        public HDRActivationMode HDRMode { get => hdrMode; set { hdrMode = value; OnPropertyChanged(); } }
 
         [DataMember]
         public ObservableCollection<ApplicationItem> ApplicationItems { get => _applicationItems; set {_applicationItems = value; OnPropertyChanged();} }
