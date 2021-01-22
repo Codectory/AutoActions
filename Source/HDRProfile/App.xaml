@@ -12,7 +12,7 @@
     <Application.Resources>
 
         <system:String x:Key="DonateLink">https://paypal.me/pools/c/8vksshrMln</system:String>
-        <system:String x:Key="InfoLink">https://sourceforge.net/projects/hdr-profile</system:String>
+        <system:String x:Key="InfoLink">https://github.com/Codectory/HDR-Profile</system:String>
         <Color x:Key="AccentColor">#5d9ac7</Color>
         <Color x:Key="HighlightedColor">#6fb3e3</Color>
         <Color x:Key="ButtonClickedColor">#396585</Color>
@@ -41,7 +41,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                           <Border  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="{StaticResource CornerRadius}">
-                            <TextBlock  Background="Transparent" Padding="5,4,5,5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock  Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                           </Border>
                     </ControlTemplate>
                 </Setter.Value>

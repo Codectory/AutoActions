@@ -27,6 +27,8 @@ namespace HDRProfile
     {
         readonly object _accessLock = new object();
         private bool _showView = false;
+        private ApplicationItem _currentApplication = null;
+
         private bool hdrIsActive;
         private static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", Assembly.GetExecutingAssembly().GetName().Version.ToString(), true);
         private HDRProfileSettings settings;
@@ -58,6 +60,8 @@ namespace HDRProfile
         public bool Initialized { get; private set; } = false;
         public bool ShowView { get => _showView; set { _showView = value; OnPropertyChanged(); } }
 
+        public ApplicationItem CurrentApplication { get => _currentApplication; set { _currentApplication = value; OnPropertyChanged(); } }
+
         public bool HDRIsActive { get => hdrIsActive; set { hdrIsActive = value; OnPropertyChanged(); } }
         public string Version
         {
@@ -71,10 +75,9 @@ namespace HDRProfile
         }
 
 
-
         public HDRProfileHandler()
         {
-            // ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+             ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Initialize();
         }
 
@@ -107,6 +110,10 @@ namespace HDRProfile
                 Logs.Add("Initialized", false);
 
             }
+        }
+
+        private void LogSystem()
+        {
         }
 
         private void HDRController_HDRIsActiveChanged(object sender, EventArgs e)
@@ -204,7 +211,7 @@ namespace HDRProfile
                     Logs.AddException(ex);
                 }
                 if (e.PropertyName.Equals(nameof(Settings.HDRMode)))
-                    UpdateHDRMode();
+                    UpdateHDRBasedOnCurrentApplication();
                 Logs.LoggingEnabled = Settings.Logging;
                 SaveSettings();
             }
@@ -281,6 +288,7 @@ namespace HDRProfile
                 ProcessWatcher.OneProcessIsFocusedChanged += ProcessWatcher_RunningOrFocusedChanged;
                 Started = true;
                 ProcessWatcher.Start();
+                UpdateHDRBasedOnCurrentApplication();
                 Logs.Add($"Process watcher started", false);
 
             }
@@ -381,17 +389,36 @@ namespace HDRProfile
 
         private void ProcessWatcher_RunningOrFocusedChanged(object sender, EventArgs e)
         {
-            UpdateHDRMode();
+            UpdateHDRBasedOnCurrentApplication();
 
         }
 
-        private void UpdateHDRMode()
+        private void UpdateHDRBasedOnCurrentApplication()
         {
             lock (_accessLock)
             {
                 try
                 {
-                    if (!HDRController.HDRIsActive && (Settings.HDRMode == HDRActivationMode.Running && ProcessWatcher.OneProcessIsRunning) || Settings.HDRMode == HDRActivationMode.Focused && ProcessWatcher.OneProcessIsFocused)
+                    bool hdrTargetState = false;
+                    switch (Settings.HDRMode)
+                    {
+                        case HDRActivationMode.Running:
+                            CurrentApplication = ProcessWatcher.CurrentRunningApplicationItem;
+                            hdrTargetState = ProcessWatcher.OneProcessIsRunning;
+                            break;
+                        case HDRActivationMode.Focused:
+                            CurrentApplication = ProcessWatcher.CurrentFocusedApplicationItem;
+                            hdrTargetState = ProcessWatcher.OneProcessIsFocused;
+                            break;
+                        default:
+                            CurrentApplication = null;
+                            return;
+
+                    }
+
+                    if (hdrTargetState == HDRIsActive)
+                        return;
+                    if (hdrTargetState)
                     {
                         Logs.Add($"Activating HDR...", false);
 

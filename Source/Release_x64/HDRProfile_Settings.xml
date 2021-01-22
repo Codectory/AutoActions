@@ -5,5 +5,12 @@
   <StartMinimizedToTray>false</StartMinimizedToTray>
   <CloseToTray>false</CloseToTray>
   <HDRMode>None</HDRMode>
-  <ApplicationItems />
+  <ApplicationItems>
+    <ApplicationItem>
+      <DisplayName>asdf</DisplayName>
+      <ApplicationName>notepad</ApplicationName>
+      <ApplicationFilePath>C:\Windows\System32\notepad.exe</ApplicationFilePath>
+      <RestartProcess>false</RestartProcess>
+    </ApplicationItem>
+  </ApplicationItems>
 </HDRProfileSettings>

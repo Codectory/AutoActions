@@ -141,6 +141,9 @@
   <data name="ChooseApplication" xml:space="preserve">
     <value>Choose application</value>
   </data>
+  <data name="CurrentApplication" xml:space="preserve">
+    <value>Current application</value>
+  </data>
   <data name="DeactivateHDR" xml:space="preserve">
     <value>Deactivate HDR</value>
   </data>
@@ -181,6 +184,9 @@
   <data name="MinimizeToTray" xml:space="preserve">
     <value>Close to tray</value>
   </data>
+  <data name="NoApplication" xml:space="preserve">
+    <value>No application is running</value>
+  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -204,6 +210,9 @@
   </data>
   <data name="StartToTray" xml:space="preserve">
     <value>Start to tray</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
   </data>
   <data name="VolumeSyncDevices" xml:space="preserve">
     <value>Volume sync devices</value>

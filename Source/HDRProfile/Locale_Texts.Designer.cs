@@ -133,6 +133,15 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Current application ähnelt.
+        /// </summary>
+        public static string CurrentApplication {
+            get {
+                return ResourceManager.GetString("CurrentApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Deactivate HDR ähnelt.
         /// </summary>
         public static string DeactivateHDR {
@@ -251,6 +260,15 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No application is running ähnelt.
+        /// </summary>
+        public static string NoApplication {
+            get {
+                return ResourceManager.GetString("NoApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die OK ähnelt.
         /// </summary>
         public static string OK {
@@ -319,6 +337,15 @@ namespace HDRProfile {
         public static string StartToTray {
             get {
                 return ResourceManager.GetString("StartToTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Status ähnelt.
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         

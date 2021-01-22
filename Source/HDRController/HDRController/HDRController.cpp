@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <winerror.h>
 #include <wingdi.h>
-
+#include <stdexcept>
 
 
 #include <stdint.h>
@@ -50,13 +50,15 @@ static void  SetHDR(bool enabled)
 		pathsArray = static_cast<DISPLAYCONFIG_PATH_INFO*>(std::malloc(sizePathsArray));
 		modesArray = static_cast<DISPLAYCONFIG_MODE_INFO*>(std::malloc(sizeModesArray));
 
+
 		if (pathsArray != nullptr && modesArray != nullptr)
 		{
 			std::memset(pathsArray, 0, sizePathsArray);
 			std::memset(modesArray, 0, sizeModesArray);
 
-			if (ERROR_SUCCESS == QueryDisplayConfig(QDC_ONLY_ACTIVE_PATHS, &pathCount, pathsArray,
-				&modeCount, modesArray, 0))
+			LONG queryRet = QueryDisplayConfig(QDC_ONLY_ACTIVE_PATHS, &pathCount, pathsArray,
+				&modeCount, modesArray, 0);
+			if (ERROR_SUCCESS == queryRet)
 			{
 				DISPLAYCONFIG_DEVICE_INFO_HEADER* setPacket =
 					reinterpret_cast<DISPLAYCONFIG_DEVICE_INFO_HEADER*>(set);
@@ -65,34 +67,47 @@ static void  SetHDR(bool enabled)
 
 				for (int i = 0; i < modeCount; i++)
 				{
-					if (modesArray[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
+					try
 					{
-						setPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
-						setPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
-						setPacket->id = modesArray[i].id;
+						if (modesArray[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
+						{
+							setPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
+							setPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
+							setPacket->id = modesArray[i].id;
 
-						requestPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
-						requestPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
-						requestPacket->id = modesArray[i].id;
+							requestPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
+							requestPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
+							requestPacket->id = modesArray[i].id;
+
+							if (ERROR_SUCCESS == DisplayConfigGetDeviceInfo(requestPacket))
+							{
+								if (enabled == true)
+								{
+									set[20] = 1;
+									DisplayConfigSetDeviceInfo(setPacket);
+								}
+								else if (enabled == false)
+								{
+									set[20] = 0;
+									DisplayConfigSetDeviceInfo(setPacket);
+								}
+							}
+						}
+					}
+					catch (const std::exception&)
+					{
+
 					}
 				}
 
-				if (ERROR_SUCCESS == DisplayConfigGetDeviceInfo(requestPacket))
-				{
-					if (enabled == true)
-					{
-						set[20] = 1;
-						DisplayConfigSetDeviceInfo(setPacket);
-					}
-					else if (enabled == false)
-					{
-						set[20] = 0;
-						DisplayConfigSetDeviceInfo(setPacket);
-					}
-				}
 			}
+
 			std::free(pathsArray);
 			std::free(modesArray);
+		}
+		else
+		{
+			throw std::invalid_argument("No monitor found.");
 		}
 	}
 }
@@ -134,30 +149,36 @@ static bool HDRIsOn()
 				DISPLAYCONFIG_DEVICE_INFO_HEADER* requestPacket =
 					reinterpret_cast<DISPLAYCONFIG_DEVICE_INFO_HEADER*>(request);
 
+				//HDR is off
+				returnValue = false;
 				for (int i = 0; i < modeCount; i++)
 				{
-					if (modesArray[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
+					try
 					{
-						setPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
-						setPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
-						setPacket->id = modesArray[i].id;
+						if (modesArray[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
+						{
+							setPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
+							setPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
+							setPacket->id = modesArray[i].id;
 
-						requestPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
-						requestPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
-						requestPacket->id = modesArray[i].id;
+							requestPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
+							requestPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
+							requestPacket->id = modesArray[i].id;
+						}
+						if (ERROR_SUCCESS == DisplayConfigGetDeviceInfo(requestPacket))
+						{
+							if (request[20] == 0xD3) // HDR is ON
+							{
+								returnValue = true;
+								break;
+							}
+						}
 					}
-				}
+					catch (const std::exception&)
+					{
 
-				if (ERROR_SUCCESS == DisplayConfigGetDeviceInfo(requestPacket))
-				{
-					if (request[20] == 0xD1) // HDR is OFF
-					{
-						returnValue = false;
 					}
-					else if (request[20] == 0xD3) // HDR is ON
-					{
-						returnValue = true;
-					}
+
 				}
 			}
 			std::free(pathsArray);

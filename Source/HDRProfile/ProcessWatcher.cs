@@ -20,7 +20,8 @@ namespace HDRProfile
         readonly object _processesLock = new object();
         readonly object _accessLock = new object();
 
-
+        public ApplicationItem CurrentRunningApplicationItem { get; private set; }
+        public ApplicationItem CurrentFocusedApplicationItem { get; private set; }
 
         Dictionary<ApplicationItem, bool> _applications = new Dictionary<ApplicationItem, bool>();
         public IReadOnlyDictionary<ApplicationItem, bool> Applications => new ReadOnlyDictionary<ApplicationItem, bool>(_applications);
@@ -141,7 +142,6 @@ namespace HDRProfile
             {
                 Process[] processes = Process.GetProcesses();
 
-
                 List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
                 foreach (ApplicationItem application in applications)
                 {
@@ -151,10 +151,12 @@ namespace HDRProfile
                         if (process.ToUpperInvariant() == application.ApplicationName.ToUpperInvariant())
                         {
                             _applications[application] = true;
-                            break;
+                            CurrentRunningApplicationItem = application;
+                            return;
                         }
                     }
                 }
+                CurrentRunningApplicationItem = null;
             }
         }
 
@@ -187,21 +189,38 @@ namespace HDRProfile
         private bool GetIsOneProcessRunning()
         {
             if (_applications.Any(a => a.Value == true))
+            {
+                var application = _applications.First(a => a.Value == true);
+                CurrentRunningApplicationItem = application.Key;
                 return true;
+
+            }
             else
+            {
+                CurrentRunningApplicationItem = null;
                 return false;
+            }
         }
 
         private bool GetIsOneProcessFocused()
         {
             string currentProcessName = GetForegroundProcessName().ToUpperInvariant();
-            bool result = false;
             lock (_processesLock)
             {
                 if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName)))
-                    result = true;
+                {
+                    var application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName));
+                    CurrentFocusedApplicationItem = application.Key;
+                    return true;
+
+                }
+                else
+                {
+                    CurrentFocusedApplicationItem = null;
+                    return false;
+                }
+
             }
-            return result;
         }
 
         // The GetForegroundWindow function returns a handle to the foreground window

@@ -141,6 +141,9 @@
   <data name="ChooseApplication" xml:space="preserve">
     <value>Anwendungen wählen</value>
   </data>
+  <data name="CurrentApplication" xml:space="preserve">
+    <value>Aktuelle Anwendung</value>
+  </data>
   <data name="DeactivateHDR" xml:space="preserve">
     <value>HDR deaktivieren</value>
   </data>
@@ -181,6 +184,9 @@
   <data name="MinimizeToTray" xml:space="preserve">
     <value>Zu Symbolleiste minimieren, beim Schließen</value>
   </data>
+  <data name="NoApplication" xml:space="preserve">
+    <value>keine Anwedung</value>
+  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -204,6 +210,9 @@
   </data>
   <data name="StartToTray" xml:space="preserve">
     <value>In Symbolleiste minimiert starten</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
   </data>
   <data name="VolumeSyncDevices" xml:space="preserve">
     <value>Lautstärkesynchronisierung</value>
