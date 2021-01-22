@@ -20,6 +20,9 @@ For the moment, the tool is only looking for the process name and not the locati
 **Start in HDR-Mode:** You can use HDRProfile as a launcher by selecting the application and clicking Start in HDR-Mode. This will enable HDR before starting the application, which is necessary for some applications, e.g. Cyberpunk 2077.
 
 Screenshots:
+
 ![ScreenShot](https://raw.github.com/Codectory/HDR-Profile/main/Screenshots/Status_1-5-0.png)
+
 ![ScreenShot](https://raw.github.com/Codectory/HDR-Profile/main/Screenshots/Applications_1-5-0.png)
+
 ![ScreenShot](https://raw.github.com/Codectory/HDR-Profile/main/Screenshots/Settings_1-5-0.png)
