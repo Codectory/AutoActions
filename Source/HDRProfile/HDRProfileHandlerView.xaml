@@ -12,9 +12,6 @@
         Height="362"
         Width="550" Loaded="MainWindow_Loaded">
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadingCommand}"/>
-        </i:EventTrigger>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>
         </i:EventTrigger>
@@ -104,7 +101,11 @@
                             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static local:Locale_Texts.CurrentApplication}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="15" VerticalAlignment="Center"  />
 
                             <Border Grid.Row="2" Grid.Column="3" BorderThickness="1" BorderBrush="LightGray" Style="{StaticResource RounedBorder}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Padding="0">
-                                <Image Source="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"  Stretch="Fill" HorizontalAlignment="Left" Width="40" Height="40"  VerticalAlignment="Top"/>
+                                <Rectangle RadiusX="3" RadiusY="3" Width="40" Height="40" Margin="2  ">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Stretch="Fill" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
                             </Border>
                             <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static local:Locale_Texts.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
 

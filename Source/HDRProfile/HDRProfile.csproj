@@ -61,7 +61,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>..\Debug_x64\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -156,6 +156,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationState.cs" />
+    <Compile Include="Locale_Texts.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Locale_Texts.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Locale_Texts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Locale_Texts.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tools.cs" />
     <Compile Include="TrayMenuHelper.cs" />
     <Page Include="HDRProfileSettingsView.xaml">
@@ -188,16 +198,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Locale_Texts.de.Designer.cs">
-      <DependentUpon>Locale_Texts.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Locale_Texts.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Locale_Texts.resx</DependentUpon>
-    </Compile>
     <Compile Include="Locale_Enums.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -222,19 +222,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Locale_Enums.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Locale_Enums.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Locale_Texts.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Locale_Texts.de.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Locale_Texts.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Locale_Texts.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locale_Enums.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Locale_Enums.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

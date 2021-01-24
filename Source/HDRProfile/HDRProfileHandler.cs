@@ -33,7 +33,7 @@ namespace HDRProfile
         private static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", Assembly.GetExecutingAssembly().GetName().Version.ToString(), true);
         private HDRProfileSettings settings;
 
-        Dictionary<ApplicationItem, bool> _lastApplicationStates = new Dictionary<ApplicationItem, bool>();
+        Dictionary<ApplicationItem, ApplicationState> _lastApplicationStates = new Dictionary<ApplicationItem, ApplicationState>();
 
         private string SettingsPath => $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings.xml";
 
@@ -77,7 +77,7 @@ namespace HDRProfile
 
         public HDRProfileHandler()
         {
-             ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Initialize();
         }
 
@@ -108,6 +108,7 @@ namespace HDRProfile
                 ShowView = !Settings.StartMinimizedToTray;
                 Initialized = true;
                 Logs.Add("Initialized", false);
+                Start();
 
             }
         }
@@ -176,7 +177,7 @@ namespace HDRProfile
             Logs.LoggingEnabled = Settings.Logging;
             foreach (var application in Settings.ApplicationItems)
             {
-                ProcessWatcher.AddProcess(application);
+                ProcessWatcher.AddProcess(application, false);
                 application.PropertyChanged += ApplicationItem_PropertyChanged;
             }
             Logs.Add("Settings loaded", false);
@@ -189,7 +190,6 @@ namespace HDRProfile
             DeactivateHDRCommand = new RelayCommand(HDRController.DeactivateHDR);
             AddApplicationCommand = new RelayCommand(AddAplication);
             RemoveApplicationCommand = new RelayCommand<ApplicationItem>(RemoveApplication);
-            LoadingCommand = new RelayCommand(Starting);
             ClosingCommand = new RelayCommand(Closing);
             ShutdownCommand = new RelayCommand(Shutdown);
             StartApplicationCommand = new RelayCommand<ApplicationItem>(StartApplication);
@@ -248,11 +248,6 @@ namespace HDRProfile
             }
         }
 
-
-        private void Starting()
-        {
-            Start();
-        }
         private void Closing()
         {
             if (Settings.CloseToTray)
@@ -423,7 +418,7 @@ namespace HDRProfile
                         Logs.Add($"Activating HDR...", false);
 
                         HDRController.ActivateHDR();
-                        CheckIfRestartIsNecessary((IDictionary<ApplicationItem, bool>)ProcessWatcher.Applications);
+                        CheckIfRestartIsNecessary((IDictionary<ApplicationItem, ApplicationState>)ProcessWatcher.Applications);
 
                     }
                     else if (HDRController.HDRIsActive && Settings.HDRMode != HDRActivationMode.None)
@@ -444,17 +439,17 @@ namespace HDRProfile
             }
         }
 
-        private void CheckIfRestartIsNecessary(IDictionary<ApplicationItem, bool> applicationStates)
+        private void CheckIfRestartIsNecessary(IDictionary<ApplicationItem, ApplicationState> applicationStates)
         {
-            Dictionary<ApplicationItem, bool> newLastStates = new Dictionary<ApplicationItem, bool>();
+            Dictionary<ApplicationItem, ApplicationState> newLastStates = new Dictionary<ApplicationItem, ApplicationState>();
             foreach (var applicationState in applicationStates)
             {
                 if (!applicationState.Key.RestartProcess)
                     continue;
                 newLastStates.Add(applicationState.Key, applicationState.Value);
-                if (!_lastApplicationStates.ContainsKey(applicationState.Key) && applicationState.Value)
+                if (!_lastApplicationStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None)
                     RestartProcess(applicationState.Key);
-                else if (_lastApplicationStates.ContainsKey(applicationState.Key) && applicationState.Value && !_lastApplicationStates[applicationState.Key])
+                else if (_lastApplicationStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None && _lastApplicationStates[applicationState.Key] == ApplicationState.None)
                     RestartProcess(applicationState.Key);
             }
             _lastApplicationStates.Clear();

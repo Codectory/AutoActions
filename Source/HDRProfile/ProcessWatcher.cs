@@ -17,7 +17,7 @@ namespace HDRProfile
 
         Thread _watchProcessThread = null;
 
-        readonly object _processesLock = new object();
+        readonly object _applicationsLock = new object();
         readonly object _accessLock = new object();
 
         public ApplicationItem CurrentRunningApplicationItem { get; private set; }
@@ -57,7 +57,7 @@ namespace HDRProfile
 
         private void StartWatch_EventArrived(object sender, EventArrivedEventArgs e)
         {
-            lock (_processesLock)
+            lock (_applicationsLock)
             {
                 string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
                 if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
@@ -73,7 +73,7 @@ namespace HDRProfile
         private void StopWatch_EventArrived(object sender, EventArrivedEventArgs e)
         {
 
-            lock (_processesLock)
+            lock (_applicationsLock)
             {
                 string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
                 if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
@@ -85,22 +85,23 @@ namespace HDRProfile
             }
         }
 
-        public void AddProcess(ApplicationItem application)
+        public void AddProcess(ApplicationItem application, bool updateRunningProcesses = true)
         {
-            lock (_processesLock)
+            lock (_applicationsLock)
             {
                 if (!_applications.ContainsKey(application))
                 {
                     _applications.Add(application, ApplicationState.None);
                     CallNewLog($"Application added to process watcher: {application}");
                 }
-                UpdateRunningProcessesOnce();
+                if (updateRunningProcesses)
+                    UpdateRunningProcessesOnce();
             }
         }
 
         public void RemoveProcess(ApplicationItem application)
         {
-            lock (_processesLock)
+            lock (_applicationsLock)
             {
                 if (_applications.ContainsKey(application))
                 {
@@ -125,7 +126,7 @@ namespace HDRProfile
                 _watchProcessThread = new Thread(WatchProcessLoop);
                 _watchProcessThread.IsBackground = true;
                 _watchProcessThread.Start();
-                CallNewLog($"rocess watcher started");
+                CallNewLog($"Process watcher started");
             }
         }
 
@@ -151,7 +152,7 @@ namespace HDRProfile
 
         private void UpdateRunningProcessesOnce()
         {
-            lock (_processesLock)
+            lock (_applicationsLock)
             {
                 CallNewLog($"Looking for running applications on start...");
 
@@ -168,8 +169,6 @@ namespace HDRProfile
                             _applications[application] = ApplicationState.Running;
                             CurrentRunningApplicationItem = application;
                             CallNewLog($"Application is running: {application}");
-
-                            return;
                         }
                     }
                 }
@@ -184,7 +183,7 @@ namespace HDRProfile
         {
             while (!_stopRequested)
             {
-                lock (_processesLock)
+                lock (_applicationsLock)
                 {
                     bool oldIsOneRunning = OneProcessIsRunning;
                     bool newIsOneRunning = GetIsOneProcessRunning();
@@ -230,7 +229,7 @@ namespace HDRProfile
         private bool GetIsOneProcessFocused()
         {
             string currentProcessName = GetForegroundProcessName().ToUpperInvariant();
-            lock (_processesLock)
+            lock (_applicationsLock)
             {
                 if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName)))
                 {
@@ -242,7 +241,8 @@ namespace HDRProfile
                 }
                 else
                 {
-                    foreach (var application in _applications.Select(a => a.Key))
+                    var applications = _applications.Select(a => a.Key).ToList();
+                    foreach (var application in applications)
                         if (_applications[application] != ApplicationState.None)
                             _applications[application] = ApplicationState.Running;
                     CurrentFocusedApplicationItem = null;
