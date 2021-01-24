@@ -28,23 +28,28 @@ namespace HDRProfile
         {
             using (TaskService ts = new TaskService())
             {
-                // Create a new task definition and assign properties
+                string taskName = "HDR-Profile";
+
                 TaskDefinition td = ts.NewTask();
-                td.RegistrationInfo.Description = "Starting HDR-Profile";
+                td.RegistrationInfo.Description = "Starting HDR-Profile on logon.";
                 td.Principal.RunLevel = TaskRunLevel.Highest;
 
 
                 // On logon
                 td.Triggers.Add(new Microsoft.Win32.TaskScheduler.LogonTrigger { UserId = Environment.UserName});
-                // Create an action that will launch Notepad whenever the trigger fires
                 td.Actions.Add(new ExecAction(filePath, null));
 
                 if (autostart)
-                    // Register the task in the root folder
-                    ts.RootFolder.RegisterTaskDefinition(@"HDR-Profile", td);
+                {
+                    if (ts.RootFolder.Tasks.Any(t => t.Name == taskName))
+                        ts.RootFolder.DeleteTask(taskName);
+                    ts.RootFolder.RegisterTaskDefinition(taskName, td);
+                }
                 else
-                    // Remove the task we just created
-                    ts.RootFolder.DeleteTask("HDR-Profile");
+                {
+                    if (ts.RootFolder.Tasks.Any(t => t.Name == taskName))
+                        ts.RootFolder.DeleteTask(taskName);
+                }
             }
         }
 

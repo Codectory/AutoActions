@@ -155,6 +155,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApplicationState.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="TrayMenuHelper.cs" />
     <Page Include="HDRProfileSettingsView.xaml">

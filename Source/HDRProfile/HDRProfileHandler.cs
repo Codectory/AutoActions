@@ -444,7 +444,6 @@ namespace HDRProfile
             }
         }
 
-
         private void CheckIfRestartIsNecessary(IDictionary<ApplicationItem, bool> applicationStates)
         {
             Dictionary<ApplicationItem, bool> newLastStates = new Dictionary<ApplicationItem, bool>();

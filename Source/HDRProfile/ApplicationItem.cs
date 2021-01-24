@@ -19,7 +19,6 @@ namespace HDRProfile
         private System.Drawing.Bitmap icon = null;
         private bool _restartProcess = false;
 
-
         public string DisplayName { get => displayName; set { displayName = value; OnPropertyChanged(); } }
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
         public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = System.Drawing.Icon.ExtractAssociatedIcon(value).ToBitmap(); } catch { } OnPropertyChanged(); } }
@@ -65,6 +64,11 @@ namespace HDRProfile
         public static bool operator !=(ApplicationItem left, ApplicationItem right)
         {
             return !(left == right);
+        }
+
+        public override string ToString()
+        {
+            return $"{DisplayName} [{ApplicationName} |{ApplicationFilePath}]";
         }
     }
 }

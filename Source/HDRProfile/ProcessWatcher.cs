@@ -23,13 +23,14 @@ namespace HDRProfile
         public ApplicationItem CurrentRunningApplicationItem { get; private set; }
         public ApplicationItem CurrentFocusedApplicationItem { get; private set; }
 
-        Dictionary<ApplicationItem, bool> _applications = new Dictionary<ApplicationItem, bool>();
-        public IReadOnlyDictionary<ApplicationItem, bool> Applications => new ReadOnlyDictionary<ApplicationItem, bool>(_applications);
+        Dictionary<ApplicationItem, ApplicationState> _applications = new Dictionary<ApplicationItem, ApplicationState>();
+        public IReadOnlyDictionary<ApplicationItem, ApplicationState> Applications => new ReadOnlyDictionary<ApplicationItem, ApplicationState>(_applications);
 
         bool _stopRequested = false;
         bool _isRunning = false;
         public bool IsRunning { get => _isRunning; private set => _isRunning = value; }
 
+        public event EventHandler<string> NewLog;
         public event EventHandler OneProcessIsRunningChanged;
         public event EventHandler OneProcessIsFocusedChanged;
 
@@ -47,6 +48,11 @@ namespace HDRProfile
 
         }
 
+
+        private void CallNewLog(string logMessage)
+        {
+            NewLog?.Invoke(this, logMessage);
+        }
   
 
         private void StartWatch_EventArrived(object sender, EventArrivedEventArgs e)
@@ -57,8 +63,9 @@ namespace HDRProfile
                 if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
                 {
                     ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
-                    bool oldValue = _applications[application];
-                    _applications[application] = true;
+                    if (_applications[application] == ApplicationState.None)
+                        _applications[application] = ApplicationState.Running;
+                    CallNewLog($"Application startet: {application}");
                 }
             }
         }
@@ -72,19 +79,20 @@ namespace HDRProfile
                 if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
                 {
                     ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
-                    bool oldValue = _applications[application];
-                    _applications[application] = false;
+                    _applications[application] = ApplicationState.None;
+                    CallNewLog($"Application stopped:  {application}");
                 }
             }
         }
 
-        public void AddProcess(ApplicationItem applicationItem)
+        public void AddProcess(ApplicationItem application)
         {
             lock (_processesLock)
             {
-                if (!_applications.ContainsKey(applicationItem))
+                if (!_applications.ContainsKey(application))
                 {
-                    _applications.Add(applicationItem, false);
+                    _applications.Add(application, ApplicationState.None);
+                    CallNewLog($"Application added to process watcher: {application}");
                 }
                 UpdateRunningProcessesOnce();
             }
@@ -97,6 +105,7 @@ namespace HDRProfile
                 if (_applications.ContainsKey(application))
                 {
                     _applications.Remove(application);
+                    CallNewLog($"Application removed process watcher: {application}");
                 }
             }
         }
@@ -108,13 +117,15 @@ namespace HDRProfile
                 return;
             lock (_accessLock)
             {
-                UpdateRunningProcessesOnce();
+                CallNewLog($"Starting process watcher...");
                 startWatch.Start();
                 stopWatch.Start();
+                UpdateRunningProcessesOnce();
                 _isRunning = true;
                 _watchProcessThread = new Thread(WatchProcessLoop);
                 _watchProcessThread.IsBackground = true;
                 _watchProcessThread.Start();
+                CallNewLog($"rocess watcher started");
             }
         }
 
@@ -124,6 +135,7 @@ namespace HDRProfile
                 return;
             lock (_accessLock)
             {
+                CallNewLog($"Stopping process watcher...");
                 startWatch.Stop();
                 stopWatch.Stop();
 
@@ -132,6 +144,7 @@ namespace HDRProfile
                 _stopRequested = false;
                 _isRunning = false;
                 _watchProcessThread = null;
+                CallNewLog($"Process watcher stopped.");
             }
         }
 
@@ -140,22 +153,28 @@ namespace HDRProfile
         {
             lock (_processesLock)
             {
+                CallNewLog($"Looking for running applications on start...");
+
                 Process[] processes = Process.GetProcesses();
 
                 List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
                 foreach (ApplicationItem application in applications)
                 {
-                    _applications[application] = false;
+                    _applications[application] = ApplicationState.None;
                     foreach (var process in processes.Select(p => p.ProcessName))
                     {
                         if (process.ToUpperInvariant() == application.ApplicationName.ToUpperInvariant())
                         {
-                            _applications[application] = true;
+                            _applications[application] = ApplicationState.Running;
                             CurrentRunningApplicationItem = application;
+                            CallNewLog($"Application is running: {application}");
+
                             return;
                         }
                     }
                 }
+                CallNewLog($"No application is running.");
+
                 CurrentRunningApplicationItem = null;
             }
         }
@@ -171,13 +190,19 @@ namespace HDRProfile
                     bool newIsOneRunning = GetIsOneProcessRunning();
                     OneProcessIsRunning = newIsOneRunning;
                     if (oldIsOneRunning != newIsOneRunning)
+                    {
+                        CallNewLog($"Running processes changed: {CurrentRunningApplicationItem}");
                         OneProcessIsRunningChanged?.Invoke(this, EventArgs.Empty);
+                    }
                     
                     bool oldIsOneFocused = OneProcessIsFocused;
                     bool newIsOneFocused = GetIsOneProcessFocused();
                     OneProcessIsFocused = newIsOneFocused;
                     if (oldIsOneFocused != newIsOneFocused)
+                    {
+                        CallNewLog($"Focused process changed: {CurrentFocusedApplicationItem}");
                         OneProcessIsFocusedChanged?.Invoke(this, EventArgs.Empty);
+                    }
                 }
                 Thread.Sleep(150);
             }
@@ -188,9 +213,9 @@ namespace HDRProfile
 
         private bool GetIsOneProcessRunning()
         {
-            if (_applications.Any(a => a.Value == true))
+            if (_applications.Any(a => a.Value != ApplicationState.None))
             {
-                var application = _applications.First(a => a.Value == true);
+                var application = _applications.First(a => a.Value != ApplicationState.None);
                 CurrentRunningApplicationItem = application.Key;
                 return true;
 
@@ -209,13 +234,17 @@ namespace HDRProfile
             {
                 if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName)))
                 {
-                    var application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName));
-                    CurrentFocusedApplicationItem = application.Key;
+                    var application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName)).Key;
+                    _applications[application] = ApplicationState.Focused;
+                    CurrentFocusedApplicationItem = application;
                     return true;
 
                 }
                 else
                 {
+                    foreach (var application in _applications.Select(a => a.Key))
+                        if (_applications[application] != ApplicationState.None)
+                            _applications[application] = ApplicationState.Running;
                     CurrentFocusedApplicationItem = null;
                     return false;
                 }

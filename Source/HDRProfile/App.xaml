@@ -30,8 +30,9 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
 
-
-
+        <Style x:Key="RounedBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="{StaticResource CornerRadius}"/>
+        </Style>
 
         <Style x:Key="DefaultButton" TargetType="Button" >
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
@@ -40,8 +41,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                          <Border  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="{StaticResource CornerRadius}">
-                            <TextBlock  Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          <Border  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="{StaticResource CornerRadius}">
+                            <TextBlock  FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                           </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -102,36 +103,43 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}"/>
-        
-        <Style x:Key="DefaultTabItem" TargetType="TabItem">
+
+
+
+        <Style x:Key="DefaultTabHeader" TargetType="TabItem">
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
-                        <Border  Height="Auto" Width="Auto" BorderBrush="{StaticResource AccentBrush}" Background="{TemplateBinding Background}" BorderThickness="1 1 1 0" CornerRadius="3 3 0 0">
-                            <TextBlock  Padding="5,5,5,5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="HeaderBorder"  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}"  CornerRadius="3 3 0 0">
+                            <TextBlock x:Name="HeaderContent" FontSize="{TemplateBinding  FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" >
+                                <Setter TargetName="HeaderContent"  Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+                                <Setter TargetName="HeaderBorder" Property="Background" Value="{StaticResource AccentBrush}"/>
+                                <Setter TargetName="HeaderContent" Property="FontSize" Value="18"/>
+
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" >
+                                <Setter  TargetName="HeaderContent" Property="Foreground" Value="Black"/>
+
+                            </DataTrigger>
+
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" >
-                    <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
-                    <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
-                    <Setter Property="BorderThickness" Value="0.8 1 1 1"/>
 
-                </DataTrigger>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" >
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-
-                </DataTrigger>
-            </Style.Triggers>
 
         </Style>
-        <Style TargetType="TabItem" BasedOn="{StaticResource DefaultTabItem}"/>
+
+        <Style TargetType="TabItem" BasedOn="{StaticResource DefaultTabHeader}"/>
+
+        
 
 
         <local:EnumLocaleConverter x:Key="EnumLocaleConverter"/>
