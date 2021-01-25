@@ -24,7 +24,14 @@ namespace HDRProfile
         public ApplicationItem CurrentFocusedApplicationItem { get; private set; }
 
         Dictionary<ApplicationItem, ApplicationState> _applications = new Dictionary<ApplicationItem, ApplicationState>();
-        public IReadOnlyDictionary<ApplicationItem, ApplicationState> Applications => new ReadOnlyDictionary<ApplicationItem, ApplicationState>(_applications);
+        public IReadOnlyDictionary<ApplicationItem, ApplicationState> Applications
+        {
+            get
+            {
+                lock (_applicationsLock)
+                    return new ReadOnlyDictionary<ApplicationItem, ApplicationState>(_applications);
+            }
+        }
 
         bool _stopRequested = false;
         bool _isRunning = false;
@@ -34,17 +41,17 @@ namespace HDRProfile
         public event EventHandler OneProcessIsRunningChanged;
         public event EventHandler OneProcessIsFocusedChanged;
 
-        ManagementEventWatcher startWatch;
-        ManagementEventWatcher stopWatch;
+        //ManagementEventWatcher startWatch;
+        //ManagementEventWatcher stopWatch;
 
         public ProcessWatcher()
         {
-            startWatch = new ManagementEventWatcher(
-      new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace"));
-            stopWatch = new ManagementEventWatcher(
-      new WqlEventQuery("SELECT * FROM Win32_ProcessStopTrace"));
-            startWatch.EventArrived += StartWatch_EventArrived;
-            stopWatch.EventArrived += StopWatch_EventArrived;
+      //      startWatch = new ManagementEventWatcher(
+      //new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace"));
+      //      stopWatch = new ManagementEventWatcher(
+      //new WqlEventQuery("SELECT * FROM Win32_ProcessStopTrace"));
+      //      startWatch.EventArrived += StartWatch_EventArrived;
+      //      stopWatch.EventArrived += StopWatch_EventArrived;
 
         }
 
@@ -55,37 +62,37 @@ namespace HDRProfile
         }
   
 
-        private void StartWatch_EventArrived(object sender, EventArrivedEventArgs e)
-        {
-            lock (_applicationsLock)
-            {
-                string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
-                if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
-                {
-                    ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
-                    if (_applications[application] == ApplicationState.None)
-                        _applications[application] = ApplicationState.Running;
-                    CallNewLog($"Application startet: {application}");
-                }
-            }
-        }
+        //private void StartWatch_EventArrived(object sender, EventArrivedEventArgs e)
+        //{
+        //    lock (_applicationsLock)
+        //    {
+        //        string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
+        //        if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
+        //        {
+        //            ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
+        //            if (_applications[application] == ApplicationState.None)
+        //                _applications[application] = ApplicationState.Running;
+        //            CallNewLog($"Application startet: {application}");
+        //        }
+        //    }
+        //}
 
-        private void StopWatch_EventArrived(object sender, EventArrivedEventArgs e)
-        {
+        //private void StopWatch_EventArrived(object sender, EventArrivedEventArgs e)
+        //{
 
-            lock (_applicationsLock)
-            {
-                string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
-                if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
-                {
-                    ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
-                    _applications[application] = ApplicationState.None;
-                    CallNewLog($"Application stopped:  {application}");
-                }
-            }
-        }
+        //    lock (_applicationsLock)
+        //    {
+        //        string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
+        //        if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
+        //        {
+        //            ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
+        //            _applications[application] = ApplicationState.None;
+        //            CallNewLog($"Application stopped:  {application}");
+        //        }
+        //    }
+        //}
 
-        public void AddProcess(ApplicationItem application, bool updateRunningProcesses = true)
+        public void AddProcess(ApplicationItem application)
         {
             lock (_applicationsLock)
             {
@@ -94,8 +101,6 @@ namespace HDRProfile
                     _applications.Add(application, ApplicationState.None);
                     CallNewLog($"Application added to process watcher: {application}");
                 }
-                if (updateRunningProcesses)
-                    UpdateRunningProcessesOnce();
             }
         }
 
@@ -119,9 +124,8 @@ namespace HDRProfile
             lock (_accessLock)
             {
                 CallNewLog($"Starting process watcher...");
-                startWatch.Start();
-                stopWatch.Start();
-                UpdateRunningProcessesOnce();
+                //startWatch.Start();
+                //stopWatch.Start();
                 _isRunning = true;
                 _watchProcessThread = new Thread(WatchProcessLoop);
                 _watchProcessThread.IsBackground = true;
@@ -137,9 +141,8 @@ namespace HDRProfile
             lock (_accessLock)
             {
                 CallNewLog($"Stopping process watcher...");
-                startWatch.Stop();
-                stopWatch.Stop();
-
+                //startWatch.Stop();
+                //stopWatch.Stop();
                 _stopRequested = true;
                 _watchProcessThread.Join();
                 _stopRequested = false;
@@ -148,36 +151,6 @@ namespace HDRProfile
                 CallNewLog($"Process watcher stopped.");
             }
         }
-
-
-        private void UpdateRunningProcessesOnce()
-        {
-            lock (_applicationsLock)
-            {
-                CallNewLog($"Looking for running applications on start...");
-
-                Process[] processes = Process.GetProcesses();
-
-                List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
-                foreach (ApplicationItem application in applications)
-                {
-                    _applications[application] = ApplicationState.None;
-                    foreach (var process in processes.Select(p => p.ProcessName))
-                    {
-                        if (process.ToUpperInvariant() == application.ApplicationName.ToUpperInvariant())
-                        {
-                            _applications[application] = ApplicationState.Running;
-                            CurrentRunningApplicationItem = application;
-                            CallNewLog($"Application is running: {application}");
-                        }
-                    }
-                }
-                CallNewLog($"No application is running.");
-
-                CurrentRunningApplicationItem = null;
-            }
-        }
-
 
         private void WatchProcessLoop()
         {
@@ -207,11 +180,33 @@ namespace HDRProfile
             }
         }
 
-    
+
 
 
         private bool GetIsOneProcessRunning()
         {
+
+            lock (_applicationsLock)
+            {
+
+                Process[] processes = Process.GetProcesses();
+
+                List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
+                foreach (ApplicationItem application in applications)
+                {
+                    _applications[application] = ApplicationState.None;
+                    foreach (var process in processes.Select(p => p.ProcessName))
+                    {
+                        if (process.ToUpperInvariant() == application.ApplicationName.ToUpperInvariant())
+                        {
+                            _applications[application] = ApplicationState.Running;
+                            CurrentRunningApplicationItem = application;
+                        }
+                    }
+                }
+                CurrentRunningApplicationItem = null;
+            }
+
             if (_applications.Any(a => a.Value != ApplicationState.None))
             {
                 var application = _applications.First(a => a.Value != ApplicationState.None);

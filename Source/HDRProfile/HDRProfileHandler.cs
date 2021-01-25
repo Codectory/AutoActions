@@ -100,6 +100,9 @@ namespace HDRProfile
                     return;
                 Logs.Add("Initializing...", false);
                 ProcessWatcher = new ProcessWatcher();
+                ProcessWatcher.OneProcessIsRunningChanged += ProcessWatcher_RunningOrFocusedChanged;
+                ProcessWatcher.OneProcessIsFocusedChanged += ProcessWatcher_RunningOrFocusedChanged;
+
                 HDRController.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
                 HDRIsActive = HDRController.HDRIsActive;
                 LoadSettings();
@@ -109,6 +112,9 @@ namespace HDRProfile
                 Initialized = true;
                 Logs.Add("Initialized", false);
                 Start();
+                Logs.Add($"Starting process watcher...", false);
+                ProcessWatcher.Start();
+                Logs.Add($"Process watcher started", false);
 
             }
         }
@@ -177,7 +183,7 @@ namespace HDRProfile
             Logs.LoggingEnabled = Settings.Logging;
             foreach (var application in Settings.ApplicationItems)
             {
-                ProcessWatcher.AddProcess(application, false);
+                ProcessWatcher.AddProcess(application);
                 application.PropertyChanged += ApplicationItem_PropertyChanged;
             }
             Logs.Add("Settings loaded", false);
@@ -203,7 +209,7 @@ namespace HDRProfile
             {
                 try
                 {
-                    Tools.SetAutoStartInScheduler(Locale_Texts.HDRProfile, System.Reflection.Assembly.GetEntryAssembly().Location, settings.AutoStart);
+                    Tools.SetAutoStart(Locale_Texts.HDRProfile, System.Reflection.Assembly.GetEntryAssembly().Location, settings.AutoStart);
 
                 }
                 catch (Exception ex)
@@ -264,6 +270,10 @@ namespace HDRProfile
 
         private void Shutdown()
         {
+            Logs.Add($"Stopping process watcher...", false);
+            ProcessWatcher.OneProcessIsRunningChanged -= ProcessWatcher_RunningOrFocusedChanged;
+            ProcessWatcher.OneProcessIsFocusedChanged -= ProcessWatcher_RunningOrFocusedChanged;
+            ProcessWatcher.Stop();
             Stop();
             TrayMenuHelper.SwitchTrayIcon(false);
             Application.Current.Shutdown();
@@ -278,13 +288,8 @@ namespace HDRProfile
                 Logs.Add($"Starting HDR Monitoring...", false);
                 HDRController.StartMonitoring();
                 Logs.Add($"HDR Monitoring started", false);
-                Logs.Add($"Starting process watcher...", false);
-                ProcessWatcher.OneProcessIsRunningChanged += ProcessWatcher_RunningOrFocusedChanged;
-                ProcessWatcher.OneProcessIsFocusedChanged += ProcessWatcher_RunningOrFocusedChanged;
                 Started = true;
-                ProcessWatcher.Start();
                 UpdateHDRBasedOnCurrentApplication();
-                Logs.Add($"Process watcher started", false);
 
             }
         }
@@ -298,10 +303,6 @@ namespace HDRProfile
                 Logs.Add($"Stopping HDR Monitoring...", false);
                 HDRController.StopMonitoring();
                 Logs.Add($"HDR Monitoring stopped", false);
-                Logs.Add($"Stopping process watcher...", false);
-                ProcessWatcher.OneProcessIsRunningChanged -= ProcessWatcher_RunningOrFocusedChanged;
-                ProcessWatcher.OneProcessIsFocusedChanged -= ProcessWatcher_RunningOrFocusedChanged;
-                ProcessWatcher.Stop();
                 Started = false;
                 Logs.Add($"Process watcher stopped", false);
 
@@ -384,6 +385,7 @@ namespace HDRProfile
 
         private void ProcessWatcher_RunningOrFocusedChanged(object sender, EventArgs e)
         {
+            CurrentApplication = ProcessWatcher.CurrentRunningApplicationItem;
             UpdateHDRBasedOnCurrentApplication();
 
         }
@@ -398,15 +400,12 @@ namespace HDRProfile
                     switch (Settings.HDRMode)
                     {
                         case HDRActivationMode.Running:
-                            CurrentApplication = ProcessWatcher.CurrentRunningApplicationItem;
                             hdrTargetState = ProcessWatcher.OneProcessIsRunning;
                             break;
                         case HDRActivationMode.Focused:
-                            CurrentApplication = ProcessWatcher.CurrentFocusedApplicationItem;
                             hdrTargetState = ProcessWatcher.OneProcessIsFocused;
                             break;
                         default:
-                            CurrentApplication = null;
                             return;
 
                     }
@@ -459,7 +458,15 @@ namespace HDRProfile
         private void RestartProcess(ApplicationItem application)
         {
             Logs.Add($"Restarting application {application.ApplicationName}", false);
+            foreach (Process process in Process.GetProcessesByName(application.ApplicationName).ToList())
+                if (process.StartTime < Process.GetCurrentProcess().StartTime)
+                {
+                    Logs.Add($"Won't restart application {application.ApplicationName} as it was running before {Locale_Texts.HDRProfile}.", false);
+
+                    return;
+                }
             Process.GetProcessesByName(application.ApplicationName).ToList().ForEach(p => p.Kill());
+            
             Process proc = new Process();
             StartApplication(application);
         }

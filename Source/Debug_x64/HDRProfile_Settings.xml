@@ -2,15 +2,15 @@
 <HDRProfileSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <AutoStart>false</AutoStart>
   <Logging>true</Logging>
-  <StartMinimizedToTray>true</StartMinimizedToTray>
+  <StartMinimizedToTray>false</StartMinimizedToTray>
   <CloseToTray>true</CloseToTray>
-  <HDRMode>Focused</HDRMode>
+  <HDRMode>Running</HDRMode>
   <ApplicationItems>
     <ApplicationItem>
       <DisplayName>notepad</DisplayName>
       <ApplicationName>notepad</ApplicationName>
       <ApplicationFilePath>C:\Windows\System32\notepad.exe</ApplicationFilePath>
-      <RestartProcess>false</RestartProcess>
+      <RestartProcess>true</RestartProcess>
     </ApplicationItem>
     <ApplicationItem>
       <DisplayName>ACOdyssey</DisplayName>
