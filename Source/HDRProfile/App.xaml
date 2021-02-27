@@ -113,7 +113,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
-                        <Border x:Name="HeaderBorder"  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}"  CornerRadius="3 3 0 0">
+                        <Border x:Name="HeaderBorder" Background="Transparent" Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}"  CornerRadius="3 3 0 0">
                             <TextBlock x:Name="HeaderContent" FontSize="{TemplateBinding  FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -126,7 +126,6 @@
 
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" >
                                 <Setter  TargetName="HeaderContent" Property="Foreground" Value="Black"/>
-
                             </DataTrigger>
 
                         </ControlTemplate.Triggers>

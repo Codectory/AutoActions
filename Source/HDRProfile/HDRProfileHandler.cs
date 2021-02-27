@@ -77,6 +77,7 @@ namespace HDRProfile
 
         public HDRProfileHandler()
         {
+            Logs.LoggingEnabled = true;
              //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Initialize();
         }
