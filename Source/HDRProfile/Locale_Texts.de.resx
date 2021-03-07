@@ -132,6 +132,12 @@
   <data name="Applications" xml:space="preserve">
     <value>Anwendungen</value>
   </data>
+  <data name="AutoHDR" xml:space="preserve">
+    <value>Auto HDR</value>
+  </data>
+  <data name="AutoHDRToolTip" xml:space="preserve">
+    <value>Aktivere HDR für diesen Monitor, basierend auf der Anwendung.</value>
+  </data>
   <data name="AutoStart" xml:space="preserve">
     <value>Auto-Start</value>
   </data>
@@ -141,11 +147,17 @@
   <data name="ChooseApplication" xml:space="preserve">
     <value>Anwendungen wählen</value>
   </data>
+  <data name="CompatibilityModeToolTip" xml:space="preserve">
+    <value>Startet die Anwendung neu, sobald sie erstmalig erkannt wurde, da für einige Anwendung HDR vor dem Start aktiv sein muss.</value>
+  </data>
   <data name="CurrentApplication" xml:space="preserve">
     <value>Aktuelle Anwendung</value>
   </data>
   <data name="DeactivateHDR" xml:space="preserve">
     <value>HDR deaktivieren</value>
+  </data>
+  <data name="DeviceID" xml:space="preserve">
+    <value>Geräte ID</value>
   </data>
   <data name="DisplayName" xml:space="preserve">
     <value>Anzeigename</value>
@@ -180,6 +192,12 @@
   <data name="MinimizeToTray" xml:space="preserve">
     <value>Zu Symbolleiste minimieren, beim Schließen</value>
   </data>
+  <data name="Monitors" xml:space="preserve">
+    <value>Monitore</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="NoApplication" xml:space="preserve">
     <value>keine Anwedung</value>
   </data>
@@ -193,7 +211,7 @@
     <value>Anwendung entfernen</value>
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
-    <value>Neustart beim ersten Start</value>
+    <value>Kompatibilitätsmodus</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>

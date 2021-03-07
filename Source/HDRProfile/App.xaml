@@ -30,9 +30,23 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
 
-        <Style x:Key="RounedBorder" TargetType="Border">
+        <Style x:Key="RoundedBorder" TargetType="Border">
             <Setter Property="CornerRadius" Value="{StaticResource CornerRadius}"/>
         </Style>
+
+        <Style x:Key="HDRCircle" TargetType="Ellipse">
+            <Setter Property="HorizontalAlignment"  Value="Center" />
+            <Setter Property="VerticalAlignment"  Value="Center" />
+                <Style.Triggers>
+                        <Trigger Property="Tag"  Value="True">
+                            <Setter Property="Fill" Value="#5d9ac7"/>
+                        </Trigger>
+                <Trigger Property="Tag"  Value="False">
+                            <Setter Property="Fill" Value="Transparent"/>
+                        </Trigger>
+                </Style.Triggers>
+        </Style>
+
 
         <Style x:Key="DefaultButton" TargetType="Button" >
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>

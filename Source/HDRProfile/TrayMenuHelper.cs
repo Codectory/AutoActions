@@ -1,6 +1,7 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +17,7 @@ namespace HDRProfile
 
         private MenuItem _openButton;
         private MenuItem _closeButton;
-        private MenuItem _activateHDRButton;
-        private MenuItem _deactivateHDRButton;
+        private MenuItem _hdrSwitchButton;
 
         public event EventHandler OpenViewRequested;
         public event EventHandler CloseApplicationRequested;
@@ -26,7 +26,7 @@ namespace HDRProfile
         public event EventHandler<string> NewLog;
 
 
-        public void Initialize()
+        public void Initialize(MonitorManager monitorManager)
         {
             if (Initialized)
                 return;
@@ -34,7 +34,7 @@ namespace HDRProfile
             try
             {
                 _trayMenu = new TaskbarIcon();
-                _trayMenu.Visibility = Visibility.Hidden;
+                _trayMenu.Visibility = Visibility.Visible;
                 _trayMenu.ToolTipText = Locale_Texts.HDRProfile;
                 _trayMenu.Icon = Locale_Texts.Logo;
                 ContextMenu contextMenu = new ContextMenu();
@@ -47,29 +47,20 @@ namespace HDRProfile
                 {
                     Header = Locale_Texts.Shutdown
                 };
-                _activateHDRButton = new MenuItem()
+                _hdrSwitchButton = new MenuItem()
                 {
                     Header = Locale_Texts.ActivateHDR
                 };
-
-                _deactivateHDRButton = new MenuItem()
-                {
-                    Header = Locale_Texts.DeactivateHDR
-                };
                 _openButton.Click += (o, e) => OpenViewRequested?.Invoke(this, EventArgs.Empty);
                 _closeButton.Click += (o, e) => CloseApplicationRequested?.Invoke(this, EventArgs.Empty);
-                _activateHDRButton.Click += (o, e) => HDRController.ActivateHDR();
-                _deactivateHDRButton.Click += (o, e) => HDRController.DeactivateHDR();
+                _hdrSwitchButton.Click += (o, e) => { if (MonitorManager.GlobalHDRIsActive) monitorManager.DeactivateHDR(); else monitorManager.ActivateHDR(); };
                 contextMenu.Items.Add(_openButton);
-                contextMenu.Items.Add(_activateHDRButton);
-                contextMenu.Items.Add(_deactivateHDRButton);
+                contextMenu.Items.Add(_hdrSwitchButton);
                 contextMenu.Items.Add(_closeButton);
-
-                HDRController.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
-                _activateHDRButton.IsEnabled = !HDRController.HDRIsActive;
-                _deactivateHDRButton.IsEnabled = HDRController.HDRIsActive;
                 _trayMenu.ContextMenu = contextMenu;
                 _trayMenu.TrayLeftMouseDown += TrayMenu_TrayLeftMouseDown;
+                MonitorManager.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
+                UpdateMenuButtons();
                 CallNewLog("Tray menu initialized");
 
             }
@@ -81,13 +72,21 @@ namespace HDRProfile
 
         private void HDRController_HDRIsActiveChanged(object sender, EventArgs e)
         {
-            _activateHDRButton.IsEnabled = !HDRController.HDRIsActive;
-            _deactivateHDRButton.IsEnabled = HDRController.HDRIsActive;
+            UpdateMenuButtons();
+        }
+
+        private void UpdateMenuButtons()
+        {
+            Application.Current.Dispatcher.Invoke(
+            (Action)(() =>
+            {
+                _hdrSwitchButton.Header = MonitorManager.GlobalHDRIsActive ? Locale_Texts.DeactivateHDR : Locale_Texts.ActivateHDR;
+            }));
         }
 
         private void TrayMenu_TrayLeftMouseDown(object sender, RoutedEventArgs e)
         {
-            SwitchTrayIcon(false);
+            //SwitchTrayIcon(false);
             OpenViewRequested?.Invoke(this, EventArgs.Empty);
 
         }

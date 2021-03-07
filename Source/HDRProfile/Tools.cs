@@ -6,7 +6,7 @@ namespace HDRProfile
     {
         public static void SetAutoStart(string applicationName, string filePath, bool autostart)
         {
-            RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+            RegistryKey rk = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
             object existing = rk.GetValue(applicationName);
             if (filePath.Equals(existing) && autostart)
                 return;

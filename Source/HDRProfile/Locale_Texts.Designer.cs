@@ -106,6 +106,24 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Auto HDR ähnelt.
+        /// </summary>
+        public static string AutoHDR {
+            get {
+                return ResourceManager.GetString("AutoHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enable HDR on this monitor, based on the applications ähnelt.
+        /// </summary>
+        public static string AutoHDRToolTip {
+            get {
+                return ResourceManager.GetString("AutoHDRToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Auto-Start ähnelt.
         /// </summary>
         public static string AutoStart {
@@ -133,6 +151,15 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Restarts the application on first occurence, as the application may need HDR to be activated before launching it. ähnelt.
+        /// </summary>
+        public static string CompatibilityModeToolTip {
+            get {
+                return ResourceManager.GetString("CompatibilityModeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Current application ähnelt.
         /// </summary>
         public static string CurrentApplication {
@@ -147,6 +174,15 @@ namespace HDRProfile {
         public static string DeactivateHDR {
             get {
                 return ResourceManager.GetString("DeactivateHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Device ID ähnelt.
+        /// </summary>
+        public static string DeviceID {
+            get {
+                return ResourceManager.GetString("DeviceID", resourceCulture);
             }
         }
         
@@ -183,6 +219,15 @@ namespace HDRProfile {
         public static string FilePath {
             get {
                 return ResourceManager.GetString("FilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use Auto HDR for all monitors ähnelt.
+        /// </summary>
+        public static string GlobalAutoHDR {
+            get {
+                return ResourceManager.GetString("GlobalAutoHDR", resourceCulture);
             }
         }
         
@@ -260,6 +305,24 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Monitors ähnelt.
+        /// </summary>
+        public static string Monitors {
+            get {
+                return ResourceManager.GetString("Monitors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Name ähnelt.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die No application is running ähnelt.
         /// </summary>
         public static string NoApplication {
@@ -296,7 +359,7 @@ namespace HDRProfile {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Restart on first start ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Compatibility mode ähnelt.
         /// </summary>
         public static string RestartProccessOnFirstOccurence {
             get {

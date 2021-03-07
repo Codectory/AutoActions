@@ -16,39 +16,49 @@ namespace HDRProfile
     public class HDRProfileSettings : BaseViewModel
     {
 
-        private bool logging = false;
-        private bool autoStart;
-        private bool startMinimizedToTray;
+        private bool _globalAutoHDR = true;
+        private bool _logging = false;
+        private bool _autoStart;
+        private bool _startMinimizedToTray;
         private bool _closeToTray;
-        private HDRActivationMode hdrMode;
+        private HDRActivationMode _hdrMode;
         readonly object _audioDevicesLock = new object();
         private ObservableCollection<ApplicationItem> _applicationItems;
+        private ObservableCollection<Monitor> _monitors;
 
 
 
         [DataMember]
-        public bool AutoStart { get => autoStart; set { autoStart = value; OnPropertyChanged(); } }
+        public bool GlobalAutoHDR { get => _globalAutoHDR; set { _globalAutoHDR = value; OnPropertyChanged(); } }
 
         [DataMember]
-        public bool Logging { get => logging; set { logging = value; OnPropertyChanged(); } }
+        public bool AutoStart { get => _autoStart; set { _autoStart = value; OnPropertyChanged(); } }
 
         [DataMember]
-        public bool StartMinimizedToTray { get => startMinimizedToTray; set { startMinimizedToTray = value; OnPropertyChanged(); }  }
+        public bool Logging { get => _logging; set { _logging = value; OnPropertyChanged(); } }
+
+        [DataMember]
+        public bool StartMinimizedToTray { get => _startMinimizedToTray; set { _startMinimizedToTray = value; OnPropertyChanged(); }  }
 
         [DataMember]
         public bool CloseToTray { get => _closeToTray; set { _closeToTray = value; OnPropertyChanged(); } }
 
 
         [DataMember]
-        public HDRActivationMode HDRMode { get => hdrMode; set { hdrMode = value; OnPropertyChanged(); } }
+        public HDRActivationMode HDRMode { get => _hdrMode; set { _hdrMode = value; OnPropertyChanged(); } }
 
         [DataMember]
         public ObservableCollection<ApplicationItem> ApplicationItems { get => _applicationItems; set {_applicationItems = value; OnPropertyChanged();} }
 
 
+        [DataMember]
+        public ObservableCollection<Monitor> Monitors { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
+
+
         public HDRProfileSettings()
         {
             ApplicationItems = new ObservableCollection<ApplicationItem>();
+            Monitors = new ObservableCollection<Monitor>();
         }
 
 

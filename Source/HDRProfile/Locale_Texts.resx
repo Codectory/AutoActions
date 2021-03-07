@@ -132,6 +132,12 @@
   <data name="Applications" xml:space="preserve">
     <value>Applications</value>
   </data>
+  <data name="AutoHDR" xml:space="preserve">
+    <value>Auto HDR</value>
+  </data>
+  <data name="AutoHDRToolTip" xml:space="preserve">
+    <value>Enable HDR on this monitor, based on the applications</value>
+  </data>
   <data name="AutoStart" xml:space="preserve">
     <value>Auto-Start</value>
   </data>
@@ -141,11 +147,17 @@
   <data name="ChooseApplication" xml:space="preserve">
     <value>Choose application</value>
   </data>
+  <data name="CompatibilityModeToolTip" xml:space="preserve">
+    <value>Restarts the application on first occurence, as the application may need HDR to be activated before launching it.</value>
+  </data>
   <data name="CurrentApplication" xml:space="preserve">
     <value>Current application</value>
   </data>
   <data name="DeactivateHDR" xml:space="preserve">
     <value>Deactivate HDR</value>
+  </data>
+  <data name="DeviceID" xml:space="preserve">
+    <value>Device ID</value>
   </data>
   <data name="DisplayName" xml:space="preserve">
     <value>Display name</value>
@@ -158,6 +170,9 @@
   </data>
   <data name="FilePath" xml:space="preserve">
     <value>File path</value>
+  </data>
+  <data name="GlobalAutoHDR" xml:space="preserve">
+    <value>Use Auto HDR for all monitors</value>
   </data>
   <data name="HDR" xml:space="preserve">
     <value>HDR</value>
@@ -184,6 +199,12 @@
   <data name="MinimizeToTray" xml:space="preserve">
     <value>Close to tray</value>
   </data>
+  <data name="Monitors" xml:space="preserve">
+    <value>Monitors</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="NoApplication" xml:space="preserve">
     <value>No application is running</value>
   </data>
@@ -197,7 +218,7 @@
     <value>Remove application</value>
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
-    <value>Restart on first start</value>
+    <value>Compatibility mode</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>

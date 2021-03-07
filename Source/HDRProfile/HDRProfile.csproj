@@ -153,6 +153,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationState.cs" />
+    <Compile Include="HDRController.cs" />
+    <Compile Include="Monitor.cs" />
+    <Compile Include="MonitorManager.cs" />
+    <Compile Include="MonitorManagerView.xaml.cs">
+      <DependentUpon>MonitorManagerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Locale_Texts.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -165,6 +171,10 @@
     </Compile>
     <Compile Include="Tools.cs" />
     <Compile Include="TrayMenuHelper.cs" />
+    <Page Include="MonitorManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HDRProfileSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -180,7 +190,6 @@
     <Compile Include="EnumLocaleConverter.cs" />
     <Compile Include="HDRActivationMode.cs" />
     <Compile Include="HDRProfileHandler.cs" />
-    <Compile Include="HDRController.cs" />
     <Compile Include="HDRProfileSettings.cs" />
     <Compile Include="HDRProfileSettingsView.xaml.cs">
       <DependentUpon>HDRProfileSettingsView.xaml</DependentUpon>

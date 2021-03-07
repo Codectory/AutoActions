@@ -50,9 +50,9 @@
     </Window.Resources>
     <Grid>
         <TabControl  BorderBrush="{StaticResource AccentBrush}" Margin="0,0,0,20" BorderThickness="0 5 0 1">
-            <TabItem Header="{x:Static local:Locale_Texts.Status}"  >
+            <TabItem Header="{x:Static local:Locale_Texts.Status}" HorizontalAlignment="Left" Width="58"  >
                 <Grid >
-                    <Border Style="{StaticResource RounedBorder}" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1"  Margin="10,10,10,51">
+                    <Border Style="{StaticResource RoundedBorder}" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1"  Margin="10,10,10,51">
                         <Grid Height="Auto" VerticalAlignment="Top" Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -100,7 +100,7 @@
                             </Ellipse>
                             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static local:Locale_Texts.CurrentApplication}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="15" VerticalAlignment="Center"  />
 
-                            <Border Grid.Row="2" Grid.Column="3" BorderThickness="1" BorderBrush="LightGray" Style="{StaticResource RounedBorder}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Padding="0">
+                            <Border Grid.Row="2" Grid.Column="3" BorderThickness="1" BorderBrush="LightGray" Style="{StaticResource RoundedBorder}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Padding="0">
                                 <Rectangle RadiusX="3" RadiusY="3" Width="40" Height="40" Margin="2  ">
                                     <Rectangle.Fill>
                                         <ImageBrush ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Stretch="Fill" />
@@ -123,7 +123,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"  />
                     </Grid.RowDefinitions>
-                    <Border Style="{StaticResource RounedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
+                    <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -148,6 +148,10 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="{x:Static local:Locale_Texts.Monitors}" >
+                <local:MonitorManagerView   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}"  IsEnabled="{Binding Settings.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}"/>
+            </TabItem>
+
             <TabItem Header="{x:Static local:Locale_Texts.Settings}">
                 <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <Grid.ColumnDefinitions>
@@ -156,7 +160,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="154*"  />
                     </Grid.RowDefinitions>
-                    <Border Style="{StaticResource RounedBorder}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10" >
+                    <Border Style="{StaticResource RoundedBorder}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10" >
                         <local:HDRProfileSettingsView    DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" />
                     </Border>
 
