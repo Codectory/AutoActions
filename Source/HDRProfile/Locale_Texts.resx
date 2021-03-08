@@ -214,8 +214,14 @@
   <data name="Open" xml:space="preserve">
     <value>Open</value>
   </data>
+  <data name="RefreshRate" xml:space="preserve">
+    <value>Refresh rate [Hz]</value>
+  </data>
   <data name="RemoveApplication" xml:space="preserve">
     <value>Remove application</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Resolution</value>
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
     <value>Compatibility mode</value>

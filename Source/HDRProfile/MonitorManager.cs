@@ -1,16 +1,63 @@
-﻿using CodectoryCore.UI.Wpf;
+﻿using CCD;
+using CCD.Enum;
+using CCD.Struct;
+using CodectoryCore.UI.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Management;
+using System.Runtime.InteropServices;
 using System.Text;
 
 using System.Threading;
 
 namespace HDRProfile
 {
+
+    [Flags()]
+    public enum DisplayDeviceStateFlags : int
+    {
+        /// <summary>The device is part of the desktop.</summary>
+        AttachedToDesktop = 0x1,
+        MultiDriver = 0x2,
+        /// <summary>The device is part of the desktop.</summary>
+        PrimaryDevice = 0x4,
+        /// <summary>Represents a pseudo device used to mirror application drawing for remoting or other purposes.</summary>
+        MirroringDriver = 0x8,
+        /// <summary>The device is VGA compatible.</summary>
+        VGACompatible = 0x16,
+        /// <summary>The device is removable; it cannot be the primary display.</summary>
+        Removable = 0x20,
+        /// <summary>The device has more display modes than its output devices support.</summary>
+        ModesPruned = 0x8000000,
+        Remote = 0x4000000,
+        Disconnect = 0x2000000
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public struct DISPLAY_DEVICE
+    {
+        [MarshalAs(UnmanagedType.U4)]
+        public int cb;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string DeviceName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceString;
+        [MarshalAs(UnmanagedType.U4)]
+        public DisplayDeviceStateFlags StateFlags;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceID;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public string DeviceKey;
+    }
+
+
     public class MonitorManager : BaseViewModel
     {
+        [DllImport("user32.dll")]
+        private static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
+
 
         Thread _updateThread = null;
         readonly object _threadControlLock = new object();
@@ -85,48 +132,76 @@ namespace HDRProfile
             }
         }
 
+        //private List<Monitor> GetActiveMonitors()
+        //{
+
+        //    var device = new DISPLAY_DEVICE();
+        //    device.cb = Marshal.SizeOf(device);
+        //    try
+        //    {
+        //        for (uint id = 0; EnumDisplayDevices(null, id, ref device, 0); id++)
+        //        {
+        //            device.cb = Marshal.SizeOf(device);
+        //            EnumDisplayDevices(device.DeviceName, 0, ref device, 0);
+        //            device.cb = Marshal.SizeOf(device);
+
+        //            Console.WriteLine("id={0}, name={1}, devicestring={2}", id, device.DeviceName, device.DeviceString);
+        //            if (device.DeviceName == null || device.DeviceName == "") continue;
+        //        }
+        //        string x = Console.ReadLine();
+        //    }
+
+
+
+
+
+
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(String.Format("{0}", ex.ToString()));
+        //    }
+
+        //    return new List<Monitor>();
+        //}
+
+
+
         private List<Monitor> GetActiveMonitors()
         {
             List<Monitor> monitors = new List<Monitor>();
-            SelectQuery Sq = new SelectQuery("Win32_DesktopMonitor");
-            ManagementObjectSearcher objOSDetails = new ManagementObjectSearcher(Sq);
-            ManagementObjectCollection osDetailsCollection = objOSDetails.Get();
-            StringBuilder sb = new StringBuilder();
-            foreach (ManagementObject mo in osDetailsCollection)
+
+            DisplayConfigTopologyId topologyId;
+            var pathWraps = GetPathWraps(QueryDisplayFlags.OnlyActivePaths, out topologyId);
+
+            foreach (var pathWrap in pathWraps)
             {
-                string pnpDeviceID = @"DISPLAY\SAM7058\5&61C49FC&2&UID28931";
-                pnpDeviceID = (string)mo["PNPDeviceID"];
-                int indexOfUIDStart = pnpDeviceID.IndexOf("UID");
-                UInt32 uid = UInt32.Parse(pnpDeviceID.Substring(indexOfUIDStart + 3, pnpDeviceID.Length - (indexOfUIDStart + 3)));
-                Monitor monitor = new Monitor((string)mo["Name"], (string)mo["Caption"], (string)mo["DeviceID"], uid);
+                var path = pathWrap.Path;
+                var sourceModeInfo = pathWrap.Modes.First(x => x.infoType == DisplayConfigModeInfoType.Source);
+
+                var resolution = new Size
+                {
+                    Width = sourceModeInfo.sourceMode.width,
+                    Height = sourceModeInfo.sourceMode.height
+                };
+
+                var refreshRate =
+                    (int)Math.Round((double)path.targetInfo.refreshRate.numerator / path.targetInfo.refreshRate.denominator);
+                var rotationOriginal = path.targetInfo.rotation;
+
+
+                DisplayConfigSourceDeviceName displayConfigSourceDeviceName;
+
+                var displayName = "<Unknown>"; 
+                var nameStatus = GetDisplayConfigSourceDeviceName(sourceModeInfo,
+                    out displayConfigSourceDeviceName);
+
+                if (nameStatus == StatusCode.Success)
+                    displayName = displayConfigSourceDeviceName.viewGdiDeviceName;
+
+                Monitor monitor = new Monitor(displayName, path.targetInfo.id, resolution,  refreshRate);
                 monitors.Add(monitor);
-
-                //sb.AppendLine(string.Format("Name : {0}", ));
-                //sb.AppendLine(string.Format("Availability: {0}", (ushort)mo["Availability"]));
-                //sb.AppendLine(string.Format("Caption: {0}", ));
-                //sb.AppendLine(string.Format("InstallDate: {0}", Convert.ToDateTime(mo["InstallDate"]).ToString()));
-                //sb.AppendLine(string.Format("ConfigManagerUserConfig: {0}", mo["ConfigManagerUserConfig"].ToString()));
-                //sb.AppendLine(string.Format("CreationClassName : {0}", (string)mo["CreationClassName"]));
-                //sb.AppendLine(string.Format("Description: {0}", (string)mo["Description"]));
-                //sb.AppendLine(string.Format("DeviceID : {0}", );
-                //sb.AppendLine(string.Format("ErrorCleared: {0}", (string)mo["ErrorCleared"]));
-                //sb.AppendLine(string.Format("ErrorDescription : {0}", (string)mo["ErrorDescription"]));
-                //sb.AppendLine(string.Format("ConfigManagerUserConfig: {0}", mo["ConfigManagerUserConfig"].ToString()));
-                //sb.AppendLine(string.Format("LastErrorCode : {0}", mo["LastErrorCode"]).ToString());
-                //sb.AppendLine(string.Format("MonitorManufacturer : {0}", mo["MonitorManufacturer"]).ToString());
-                //sb.AppendLine(string.Format("PNPDeviceID: {0}", (string)mo["PNPDeviceID"]));
-                //sb.AppendLine(string.Format("MonitorType: {0}", (string)mo["MonitorType"]));
-                //sb.AppendLine(string.Format("PixelsPerXLogicalInch : {0}", mo["PixelsPerXLogicalInch"].ToString()));
-                //sb.AppendLine(string.Format("PixelsPerYLogicalInch: {0}", mo["PixelsPerYLogicalInch"].ToString()));
-                //sb.AppendLine(string.Format("ScreenHeight: {0}", mo["ScreenHeight"].ToString()));
-                //sb.AppendLine(string.Format("ScreenWidth : {0}", mo["ScreenWidth"]).ToString());
-                //sb.AppendLine(string.Format("Status : {0}", (string)mo["Status"]));
-                //sb.AppendLine(string.Format("SystemCreationClassName : {0}", (string)mo["SystemCreationClassName"]));
-                //sb.AppendLine(string.Format("SystemName: {0}", (string)mo["SystemName"]));
-
             }
             return monitors;
-
         }
 
 
@@ -145,6 +220,13 @@ namespace HDRProfile
             {
                 if (!Settings.Monitors.Any(m => m.UID.Equals(monitor.UID)))
                     Settings.Monitors.Add(monitor);
+                else
+                {
+                   Monitor existingMonitor = Settings.Monitors.First(m => m.UID.Equals(monitor.UID));
+                    existingMonitor.Name = monitor.Name;
+                    existingMonitor.RefreshRate = monitor.RefreshRate;
+                    existingMonitor.Resolution = monitor.Resolution;
+                }
             }
 
             foreach (Monitor monitor in Settings.Monitors)
@@ -194,6 +276,95 @@ namespace HDRProfile
         {
             HDRController.SetHDRState(display.UID, false);
         }
+
+        private static IEnumerable<DisplayConfigPathWrap> GetPathWraps(
+    QueryDisplayFlags pathType,
+    out DisplayConfigTopologyId topologyId)
+        {
+            topologyId = DisplayConfigTopologyId.Zero;
+
+            int numPathArrayElements;
+            int numModeInfoArrayElements;
+
+            var status = Wrapper.GetDisplayConfigBufferSizes(
+                pathType,
+                out numPathArrayElements,
+                out numModeInfoArrayElements);
+
+            if (status != StatusCode.Success)
+            {
+                // TODO; POSSIBLY HANDLE SOME OF THE CASES.
+                var reason = string.Format("GetDisplayConfigBufferSizesFailed() failed. Status: {0}", status);
+                throw new Exception(reason);
+            }
+
+            var pathInfoArray = new DisplayConfigPathInfo[numPathArrayElements];
+            var modeInfoArray = new DisplayConfigModeInfo[numModeInfoArrayElements];
+
+            // topology ID only valid with QDC_DATABASE_CURRENT
+            var queryDisplayStatus = pathType == QueryDisplayFlags.DatabaseCurrent
+                ? Wrapper.QueryDisplayConfig(
+                    pathType,
+                    ref numPathArrayElements, pathInfoArray,
+                    ref numModeInfoArrayElements, modeInfoArray, out topologyId)
+                : Wrapper.QueryDisplayConfig(
+                    pathType,
+                    ref numPathArrayElements, pathInfoArray,
+                    ref numModeInfoArrayElements, modeInfoArray);
+            //////////////////////
+
+            if (queryDisplayStatus != StatusCode.Success)
+            {
+                // TODO; POSSIBLY HANDLE SOME OF THE CASES.
+                var reason = string.Format("QueryDisplayConfig() failed. Status: {0}", queryDisplayStatus);
+                throw new Exception(reason);
+            }
+
+            var list = new List<DisplayConfigPathWrap>();
+            foreach (var path in pathInfoArray)
+            {
+                var outputModes = new List<DisplayConfigModeInfo>();
+                foreach (var modeIndex in new[]
+                {
+                    path.sourceInfo.modeInfoIdx,
+                    path.targetInfo.modeInfoIdx
+                })
+                {
+                    if (modeIndex < modeInfoArray.Length)
+                        outputModes.Add(modeInfoArray[modeIndex]);
+                }
+
+                list.Add(new DisplayConfigPathWrap(path, outputModes));
+            }
+            return list;
+        }
+
+        /// <summary>
+        ///     This method give you access to monitor device name.
+        ///     Such as "\\DISPLAY1"
+        /// </summary>
+        /// <param name="sourceModeInfo"></param>
+        /// <param name="displayConfigSourceDeviceName"></param>
+        /// <returns></returns>
+        private static StatusCode GetDisplayConfigSourceDeviceName(
+            DisplayConfigModeInfo sourceModeInfo,
+            out DisplayConfigSourceDeviceName displayConfigSourceDeviceName)
+        {
+            displayConfigSourceDeviceName = new DisplayConfigSourceDeviceName
+            {
+                header = new DisplayConfigDeviceInfoHeader
+                {
+                    adapterId = sourceModeInfo.adapterId,
+                    id = sourceModeInfo.id,
+                    size =
+                        Marshal.SizeOf(
+                            typeof(DisplayConfigSourceDeviceName)),
+                    type = DisplayConfigDeviceInfoType.GetSourceName
+                }
+            };
+            return Wrapper.DisplayConfigGetDeviceInfo(ref displayConfigSourceDeviceName);
+        }
+
 
     }
 }

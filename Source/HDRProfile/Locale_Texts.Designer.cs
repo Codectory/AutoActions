@@ -350,11 +350,29 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Refresh rate [Hz] ähnelt.
+        /// </summary>
+        public static string RefreshRate {
+            get {
+                return ResourceManager.GetString("RefreshRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Remove application ähnelt.
         /// </summary>
         public static string RemoveApplication {
             get {
                 return ResourceManager.GetString("RemoveApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Resolution ähnelt.
+        /// </summary>
+        public static string Resolution {
+            get {
+                return ResourceManager.GetString("Resolution", resourceCulture);
             }
         }
         

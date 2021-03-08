@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace HDRProfile
 {
-   public static class HDRController
+    public static class HDRController
     {
 
         readonly static object _dllLock = new object();
@@ -24,6 +24,5 @@ namespace HDRProfile
 
         [DllImport("HDRController.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool GetHDRState(UInt32 uid);
-
     }
 }

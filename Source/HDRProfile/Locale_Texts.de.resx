@@ -171,6 +171,9 @@
   <data name="FilePath" xml:space="preserve">
     <value>Dateipfad</value>
   </data>
+  <data name="GlobalAutoHDR" xml:space="preserve">
+    <value>Auto HDR für alle Monitore</value>
+  </data>
   <data name="HDR" xml:space="preserve">
     <value>HDR</value>
   </data>
@@ -207,8 +210,14 @@
   <data name="Open" xml:space="preserve">
     <value>Öffnen</value>
   </data>
+  <data name="RefreshRate" xml:space="preserve">
+    <value>Bildwiederholrate [Hz]</value>
+  </data>
   <data name="RemoveApplication" xml:space="preserve">
     <value>Anwendung entfernen</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Auflösung</value>
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
     <value>Kompatibilitätsmodus</value>

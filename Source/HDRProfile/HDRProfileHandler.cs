@@ -80,6 +80,12 @@ namespace HDRProfile
 
         public HDRProfileHandler()
         {
+            //NightLightManager nightLightManager = new NightLightManager();
+            //bool value = nightLightManager.GetNightLightState();
+            //nightLightManager.SetNightLightState(false);
+            //value = nightLightManager.GetNightLightState();
+            //nightLightManager.SetNightLightState(false);
+
             Logs.LoggingEnabled = true;
              //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Initialize();
@@ -497,7 +503,7 @@ namespace HDRProfile
                     return;
                 }
             Process.GetProcessesByName(application.ApplicationName).ToList().ForEach(p => p.Kill());
-            
+            System.Threading.Thread.Sleep(2000);
             Process proc = new Process();
             StartApplication(application);
         }

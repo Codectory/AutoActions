@@ -98,6 +98,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CCDWrapper, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CCDWrapper.1.0.1\lib\net35\CCDWrapper.dll</HintPath>
+    </Reference>
     <Reference Include="CodectoryCore.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Externals\CodectoryCore.Logging.dll</HintPath>
@@ -169,6 +172,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Locale_Texts.resx</DependentUpon>
     </Compile>
+    <Compile Include="NightLightManager.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="TrayMenuHelper.cs" />
     <Page Include="MonitorManagerView.xaml">

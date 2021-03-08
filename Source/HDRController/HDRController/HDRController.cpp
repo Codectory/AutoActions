@@ -27,7 +27,6 @@ static void showError(std::string msg)
 	MessageBox(NULL, lmsg, L"HDRController Error", MB_OK | MB_ICONWARNING);
 }
 
-
 static void  SetGlobalHDR(bool enabled)
 {
 	uint32_t pathCount, modeCount;
