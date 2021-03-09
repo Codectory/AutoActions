@@ -4,6 +4,7 @@ using CCD.Struct;
 using CodectoryCore.UI.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Management;
@@ -53,6 +54,7 @@ namespace HDRProfile
     }
 
 
+
     public class MonitorManager : BaseViewModel
     {
         [DllImport("user32.dll")]
@@ -77,9 +79,8 @@ namespace HDRProfile
 
         public event EventHandler AutoHDRChanged;
 
-        //private List<Monitor> _monitors = new List<Monitor>();
 
-        //public List<Monitor> Monitors { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
+        public ObservableCollection<Monitor> Monitors => Settings.Monitors;
 
         public MonitorManager(HDRProfileSettings settings)
         {
@@ -118,17 +119,21 @@ namespace HDRProfile
         {
             while (!_monitorCancelRequested)
             {
-                foreach (Monitor monitor in Settings.Monitors)
-                    monitor.HDRState = HDRController.GetHDRState(monitor.UID);
+                bool currentValue = false;
 
-                bool currentValue = HDRController.GetGlobalHDRState();
+                foreach (Monitor monitor in Monitors)
+                {
+                    monitor.UpdateHDRState();
+                    if (monitor.AutoHDR)
+                        currentValue = currentValue || monitor.HDRState;
+                }
                 bool changed = GlobalHDRIsActive != currentValue;
                 GlobalHDRIsActive = currentValue;
                 if (changed)
                 {
                     try { HDRIsActiveChanged?.Invoke(null, EventArgs.Empty); } catch { }
                 }
-                System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(100);
             }
         }
 
@@ -209,27 +214,27 @@ namespace HDRProfile
         {
 
             List<Monitor> toRemove = new List<Monitor>();
-            foreach (Monitor monitor in Settings.Monitors)
+            foreach (Monitor monitor in Monitors)
             {
                 if (!monitors.Any(m => m.UID.Equals(monitor.UID)))
                     toRemove.Add(monitor);
             }
             foreach (Monitor monitor in toRemove)
-                Settings.Monitors.Remove(monitor);
+                Monitors.Remove(monitor);
             foreach (Monitor monitor in monitors)
             {
                 if (!Settings.Monitors.Any(m => m.UID.Equals(monitor.UID)))
                     Settings.Monitors.Add(monitor);
                 else
                 {
-                   Monitor existingMonitor = Settings.Monitors.First(m => m.UID.Equals(monitor.UID));
+                   Monitor existingMonitor = Monitors.First(m => m.UID.Equals(monitor.UID));
                     existingMonitor.Name = monitor.Name;
                     existingMonitor.RefreshRate = monitor.RefreshRate;
                     existingMonitor.Resolution = monitor.Resolution;
                 }
             }
 
-            foreach (Monitor monitor in Settings.Monitors)
+            foreach (Monitor monitor in Monitors)
             {
                 monitor.PropertyChanged += Monitor_PropertyChanged;
             }

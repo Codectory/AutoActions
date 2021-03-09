@@ -160,7 +160,7 @@ namespace HDRProfile
         private void MonitorManager_AutoHDRChanged(object sender, EventArgs e)
         {
             SaveSettings();
-            UpdateHDRBasedOnCurrentApplication();
+            SetHDRBasedOnCurrentApplication();
         }
 
         private void TrayMenuHelper_OpenViewRequested(object sender, EventArgs e)
@@ -242,7 +242,7 @@ namespace HDRProfile
                     Logs.AddException(ex);
                 }
                 if (e.PropertyName.Equals(nameof(Settings.HDRMode)))
-                    UpdateHDRBasedOnCurrentApplication();
+                    SetHDRBasedOnCurrentApplication();
                 Logs.LoggingEnabled = Settings.Logging;
                 SaveSettings();
             }
@@ -264,13 +264,13 @@ namespace HDRProfile
             try
             {
                 MonitorManager.ActivateHDR();
-                System.Threading.Thread.Sleep(3000);
+                System.Threading.Thread.Sleep(2500);
                 Process process = new Process();
                 process.StartInfo = new ProcessStartInfo(application.ApplicationFilePath);
                 process.Start();
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                System.Threading.Thread.Sleep(3000);
+                System.Threading.Thread.Sleep(500);
             }
             catch (Exception ex)
             {
@@ -316,7 +316,7 @@ namespace HDRProfile
                 MonitorManager.StartMonitoring();
                 Logs.Add($"HDR Monitoring started", false);
                 Started = true;
-                UpdateHDRBasedOnCurrentApplication();
+                SetHDRBasedOnCurrentApplication();
 
             }
         }
@@ -413,11 +413,11 @@ namespace HDRProfile
         private void ProcessWatcher_RunningOrFocusedChanged(object sender, EventArgs e)
         {
             CurrentApplication = ProcessWatcher.CurrentRunningApplicationItem;
-            UpdateHDRBasedOnCurrentApplication();
+            SetHDRBasedOnCurrentApplication();
 
         }
 
-        private void UpdateHDRBasedOnCurrentApplication()
+        private void SetHDRBasedOnCurrentApplication()
         {
             lock (_accessLock)
             {
