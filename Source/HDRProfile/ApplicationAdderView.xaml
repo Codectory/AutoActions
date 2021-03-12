@@ -17,10 +17,17 @@
         <Label Content="{x:Static local:Locale_Texts.FilePath}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="111"/>
         <TextBox Height="23" Margin="126,13,10,0" TextWrapping="Wrap" Text="{Binding DisplayName, Mode=TwoWay }" VerticalAlignment="Top"/>
         <TextBlock Text="{Binding FilePath}" Margin="126,41,10,0" VerticalAlignment="Top" Height="26" />
-        <Button Content="{x:Static local:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Height="Auto" Grid.Row="1" Margin="5"/>
-        <Button Content="{Binding Source={x:Static local:Locale_Texts.ChooseApplication}, StringFormat={}{0}...}"  Command="{Binding GetFileCommand}"  VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Left" Width="Auto" Height="Auto" Margin="5">
 
-        </Button>
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width=" Auto"/>
+                <ColumnDefinition/>
 
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="2" Content="{x:Static local:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="5"/>
+            <Button Grid.Column="0" Content="{Binding Source={x:Static local:Locale_Texts.ChooseApplication}, StringFormat={}{0}...}"  Command="{Binding GetFileCommand}"  VerticalAlignment="Top"  HorizontalAlignment="Left" Width="Auto" Height="Auto" Margin="5"/>
+            <Button Grid.Column="1" Content="{Binding Source={x:Static local:Locale_Texts.ChooseUWPApplication}, StringFormat={}{0}...}"  Command="{Binding GetUWPAppCommand}" Height="Auto" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        </Grid>
     </Grid>
 </UserControl>

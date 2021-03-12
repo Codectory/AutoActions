@@ -29,7 +29,7 @@ namespace HDRProfile
             get
             {
                 lock (_applicationsLock)
-                    return new ReadOnlyDictionary<ApplicationItem, ApplicationState>(_applications);
+                    return new ReadOnlyDictionary<ApplicationItem, ApplicationState>(_applications.ToDictionary(entry => entry.Key, entry => entry.Value));
             }
         }
 
@@ -158,8 +158,9 @@ namespace HDRProfile
             {
                 lock (_applicationsLock)
                 {
+                    UpdateApplications();
                     bool oldIsOneRunning = OneProcessIsRunning;
-                    bool newIsOneRunning = GetIsOneProcessRunning();
+                    bool newIsOneRunning = _applications.Any(a => a.Value == ApplicationState.Running);
                     OneProcessIsRunning = newIsOneRunning;
                     if (oldIsOneRunning != newIsOneRunning)
                     {
@@ -168,7 +169,7 @@ namespace HDRProfile
                     }
                     
                     bool oldIsOneFocused = OneProcessIsFocused;
-                    bool newIsOneFocused = GetIsOneProcessFocused();
+                    bool newIsOneFocused = _applications.Any(a => a.Value == ApplicationState.Focused);
                     OneProcessIsFocused = newIsOneFocused;
                     if (oldIsOneFocused != newIsOneFocused)
                     {
@@ -180,10 +181,7 @@ namespace HDRProfile
             }
         }
 
-
-
-
-        private bool GetIsOneProcessRunning()
+        private void UpdateApplications()
         {
 
             lock (_applicationsLock)
@@ -192,60 +190,40 @@ namespace HDRProfile
                 Process[] processes = Process.GetProcesses();
 
                 List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
+                ApplicationItem newCurrentRunningApplicationItem = null;
+                ApplicationItem newCurrentFocusedApplicationItem = null;
                 foreach (ApplicationItem application in applications)
                 {
-                    _applications[application] = ApplicationState.None;
+                    ApplicationState state = ApplicationState.None;
                     foreach (var process in processes.Select(p => p.ProcessName))
                     {
                         if (process.ToUpperInvariant() == application.ApplicationName.ToUpperInvariant())
                         {
-                            _applications[application] = ApplicationState.Running;
-                            CurrentRunningApplicationItem = application;
+                            state = ApplicationState.Running;
+                            newCurrentRunningApplicationItem = application;
+                            if (IsFocusedProcess(process))
+                            {
+                                state = ApplicationState.Focused;
+                                newCurrentFocusedApplicationItem = application;
+                            }
                         }
                     }
+                    _applications[application] = state;
                 }
-                CurrentRunningApplicationItem = null;
-            }
-
-            if (_applications.Any(a => a.Value != ApplicationState.None))
-            {
-                var application = _applications.First(a => a.Value != ApplicationState.None);
-                CurrentRunningApplicationItem = application.Key;
-                return true;
-
-            }
-            else
-            {
-                CurrentRunningApplicationItem = null;
-                return false;
+                CurrentRunningApplicationItem = newCurrentRunningApplicationItem;
+                CurrentFocusedApplicationItem = CurrentFocusedApplicationItem;
             }
         }
 
-        private bool GetIsOneProcessFocused()
+
+
+        private bool IsFocusedProcess(string processName)
         {
             string currentProcessName = GetForegroundProcessName().ToUpperInvariant();
-            lock (_applicationsLock)
-            {
-                if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName)))
-                {
-                    var application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(currentProcessName)).Key;
-                    _applications[application] = ApplicationState.Focused;
-                    CurrentFocusedApplicationItem = application;
-                    return true;
-
-                }
-                else
-                {
-                    var applications = _applications.Select(a => a.Key).ToList();
-                    foreach (var application in applications)
-                        if (_applications[application] != ApplicationState.None)
-                            _applications[application] = ApplicationState.Running;
-                    CurrentFocusedApplicationItem = null;
-                    return false;
-                }
-
-            }
+            return processName.ToUpperInvariant().Equals(currentProcessName);
         }
+
+
 
         // The GetForegroundWindow function returns a handle to the foreground window
         // (the window  with which the user is currently working).

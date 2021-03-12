@@ -151,6 +151,15 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Choose UWP app... ähnelt.
+        /// </summary>
+        public static string ChooseUWPApplication {
+            get {
+                return ResourceManager.GetString("ChooseUWPApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Restarts the application on first occurence, as the application may need HDR to be activated before launching it. ähnelt.
         /// </summary>
         public static string CompatibilityModeToolTip {

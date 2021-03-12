@@ -147,6 +147,9 @@
   <data name="ChooseApplication" xml:space="preserve">
     <value>Choose application</value>
   </data>
+  <data name="ChooseUWPApplication" xml:space="preserve">
+    <value>Choose UWP app...</value>
+  </data>
   <data name="CompatibilityModeToolTip" xml:space="preserve">
     <value>Restarts the application on first occurence, as the application may need HDR to be activated before launching it.</value>
   </data>

@@ -176,6 +176,9 @@
         <DataTemplate DataType="{x:Type local:ApplicationAdder}">
             <local:ApplicationAdderView></local:ApplicationAdderView>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type local:UWPApplicationDialog}">
+            <local:UWPApplicationDialogView></local:UWPApplicationDialogView>
+        </DataTemplate>
     </Application.Resources>
 
 </Application>

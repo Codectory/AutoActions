@@ -126,6 +126,9 @@
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.PowerShell.5.ReferenceAssemblies.1.1.0\lib\net4\System.Management.Automation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.Serialization.Primitives.4.3.0\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
@@ -155,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UWPApplicationDialogView.xaml.cs">
+      <DependentUpon>UWPApplicationDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UWPApplicationDialog.cs" />
     <Compile Include="ApplicationState.cs" />
     <Compile Include="HDRController.cs" />
     <Compile Include="Monitor.cs" />
@@ -175,6 +182,13 @@
     <Compile Include="NightLightManager.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="TrayMenuHelper.cs" />
+    <Compile Include="UWP\AppxManifest.cs" />
+    <Compile Include="UWP\UWPAppsManager.cs" />
+    <Compile Include="UWP\UWPApp.cs" />
+    <Page Include="UWPApplicationDialogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MonitorManagerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

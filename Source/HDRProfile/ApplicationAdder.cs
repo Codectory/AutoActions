@@ -21,6 +21,8 @@ namespace HDRProfile
         public ApplicationItem ApplicationItem { get => applicationItem; private set { applicationItem = value; OnPropertyChanged(); } }
 
         public RelayCommand GetFileCommand { get; private set; }
+        public RelayCommand GetUWPAppCommand { get; private set; }
+
         public RelayCommand<object>  OKClickCommand { get; private set; }
 
         public event EventHandler OKClicked;
@@ -34,6 +36,7 @@ namespace HDRProfile
         private void CreateRelayCommands()
         {
             GetFileCommand = new RelayCommand(GetFile);
+            GetUWPAppCommand = new RelayCommand(GetUWPAplication);
             OKClickCommand = new RelayCommand<object>(CreateApplicationItem);
         }
 
@@ -74,5 +77,20 @@ namespace HDRProfile
             OKClicked?.Invoke(this, EventArgs.Empty);
             CloseDialog(parameter as Window);
         }
+
+        private void GetUWPAplication()
+        {
+            UIServices.SetBusyState();
+            UWPApplicationDialog uwpDialog = new UWPApplicationDialog();
+            uwpDialog.OKClicked += (o, e) =>
+            {
+                ApplicationItem = uwpDialog.ApplicationItem;
+                DisplayName = ApplicationItem.DisplayName;
+                FilePath = ApplicationItem.ApplicationFilePath;
+            };
+            if (DialogService != null)
+                DialogService.ShowDialogModal(uwpDialog);
+        }
+
     }
 }

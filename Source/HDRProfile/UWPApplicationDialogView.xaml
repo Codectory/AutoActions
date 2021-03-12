@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="HDRProfile.UWPApplicationDialogView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HDRProfile"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:UWPApplicationDialog, IsDesignTimeCreatable=False}"
+         Height="306.826" Width="376.667" MinWidth="414">
+    <UserControl.Resources>
+        <ItemsPanelTemplate x:Key="StackListViewTemplate">
+            <StackPanel/>
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="ApplicationItemTemplate" DataType="ApplicationItem">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="20" Height="20" Margin="5" Stretch="Fill"></Image>
+                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+
+    <Grid Margin="0,0,2,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListBox  Grid.Row="0" x:Name="ApplicationList"  SelectedItem="{Binding ApplicationItem}" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding UWPApplications}" ScrollViewer.VerticalScrollBarVisibility="Auto"   BorderThickness="0" Margin="0,0,0,5"/>
+
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width=" Auto"/>
+                <ColumnDefinition/>
+
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="2" Content="{x:Static local:Locale_Texts.OK}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="5"/>
+
+        </Grid>
+
+
+    </Grid>
+</UserControl>

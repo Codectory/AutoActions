@@ -34,7 +34,7 @@ namespace HDRProfile
         private HDRProfileSettings _settings;
         private MonitorManager _monitorManager;
 
-        Dictionary<ApplicationItem, ApplicationState> _lastRestartAppStates = new Dictionary<ApplicationItem, ApplicationState>();
+        Dictionary<ApplicationItem, ApplicationState> _lastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
 
         private string SettingsPath => $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings.xml";
 
@@ -160,7 +160,7 @@ namespace HDRProfile
         private void MonitorManager_AutoHDRChanged(object sender, EventArgs e)
         {
             SaveSettings();
-            SetHDRBasedOnCurrentApplication();
+            UpdateHDRModeBasedOnCurrentApplication();
         }
 
         private void TrayMenuHelper_OpenViewRequested(object sender, EventArgs e)
@@ -242,7 +242,7 @@ namespace HDRProfile
                     Logs.AddException(ex);
                 }
                 if (e.PropertyName.Equals(nameof(Settings.HDRMode)))
-                    SetHDRBasedOnCurrentApplication();
+                    UpdateHDRModeBasedOnCurrentApplication();
                 Logs.LoggingEnabled = Settings.Logging;
                 SaveSettings();
             }
@@ -316,7 +316,7 @@ namespace HDRProfile
                 MonitorManager.StartMonitoring();
                 Logs.Add($"HDR Monitoring started", false);
                 Started = true;
-                SetHDRBasedOnCurrentApplication();
+                UpdateHDRModeBasedOnCurrentApplication();
 
             }
         }
@@ -394,6 +394,7 @@ namespace HDRProfile
         private void AddAplication()
         {
             ApplicationAdder adder = new ApplicationAdder();
+            adder.DialogService = DialogService;
             adder.OKClicked += (o, e) =>
             {
                 if (!Settings.ApplicationItems.Any(pi => pi.ApplicationFilePath == adder.ApplicationItem.ApplicationFilePath))
@@ -413,11 +414,11 @@ namespace HDRProfile
         private void ProcessWatcher_RunningOrFocusedChanged(object sender, EventArgs e)
         {
             CurrentApplication = ProcessWatcher.CurrentRunningApplicationItem;
-            SetHDRBasedOnCurrentApplication();
+            UpdateHDRModeBasedOnCurrentApplication();
 
         }
 
-        private void SetHDRBasedOnCurrentApplication()
+        private void UpdateHDRModeBasedOnCurrentApplication()
         {
             lock (_accessLock)
             {
@@ -457,7 +458,8 @@ namespace HDRProfile
                                     MonitorManager.DeactivateHDR(monitor);
                         }
                     }
-                    UpdateRestartAppStates((IDictionary<ApplicationItem, ApplicationState>)ProcessWatcher.Applications, activateHDR);
+                    var currentApplications = ProcessWatcher.Applications;
+                    UpdateRestartAppStates((IDictionary<ApplicationItem, ApplicationState>)currentApplications, activateHDR);
 
                     if (MonitorManager.GlobalHDRIsActive)
                         Logs.Add($"HDR is active", false);
@@ -472,24 +474,23 @@ namespace HDRProfile
             }
         }
 
-        private void UpdateRestartAppStates(IDictionary<ApplicationItem, ApplicationState> applicationStates, bool restartIfNecessary)
+        private void UpdateRestartAppStates(IDictionary<ApplicationItem, ApplicationState> applicationStates, bool restartApps)
         {
-            Dictionary<ApplicationItem, ApplicationState> newLastStates = new Dictionary<ApplicationItem, ApplicationState>();
+            Dictionary<ApplicationItem, ApplicationState> newLastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
             foreach (var applicationState in applicationStates)
             {
-                if (!applicationState.Key.RestartProcess)
-                    continue;
-                newLastStates.Add(applicationState.Key, applicationState.Value);
-                if (restartIfNecessary)
+                newLastAppStates.Add(applicationState.Key, applicationState.Value);
+ 
+                if (restartApps)
                 {
-                    if (!_lastRestartAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None)
+                    if (!_lastAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None)
                         RestartProcess(applicationState.Key);
-                    else if (_lastRestartAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None && _lastRestartAppStates[applicationState.Key] == ApplicationState.None)
+                    else if (_lastAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None && _lastAppStates[applicationState.Key] == ApplicationState.None)
                         RestartProcess(applicationState.Key);
                 }
             }
-            _lastRestartAppStates.Clear();
-            _lastRestartAppStates = newLastStates;
+            _lastAppStates.Clear();
+            _lastAppStates = newLastAppStates;
         }
 
         private void RestartProcess(ApplicationItem application)
