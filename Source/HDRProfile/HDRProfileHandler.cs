@@ -291,8 +291,7 @@ namespace HDRProfile
                 Process process = new Process();
                 process.StartInfo = new ProcessStartInfo(application.ApplicationFilePath);
                 process.Start();
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
+                Tools.BringMainWindowToFront(process.ProcessName);
                 System.Threading.Thread.Sleep(500);
             }
             catch (Exception ex)
@@ -529,7 +528,7 @@ namespace HDRProfile
                     return;
                 }
             Process.GetProcessesByName(application.ApplicationName).ToList().ForEach(p => p.Kill());
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1500);
             Process proc = new Process();
             StartApplication(application);
         }

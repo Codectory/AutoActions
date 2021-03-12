@@ -160,7 +160,7 @@ namespace HDRProfile
                 {
                     UpdateApplications();
                     bool oldIsOneRunning = OneProcessIsRunning;
-                    bool newIsOneRunning = _applications.Any(a => a.Value == ApplicationState.Running);
+                    bool newIsOneRunning = _applications.Any(a => a.Value == ApplicationState.Running ||a.Value == ApplicationState.Focused);
                     OneProcessIsRunning = newIsOneRunning;
                     if (oldIsOneRunning != newIsOneRunning)
                     {
