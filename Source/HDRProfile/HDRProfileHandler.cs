@@ -1,6 +1,9 @@
 ﻿using CodectoryCore.Logging;
 using CodectoryCore.UI.Wpf;
 using Hardcodet.Wpf.TaskbarNotification;
+using HDRProfile.Displays;
+using HDRProfile.Info;
+using HDRProfile.Info.Github;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -30,9 +33,8 @@ namespace HDRProfile
         private ApplicationItem _currentApplication = null;
 
         private bool _hdrIsActive;
-        private static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", Assembly.GetExecutingAssembly().GetName().Version.ToString(), true);
         private HDRProfileSettings _settings;
-        private MonitorManager _monitorManager;
+        private DisplayManager _monitorManager;
 
         Dictionary<ApplicationItem, ApplicationState> _lastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
 
@@ -49,16 +51,20 @@ namespace HDRProfile
         public RelayCommand ActivateHDRCommand { get; private set; }
         public RelayCommand DeactivateHDRCommand { get; private set; }
         public RelayCommand AddApplicationCommand { get; private set; }
+        public RelayCommand ShowInfoCommand { get; private set; }
+
         public RelayCommand<ApplicationItem> RemoveApplicationCommand { get; private set; }
         public RelayCommand LoadingCommand { get; private set; }
         public RelayCommand ClosingCommand { get; private set; }
         public RelayCommand ShutdownCommand { get; private set; }
+        public RelayCommand BuyBeerCommand { get; private set; }
+
         public RelayCommand<ApplicationItem> StartApplicationCommand { get; private set; }
 
         #endregion RelayCommands
 
         public HDRProfileSettings Settings { get => _settings; set { _settings = value; OnPropertyChanged(); } }
-        public MonitorManager MonitorManager { get => _monitorManager; set { _monitorManager = value; OnPropertyChanged(); } }
+        public DisplayManager MonitorManager { get => _monitorManager; set { _monitorManager = value; OnPropertyChanged(); } }
 
         public bool Initialized { get; private set; } = false;
         public bool ShowView { get => _showView; set { _showView = value; OnPropertyChanged(); } }
@@ -66,28 +72,19 @@ namespace HDRProfile
         public ApplicationItem CurrentApplication { get => _currentApplication; set { _currentApplication = value; OnPropertyChanged(); } }
 
         public bool HDRIsActive { get => _hdrIsActive; set { _hdrIsActive = value; OnPropertyChanged(); } }
-        public string Version
+        public Version Version
         {
             get
             {
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                string version = assembly.GetName().Version.ToString();
-                version = version.Substring(0, version.LastIndexOf('.'));
-                return version;
+                return Tools.ApplicationVersion;
             }
         }
 
 
         public HDRProfileHandler()
         {
-            //NightLightManager nightLightManager = new NightLightManager();
-            //bool value = nightLightManager.GetNightLightState();
-            //nightLightManager.SetNightLightState(false);
-            //value = nightLightManager.GetNightLightState();
-            //nightLightManager.SetNightLightState(false);
-
             Logs.LoggingEnabled = true;
-             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+            //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Initialize();
         }
 
@@ -108,29 +105,53 @@ namespace HDRProfile
             {
                 if (Initialized)
                     return;
-                Logs.Add("Initializing...", false);
+                Tools.Logs.Add("Initializing...", false);
                 ProcessWatcher = new ProcessWatcher();
                 ProcessWatcher.OneProcessIsRunningChanged += ProcessWatcher_RunningOrFocusedChanged;
                 ProcessWatcher.OneProcessIsFocusedChanged += ProcessWatcher_RunningOrFocusedChanged;
 
                 LoadSettings();
+                if (Settings.CheckForNewVersion)
+                    CheckForNewVersion();
                 InitializeMonitorManager();
                 SaveSettings();
                 InitializeTrayMenuHelper();
                 CreateRelayCommands();
                 ShowView = !Settings.StartMinimizedToTray;
                 Initialized = true;
-                Logs.Add("Initialized", false);
+                Tools.Logs.Add("Initialized", false);
                 Start();
-                Logs.Add($"Starting process watcher...", false);
+                Tools.Logs.Add($"Starting process watcher...", false);
                 ProcessWatcher.Start();
-                Logs.Add($"Process watcher started", false);
+                Tools.Logs.Add($"Process watcher started", false);
 
             }
         }
 
-        private void LogSystem()
+        private void CheckForNewVersion()
         {
+            Task.Run(() =>
+            {
+                Tools.Logs.Add($"Checking for new version...", false);
+
+                GitHubData data = GitHubIntegration.GetGitHubData();
+                Version localVersion = Tools.ApplicationVersion;
+                int versionComparison = localVersion.CompareTo(data.CurrentVersion);
+                if (versionComparison < 0)
+                {
+                    Tools.Logs.Add($"Newer version availabe.", false);
+
+                    Application.Current.Dispatcher.Invoke(
+                      (Action)(() =>
+                      {
+                          ShowInfo(data);
+                      }));
+
+                }
+                else
+                    Tools.Logs.Add($"Local version is up to date.", false);
+
+            });
         }
 
 
@@ -145,16 +166,16 @@ namespace HDRProfile
 
         private void InitializeMonitorManager()
         {
-            MonitorManager = new MonitorManager(Settings);
-            MonitorManager.HDRIsActiveChanged += MonitorManager_HDRIsActiveChanged;
+            MonitorManager = new DisplayManager(Settings);
+            DisplayManager.HDRIsActiveChanged += MonitorManager_HDRIsActiveChanged;
             MonitorManager.AutoHDRChanged += MonitorManager_AutoHDRChanged;
-            HDRIsActive = MonitorManager.GlobalHDRIsActive;
+            HDRIsActive = DisplayManager.GlobalHDRIsActive;
 
         }
 
         private void MonitorManager_HDRIsActiveChanged(object sender, EventArgs e)
         {
-            HDRIsActive = MonitorManager.GlobalHDRIsActive;
+            HDRIsActive = DisplayManager.GlobalHDRIsActive;
         }
 
         private void MonitorManager_AutoHDRChanged(object sender, EventArgs e)
@@ -179,12 +200,12 @@ namespace HDRProfile
             {
                 if (File.Exists(SettingsPath))
                 {
-                    Logs.Add("Loading settings...", false);
+                    Tools.Logs.Add("Loading settings...", false);
                     Settings = HDRProfileSettings.ReadSettings(SettingsPath);
                 }
                 else
                 {
-                    Logs.Add("Creating settings file", false);
+                    Tools.Logs.Add("Creating settings file", false);
 
                     Settings = new HDRProfileSettings();
                     SaveSettings();
@@ -194,13 +215,13 @@ namespace HDRProfile
             {
                 string backupFile = $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xml.bak";
                 File.Move(SettingsPath, backupFile);
-                Logs.Add($"Created backup of invalid settings file: {backupFile}", false);
+                Tools.Logs.Add($"Created backup of invalid settings file: {backupFile}", false);
                 File.Delete(SettingsPath);
-                Logs.Add("Failed to load settings", false);
-                Logs.AddException(ex);
+                Tools.Logs.Add("Failed to load settings", false);
+                Tools.Logs.AddException(ex);
                 Settings = new HDRProfileSettings();
                 SaveSettings();
-                Logs.Add("Created new settings file", false);
+                Tools.Logs.Add("Created new settings file", false);
             }
 
             Settings.ApplicationItems.CollectionChanged += ApplicationItems_CollectionChanged;
@@ -211,7 +232,7 @@ namespace HDRProfile
                 ProcessWatcher.AddProcess(application);
                 application.PropertyChanged += ApplicationItem_PropertyChanged;
             }
-            Logs.Add("Settings loaded", false);
+            Tools.Logs.Add("Settings loaded", false);
         }
 
 
@@ -224,6 +245,8 @@ namespace HDRProfile
             ClosingCommand = new RelayCommand(Closing);
             ShutdownCommand = new RelayCommand(Shutdown);
             StartApplicationCommand = new RelayCommand<ApplicationItem>(StartApplication);
+            ShowInfoCommand = new RelayCommand(ShowInfo);
+            BuyBeerCommand = new RelayCommand(BuyBeer);
         }
 
         #endregion Initialization
@@ -239,7 +262,7 @@ namespace HDRProfile
                 }
                 catch (Exception ex)
                 {
-                    Logs.AddException(ex);
+                    Tools.Logs.AddException(ex);
                 }
                 if (e.PropertyName.Equals(nameof(Settings.HDRMode)))
                     UpdateHDRModeBasedOnCurrentApplication();
@@ -252,7 +275,7 @@ namespace HDRProfile
 
         private void TrayMenu_TrayLeftMouseDown(object sender, RoutedEventArgs e)
         {
-            Logs.Add("Open app from Tray", false);
+            Tools.Logs.Add("Open app from Tray", false);
             ShowView = true;
 
         }
@@ -260,7 +283,7 @@ namespace HDRProfile
 
         private void StartApplication(ApplicationItem application)
         {
-            Logs.Add($"Start application {application.ApplicationName}", false);
+            Tools.Logs.Add($"Start application {application.ApplicationName}", false);
             try
             {
                 MonitorManager.ActivateHDR();
@@ -274,7 +297,7 @@ namespace HDRProfile
             }
             catch (Exception ex)
             {
-                Logs.AddException(ex);
+                Tools.Logs.AddException(ex);
                 throw ex;
             }
         }
@@ -283,26 +306,26 @@ namespace HDRProfile
         {
             if (Settings.CloseToTray)
             {
-                Logs.Add($"Minimizing to tray...", false);
-              //  TrayMenuHelper.SwitchTrayIcon(true);
+                Tools.Logs.Add($"Minimizing to tray...", false);
+                //  TrayMenuHelper.SwitchTrayIcon(true);
             }
             else
             {
                 TrayMenuHelper.SwitchTrayIcon(false);
 
-                Logs.Add($"Shutting down...", false);
+                Tools.Logs.Add($"Shutting down...", false);
                 Shutdown();
             }
         }
 
         private void Shutdown()
         {
-            Logs.Add($"Stopping process watcher...", false);
+            Tools.Logs.Add($"Stopping process watcher...", false);
             ProcessWatcher.OneProcessIsRunningChanged -= ProcessWatcher_RunningOrFocusedChanged;
             ProcessWatcher.OneProcessIsFocusedChanged -= ProcessWatcher_RunningOrFocusedChanged;
             ProcessWatcher.Stop();
             Stop();
-          //  TrayMenuHelper.SwitchTrayIcon(false);
+            //  TrayMenuHelper.SwitchTrayIcon(false);
             Application.Current.Shutdown();
         }
 
@@ -312,9 +335,9 @@ namespace HDRProfile
             {
                 if (Started)
                     return;
-                Logs.Add($"Starting HDR Monitoring...", false);
+                Tools.Logs.Add($"Starting HDR Monitoring...", false);
                 MonitorManager.StartMonitoring();
-                Logs.Add($"HDR Monitoring started", false);
+                Tools.Logs.Add($"HDR Monitoring started", false);
                 Started = true;
                 UpdateHDRModeBasedOnCurrentApplication();
 
@@ -327,11 +350,11 @@ namespace HDRProfile
             {
                 if (!Started)
                     return;
-                Logs.Add($"Stopping HDR Monitoring...", false);
+                Tools.Logs.Add($"Stopping HDR Monitoring...", false);
                 MonitorManager.StopMonitoring();
-                Logs.Add($"HDR Monitoring stopped", false);
+                Tools.Logs.Add($"HDR Monitoring stopped", false);
                 Started = false;
-                Logs.Add($"Process watcher stopped", false);
+                Tools.Logs.Add($"Process watcher stopped", false);
 
             }
 
@@ -349,7 +372,7 @@ namespace HDRProfile
                     case NotifyCollectionChangedAction.Add:
                         foreach (var applicationItem in e.NewItems)
                         {
-                            Logs.Add($"Application added: {((ApplicationItem)applicationItem).ApplicationName}", false);
+                            Tools.Logs.Add($"Application added: {((ApplicationItem)applicationItem).ApplicationName}", false);
                             ProcessWatcher.AddProcess(((ApplicationItem)applicationItem));
                             ((ApplicationItem)applicationItem).PropertyChanged += ApplicationItem_PropertyChanged;
                         }
@@ -358,7 +381,7 @@ namespace HDRProfile
                     case NotifyCollectionChangedAction.Remove:
                         foreach (var applicationItem in e.OldItems)
                         {
-                            Logs.Add($"Application removed: {((ApplicationItem)applicationItem).ApplicationName}", false);
+                            Tools.Logs.Add($"Application removed: {((ApplicationItem)applicationItem).ApplicationName}", false);
                             ProcessWatcher.RemoveProcess(((ApplicationItem)applicationItem));
                             ((ApplicationItem)applicationItem).PropertyChanged -= ApplicationItem_PropertyChanged;
 
@@ -373,16 +396,16 @@ namespace HDRProfile
 
         private void SaveSettings()
         {
-            Logs.Add("Saving settings..", false);
+            Tools.Logs.Add("Saving settings..", false);
             try
             {
                 Settings.SaveSettings(SettingsPath);
-                Logs.Add("Settings saved", false);
+                Tools.Logs.Add("Settings saved", false);
 
             }
             catch (Exception ex)
             {
-                Logs.AddException(ex);
+                Tools.Logs.AddException(ex);
             }
         }
 
@@ -403,6 +426,7 @@ namespace HDRProfile
             if (DialogService != null)
                 DialogService.ShowDialogModal(adder);
         }
+
 
         private void RemoveApplication(ApplicationItem process)
         {
@@ -442,33 +466,33 @@ namespace HDRProfile
                         return;
                     if (activateHDR)
                     {
-                        Logs.Add($"Activating HDR...", false);
+                        Tools.Logs.Add($"Activating HDR...", false);
                         MonitorManager.ActivateHDR();
 
                     }
-                    else if (MonitorManager.GlobalHDRIsActive && Settings.HDRMode != HDRActivationMode.None)
+                    else if (DisplayManager.GlobalHDRIsActive && Settings.HDRMode != HDRActivationMode.None)
                     {
-                        Logs.Add($"Deactivating HDR...", false);
+                        Tools.Logs.Add($"Deactivating HDR...", false);
                         if (Settings.GlobalAutoHDR)
                             MonitorManager.DeactivateHDR();
                         else
                         {
-                            foreach (Monitor monitor in Settings.Monitors)
-                                if (monitor.AutoHDR)
-                                    MonitorManager.DeactivateHDR(monitor);
+                            foreach (Display display in Settings.Monitors)
+                                if (display.AutoHDR)
+                                    DisplayManager.DeactivateHDR(display);
                         }
                     }
                     var currentApplications = ProcessWatcher.Applications;
                     UpdateRestartAppStates((IDictionary<ApplicationItem, ApplicationState>)currentApplications, activateHDR);
 
-                    if (MonitorManager.GlobalHDRIsActive)
-                        Logs.Add($"HDR is active", false);
+                    if (DisplayManager.GlobalHDRIsActive)
+                        Tools.Logs.Add($"HDR is active", false);
                     else
-                        Logs.Add($"HDR is inactive", false);
+                        Tools.Logs.Add($"HDR is inactive", false);
                 }
                 catch (Exception ex)
                 {
-                    Logs.AddException(ex);
+                    Tools.Logs.AddException(ex);
                     throw ex;
                 }
             }
@@ -477,10 +501,11 @@ namespace HDRProfile
         private void UpdateRestartAppStates(IDictionary<ApplicationItem, ApplicationState> applicationStates, bool restartApps)
         {
             Dictionary<ApplicationItem, ApplicationState> newLastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
+            Tools.Logs.Add($"Updating application states...", false);
             foreach (var applicationState in applicationStates)
             {
                 newLastAppStates.Add(applicationState.Key, applicationState.Value);
- 
+
                 if (restartApps)
                 {
                     if (!_lastAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None)
@@ -495,11 +520,11 @@ namespace HDRProfile
 
         private void RestartProcess(ApplicationItem application)
         {
-            Logs.Add($"Restarting application {application.ApplicationName}", false);
+            Tools.Logs.Add($"Restarting application {application.ApplicationName}", false);
             foreach (Process process in Process.GetProcessesByName(application.ApplicationName).ToList())
                 if (process.StartTime < Process.GetCurrentProcess().StartTime)
                 {
-                    Logs.Add($"Won't restart application {application.ApplicationName} as it was running before {Locale_Texts.HDRProfile}.", false);
+                    Tools.Logs.Add($"Won't restart application {application.ApplicationName} as it was running before {Locale_Texts.HDRProfile}.", false);
 
                     return;
                 }
@@ -509,8 +534,28 @@ namespace HDRProfile
             StartApplication(application);
         }
 
-        #endregion Process handling
+        #endregion Process handling 
 
+
+        private void ShowInfo()
+        {
+            ShowInfo(null);
+        }
+
+        private void ShowInfo(GitHubData data)
+        {
+            HDRProfileInfo info;
+            if (data == null)
+                info = new HDRProfileInfo();
+            else
+                info = new HDRProfileInfo(data);
+            if (DialogService != null)
+                DialogService.ShowDialogModal(info, new System.Drawing.Size(450,650));
+        }
+
+        private void BuyBeer()
+        {
+            Process.Start(new ProcessStartInfo((string)Application.Current.Resources["DonateLink"]));
+        }
     }
-
 }

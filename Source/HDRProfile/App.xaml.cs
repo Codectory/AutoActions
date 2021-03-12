@@ -16,23 +16,29 @@ namespace HDRProfile
 
     public partial class App : Application
     {
-        static Mutex mutex = new Mutex(true, "{2846416C-610B-4A6B-A31C-A4AA6826E9BE}");
-        protected override void OnStartup(StartupEventArgs e)
-        {
+        static Mutex mutex;
 
+        [STAThread]
+        public static void Main()
+         {
+            bool createNew = false;
+            mutex = new Mutex(true, "{2846416C-610B-4A6B-A31C-A4AA6826E9BE}", out createNew);
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
-                base.OnStartup(e);
+                var application = new App();
+                application.InitializeComponent();
+                application.Run();
             }
             else
             {
                 MessageBox.Show(Locale_Texts.AlreadyRunning);
-                Application.Current.Shutdown();
             }
         }
-        private void Application_Exit(object sender, ExitEventArgs e)
+
+        protected override void OnExit(ExitEventArgs e)
         {
-            mutex.ReleaseMutex();
+            if (mutex.WaitOne(TimeSpan.Zero, true))
+                mutex.ReleaseMutex();
 
         }
     }

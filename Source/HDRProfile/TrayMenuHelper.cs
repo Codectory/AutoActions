@@ -1,4 +1,5 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
+using HDRProfile.Displays;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -26,7 +27,7 @@ namespace HDRProfile
         public event EventHandler<string> NewLog;
 
 
-        public void Initialize(MonitorManager monitorManager)
+        public void Initialize(DisplayManager monitorManager)
         {
             if (Initialized)
                 return;
@@ -53,13 +54,13 @@ namespace HDRProfile
                 };
                 _openButton.Click += (o, e) => OpenViewRequested?.Invoke(this, EventArgs.Empty);
                 _closeButton.Click += (o, e) => CloseApplicationRequested?.Invoke(this, EventArgs.Empty);
-                _hdrSwitchButton.Click += (o, e) => { if (MonitorManager.GlobalHDRIsActive) monitorManager.DeactivateHDR(); else monitorManager.ActivateHDR(); };
+                _hdrSwitchButton.Click += (o, e) => { if (DisplayManager.GlobalHDRIsActive) monitorManager.DeactivateHDR(); else monitorManager.ActivateHDR(); };
                 contextMenu.Items.Add(_openButton);
                 contextMenu.Items.Add(_hdrSwitchButton);
                 contextMenu.Items.Add(_closeButton);
                 _trayMenu.ContextMenu = contextMenu;
                 _trayMenu.TrayLeftMouseDown += TrayMenu_TrayLeftMouseDown;
-                MonitorManager.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
+                DisplayManager.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
                 UpdateMenuButtons();
                 CallNewLog("Tray menu initialized");
 
@@ -80,7 +81,7 @@ namespace HDRProfile
             Application.Current.Dispatcher.Invoke(
             (Action)(() =>
             {
-                _hdrSwitchButton.Header = MonitorManager.GlobalHDRIsActive ? Locale_Texts.DeactivateHDR : Locale_Texts.ActivateHDR;
+                _hdrSwitchButton.Header = DisplayManager.GlobalHDRIsActive ? Locale_Texts.DeactivateHDR : Locale_Texts.ActivateHDR;
             }));
         }
 

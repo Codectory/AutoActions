@@ -142,6 +142,24 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Changelog ähnelt.
+        /// </summary>
+        public static string Changelog {
+            get {
+                return ResourceManager.GetString("Changelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Check for new version on startup ähnelt.
+        /// </summary>
+        public static string CheckForNewVersion {
+            get {
+                return ResourceManager.GetString("CheckForNewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Choose application ähnelt.
         /// </summary>
         public static string ChooseApplication {
@@ -205,6 +223,24 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Download from GitHub ähnelt.
+        /// </summary>
+        public static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Download ähnelt.
+        /// </summary>
+        public static string DownloadNewestVersion {
+            get {
+                return ResourceManager.GetString("DownloadNewestVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
         /// </summary>
         public static string Error {
@@ -228,6 +264,15 @@ namespace HDRProfile {
         public static string FilePath {
             get {
                 return ResourceManager.GetString("FilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die GitHub ähnelt.
+        /// </summary>
+        public static string GitHub {
+            get {
+                return ResourceManager.GetString("GitHub", resourceCulture);
             }
         }
         
@@ -282,6 +327,15 @@ namespace HDRProfile {
         public static string Info {
             get {
                 return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Local ähnelt.
+        /// </summary>
+        public static string Local {
+            get {
+                return ResourceManager.GetString("Local", resourceCulture);
             }
         }
         
@@ -350,6 +404,15 @@ namespace HDRProfile {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Online ähnelt.
+        /// </summary>
+        public static string Online {
+            get {
+                return ResourceManager.GetString("Online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Open ähnelt.
         /// </summary>
         public static string Open {
@@ -364,6 +427,15 @@ namespace HDRProfile {
         public static string RefreshRate {
             get {
                 return ResourceManager.GetString("RefreshRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Release date ähnelt.
+        /// </summary>
+        public static string ReleaseDate {
+            get {
+                return ResourceManager.GetString("ReleaseDate", resourceCulture);
             }
         }
         
@@ -436,6 +508,15 @@ namespace HDRProfile {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Version ähnelt.
+        /// </summary>
+        public static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
         

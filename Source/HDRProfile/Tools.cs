@@ -1,6 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using CodectoryCore.Logging;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace HDRProfile
 {
@@ -31,6 +33,21 @@ namespace HDRProfile
             }
             return ret;
         }
+        public static Version ApplicationVersion
+        {
+            get
+            {
+                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                string versionString = assembly.GetName().Version.ToString();
+                Version version = new Version(versionString.Substring(0, versionString.LastIndexOf('.')));
+                return version;
+            }
+        }
+
+        public static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", Assembly.GetExecutingAssembly().GetName().Version.ToString(), true);
+
     }
+
+
 }
 

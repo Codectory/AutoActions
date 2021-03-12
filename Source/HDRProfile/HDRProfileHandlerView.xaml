@@ -7,6 +7,7 @@
         xmlns:p="clr-namespace:HDRProfile.Properties"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:HDRProfile"
+        xmlns:displays="clr-namespace:HDRProfile.Displays"
         mc:Ignorable="d"
         Title="HDR Profile" Name="MainWindow" MinHeight="480" MinWidth="640" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
         Height="362"
@@ -149,7 +150,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="{x:Static local:Locale_Texts.Monitors}" >
-                <local:MonitorManagerView   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}"  IsEnabled="{Binding Settings.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}"/>
+                <displays:DisplayManagerView   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}"  IsEnabled="{Binding Settings.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}"/>
             </TabItem>
 
             <TabItem Header="{x:Static local:Locale_Texts.Settings}">
@@ -168,7 +169,7 @@
 
             </TabItem>
         </TabControl>
-        <Grid Margin="10,0" Height="20" VerticalAlignment="Bottom" >
+        <Grid  Height="20" VerticalAlignment="Bottom" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -177,32 +178,32 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Width="Auto" Margin="0,0,5,0"  Grid.Row="1"  Grid.Column="0"  Height="Auto"  HorizontalAlignment="Right" VerticalAlignment="Top"  />
+            <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Width="Auto" Margin="5,0"  Grid.Row="1"  Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"  />
 
-            <TextBlock  Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Top" >
-             <Hyperlink  NavigateUri="{Binding Mode=OneWay, Source={StaticResource InfoLink}}" RequestNavigate="Hyperlink_RequestNavigate">
-                 <TextBlock  Text="{x:Static local:Locale_Texts.Info}" Width="Auto" HorizontalAlignment="Center" TextDecorations="{x:Null}" VerticalAlignment="Bottom" >
-                        <TextBlock.Foreground>
-                            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                        </TextBlock.Foreground>
-                 </TextBlock>
-             </Hyperlink>
-            </TextBlock>
-            <TextBlock  Width="Auto"  Grid.Row="1"  Grid.Column="2" Height="Auto"  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,0" >
-                 <Hyperlink  NavigateUri="{Binding Mode=OneWay, Source={StaticResource DonateLink}}" RequestNavigate="Hyperlink_RequestNavigate">
-                     <TextBlock Text="{x:Static local:Locale_Texts.BuyBeer}"  Width="Auto" HorizontalAlignment="Left" TextDecorations="{x:Null}" VerticalAlignment="Bottom">
-                        <TextBlock.Foreground>
-                            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                        </TextBlock.Foreground>
-                     </TextBlock>
-                 </Hyperlink>
-            </TextBlock>
+            <Button  Grid.Column="1" Padding="0"  Command="{Binding ShowInfoCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
+                <Button.Resources>
+                    <Style TargetType="Button"/>
+                </Button.Resources>
+                <TextBlock  Text="{x:Static local:Locale_Texts.Info}" Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+            </Button>
+            <Button  Grid.Column="2" Padding="0"  Command="{Binding BuyBeerCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
+                <Button.Resources>
+                    <Style TargetType="Button"/>
+                </Button.Resources>
+                <TextBlock  Text="{x:Static local:Locale_Texts.BuyBeer}" Width="Auto" Margin="0"   Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+            </Button>
         </Grid>
-
-
     </Grid>
 
 </corewpf:MainWindowBase>

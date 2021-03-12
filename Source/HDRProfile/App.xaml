@@ -2,17 +2,18 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:HDRProfile"
+             xmlns:uwp="clr-namespace:HDRProfile.UWP"
+             xmlns:info="clr-namespace:HDRProfile.Info"
              xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:corewpf="clr-namespace:CodectoryCore.UI.Wpf;assembly=CodectoryCore.UI.Wpf"
-             Exit="Application_Exit"
              StartupUri="HDRProfileHandlerView.xaml">
     
     <Application.Resources>
 
         <system:String x:Key="DonateLink">https://paypal.me/pools/c/8vksshrMln</system:String>
-        <system:String x:Key="InfoLink">https://github.com/Codectory/HDR-Profile</system:String>
+        <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/HDR-Profile</system:String>
         <Color x:Key="AccentColor">#5d9ac7</Color>
         <Color x:Key="HighlightedColor">#6fb3e3</Color>
         <Color x:Key="ButtonClickedColor">#396585</Color>
@@ -176,8 +177,11 @@
         <DataTemplate DataType="{x:Type local:ApplicationAdder}">
             <local:ApplicationAdderView></local:ApplicationAdderView>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type local:UWPApplicationDialog}">
-            <local:UWPApplicationDialogView></local:UWPApplicationDialogView>
+        <DataTemplate DataType="{x:Type uwp:UWPApplicationDialog}">
+            <uwp:UWPApplicationDialogView></uwp:UWPApplicationDialogView>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type info:HDRProfileInfo}">
+            <info:HDRProfileInfoView></info:HDRProfileInfoView>
         </DataTemplate>
     </Application.Resources>
 

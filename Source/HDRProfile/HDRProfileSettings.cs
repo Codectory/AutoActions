@@ -1,4 +1,5 @@
 ﻿using CodectoryCore.UI.Wpf;
+using HDRProfile.Displays;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,10 +22,11 @@ namespace HDRProfile
         private bool _autoStart;
         private bool _startMinimizedToTray;
         private bool _closeToTray;
+        private bool _checkForNewVersion = true;
         private HDRActivationMode _hdrMode;
         readonly object _audioDevicesLock = new object();
         private ObservableCollection<ApplicationItem> _applicationItems;
-        private ObservableCollection<Monitor> _monitors;
+        private ObservableCollection<Display> _monitors;
 
 
 
@@ -45,6 +47,9 @@ namespace HDRProfile
 
 
         [DataMember]
+        public bool CheckForNewVersion { get => _checkForNewVersion; set { _checkForNewVersion = value; OnPropertyChanged(); } }
+
+        [DataMember]
         public HDRActivationMode HDRMode { get => _hdrMode; set { _hdrMode = value; OnPropertyChanged(); } }
 
         [DataMember]
@@ -52,13 +57,13 @@ namespace HDRProfile
 
 
         [DataMember]
-        public ObservableCollection<Monitor> Monitors { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
+        public ObservableCollection<Display> Monitors { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
 
 
         public HDRProfileSettings()
         {
             ApplicationItems = new ObservableCollection<ApplicationItem>();
-            Monitors = new ObservableCollection<Monitor>();
+            Monitors = new ObservableCollection<Display>();
         }
 
 

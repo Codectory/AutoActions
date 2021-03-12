@@ -144,6 +144,12 @@
   <data name="BuyBeer" xml:space="preserve">
     <value>Kauf mir ein Bier!</value>
   </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>Changelog</value>
+  </data>
+  <data name="CheckForNewVersion" xml:space="preserve">
+    <value>Beim Start auf neuere Version prüfen</value>
+  </data>
   <data name="ChooseApplication" xml:space="preserve">
     <value>Anwendungen wählen</value>
   </data>
@@ -164,6 +170,12 @@
   </data>
   <data name="DisplayName" xml:space="preserve">
     <value>Anzeigename</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Herunterladen von GitHub</value>
+  </data>
+  <data name="DownloadNewestVersion" xml:space="preserve">
+    <value>Download</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
@@ -192,6 +204,9 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="Local" xml:space="preserve">
+    <value>Lokal</value>
+  </data>
   <data name="Logging" xml:space="preserve">
     <value>Logging</value>
   </data>
@@ -210,11 +225,17 @@
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
   <data name="Open" xml:space="preserve">
     <value>Öffnen</value>
   </data>
   <data name="RefreshRate" xml:space="preserve">
     <value>Bildwiederholrate [Hz]</value>
+  </data>
+  <data name="ReleaseDate" xml:space="preserve">
+    <value>Veröffentlichung</value>
   </data>
   <data name="RemoveApplication" xml:space="preserve">
     <value>Anwendung entfernen</value>
@@ -239,6 +260,9 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
   </data>
   <data name="VolumeSyncDevices" xml:space="preserve">
     <value>Lautstärkesynchronisierung</value>

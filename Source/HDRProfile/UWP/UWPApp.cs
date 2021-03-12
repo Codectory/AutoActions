@@ -24,15 +24,26 @@ namespace HDRProfile.UWP
 
         private void ReadAppxManifest()
         {
+
+
             string appxManifestPath = Path.Combine(InstallLocation, "AppxManifest.xml");
-            using (StreamReader reader = new StreamReader(appxManifestPath))
+            Tools.Logs.Add($"Retrieving data of UWP app ({appxManifestPath})",false);
+            try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(AppxManifest));
-                AppxManifest appxManifest = (AppxManifest)serializer.Deserialize(reader);
-                Name = ((XmlNode[])appxManifest.Properties.DisplayName)[0].Value;
-                Executable = string.Empty;
-                if (appxManifest.Applications != null && appxManifest.Applications.Application != null)
-                    Executable = appxManifest.Applications.Application.Executable;
+                using (StreamReader reader = new StreamReader(appxManifestPath))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(AppxManifest));
+                    AppxManifest appxManifest = (AppxManifest)serializer.Deserialize(reader);
+                    Name = ((XmlNode[])appxManifest.Properties.DisplayName)[0].Value;
+                    Executable = string.Empty;
+                    if (appxManifest.Applications != null && appxManifest.Applications.Application != null)
+                        Executable = appxManifest.Applications.Application.Executable;
+                }
+            }
+            catch (Exception ex)
+            {
+                Tools.Logs.Add($"Error while  retrieving UWP app ({appxManifestPath}). Exception: {ex}",false);
+                throw ex;
             }
         }
 
