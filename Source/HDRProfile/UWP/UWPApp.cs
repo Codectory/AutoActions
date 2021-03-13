@@ -11,9 +11,9 @@ namespace HDRProfile.UWP
 {
     public class UWPApp
     {
-        public string Name { get; private set; }
-        public string Executable { get; private set; }
-        public string InstallLocation { get; private set; }
+        public string Name { get; private set; } = string.Empty;
+        public string Executable { get; private set; } = string.Empty;
+        public string InstallLocation { get; private set; } = string.Empty;
 
 
         public UWPApp(string installLocation)
@@ -42,8 +42,10 @@ namespace HDRProfile.UWP
             }
             catch (Exception ex)
             {
-                Tools.Logs.Add($"Error while  retrieving UWP app ({appxManifestPath}). Exception: {ex}",false);
-                throw ex;
+                string manifestContent = string.Empty;
+                if (File.Exists(appxManifestPath))
+                    manifestContent = File.ReadAllText(appxManifestPath);
+                Tools.Logs.Add($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.\r\n\r\n Exception: {ex}",false);
             }
         }
 
