@@ -45,7 +45,7 @@ namespace HDRProfile.UWP
                 string manifestContent = string.Empty;
                 if (File.Exists(appxManifestPath))
                     manifestContent = File.ReadAllText(appxManifestPath);
-                Tools.Logs.Add($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.\r\n\r\n Exception: {ex}",false);
+                Tools.Logs.AddException($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.",ex);
             }
         }
 

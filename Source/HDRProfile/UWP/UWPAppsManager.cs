@@ -35,7 +35,7 @@ namespace HDRProfile.UWP
             }
             catch (Exception ex)
             {
-                Tools.Logs.Add($"Powershell query failed. {ex}", false);
+                Tools.Logs.AddException($"Powershell query failed.",ex);
 
                 throw;
             }

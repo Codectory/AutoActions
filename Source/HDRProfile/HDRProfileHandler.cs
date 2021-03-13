@@ -505,7 +505,7 @@ namespace HDRProfile
             {
                 newLastAppStates.Add(applicationState.Key, applicationState.Value);
 
-                if (restartApps)
+                if (applicationState.Key.RestartProcess &&  restartApps)
                 {
                     if (!_lastAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None)
                         RestartProcess(applicationState.Key);
@@ -519,18 +519,26 @@ namespace HDRProfile
 
         private void RestartProcess(ApplicationItem application)
         {
-            Tools.Logs.Add($"Restarting application {application.ApplicationName}", false);
-            foreach (Process process in Process.GetProcessesByName(application.ApplicationName).ToList())
-                if (process.StartTime < Process.GetCurrentProcess().StartTime)
-                {
-                    Tools.Logs.Add($"Won't restart application {application.ApplicationName} as it was running before {Locale_Texts.HDRProfile}.", false);
+            try
+            {
+                Tools.Logs.Add($"Restarting application {application.ApplicationName}", false);
+                foreach (Process process in Process.GetProcessesByName(application.ApplicationName).ToList())
+                    if (process.StartTime < Process.GetCurrentProcess().StartTime)
+                    {
+                        Tools.Logs.Add($"Won't restart application {application.ApplicationName} as it was running before {Locale_Texts.HDRProfile}.", false);
 
-                    return;
-                }
-            Process.GetProcessesByName(application.ApplicationName).ToList().ForEach(p => p.Kill());
-            System.Threading.Thread.Sleep(1500);
-            Process proc = new Process();
-            StartApplication(application);
+                        return;
+                    }
+                Process.GetProcessesByName(application.ApplicationName).ToList().ForEach(p => p.Kill());
+                System.Threading.Thread.Sleep(1500);
+                Process proc = new Process();
+                StartApplication(application);
+            }
+            catch (Exception ex)
+            {
+                Tools.Logs.AddException($"Failed to restart process {application.DisplayName} ({application.ApplicationFilePath}).", ex);
+                throw;
+            }
         }
 
         #endregion Process handling 
