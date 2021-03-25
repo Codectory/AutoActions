@@ -1,12 +1,10 @@
 # AutoHDR
  
-You can add applications to AutoHDR to automatically activate HDR in Windows when one of hte added processes is running.
+You can add applications to AutoHDR to automatically activate HDR in Windows when one of hthe added application is running.
 
 If you choose "Focused" HDR will be activated when one of the added application is in focus and will deactivate HDR, when none of the added app is in focus.
 
-Running mode works the same, but as the name says, it is not neccessary for the application to be in focus.
-
-For the moment, the tool is only looking for the process name and not the location of the file.
+Running mode works the same way, but as the name says, it is not neccessary for the application to be in focus.
 
 **Features:**
 
