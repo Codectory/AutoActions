@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace HDRProfile.UWP
+namespace AutoHDR.UWP
 {
     public class UWPApp
     {
@@ -15,19 +16,30 @@ namespace HDRProfile.UWP
         public string Executable { get; private set; } = string.Empty;
         public string InstallLocation { get; private set; } = string.Empty;
 
+        public string StartArguments { get; private set; } = string.Empty;
 
-        public UWPApp(string installLocation)
+
+
+
+        public UWPApp(string installLocation, bool isBundle)
         {
             InstallLocation = installLocation;
-            ReadAppxManifest();
+            ReadAppxManifest(isBundle);
         }
 
-        private void ReadAppxManifest()
+        private void ReadAppxManifest(bool isBundle)
         {
-
-
-            string appxManifestPath = Path.Combine(InstallLocation, "AppxManifest.xml");
-            Tools.Logs.Add($"Retrieving data of UWP app ({appxManifestPath})",false);
+            string appxManifestPath;
+            if (isBundle)
+            {
+                appxManifestPath = @"AppxMetadata\AppxBundleManifest.xml";
+            }
+            else
+            {
+                appxManifestPath = "AppxManifest.xml";
+            }
+            appxManifestPath = Path.Combine(InstallLocation, appxManifestPath);
+            Tools.Logs.Add($"Retrieving data of UWP app ({appxManifestPath})", false);
             try
             {
                 using (StreamReader reader = new StreamReader(appxManifestPath))
@@ -45,7 +57,7 @@ namespace HDRProfile.UWP
                 string manifestContent = string.Empty;
                 if (File.Exists(appxManifestPath))
                     manifestContent = File.ReadAllText(appxManifestPath);
-                Tools.Logs.AddException($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.",ex);
+                Tools.Logs.AddException($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.", ex);
             }
         }
 

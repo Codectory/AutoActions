@@ -1,5 +1,5 @@
 ﻿using CodectoryCore.UI.Wpf;
-using HDRProfile.Displays;
+using AutoHDR.Displays;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,8 +10,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Windows.Foundation.Metadata;
 
-namespace HDRProfile
+namespace AutoHDR
 {
     [DataContract]
     public class HDRProfileSettings : BaseViewModel
@@ -81,7 +82,6 @@ namespace HDRProfile
 
     public static class HDRProfileHandlerExtension
     {
-
         public static void SaveSettings(this HDRProfileSettings setting, string path)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(HDRProfileSettings));

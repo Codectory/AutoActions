@@ -7,13 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace HDRProfile
+namespace AutoHDR
 {
     [ValueConversion(typeof(Enum), typeof(string))]
 
     public class EnumLocaleConverter : IValueConverter
     {
-        private ResourceManager ResourceManager => Locale_Enums.ResourceManager;
+        private ResourceManager ResourceManager => ProjectResources.Locale_Enums.ResourceManager;
 
          
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

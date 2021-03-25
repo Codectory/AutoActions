@@ -13,7 +13,7 @@ using System.Text;
 
 using System.Threading;
 
-namespace HDRProfile.Displays
+namespace AutoHDR.Displays
 {
 
     [Flags()]
@@ -75,14 +75,14 @@ namespace HDRProfile.Displays
         public bool Monitoring { get; private set; } = false;
 
 
-        public readonly HDRProfileSettings Settings;
+        public readonly UserAppSettings Settings;
 
         public event EventHandler AutoHDRChanged;
 
 
         public ObservableCollection<Display> Monitors => Settings.Monitors;
 
-        public DisplayManager(HDRProfileSettings settings)
+        public DisplayManager(UserAppSettings settings)
         {
             Settings = settings;
             MergeMonitors(GetActiveMonitors());
@@ -124,7 +124,7 @@ namespace HDRProfile.Displays
                 foreach (Display monitor in Monitors)
                 {
                     monitor.UpdateHDRState();
-                    if (monitor.AutoHDR)
+                    if (monitor.Managed)
                         currentValue = currentValue || monitor.HDRState;
                 }
                 bool changed = GlobalHDRIsActive != currentValue;
@@ -136,40 +136,6 @@ namespace HDRProfile.Displays
                 System.Threading.Thread.Sleep(100);
             }
         }
-
-        //private List<Monitor> GetActiveMonitors()
-        //{
-
-        //    var device = new DISPLAY_DEVICE();
-        //    device.cb = Marshal.SizeOf(device);
-        //    try
-        //    {
-        //        for (uint id = 0; EnumDisplayDevices(null, id, ref device, 0); id++)
-        //        {
-        //            device.cb = Marshal.SizeOf(device);
-        //            EnumDisplayDevices(device.DeviceName, 0, ref device, 0);
-        //            device.cb = Marshal.SizeOf(device);
-
-        //            Console.WriteLine("id={0}, name={1}, devicestring={2}", id, device.DeviceName, device.DeviceString);
-        //            if (device.DeviceName == null || device.DeviceName == "") continue;
-        //        }
-        //        string x = Console.ReadLine();
-        //    }
-
-
-
-
-
-
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(String.Format("{0}", ex.ToString()));
-        //    }
-
-        //    return new List<Monitor>();
-        //}
-
-
 
         private List<Display> GetActiveMonitors()
         {
@@ -242,7 +208,7 @@ namespace HDRProfile.Displays
 
         private void Monitor_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Display.AutoHDR))
+            if (e.PropertyName == nameof(Display.Managed))
                 AutoHDRChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -255,7 +221,7 @@ namespace HDRProfile.Displays
             else
             {
                 foreach (Display monitor in Settings.Monitors)
-                    if (monitor.AutoHDR)
+                    if (monitor.Managed)
                         ActivateHDR(monitor);
             }
         }
@@ -267,7 +233,7 @@ namespace HDRProfile.Displays
             else
             {
                 foreach (Display monitor in Settings.Monitors)
-                    if (monitor.AutoHDR)
+                    if (monitor.Managed)
                         DeactivateHDR(monitor);
             }
         }

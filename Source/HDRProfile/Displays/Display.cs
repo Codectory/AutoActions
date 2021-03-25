@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HDRProfile.Displays
+namespace AutoHDR.Displays
 {
     public class Display : BaseViewModel
     {
-        private bool _autoHDR = true;
+        private bool _managed = true;
 
-        public bool AutoHDR { get => _autoHDR; set { _autoHDR = value; OnPropertyChanged(); } }
+        public bool Managed { get => _managed; set { _managed = value; OnPropertyChanged(); } }
 
 
         private string _name;

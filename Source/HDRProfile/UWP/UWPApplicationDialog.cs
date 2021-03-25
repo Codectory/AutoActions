@@ -1,16 +1,10 @@
-﻿using CodectoryCore.UI.Wpf;
+﻿using AutoHDR.ProjectResources;
+using CodectoryCore.UI.Wpf;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Win32;
-using System.Windows;
 using System.Collections.ObjectModel;
+using System.Windows;
 
-namespace HDRProfile.UWP
+namespace AutoHDR.UWP
 {
     public class UWPApplicationDialog : DialogViewModelBase
     {

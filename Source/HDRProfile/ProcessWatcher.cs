@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HDRProfile
+namespace AutoHDR
 {
     public class ProcessWatcher
     {
@@ -41,18 +41,9 @@ namespace HDRProfile
         public event EventHandler OneProcessIsRunningChanged;
         public event EventHandler OneProcessIsFocusedChanged;
 
-        //ManagementEventWatcher startWatch;
-        //ManagementEventWatcher stopWatch;
-
         public ProcessWatcher()
-        {
-      //      startWatch = new ManagementEventWatcher(
-      //new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace"));
-      //      stopWatch = new ManagementEventWatcher(
-      //new WqlEventQuery("SELECT * FROM Win32_ProcessStopTrace"));
-      //      startWatch.EventArrived += StartWatch_EventArrived;
-      //      stopWatch.EventArrived += StopWatch_EventArrived;
 
+        {
         }
 
 
@@ -61,37 +52,6 @@ namespace HDRProfile
             NewLog?.Invoke(this, logMessage);
         }
   
-
-        //private void StartWatch_EventArrived(object sender, EventArrivedEventArgs e)
-        //{
-        //    lock (_applicationsLock)
-        //    {
-        //        string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
-        //        if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
-        //        {
-        //            ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
-        //            if (_applications[application] == ApplicationState.None)
-        //                _applications[application] = ApplicationState.Running;
-        //            CallNewLog($"Application startet: {application}");
-        //        }
-        //    }
-        //}
-
-        //private void StopWatch_EventArrived(object sender, EventArrivedEventArgs e)
-        //{
-
-        //    lock (_applicationsLock)
-        //    {
-        //        string applicationName = e.NewEvent.Properties["ProcessName"].Value.ToString().Replace(".exe", "").ToUpperInvariant();
-        //        if (_applications.Any(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)))
-        //        {
-        //            ApplicationItem application = _applications.First(a => a.Key.ApplicationName.ToUpperInvariant().Equals(applicationName)).Key;
-        //            _applications[application] = ApplicationState.None;
-        //            CallNewLog($"Application stopped:  {application}");
-        //        }
-        //    }
-        //}
-
         public void AddProcess(ApplicationItem application)
         {
             lock (_applicationsLock)
@@ -177,7 +137,7 @@ namespace HDRProfile
                         OneProcessIsFocusedChanged?.Invoke(this, EventArgs.Empty);
                     }
                 }
-                Thread.Sleep(150);
+                Thread.Sleep(Tools.GlobalRefreshInterval);
             }
         }
 
@@ -187,17 +147,19 @@ namespace HDRProfile
             lock (_applicationsLock)
             {
 
-                Process[] processes = Process.GetProcesses();
 
                 List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
                 ApplicationItem newCurrentRunningApplicationItem = null;
                 ApplicationItem newCurrentFocusedApplicationItem = null;
+
+                Process[] processes = Process.GetProcesses();
+
                 foreach (ApplicationItem application in applications)
                 {
                     ApplicationState state = ApplicationState.None;
                     foreach (var process in processes.Select(p => p.ProcessName))
                     {
-                        if (process.ToUpperInvariant() == application.ApplicationName.ToUpperInvariant())
+                        if (process.ToUpperInvariant().Equals(application.ApplicationName.ToUpperInvariant()))
                         {
                             state = ApplicationState.Running;
                             newCurrentRunningApplicationItem = application;
@@ -214,8 +176,6 @@ namespace HDRProfile
                 CurrentFocusedApplicationItem = CurrentFocusedApplicationItem;
             }
         }
-
-
 
         private bool IsFocusedProcess(string processName)
         {

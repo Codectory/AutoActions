@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HDRProfile.Info.Github
+namespace AutoHDR.Info.Github
 {
     public class GitHubData
     {

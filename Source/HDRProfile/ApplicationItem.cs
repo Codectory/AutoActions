@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml.Serialization;
 
-namespace HDRProfile
+namespace AutoHDR
 {
     public class ApplicationItem : BaseViewModel, IEquatable<ApplicationItem>
     {
+        private bool _isUWP = false;
         private string displayName;
         private string _applicationFilePath;
         private string _applicationName;
@@ -23,7 +24,7 @@ namespace HDRProfile
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
         public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = System.Drawing.Icon.ExtractAssociatedIcon(value).ToBitmap(); } catch { } OnPropertyChanged(); } }
         public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
-
+        public bool IsUWP { get => _isUWP; set { _isUWP = value; OnPropertyChanged(); } }
 
         [XmlIgnore]
         public Bitmap Icon { get => icon; set { icon = value; OnPropertyChanged(); } }

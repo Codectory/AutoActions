@@ -1,5 +1,5 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
-using HDRProfile.Displays;
+using AutoHDR.Displays;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using AutoHDR.ProjectResources;
 
-namespace HDRProfile
+namespace AutoHDR
 {
     public class TrayMenuHelper
     {
@@ -36,7 +37,7 @@ namespace HDRProfile
             {
                 _trayMenu = new TaskbarIcon();
                 _trayMenu.Visibility = Visibility.Visible;
-                _trayMenu.ToolTipText = Locale_Texts.HDRProfile;
+                _trayMenu.ToolTipText = Locale_Texts.AutoHDR;
                 _trayMenu.Icon = Locale_Texts.Logo;
                 ContextMenu contextMenu = new ContextMenu();
                 _openButton = new MenuItem()

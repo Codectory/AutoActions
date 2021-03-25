@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace HDRProfile
+namespace AutoHDR
 {
     enum ShowWindowEnum
     {
@@ -19,6 +19,9 @@ namespace HDRProfile
 
     public static class Tools
     {
+
+        public static int GlobalRefreshInterval = 500;
+
         public static void SetAutoStart(string applicationName, string filePath, bool autostart)
         {
             RegistryKey rk = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
@@ -55,7 +58,7 @@ namespace HDRProfile
             }
         }
 
-        public static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile.log", "HDRPProfile", Assembly.GetExecutingAssembly().GetName().Version.ToString(), true);
+        public static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}AutoHDR.log", "AutoHDR", Assembly.GetExecutingAssembly().GetName().Version.ToString(), false);
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]

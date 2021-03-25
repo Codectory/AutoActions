@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using CodectoryCore.Logging;
 using Octokit;
 
-namespace HDRProfile.Info.Github
+namespace AutoHDR.Info.Github
 {
     public static class GitHubIntegration
     {
-        private static GitHubClient _client = new GitHubClient(new ProductHeaderValue("HDRProfile"));
+        private static GitHubClient _client = new GitHubClient(new ProductHeaderValue("AutoHDR"));
 
         private static bool Initialized = false;
         private static void InitializeClient()
@@ -18,7 +18,7 @@ namespace HDRProfile.Info.Github
             if (Initialized)
                 return;
             Tools.Logs.Add($"Connecting to GitHub...", false);
-            _client = new GitHubClient(new ProductHeaderValue("HDRProfile"));
+            _client = new GitHubClient(new ProductHeaderValue("AutoHDR"));
             _client.SetRequestTimeout(new TimeSpan(0, 0, 10));
             Initialized = true;
         }
@@ -26,15 +26,21 @@ namespace HDRProfile.Info.Github
         {
             InitializeClient();
             Tools.Logs.Add($"Requesting releases...", false);
-            IReadOnlyList<Release> releases = _client.Repository.Release.GetAll("Codectory", "HDR-Profile").Result;
+            IReadOnlyList<Release> releases = _client.Repository.Release.GetAll("Codectory", "AutoHDR").Result;
 
             Version latestGitHubVersion = new Version(releases[0].TagName);
             DateTime latestReleaseDate = releases[0].PublishedAt.HasValue ? releases[0].PublishedAt.Value.DateTime : DateTime.MinValue;
             Tools.Logs.Add($"Releases found: {releases.Count} Latest version: {latestGitHubVersion}", false);
 
-            string sourceForgeAddition = "\n\n"+ @"[![Download HDR Profile]";
-            string sourceForgeAddition2 = "\n" + @"[![Download HDR Profile]";
-            string sourceForgeAddition3 = "\n" + @"[![Download HDR Profile]";
+            List<string> sourceForgeAdditions = new List<string>()
+            {
+                "\n\n"+ @"[![Download HDR Profile]",
+                "\n" + @"[![Download HDR Profile]",
+                "\n" + @"[![Download HDR Profile]",
+                "\n\n" + @"[![Download AutoHDR]",
+                "\n" + @"[![Download AutoHDR]",
+                "\n" + @"[![Download AutoHDR]"
+            };
 
             string changelog = string.Empty;
             Tools.Logs.Add($"Building changelog...", false);
@@ -44,12 +50,12 @@ namespace HDRProfile.Info.Github
                 if (!string.IsNullOrEmpty(changelog))
                     changelog += "\r\n\r\n\r\n\r\n";
                 string releaseChangelog = release.Body;
-                if (releaseChangelog.Contains(sourceForgeAddition))
-                    releaseChangelog = releaseChangelog.Substring(0, releaseChangelog.IndexOf(sourceForgeAddition));
-                if (releaseChangelog.Contains(sourceForgeAddition2))
-                    releaseChangelog = releaseChangelog.Substring(0, releaseChangelog.IndexOf(sourceForgeAddition2));
-                if (releaseChangelog.Contains(sourceForgeAddition3))
-                    releaseChangelog = releaseChangelog.Substring(0, releaseChangelog.IndexOf(sourceForgeAddition3));
+                foreach (string sourceForgeAddition in sourceForgeAdditions)
+                {
+                    if (releaseChangelog.Contains(sourceForgeAddition))
+                        releaseChangelog = releaseChangelog.Substring(0, releaseChangelog.IndexOf(sourceForgeAddition));
+
+                }
 
                 changelog += $"[{release.TagName}]\r\n\r\n{releaseChangelog}";
             }
