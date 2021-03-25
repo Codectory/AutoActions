@@ -39,12 +39,11 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="75"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition Height="Auto"/>
 
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" Grid.Column="1" Source="Logo.png" Margin="5" />
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Static pres:Locale_Texts.AutoHDR}" Margin="5,0,5,5" FontSize="36"/>
+            <Image Grid.Row="0" Source="pack://siteoforigin:,,,/Resources/Logo.png" Grid.ColumnSpan="3" />
         </Grid>
         <TextBlock Grid.Row="1" Text="{x:Static pres:Locale_Texts.Local}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
         <Border Style="{StaticResource RoundedBorder}"  Grid.Row="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" >
@@ -78,7 +77,7 @@
 
             </Border.Style>
             <Grid Height="Auto" Margin="5">
- 
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="10"/>
