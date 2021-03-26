@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
@@ -51,20 +52,9 @@ namespace AutoHDR.UWP
 
                     try
                     {
-                        string manifestPath;
-                        if (package.IsBundle)
-                        {
-                            manifestPath = @"AppxMetadata\AppxBundleManifest.xml";
-                        }
-                        else
-                        {
-                            manifestPath = "AppxManifest.xml";
-                        }
-                        manifestPath = Path.Combine(package.InstalledLocation.Path, manifestPath);
-
-                        UWPApp uwpApp = new UWPApp(package.InstalledLocation.Path, package.IsBundle);
+                        UWPApp uwpApp = new UWPApp(package);
                         if (!string.IsNullOrEmpty(uwpApp.Executable) && !uwpApp.Name.Contains("ms-resource:"))
-                            uwpApps.Add(new ApplicationItem(uwpApp.Name, Path.Combine(uwpApp.InstallLocation, uwpApp.Executable)) { IsUWP = true});
+                            uwpApps.Add(new ApplicationItem(uwpApp.Name, Path.Combine(uwpApp.InstallLocation, uwpApp.Executable), uwpApp.FamilyPackageName, uwpApp.ApplicationID, uwpApp.IconPath));
                     }
                     catch
                     {
@@ -78,6 +68,15 @@ namespace AutoHDR.UWP
                 Tools.Logs.AddException($"Retrieving UWP apps failed.", ex);
                 throw;
             }
+        }
+
+        public static void StartUWPApp(string FamilyPackage, string applicationID)
+        {
+            Process process = new Process();
+            process.StartInfo.FileName = "explorer.exe";
+            process.StartInfo.Arguments = $"shell:AppsFolder\\{FamilyPackage}!{applicationID}";
+            process.Start();
+
         }
 
     }

@@ -70,12 +70,12 @@ namespace AutoHDR
             FilePath = filePath;
             if (string.IsNullOrEmpty(DisplayName))
                 DisplayName = new FileInfo(FilePath).Name.Replace(".exe", "");
+            ApplicationItem = new ApplicationItem(DisplayName, FilePath);
+
         }
 
         public void CreateApplicationItem(object parameter)
         {
-
-            ApplicationItem = new ApplicationItem(DisplayName, FilePath);
             OKClicked?.Invoke(this, EventArgs.Empty);
             CloseDialog(parameter as Window);
         }
@@ -86,9 +86,12 @@ namespace AutoHDR
             UWPApplicationDialog uwpDialog = new UWPApplicationDialog();
             uwpDialog.OKClicked += (o, e) =>
             {
-                ApplicationItem = uwpDialog.ApplicationItem;
-                DisplayName = ApplicationItem.DisplayName;
-                FilePath = ApplicationItem.ApplicationFilePath;
+                if (uwpDialog.ApplicationItem != null)
+                {
+                    ApplicationItem = uwpDialog.ApplicationItem;
+                    DisplayName = ApplicationItem.DisplayName;
+                    FilePath = ApplicationItem.ApplicationFilePath;
+                }
             };
             if (DialogService != null)
                 DialogService.ShowDialogModal(uwpDialog);

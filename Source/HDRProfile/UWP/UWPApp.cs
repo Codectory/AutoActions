@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Windows.ApplicationModel;
 
 namespace AutoHDR.UWP
 {
@@ -15,22 +16,26 @@ namespace AutoHDR.UWP
         public string Name { get; private set; } = string.Empty;
         public string Executable { get; private set; } = string.Empty;
         public string InstallLocation { get; private set; } = string.Empty;
+        public string FamilyPackageName { get; private set; } = string.Empty;
+        public string ApplicationID { get; private set; } = string.Empty;
 
-        public string StartArguments { get; private set; } = string.Empty;
+        public string IconPath { get; private set; } = string.Empty;
 
 
-
-
-        public UWPApp(string installLocation, bool isBundle)
+        private UWPApp()
         {
-            InstallLocation = installLocation;
-            ReadAppxManifest(isBundle);
+
         }
 
-        private void ReadAppxManifest(bool isBundle)
+        public UWPApp(Package package)
+        {
+            ReadAppxManifest(package);
+        }
+
+        private void ReadAppxManifest(Package package)
         {
             string appxManifestPath;
-            if (isBundle)
+            if (package.IsBundle)
             {
                 appxManifestPath = @"AppxMetadata\AppxBundleManifest.xml";
             }
@@ -38,6 +43,7 @@ namespace AutoHDR.UWP
             {
                 appxManifestPath = "AppxManifest.xml";
             }
+            InstallLocation = package.InstalledLocation.Path;
             appxManifestPath = Path.Combine(InstallLocation, appxManifestPath);
             Tools.Logs.Add($"Retrieving data of UWP app ({appxManifestPath})", false);
             try
@@ -50,6 +56,9 @@ namespace AutoHDR.UWP
                     Executable = string.Empty;
                     if (appxManifest.Applications != null && appxManifest.Applications.Application != null)
                         Executable = appxManifest.Applications.Application.Executable;
+                    FamilyPackageName = package.Id.FamilyName;
+                    ApplicationID = appxManifest.Applications.Application.Id;
+                    IconPath = Path.Combine(InstallLocation, ((XmlNode[])(appxManifest.Properties.Logo))[0].Value);
                 }
             }
             catch (Exception ex)

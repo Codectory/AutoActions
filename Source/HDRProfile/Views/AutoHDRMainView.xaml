@@ -43,9 +43,9 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="20" Height="20" Margin="5" Stretch="Fill"></Image>
+                <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="50" Height="50"  Stretch="Fill"></Image>
                 <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <CheckBox Grid.Column="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartProcess, Mode=TwoWay}" Margin="5"  />
+                <CheckBox Grid.Column="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartProcess, Mode=TwoWay}" Margin="5" VerticalAlignment="Center"  />
             </Grid>
         </DataTemplate>
 

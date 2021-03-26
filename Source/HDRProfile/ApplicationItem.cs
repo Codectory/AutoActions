@@ -19,6 +19,10 @@ namespace AutoHDR
         private string _applicationName;
         private System.Drawing.Bitmap icon = null;
         private bool _restartProcess = false;
+        private string _uwpFamilyPackageName;
+        private string _uwpApplicationID;
+        private string _uwpIconPath;
+
 
         public string DisplayName { get => displayName; set { displayName = value; OnPropertyChanged(); } }
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
@@ -28,6 +32,13 @@ namespace AutoHDR
 
         [XmlIgnore]
         public Bitmap Icon { get => icon; set { icon = value; OnPropertyChanged(); } }
+
+        public string UWPFamilyPackageName { get => _uwpFamilyPackageName; set { _uwpFamilyPackageName = value; OnPropertyChanged(); } }
+
+        public string UWPApplicationID { get => _uwpApplicationID; set { _uwpApplicationID = value; OnPropertyChanged(); } }
+        public string UWPIconPath { get => _uwpIconPath; set { _uwpIconPath = value; try { Icon = new Bitmap(Bitmap.FromFile(value)); } catch { }OnPropertyChanged(); } }
+
+
         private ApplicationItem()
         {
 
@@ -37,6 +48,14 @@ namespace AutoHDR
             DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
             ApplicationFilePath = applicationFilePath ?? throw new ArgumentNullException(nameof(applicationFilePath));
             ApplicationName = new FileInfo(ApplicationFilePath).Name.Replace(".exe", "");
+        }
+
+        public ApplicationItem(string displayName, string applicationFilePath, string uwpFamilyPackageName, string uwpApplicationID, string iconPath = "") : this(displayName, applicationFilePath)
+        {
+            IsUWP = true;
+            UWPFamilyPackageName = uwpFamilyPackageName;
+            UWPApplicationID = uwpApplicationID;
+            UWPIconPath = iconPath;
         }
 
         public override bool Equals(object obj)

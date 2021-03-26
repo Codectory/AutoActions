@@ -298,18 +298,25 @@ namespace AutoHDR
             {
                 MonitorManager.ActivateHDR();
                 System.Threading.Thread.Sleep(2500);
-                Process process = new Process();
-                process.StartInfo = new ProcessStartInfo(application.ApplicationFilePath);
-                process.Start();
+                if (application.IsUWP)
+                {
+                    UWP.UWPAppsManager.StartUWPApp(application.UWPFamilyPackageName, application.UWPApplicationID);
+                }
+                else
+                {
+                    Process process = new Process();
+                    process.StartInfo = new ProcessStartInfo(application.ApplicationFilePath);
+                    process.Start();
+                }
                 System.Threading.Thread.Sleep(2500);
                 var processes = Process.GetProcessesByName(application.ApplicationName).ToList();
                 if (processes.Count > 0)
                 {
+                    Process foundProcess = new Process();
                     Tools.Logs.Add($"Bring application to front: {application.ApplicationName}", false);
-
-                    process = processes[0];
-                    if(!process.HasExited && process.Responding)
-                    Tools.BringMainWindowToFront(process.ProcessName);
+                    foundProcess = processes[0];
+                    if(!foundProcess.HasExited && foundProcess.Responding)
+                    Tools.BringMainWindowToFront(foundProcess.ProcessName);
                 }
                 else
                     Tools.Logs.Add($"No started application found: {application.ApplicationName}", false);
