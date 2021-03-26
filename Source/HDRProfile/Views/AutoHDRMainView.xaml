@@ -131,10 +131,12 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"  />
+                                <RowDefinition Height="*"  />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{x:Static pres:Locale_Texts.RestartProccessOnFirstOccurence}" HorizontalAlignment="Right" Width="Auto" Height="16" VerticalAlignment="Top" Margin="0,5,5,0"/>
-                            <ListBox  Grid.Row="1" x:Name="ApplicationList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}"  BorderThickness="0"/>
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                <ListBox   x:Name="ApplicationList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.VerticalScrollBarVisibility="Disabled"  Background="{x:Null}"  BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top"/>
+                            </ScrollViewer>
                         </Grid>
                     </Border>
                     <Grid Grid.Row="1" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">

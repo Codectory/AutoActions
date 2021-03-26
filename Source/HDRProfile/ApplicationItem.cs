@@ -26,7 +26,7 @@ namespace AutoHDR
 
         public string DisplayName { get => displayName; set { displayName = value; OnPropertyChanged(); } }
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
-        public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = System.Drawing.Icon.ExtractAssociatedIcon(value).ToBitmap(); } catch { } OnPropertyChanged(); } }
+        public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = Tools.GetFileIcon(value); } catch { } OnPropertyChanged(); } }
         public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
         public bool IsUWP { get => _isUWP; set { _isUWP = value; OnPropertyChanged(); } }
 

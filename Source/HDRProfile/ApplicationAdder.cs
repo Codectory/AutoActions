@@ -76,6 +76,8 @@ namespace AutoHDR
 
         public void CreateApplicationItem(object parameter)
         {
+            if (applicationItem != null)
+                ApplicationItem.DisplayName = DisplayName;
             OKClicked?.Invoke(this, EventArgs.Empty);
             CloseDialog(parameter as Window);
         }
