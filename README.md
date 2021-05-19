@@ -1,4 +1,4 @@
-# Notice
+# No time at the moment
 
 I became father a couple of weeks ago and I don't have time to work on this at the moment.
 I know that this app is not that widespreaded, but I just want to let you know, that I am still willing to push this a little bit more and add some features like change resolution, run other programs before or after app launch, command line support, etc.
