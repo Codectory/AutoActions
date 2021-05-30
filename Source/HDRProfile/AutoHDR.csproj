@@ -178,6 +178,7 @@
     <Compile Include="Info\Github\GitHubData.cs" />
     <Compile Include="Info\Github\GitHubIntegration.cs" />
     <Compile Include="HDRProfileSettings.cs" />
+    <Compile Include="Info\ReleaseEntry.cs" />
     <Compile Include="Views\AutoHDRInfoView.xaml.cs">
       <DependentUpon>AutoHDRInfoView.xaml</DependentUpon>
     </Compile>
