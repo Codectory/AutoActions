@@ -238,7 +238,7 @@ namespace AutoHDR.Displays
             }
         }
 
-        public void ActivateHDR(Display display)
+        public static void ActivateHDR(Display display)
         {
             HDRController.SetHDRState(display.UID, true);
         }

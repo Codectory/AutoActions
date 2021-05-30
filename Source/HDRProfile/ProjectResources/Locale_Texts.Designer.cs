@@ -61,6 +61,24 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Set HDR ähnelt.
+        /// </summary>
+        public static string Action_HDRSwitch {
+            get {
+                return ResourceManager.GetString("Action_HDRSwitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die HDR ähnelt.
+        /// </summary>
+        public static string ActionGroup_HDR {
+            get {
+                return ResourceManager.GetString("ActionGroup_HDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Activate HDR ähnelt.
         /// </summary>
         public static string ActivateHDR {

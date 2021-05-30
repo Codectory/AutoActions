@@ -26,6 +26,10 @@ namespace AutoHDR.Displays
 
         public bool HDRState { get => _hdrState; set { _hdrState = value; OnPropertyChanged(); } }
 
+        internal void SetResolution(Size value)
+        {
+            throw new NotImplementedException();
+        }
 
         private Size _resolution;
         public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }

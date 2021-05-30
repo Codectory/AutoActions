@@ -174,11 +174,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Actions\ActionEndResult.cs" />
+    <Compile Include="Actions\DisplayAction.cs" />
+    <Compile Include="Actions\ProfileActionGroup.cs" />
     <Compile Include="Info\AutoHDRInfo.cs" />
     <Compile Include="Info\Github\GitHubData.cs" />
     <Compile Include="Info\Github\GitHubIntegration.cs" />
     <Compile Include="HDRProfileSettings.cs" />
     <Compile Include="Info\ReleaseEntry.cs" />
+    <Compile Include="Actions\IProfileAction.cs" />
     <Compile Include="Views\AutoHDRInfoView.xaml.cs">
       <DependentUpon>AutoHDRInfoView.xaml</DependentUpon>
     </Compile>
@@ -332,6 +336,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugins\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />

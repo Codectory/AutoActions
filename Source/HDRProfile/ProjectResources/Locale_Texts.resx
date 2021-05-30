@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActionGroup_HDR" xml:space="preserve">
+    <value>HDR</value>
+  </data>
+  <data name="Action_HDRSwitch" xml:space="preserve">
+    <value>Set HDR</value>
+  </data>
   <data name="ActivateHDR" xml:space="preserve">
     <value>Activate HDR</value>
   </data>
