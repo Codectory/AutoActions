@@ -31,6 +31,11 @@ namespace AutoHDR.Displays
             throw new NotImplementedException();
         }
 
+        internal void SetRefreshRate(int value)
+        {
+            throw new NotImplementedException();
+        }
+
         private Size _resolution;
         public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }
 

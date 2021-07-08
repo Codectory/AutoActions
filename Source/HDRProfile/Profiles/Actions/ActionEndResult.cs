@@ -1,4 +1,4 @@
-﻿namespace AutoHDR.Actions
+﻿namespace AutoHDR.Profiles.Actions
 {
     public class ActionEndResult
     {

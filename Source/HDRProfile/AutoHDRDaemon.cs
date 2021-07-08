@@ -44,7 +44,7 @@ namespace AutoHDR
 
         private bool started = false;
         public bool Started { get => started; private set { started = value; OnPropertyChanged(); } }
-        ProcessWatcher ProcessWatcher;
+        ProcessWatcher ApplicationWatcher;
         TrayMenuHelper TrayMenuHelper;
 
 
@@ -108,10 +108,12 @@ namespace AutoHDR
                 if (Initialized)
                     return;
                 Tools.Logs.Add("Initializing...", false);
-                ProcessWatcher = new ProcessWatcher();
-                ProcessWatcher.OneProcessIsRunningChanged += ProcessWatcher_RunningOrFocusedChanged;
-                ProcessWatcher.OneProcessIsFocusedChanged += ProcessWatcher_RunningOrFocusedChanged;
-
+                ApplicationWatcher = new ProcessWatcher();
+                ApplicationWatcher.NewLog += ProcessWatcher_NewLog;
+                ApplicationWatcher.NewRunningApplication += ProcessWatcher_NewRunningApplication;
+                ApplicationWatcher.ApplicationGotFocus += ProcessWatcher_ApplicationGotFocus;
+                ApplicationWatcher.ApplicationLostFocus += ProcessWatcher_ApplicationLostFocus;
+                ApplicationWatcher.ApplicationClosed += ProcessWatcher_ApplicationClosed;
                 LoadSettings();
                 if (Settings.CheckForNewVersion)
                     CheckForNewVersion();
@@ -124,11 +126,42 @@ namespace AutoHDR
                 Tools.Logs.Add("Initialized", false);
                 Start();
                 Tools.Logs.Add($"Starting process watcher...", false);
-                ProcessWatcher.Start();
+                ApplicationWatcher.Start();
                 Tools.Logs.Add($"Process watcher started", false);
 
             }
         }
+
+        private void ProcessWatcher_NewLog(object sender, string e)
+        {
+            Tools.Logs.Add(e, false);
+        }
+
+        private void ProcessWatcher_NewRunningApplication(object sender, ApplicationItem e)
+        {
+            UpdateHDRModeBasedOnCurrentApplication
+            throw new NotImplementedException();
+        }
+        private void ProcessWatcher_ApplicationGotFocus(object sender, ApplicationItem e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessWatcher_ApplicationLostFocus(object sender, ApplicationItem e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessWatcher_ApplicationClosed(object sender, ApplicationItem e)
+        {
+            throw new NotImplementedException();
+        }
+
+    
+
+  
+
+  
 
         private void CheckForNewVersion()
         {
@@ -252,7 +285,7 @@ namespace AutoHDR
             Logs.LoggingEnabled = Settings.Logging;
             foreach (var application in Settings.ApplicationItems)
             {
-                ProcessWatcher.AddProcess(application);
+                ApplicationWatcher.AddProcess(application);
                 application.PropertyChanged += ApplicationItem_PropertyChanged;
             }
             Tools.Logs.Add("Settings loaded", false);
@@ -347,9 +380,12 @@ namespace AutoHDR
         private void Shutdown()
         {
             Tools.Logs.Add($"Stopping process watcher...", false);
-            ProcessWatcher.OneProcessIsRunningChanged -= ProcessWatcher_RunningOrFocusedChanged;
-            ProcessWatcher.OneProcessIsFocusedChanged -= ProcessWatcher_RunningOrFocusedChanged;
-            ProcessWatcher.Stop();
+            ApplicationWatcher.NewLog -= ProcessWatcher_NewLog;
+            ApplicationWatcher.NewRunningApplication -= ProcessWatcher_NewRunningApplication;
+            ApplicationWatcher.ApplicationGotFocus -= ProcessWatcher_ApplicationGotFocus;
+            ApplicationWatcher.ApplicationLostFocus -= ProcessWatcher_ApplicationLostFocus;
+            ApplicationWatcher.ApplicationClosed -= ProcessWatcher_ApplicationClosed;
+            ApplicationWatcher.Stop();
             Stop();
             //  TrayMenuHelper.SwitchTrayIcon(false);
             Application.Current.Shutdown();
@@ -398,7 +434,7 @@ namespace AutoHDR
                         foreach (var applicationItem in e.NewItems)
                         {
                             Tools.Logs.Add($"Application added: {((ApplicationItem)applicationItem).ApplicationName}", false);
-                            ProcessWatcher.AddProcess(((ApplicationItem)applicationItem));
+                            ApplicationWatcher.AddProcess(((ApplicationItem)applicationItem));
                             ((ApplicationItem)applicationItem).PropertyChanged += ApplicationItem_PropertyChanged;
                         }
 
@@ -407,7 +443,7 @@ namespace AutoHDR
                         foreach (var applicationItem in e.OldItems)
                         {
                             Tools.Logs.Add($"Application removed: {((ApplicationItem)applicationItem).ApplicationName}", false);
-                            ProcessWatcher.RemoveProcess(((ApplicationItem)applicationItem));
+                            ApplicationWatcher.RemoveProcess(((ApplicationItem)applicationItem));
                             ((ApplicationItem)applicationItem).PropertyChanged -= ApplicationItem_PropertyChanged;
 
                         }
@@ -460,13 +496,6 @@ namespace AutoHDR
         }
 
 
-        private void ProcessWatcher_RunningOrFocusedChanged(object sender, EventArgs e)
-        {
-            CurrentApplication = ProcessWatcher.CurrentRunningApplicationItem;
-            UpdateHDRModeBasedOnCurrentApplication();
-
-        }
-
         private void UpdateHDRModeBasedOnCurrentApplication()
         {
             lock (_accessLock)
@@ -477,10 +506,10 @@ namespace AutoHDR
                     switch (Settings.HDRMode)
                     {
                         case HDRActivationMode.Running:
-                            activateHDR = ProcessWatcher.OneProcessIsRunning;
+                            activateHDR = ApplicationWatcher.OneProcessIsRunning;
                             break;
                         case HDRActivationMode.Focused:
-                            activateHDR = ProcessWatcher.OneProcessIsFocused;
+                            activateHDR = ApplicationWatcher.OneProcessIsFocused;
                             break;
                         default:
                             return;
@@ -507,7 +536,7 @@ namespace AutoHDR
                                     DisplayManager.DeactivateHDR(display);
                         }
                     }
-                    var currentApplications = ProcessWatcher.Applications;
+                    var currentApplications = ApplicationWatcher.Applications;
                     UpdateRestartAppStates((IDictionary<ApplicationItem, ApplicationState>)currentApplications, activateHDR);
 
                     if (DisplayManager.GlobalHDRIsActive)

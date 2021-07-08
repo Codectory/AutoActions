@@ -20,9 +20,6 @@ namespace AutoHDR
         readonly object _applicationsLock = new object();
         readonly object _accessLock = new object();
 
-        public ApplicationItem CurrentRunningApplicationItem { get; private set; }
-        public ApplicationItem CurrentFocusedApplicationItem { get; private set; }
-
         Dictionary<ApplicationItem, ApplicationState> _applications = new Dictionary<ApplicationItem, ApplicationState>();
         public IReadOnlyDictionary<ApplicationItem, ApplicationState> Applications
         {
@@ -38,8 +35,12 @@ namespace AutoHDR
         public bool IsRunning { get => _isRunning; private set => _isRunning = value; }
 
         public event EventHandler<string> NewLog;
-        public event EventHandler OneProcessIsRunningChanged;
-        public event EventHandler OneProcessIsFocusedChanged;
+        //public event EventHandler OneProcessIsRunningChanged;
+        //public event EventHandler FocusedProcessChanged;
+        public event EventHandler<ApplicationItem> NewRunningApplication;
+        public event EventHandler<ApplicationItem> ApplicationClosed;
+        public event EventHandler<ApplicationItem> ApplicationGotFocus;
+        public event EventHandler<ApplicationItem> ApplicationLostFocus;
 
         public ProcessWatcher()
 
@@ -101,8 +102,6 @@ namespace AutoHDR
             lock (_accessLock)
             {
                 CallNewLog($"Stopping process watcher...");
-                //startWatch.Stop();
-                //stopWatch.Stop();
                 _stopRequested = true;
                 _watchProcessThread.Join();
                 _stopRequested = false;
@@ -117,28 +116,32 @@ namespace AutoHDR
             while (!_stopRequested)
             {
                 lock (_applicationsLock)
-                {
                     UpdateApplications();
-                    bool oldIsOneRunning = OneProcessIsRunning;
-                    bool newIsOneRunning = _applications.Any(a => a.Value == ApplicationState.Running ||a.Value == ApplicationState.Focused);
-                    OneProcessIsRunning = newIsOneRunning;
-                    if (oldIsOneRunning != newIsOneRunning)
-                    {
-                        CallNewLog($"Running processes changed: {CurrentRunningApplicationItem}");
-                        OneProcessIsRunningChanged?.Invoke(this, EventArgs.Empty);
-                    }
-                    
-                    bool oldIsOneFocused = OneProcessIsFocused;
-                    bool newIsOneFocused = _applications.Any(a => a.Value == ApplicationState.Focused);
-                    OneProcessIsFocused = newIsOneFocused;
-                    if (oldIsOneFocused != newIsOneFocused)
-                    {
-                        CallNewLog($"Focused process changed: {CurrentFocusedApplicationItem}");
-                        OneProcessIsFocusedChanged?.Invoke(this, EventArgs.Empty);
-                    }
-                }
                 Thread.Sleep(Tools.GlobalRefreshInterval);
             }
+        }
+
+        private void CallNewRunningapplication(ApplicationItem application)
+        {
+            CallNewLog($"Application started: {application}");
+
+            NewRunningApplication?.Invoke(this, application);
+        }
+        private void CallApplicationClosed(ApplicationItem application)
+        {
+            CallNewLog($"Application closed: {application}");
+            ApplicationClosed?.Invoke(this, application);
+        }
+
+        private void CallApplicationGotFocus(ApplicationItem application)
+        {
+            CallNewLog($"Application got focus: {application}");
+            ApplicationGotFocus?.Invoke(this, application);
+        }
+        private void CallApplicationLostFocus(ApplicationItem application)
+        {
+            CallNewLog($"Application lost focus: {application}");
+            ApplicationLostFocus?.Invoke(this, application);
         }
 
         private void UpdateApplications()
@@ -149,35 +152,57 @@ namespace AutoHDR
 
 
                 List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
-                ApplicationItem newCurrentRunningApplicationItem = null;
-                ApplicationItem newCurrentFocusedApplicationItem = null;
 
                 Process[] processes = Process.GetProcesses();
 
                 foreach (ApplicationItem application in applications)
                 {
+                    bool callNewRunning = false;
+                    bool callGotFocus = false;
+                    bool callLostFocus = false;
+                    bool callClosed = false;
                     ApplicationState state = ApplicationState.None;
+                    ApplicationState oldState = _applications[application];
                     foreach (var process in processes.Select(p => p.ProcessName))
                     {
                         if (process.ToUpperInvariant().Equals(application.ApplicationName.ToUpperInvariant()))
                         {
                             state = ApplicationState.Running;
-                            newCurrentRunningApplicationItem = application;
-                            if (IsFocusedProcess(process))
+
+                            if (oldState == ApplicationState.None)
+                                callNewRunning = true;
+
+                            if (IsFocusedApplication(process))
                             {
                                 state = ApplicationState.Focused;
-                                newCurrentFocusedApplicationItem = application;
+                                if (oldState != ApplicationState.Focused)
+                                    callGotFocus = true;
+                            }
+                            else
+                            {
+                                if (oldState == ApplicationState.Focused)
+                                    callLostFocus = true;
+
                             }
                         }
                     }
+                    if (state == ApplicationState.None && oldState != ApplicationState.None)
+                        callClosed = true;
+
                     _applications[application] = state;
+                    if (callNewRunning)
+                        CallNewRunningapplication(application);
+                    if (callGotFocus)
+                        CallApplicationGotFocus(application);
+                    if (callLostFocus)
+                        CallApplicationLostFocus(application);
+                    if (callClosed)
+                        CallApplicationClosed(application);
                 }
-                CurrentRunningApplicationItem = newCurrentRunningApplicationItem;
-                CurrentFocusedApplicationItem = CurrentFocusedApplicationItem;
             }
         }
 
-        private bool IsFocusedProcess(string processName)
+        private bool IsFocusedApplication(string processName)
         {
             string currentProcessName = GetForegroundProcessName().ToUpperInvariant();
             return processName.ToUpperInvariant().Equals(currentProcessName);
