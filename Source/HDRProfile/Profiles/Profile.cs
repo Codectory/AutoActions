@@ -18,11 +18,19 @@ namespace AutoHDR.Profiles
             set { _application = value;  OnPropertyChanged(); }
         }
 
+        private ProfileMode _mode = ProfileMode.OnRunning;
+
+        public ProfileMode Mode
+        {
+            get { return _mode; }
+            set { _mode = value;  OnPropertyChanged(); }
+        }
+
         private IProfileAction _applicationStarted;
         public IProfileAction ApplicationStarted
         {
             get { return _applicationStarted; }
-            set { _applicationStarted = value; OnPropertyChanged(); }
+            set { _applicationStarted = value;  OnPropertyChanged(); }
         }
 
         private IProfileAction _applicationClosed;

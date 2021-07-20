@@ -174,8 +174,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="ApplicationChangedEventArgs.cs" />
     <Compile Include="Profiles\Actions\ActionEndResult.cs" />
     <Compile Include="Profiles\Actions\BaseProfileAction.cs" />
+    <Compile Include="Profiles\Actions\ApplicationAction.cs" />
     <Compile Include="Profiles\Actions\DisplayAction.cs" />
     <Compile Include="Info\AutoHDRInfo.cs" />
     <Compile Include="Info\Github\GitHubData.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Info\ReleaseEntry.cs" />
     <Compile Include="Profiles\Actions\IProfileAction.cs" />
     <Compile Include="Profiles\Profile.cs" />
+    <Compile Include="Profiles\ProfileMode.cs" />
     <Compile Include="Views\AutoHDRInfoView.xaml.cs">
       <DependentUpon>AutoHDRInfoView.xaml</DependentUpon>
     </Compile>

@@ -14,7 +14,8 @@ using Windows.Foundation.Metadata;
 
 namespace AutoHDR
 {
-    [DataContract]
+
+    [DataContract,Deprecated("Use UserAppSettings instead", DeprecationType.Deprecate, 0)]
     public class HDRProfileSettings : BaseViewModel
     {
 
@@ -27,7 +28,6 @@ namespace AutoHDR
         private HDRActivationMode _hdrMode;
         readonly object _audioDevicesLock = new object();
         private ObservableCollection<ApplicationItem> _applicationItems;
-        private ObservableCollection<Profiles.Profile> _applicationProfiles;
         private ObservableCollection<Display> _monitors;
 
 
@@ -56,17 +56,14 @@ namespace AutoHDR
 
         [DataMember]
         public ObservableCollection<ApplicationItem> ApplicationItems { get => _applicationItems; set {_applicationItems = value; OnPropertyChanged();} }
-        [DataMember]
-        public ObservableCollection<Profiles.Profile> ApplicationProfiles { get => _applicationProfiles; set { _applicationProfiles = value; OnPropertyChanged(); } }
 
         [DataMember]
         public ObservableCollection<Display> Monitors { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
 
-
+        [Deprecated("Use UserAppSettings instead", DeprecationType.Deprecate, 0)]
         public HDRProfileSettings()
         {
             ApplicationItems = new ObservableCollection<ApplicationItem>();
-            ApplicationProfiles = new ObservableCollection<Profiles.Profile>();
             Monitors = new ObservableCollection<Display>();
         }
 

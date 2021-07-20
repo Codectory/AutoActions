@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Serialization;
+using AutoHDR.Profiles;
 
 namespace AutoHDR
 {
@@ -31,12 +32,13 @@ namespace AutoHDR
         readonly object _accessLock = new object();
         private bool _showView = false;
         private ApplicationItem _currentApplication = null;
+        private Profile _currentProfile = null;
+        
 
         private bool _hdrIsActive;
         private UserAppSettings _settings;
         private DisplayManager _monitorManager;
 
-        Dictionary<ApplicationItem, ApplicationState> _lastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
 
         private string SettingsPathCompatible => $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings.xml";
 
@@ -64,6 +66,8 @@ namespace AutoHDR
         public RelayCommand<ApplicationItem> StartApplicationCommand { get; private set; }
 
         #endregion RelayCommands
+
+        public Profile CurrentProfile { get => _currentProfile; set { _currentProfile = value; OnPropertyChanged(); } }
 
         public UserAppSettings Settings { get => _settings; set { _settings = value; OnPropertyChanged(); } }
         public DisplayManager MonitorManager { get => _monitorManager; set { _monitorManager = value; OnPropertyChanged(); } }
@@ -109,11 +113,8 @@ namespace AutoHDR
                     return;
                 Tools.Logs.Add("Initializing...", false);
                 ApplicationWatcher = new ProcessWatcher();
-                ApplicationWatcher.NewLog += ProcessWatcher_NewLog;
-                ApplicationWatcher.NewRunningApplication += ProcessWatcher_NewRunningApplication;
-                ApplicationWatcher.ApplicationGotFocus += ProcessWatcher_ApplicationGotFocus;
-                ApplicationWatcher.ApplicationLostFocus += ProcessWatcher_ApplicationLostFocus;
-                ApplicationWatcher.ApplicationClosed += ProcessWatcher_ApplicationClosed;
+                ApplicationWatcher.NewLog += ApplicationWatcher_NewLog;
+                ApplicationWatcher.ApplicationChanged += ApplicationWatcher_ApplicationChanged;
                 LoadSettings();
                 if (Settings.CheckForNewVersion)
                     CheckForNewVersion();
@@ -132,36 +133,58 @@ namespace AutoHDR
             }
         }
 
-        private void ProcessWatcher_NewLog(object sender, string e)
+        private void ApplicationWatcher_ApplicationChanged(object sender, ApplicationChangedEventArgs e)
+        {
+            Tools.Logs.Add($"Application {e.Application} changed: {e.ChangedType}", false);
+
+            UpdateHDRModeBasedOnCurrentApplication(e.Application, e.ChangedType);
+        }
+
+        private void ApplicationWatcher_NewLog(object sender, string e)
         {
             Tools.Logs.Add(e, false);
         }
 
-        private void ProcessWatcher_NewRunningApplication(object sender, ApplicationItem e)
+        private void UpdateHDRModeBasedOnCurrentApplication(ApplicationItem application, ApplicationChangedType changedType)
         {
-            UpdateHDRModeBasedOnCurrentApplication
-            throw new NotImplementedException();
+            lock (_accessLock)
+            {
+                Profile profile = Settings.ApplicationProfiles.FirstOrDefault(ap => ap.Application.Equals(application));
+
+                if (
+                    (CurrentProfile != null && !CurrentProfile.Equals(profile))
+                    ||
+                    (profile.Mode != ProfileMode.OnFocus && changedType == ApplicationChangedType.GotFocus)
+                    )
+                    return;
+                CurrentProfile = profile;
+                if (CurrentProfile.Mode == ProfileMode.OnRunning)
+                {
+                    switch (changedType)
+                    {
+                        case ApplicationChangedType.Started:
+                            profile.ApplicationStarted.RunAction();
+                            break;
+                        case ApplicationChangedType.Closed:
+                            profile.ApplicationClosed.RunAction();
+                            break;
+                    }
+                }
+                else
+                {
+
+                }
+                switch (changedType)
+                {
+                    case ApplicationChangedType.GotFocus:
+                        profile.ApplicationGotFocus.RunAction();
+                        break;
+                    case ApplicationChangedType.LostFocus:
+                        profile.ApplicationLostFocus.RunAction();
+                        break;
+                }
+            }
         }
-        private void ProcessWatcher_ApplicationGotFocus(object sender, ApplicationItem e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ProcessWatcher_ApplicationLostFocus(object sender, ApplicationItem e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ProcessWatcher_ApplicationClosed(object sender, ApplicationItem e)
-        {
-            throw new NotImplementedException();
-        }
-
-    
-
-  
-
-  
 
         private void CheckForNewVersion()
         {
@@ -331,29 +354,8 @@ namespace AutoHDR
             {
                 MonitorManager.ActivateHDR();
                 System.Threading.Thread.Sleep(2500);
-                if (application.IsUWP)
-                {
-                    UWP.UWPAppsManager.StartUWPApp(application.UWPFamilyPackageName, application.UWPApplicationID);
-                }
-                else
-                {
-                    Process process = new Process();
-                    process.StartInfo = new ProcessStartInfo(application.ApplicationFilePath);
-                    process.Start();
-                }
-                System.Threading.Thread.Sleep(2500);
-                var processes = Process.GetProcessesByName(application.ApplicationName).ToList();
-                if (processes.Count > 0)
-                {
-                    Process foundProcess = new Process();
-                    Tools.Logs.Add($"Bring application to front: {application.ApplicationName}", false);
-                    foundProcess = processes[0];
-                    if(!foundProcess.HasExited && foundProcess.Responding)
-                    Tools.BringMainWindowToFront(foundProcess.ProcessName);
-                }
-                else
-                    Tools.Logs.Add($"No started application found: {application.ApplicationName}", false);
-
+                application.StartApplication();
+               
             }
             catch (Exception ex)
             {
@@ -379,12 +381,9 @@ namespace AutoHDR
 
         private void Shutdown()
         {
-            Tools.Logs.Add($"Stopping process watcher...", false);
-            ApplicationWatcher.NewLog -= ProcessWatcher_NewLog;
-            ApplicationWatcher.NewRunningApplication -= ProcessWatcher_NewRunningApplication;
-            ApplicationWatcher.ApplicationGotFocus -= ProcessWatcher_ApplicationGotFocus;
-            ApplicationWatcher.ApplicationLostFocus -= ProcessWatcher_ApplicationLostFocus;
-            ApplicationWatcher.ApplicationClosed -= ProcessWatcher_ApplicationClosed;
+            Tools.Logs.Add($"Stopping application watcher...", false);
+            ApplicationWatcher.NewLog -= ApplicationWatcher_NewLog;
+            ApplicationWatcher.ApplicationChanged -= ApplicationWatcher_ApplicationChanged;
             ApplicationWatcher.Stop();
             Stop();
             //  TrayMenuHelper.SwitchTrayIcon(false);
@@ -498,102 +497,60 @@ namespace AutoHDR
 
         private void UpdateHDRModeBasedOnCurrentApplication()
         {
-            lock (_accessLock)
-            {
-                try
-                {
-                    bool activateHDR = false;
-                    switch (Settings.HDRMode)
-                    {
-                        case HDRActivationMode.Running:
-                            activateHDR = ApplicationWatcher.OneProcessIsRunning;
-                            break;
-                        case HDRActivationMode.Focused:
-                            activateHDR = ApplicationWatcher.OneProcessIsFocused;
-                            break;
-                        default:
-                            return;
+            //lock (_accessLock)
+            //{
+            //    try
+            //    {
+            //        bool activateHDR = false;
+            //        switch (Settings.HDRMode)
+            //        {
+            //            case HDRActivationMode.Running:
+            //                activateHDR = ApplicationWatcher.OneProcessIsRunning;
+            //                break;
+            //            case HDRActivationMode.Focused:
+            //                activateHDR = ApplicationWatcher.OneProcessIsFocused;
+            //                break;
+            //            default:
+            //                return;
 
-                    }
+            //        }
 
-                    if (activateHDR == HDRIsActive)
-                        return;
-                    if (activateHDR)
-                    {
-                        Tools.Logs.Add($"Activating HDR...", false);
-                        MonitorManager.ActivateHDR();
+            //        if (activateHDR == HDRIsActive)
+            //            return;
+            //        if (activateHDR)
+            //        {
+            //            Tools.Logs.Add($"Activating HDR...", false);
+            //            MonitorManager.ActivateHDR();
 
-                    }
-                    else if (DisplayManager.GlobalHDRIsActive && Settings.HDRMode != HDRActivationMode.None)
-                    {
-                        Tools.Logs.Add($"Deactivating HDR...", false);
-                        if (Settings.GlobalAutoHDR)
-                            MonitorManager.DeactivateHDR();
-                        else
-                        {
-                            foreach (Display display in Settings.Monitors)
-                                if (display.Managed)
-                                    DisplayManager.DeactivateHDR(display);
-                        }
-                    }
-                    var currentApplications = ApplicationWatcher.Applications;
-                    UpdateRestartAppStates((IDictionary<ApplicationItem, ApplicationState>)currentApplications, activateHDR);
+            //        }
+            //        else if (DisplayManager.GlobalHDRIsActive && Settings.HDRMode != HDRActivationMode.None)
+            //        {
+            //            Tools.Logs.Add($"Deactivating HDR...", false);
+            //            if (Settings.GlobalAutoHDR)
+            //                MonitorManager.DeactivateHDR();
+            //            else
+            //            {
+            //                foreach (Display display in Settings.Monitors)
+            //                    if (display.Managed)
+            //                        DisplayManager.DeactivateHDR(display);
+            //            }
+            //        }
+            //        var currentApplications = ApplicationWatcher.Applications;
+            //        UpdateRestartAppStates((IDictionary<ApplicationItem, ApplicationState>)currentApplications, activateHDR);
 
-                    if (DisplayManager.GlobalHDRIsActive)
-                        Tools.Logs.Add($"HDR is active", false);
-                    else
-                        Tools.Logs.Add($"HDR is inactive", false);
-                }
-                catch (Exception ex)
-                {
-                    Tools.Logs.AddException(ex);
-                    throw ex;
-                }
-            }
+            //        if (DisplayManager.GlobalHDRIsActive)
+            //            Tools.Logs.Add($"HDR is active", false);
+            //        else
+            //            Tools.Logs.Add($"HDR is inactive", false);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Tools.Logs.AddException(ex);
+            //        throw ex;
+            //    }
+            //}
         }
 
-        private void UpdateRestartAppStates(IDictionary<ApplicationItem, ApplicationState> applicationStates, bool restartApps)
-        {
-            Dictionary<ApplicationItem, ApplicationState> newLastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
-            Tools.Logs.Add($"Updating application states...", false);
-            foreach (var applicationState in applicationStates)
-            {
-                newLastAppStates.Add(applicationState.Key, applicationState.Value);
-
-                if (applicationState.Key.RestartProcess &&  restartApps)
-                {
-                    if (!_lastAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None)
-                        RestartProcess(applicationState.Key);
-                    else if (_lastAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None && _lastAppStates[applicationState.Key] == ApplicationState.None)
-                        RestartProcess(applicationState.Key);
-                }
-            }
-            _lastAppStates.Clear();
-            _lastAppStates = newLastAppStates;
-        }
-
-        private void RestartProcess(ApplicationItem application)
-        {
-            try
-            {
-                Tools.Logs.Add($"Restarting application {application.ApplicationName}", false);
-                foreach (Process process in Process.GetProcessesByName(application.ApplicationName).ToList())
-                    if (process.StartTime < Process.GetCurrentProcess().StartTime)
-                    {
-                        Tools.Logs.Add($"Won't restart application {application.ApplicationName} as it was running before { ProjectResources.Locale_Texts.AutoHDR}.", false);
-
-                        return;
-                    }
-                Process.GetProcessesByName(application.ApplicationName).ToList().ForEach(p => p.Kill());
-                System.Threading.Thread.Sleep(1500);
-                StartApplication(application);
-            }
-            catch (Exception ex)
-            {
-                Tools.Logs.AddException($"Failed to restart process {application.DisplayName} ({application.ApplicationFilePath}).", ex);
-                throw;
-            }
-        }
 
         #endregion Process handling 
 

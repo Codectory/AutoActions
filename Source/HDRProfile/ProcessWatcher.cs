@@ -37,10 +37,8 @@ namespace AutoHDR
         public event EventHandler<string> NewLog;
         //public event EventHandler OneProcessIsRunningChanged;
         //public event EventHandler FocusedProcessChanged;
-        public event EventHandler<ApplicationItem> NewRunningApplication;
-        public event EventHandler<ApplicationItem> ApplicationClosed;
-        public event EventHandler<ApplicationItem> ApplicationGotFocus;
-        public event EventHandler<ApplicationItem> ApplicationLostFocus;
+        public event EventHandler<ApplicationChangedEventArgs> ApplicationChanged;
+
 
         public ProcessWatcher()
 
@@ -121,29 +119,11 @@ namespace AutoHDR
             }
         }
 
-        private void CallNewRunningapplication(ApplicationItem application)
+        private void CallApplicationChanged(ApplicationItem application, ApplicationChangedType changedType)
         {
-            CallNewLog($"Application started: {application}");
+            ApplicationChanged?.Invoke(this, new ApplicationChangedEventArgs(application,changedType));
 
-            NewRunningApplication?.Invoke(this, application);
         }
-        private void CallApplicationClosed(ApplicationItem application)
-        {
-            CallNewLog($"Application closed: {application}");
-            ApplicationClosed?.Invoke(this, application);
-        }
-
-        private void CallApplicationGotFocus(ApplicationItem application)
-        {
-            CallNewLog($"Application got focus: {application}");
-            ApplicationGotFocus?.Invoke(this, application);
-        }
-        private void CallApplicationLostFocus(ApplicationItem application)
-        {
-            CallNewLog($"Application lost focus: {application}");
-            ApplicationLostFocus?.Invoke(this, application);
-        }
-
         private void UpdateApplications()
         {
 
@@ -191,13 +171,13 @@ namespace AutoHDR
 
                     _applications[application] = state;
                     if (callNewRunning)
-                        CallNewRunningapplication(application);
+                        CallApplicationChanged(application, ApplicationChangedType.Started);
                     if (callGotFocus)
-                        CallApplicationGotFocus(application);
+                        CallApplicationChanged(application, ApplicationChangedType.GotFocus);
                     if (callLostFocus)
-                        CallApplicationLostFocus(application);
+                        CallApplicationChanged(application, ApplicationChangedType.LostFocus);
                     if (callClosed)
-                        CallApplicationClosed(application);
+                        CallApplicationChanged(application, ApplicationChangedType.Closed);
                 }
             }
         }
