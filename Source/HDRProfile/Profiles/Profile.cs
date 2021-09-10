@@ -2,6 +2,7 @@
 using CodectoryCore.UI.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,31 +27,39 @@ namespace AutoHDR.Profiles
             set { _mode = value;  OnPropertyChanged(); }
         }
 
-        private IProfileAction _applicationStarted;
-        public IProfileAction ApplicationStarted
+        private bool _restartOnOccurance = false;
+
+        public bool RestartOnOccurance
+        {
+            get { return _restartOnOccurance; }
+            set { _restartOnOccurance = value; OnPropertyChanged(); }
+        }
+
+        private ObservableCollection<IProfileAction> _applicationStarted;
+        public ObservableCollection<IProfileAction> ApplicationStarted
         {
             get { return _applicationStarted; }
             set { _applicationStarted = value;  OnPropertyChanged(); }
         }
 
-        private IProfileAction _applicationClosed;
-        public IProfileAction ApplicationClosed
+        private ObservableCollection<IProfileAction> _applicationClosed;
+        public ObservableCollection<IProfileAction> ApplicationClosed
         {
             get { return _applicationClosed; }
             set { _applicationClosed = value; OnPropertyChanged(); }
         }
 
-        private IProfileAction _applicationGotFocus;
+        private ObservableCollection<IProfileAction> _applicationGotFocus;
 
-        public IProfileAction ApplicationGotFocus
+        public ObservableCollection<IProfileAction> ApplicationGotFocus
         {
             get { return _applicationGotFocus; }
             set { _applicationGotFocus = value; OnPropertyChanged(); }
         }
 
-        private IProfileAction _applicationLostFocus;
+        private ObservableCollection<IProfileAction> _applicationLostFocus;
 
-        public IProfileAction ApplicationLostFocus
+        public ObservableCollection<IProfileAction> ApplicationLostFocus
         {
             get { return _applicationLostFocus; }
             set { _applicationLostFocus = value; OnPropertyChanged(); }

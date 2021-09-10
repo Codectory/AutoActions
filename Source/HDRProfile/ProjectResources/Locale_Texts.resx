@@ -120,6 +120,12 @@
   <data name="ActionGroup_HDR" xml:space="preserve">
     <value>HDR</value>
   </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="ActionType" xml:space="preserve">
+    <value>Type</value>
+  </data>
   <data name="Action_HDRSwitch" xml:space="preserve">
     <value>Set HDR</value>
   </data>
@@ -132,11 +138,23 @@
   <data name="AlreadyRunning" xml:space="preserve">
     <value>AutoHDR is already running.</value>
   </data>
+  <data name="AppClosedActions" xml:space="preserve">
+    <value>Application closed actions</value>
+  </data>
+  <data name="AppFocusedActions" xml:space="preserve">
+    <value>Application got focus actions</value>
+  </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>Application name</value>
   </data>
   <data name="Applications" xml:space="preserve">
     <value>Applications</value>
+  </data>
+  <data name="AppLostFocusActions" xml:space="preserve">
+    <value>Application lost focus actions</value>
+  </data>
+  <data name="AppStartedActions" xml:space="preserve">
+    <value>Application started actions</value>
   </data>
   <data name="AutoHDR" xml:space="preserve">
     <value>AutoHDR</value>
@@ -168,14 +186,23 @@
   <data name="CurrentApplication" xml:space="preserve">
     <value>Current application</value>
   </data>
+  <data name="CurrentProfile" xml:space="preserve">
+    <value>Current profile:</value>
+  </data>
   <data name="DeactivateHDR" xml:space="preserve">
     <value>Deactivate HDR</value>
   </data>
   <data name="DeviceID" xml:space="preserve">
     <value>Device ID</value>
   </data>
+  <data name="DisplayAction" xml:space="preserve">
+    <value>Display action</value>
+  </data>
   <data name="DisplayName" xml:space="preserve">
     <value>Display name</value>
+  </data>
+  <data name="Displays" xml:space="preserve">
+    <value>Displays</value>
   </data>
   <data name="Download" xml:space="preserve">
     <value>Download from GitHub</value>
@@ -243,6 +270,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="Profiles" xml:space="preserve">
+    <value>Profiles</value>
   </data>
   <data name="RefreshRate" xml:space="preserve">
     <value>Refresh rate [Hz]</value>

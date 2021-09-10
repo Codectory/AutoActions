@@ -13,7 +13,7 @@ namespace AutoHDR.Profiles.Actions
     {
 
         public Displays.Display Display { get; private set; } = null;
-        public override string LocalizedName => ProjectResources.Locale_Texts.Action_HDRSwitch;
+        public override string LocalizeCaption => ProjectResources.Locale_Texts.Action_HDRSwitch;
 
 
         private bool _restartApplication = false;

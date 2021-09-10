@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>Aktionen</value>
+  </data>
+  <data name="ActionType" xml:space="preserve">
+    <value>Type</value>
+  </data>
   <data name="ActivateHDR" xml:space="preserve">
     <value>HDR aktivieren</value>
   </data>
@@ -126,11 +132,23 @@
   <data name="AlreadyRunning" xml:space="preserve">
     <value>AutoHDR wurde bereits gestartet.</value>
   </data>
+  <data name="AppClosedActions" xml:space="preserve">
+    <value>"Anwendung beendet"-Aktionen</value>
+  </data>
+  <data name="AppFocusedActions" xml:space="preserve">
+    <value>"Anwendung im Fokus"-Aktionen</value>
+  </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>Anwendungsname</value>
   </data>
   <data name="Applications" xml:space="preserve">
     <value>Anwendungen</value>
+  </data>
+  <data name="AppLostFocusActions" xml:space="preserve">
+    <value>"Anwendung verliert Fokus"-Aktionen</value>
+  </data>
+  <data name="AppStartedActions" xml:space="preserve">
+    <value>"Anwendung startet"-Aktionen</value>
   </data>
   <data name="AutoHDR" xml:space="preserve">
     <value>AutoHDR</value>
@@ -162,14 +180,23 @@
   <data name="CurrentApplication" xml:space="preserve">
     <value>Aktuelle Anwendung</value>
   </data>
+  <data name="CurrentProfile" xml:space="preserve">
+    <value>Aktuelles Profile:</value>
+  </data>
   <data name="DeactivateHDR" xml:space="preserve">
     <value>HDR deaktivieren</value>
   </data>
   <data name="DeviceID" xml:space="preserve">
     <value>Geräte ID</value>
   </data>
+  <data name="DisplayAction" xml:space="preserve">
+    <value>Monitoraktion</value>
+  </data>
   <data name="DisplayName" xml:space="preserve">
     <value>Anzeigename</value>
+  </data>
+  <data name="Displays" xml:space="preserve">
+    <value>Monitore</value>
   </data>
   <data name="Download" xml:space="preserve">
     <value>Herunterladen von GitHub</value>
@@ -230,6 +257,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Öffnen</value>
+  </data>
+  <data name="Profiles" xml:space="preserve">
+    <value>Profile</value>
   </data>
   <data name="RefreshRate" xml:space="preserve">
     <value>Bildwiederholrate [Hz]</value>

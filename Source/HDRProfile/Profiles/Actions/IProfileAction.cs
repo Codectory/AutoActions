@@ -9,7 +9,8 @@ namespace AutoHDR.Profiles.Actions
 {
     public interface IProfileAction
     {
-        string LocalizedName { get; }
+        string Name { get; set; }
+        string LocalizeCaption { get; }
         ActionEndResult RunAction();
     }
 }

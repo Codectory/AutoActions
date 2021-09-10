@@ -79,6 +79,24 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Actions ähnelt.
+        /// </summary>
+        public static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Type ähnelt.
+        /// </summary>
+        public static string ActionType {
+            get {
+                return ResourceManager.GetString("ActionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Activate HDR ähnelt.
         /// </summary>
         public static string ActivateHDR {
@@ -106,6 +124,24 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application closed actions ähnelt.
+        /// </summary>
+        public static string AppClosedActions {
+            get {
+                return ResourceManager.GetString("AppClosedActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application got focus actions ähnelt.
+        /// </summary>
+        public static string AppFocusedActions {
+            get {
+                return ResourceManager.GetString("AppFocusedActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Application name ähnelt.
         /// </summary>
         public static string ApplicationName {
@@ -120,6 +156,24 @@ namespace AutoHDR.ProjectResources {
         public static string Applications {
             get {
                 return ResourceManager.GetString("Applications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application lost focus actions ähnelt.
+        /// </summary>
+        public static string AppLostFocusActions {
+            get {
+                return ResourceManager.GetString("AppLostFocusActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application started actions ähnelt.
+        /// </summary>
+        public static string AppStartedActions {
+            get {
+                return ResourceManager.GetString("AppStartedActions", resourceCulture);
             }
         }
         
@@ -214,6 +268,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Current profile: ähnelt.
+        /// </summary>
+        public static string CurrentProfile {
+            get {
+                return ResourceManager.GetString("CurrentProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Deactivate HDR ähnelt.
         /// </summary>
         public static string DeactivateHDR {
@@ -232,11 +295,29 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Display action ähnelt.
+        /// </summary>
+        public static string DisplayAction {
+            get {
+                return ResourceManager.GetString("DisplayAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Display name ähnelt.
         /// </summary>
         public static string DisplayName {
             get {
                 return ResourceManager.GetString("DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Displays ähnelt.
+        /// </summary>
+        public static string Displays {
+            get {
+                return ResourceManager.GetString("Displays", resourceCulture);
             }
         }
         
@@ -436,6 +517,15 @@ namespace AutoHDR.ProjectResources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Profiles ähnelt.
+        /// </summary>
+        public static string Profiles {
+            get {
+                return ResourceManager.GetString("Profiles", resourceCulture);
             }
         }
         

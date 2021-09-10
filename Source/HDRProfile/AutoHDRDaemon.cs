@@ -24,6 +24,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Serialization;
 using AutoHDR.Profiles;
+using AutoHDR.Profiles.Actions;
 
 namespace AutoHDR
 {
@@ -163,10 +164,12 @@ namespace AutoHDR
                     switch (changedType)
                     {
                         case ApplicationChangedType.Started:
-                            profile.ApplicationStarted.RunAction();
+                            foreach (IProfileAction action in profile.ApplicationStarted)
+                                action.RunAction();
                             break;
                         case ApplicationChangedType.Closed:
-                            profile.ApplicationClosed.RunAction();
+                            foreach (IProfileAction action in profile.ApplicationClosed)
+                                action.RunAction();
                             break;
                     }
                 }
@@ -177,10 +180,13 @@ namespace AutoHDR
                 switch (changedType)
                 {
                     case ApplicationChangedType.GotFocus:
-                        profile.ApplicationGotFocus.RunAction();
+                        foreach (IProfileAction action in profile.ApplicationGotFocus)
+                            action.RunAction();
                         break;
                     case ApplicationChangedType.LostFocus:
-                        profile.ApplicationLostFocus.RunAction();
+                        foreach (IProfileAction action in profile.ApplicationLostFocus)
+                            action.RunAction();
+
                         break;
                 }
             }

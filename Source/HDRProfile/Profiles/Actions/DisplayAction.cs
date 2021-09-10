@@ -12,7 +12,7 @@ namespace AutoHDR.Profiles.Actions
     {
 
         public Displays.Display Display { get; private set; } = null;
-        public override string LocalizedName => ProjectResources.Locale_Texts.Action_HDRSwitch;
+        public override string LocalizeCaption => ProjectResources.Locale_Texts.Action_HDRSwitch;
 
 
         private bool _setHDR = false;
@@ -30,9 +30,6 @@ namespace AutoHDR.Profiles.Actions
         public Size _resolution;
         public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }
 
-        public int _refreshRate;
-        public int RefreshRate { get => _refreshRate; set { _refreshRate = value; OnPropertyChanged(); } }
-
 
         public DisplayAction(Displays.Display display = null)
         {
@@ -48,8 +45,6 @@ namespace AutoHDR.Profiles.Actions
                     Displays.HDRController.SetHDRState(Display.UID, EnableHDR);
                 if (SetResolution)
                     Display.SetResolution(Resolution);
-                if (SetRefreshRate)
-                    Display.SetRefreshRate(RefreshRate);
                 return new ActionEndResult(true);
             }
             catch (Exception ex)

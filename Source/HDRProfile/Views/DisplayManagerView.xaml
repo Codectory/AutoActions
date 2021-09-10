@@ -7,7 +7,6 @@
              xmlns:pres="clr-namespace:AutoHDR.ProjectResources"
              xmlns:local="clr-namespace:AutoHDR.Views"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance root:UserAppSettings, IsDesignTimeCreatable=True}"
 
              d:DesignHeight="450" d:DesignWidth="800" >
     <UserControl.Resources>
@@ -17,37 +16,34 @@
 
         <DataTemplate x:Key="MonitorItemTemplate" DataType="Display">
             <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-      
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                     <RowDefinition/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
 
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:Locale_Texts.Name}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static pres:Locale_Texts.DeviceID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static pres:Locale_Texts.Resolution}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{x:Static pres:Locale_Texts.RefreshRate}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="4" Text="{x:Static pres:Locale_Texts.HDR}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="0" Grid.Row="5" Text="{x:Static pres:Locale_Texts.ManagedHDR}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{x:Static pres:Locale_Texts.HDR}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="0" Grid.Row="4" Text="{x:Static pres:Locale_Texts.ManagedHDR}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
 
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding UID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Resolution}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding RefreshRate}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding UID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Resolution}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <Ellipse   Grid.Column="1"  Grid.Row="4" HorizontalAlignment="Left" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="5,5,10,5" >
+                    <Ellipse   Grid.Column="1"  Grid.Row="3" HorizontalAlignment="Left" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="5,5,10,5" >
                         <Ellipse.Style>
                             <Style TargetType="{x:Type Ellipse}">
                                 <Style.Triggers>
@@ -61,7 +57,7 @@
                             </Style>
                         </Ellipse.Style>
                     </Ellipse>
-                    <CheckBox IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}" Grid.Column="1" Grid.Row="5"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsChecked="{Binding Managed, Mode=TwoWay}" Margin="7,5,5,5"  />
+                    <CheckBox IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}" Grid.Column="1" Grid.Row="4"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsChecked="{Binding Managed, Mode=TwoWay}" Margin="7,5,5,5"  />
 
                 </Grid>
             </Border>
