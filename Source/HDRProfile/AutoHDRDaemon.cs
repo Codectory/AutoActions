@@ -526,10 +526,13 @@ namespace AutoHDR
                             activateHDR = processRequestHDR;
                         }
                     }
-                    
 
-                    //hdr is already activeActive)
+
+                    //hdr is already active)
+                    if (activateHDR == HDRIsActive)
+                    {
                         return;
+                    }
                     //hdr hast to be activated
                     if (activateHDR)
                     {
