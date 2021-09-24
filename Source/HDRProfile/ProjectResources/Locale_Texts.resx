@@ -192,6 +192,9 @@
   <data name="GlobalAutoHDR" xml:space="preserve">
     <value>Use automated HDR Mode for all monitors</value>
   </data>
+  <data name="GlobalDesktopDefaultHDROnOff" xml:space="preserve">
+    <value>Desktop is using HDR</value>
+  </data>
   <data name="HDR" xml:space="preserve">
     <value>HDR</value>
   </data>
@@ -237,6 +240,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="PreventHDROnProgramStart" xml:space="preserve">
+    <value>Prevent HDR</value>
   </data>
   <data name="RefreshRate" xml:space="preserve">
     <value>Refresh rate [Hz]</value>

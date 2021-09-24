@@ -126,4 +126,10 @@
   <data name="HDRMode.Running" xml:space="preserve">
     <value>Runing</value>
   </data>
+  <data name="OnOff.OFF" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="OnOff.ON" xml:space="preserve">
+    <value>On</value>
+  </data>
 </root>
