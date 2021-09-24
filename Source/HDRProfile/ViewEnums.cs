@@ -12,4 +12,9 @@ namespace AutoHDR
         Running,
         Focused
     }
+    public enum OnOff
+    {
+        ON,
+        OFF
+    }
 }
