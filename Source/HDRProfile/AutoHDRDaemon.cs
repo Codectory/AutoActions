@@ -1,4 +1,4 @@
-using CodectoryCore.Logging;
+﻿using CodectoryCore.Logging;
 using CodectoryCore.UI.Wpf;
 using Hardcodet.Wpf.TaskbarNotification;
 using AutoHDR.Displays;
@@ -81,7 +81,13 @@ namespace AutoHDR
                 return Tools.ApplicationVersion;
             }
         }
-
+        /// <summary>
+        /// Returns true if a Application with preventHDR Option is running or focused
+        /// </summary>
+        public bool IsHDRAllowedToActivate()
+        {
+            return !ProcessWatcher.Applications.Any(e => (e.Value == ApplicationState.Running || e.Value == ApplicationState.Focused) && e.Key.PreventHdr == true);
+        }
 
         public AutoHDRDaemon()
         {
@@ -471,35 +477,67 @@ namespace AutoHDR
             UpdateHDRModeBasedOnCurrentApplication();
 
         }
-
+        /// <summary>
+        /// Converts OnOff Enum to boolean
+        /// </summary>
+        /// <param name="OnOff"></param>
+        /// <returns></returns>
+        private bool OnOffToBool(OnOff OnOff)
+        {
+            switch (OnOff){
+                case OnOff
+            .ON: return true;
+                default: return false;
+            }
+        }
         private void UpdateHDRModeBasedOnCurrentApplication()
         {
             lock (_accessLock)
             {
-                try
-                {
-                    bool activateHDR = false;
+                try {
+                   
+                //check if one running process is preventing hdr
+                    bool allowedHDR = IsHDRAllowedToActivate();
+
+                    //check running processes if we should activate hdr
+                    bool processRequestHDR = false;
                     switch (Settings.HDRMode)
                     {
                         case HDRActivationMode.Running:
-                            activateHDR = ProcessWatcher.OneProcessIsRunning;
+                            processRequestHDR = ProcessWatcher.OneProcessIsRunning;
                             break;
                         case HDRActivationMode.Focused:
-                            activateHDR = ProcessWatcher.OneProcessIsFocused;
+                            processRequestHDR = ProcessWatcher.OneProcessIsFocused;
                             break;
                         default:
                             return;
-
                     }
+                    bool activateHDR = false;
+                    if (allowedHDR)
+                    {
+                        if (OnOffToBool(Settings.DesktopHDRDefault))
+                        {
+                            //hdr is always active on desktop default and allowedHdr
+                            activateHDR = true;
+                        }
+                        else
+                        {
+                            //activateHdr  is dependend on process if desktop is not default hdr
+                            activateHDR = processRequestHDR;
+                        }
+                    }
+                    
 
-                    if (activateHDR == HDRIsActive)
+                    //hdr is already activeActive)
                         return;
+                    //hdr hast to be activated
                     if (activateHDR)
                     {
                         Tools.Logs.Add($"Activating HDR...", false);
                         MonitorManager.ActivateHDR();
 
                     }
+                    //hdr has to be deactivated
                     else if (DisplayManager.GlobalHDRIsActive && Settings.HDRMode != HDRActivationMode.None)
                     {
                         Tools.Logs.Add($"Deactivating HDR...", false);
