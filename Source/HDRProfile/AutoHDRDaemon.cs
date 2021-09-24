@@ -495,11 +495,11 @@ namespace AutoHDR
             lock (_accessLock)
             {
                 try {
-                   
-                //check if one running process is preventing hdr
+
+                    //check if any running process is preventing HDR
                     bool allowedHDR = IsHDRAllowedToActivate();
 
-                    //check running processes if we should activate hdr
+                    //check running processes wants to activate HDR
                     bool processRequestHDR = false;
                     switch (Settings.HDRMode)
                     {
@@ -517,18 +517,18 @@ namespace AutoHDR
                     {
                         if (OnOffToBool(Settings.DesktopHDRDefault))
                         {
-                            //hdr is always active on desktop default and allowedHdr
+                            //HDR is always active on allowedHDR and desktopIsHdr
                             activateHDR = true;
                         }
                         else
                         {
-                            //activateHdr  is dependend on process if desktop is not default hdr
+                            //Desktop is not HDR so we need to check if a process request it
                             activateHDR = processRequestHDR;
                         }
                     }
 
 
-                    //hdr is already active)
+                    //hdr is already active
                     if (activateHDR == HDRIsActive)
                     {
                         return;
