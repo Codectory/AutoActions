@@ -24,6 +24,7 @@ namespace AutoHDR
         private bool _closeToTray;
         private bool _checkForNewVersion = true;
         private HDRActivationMode _hdrMode;
+        private OnOff _desktopHDRDefault = OnOff.OFF;
         readonly object _audioDevicesLock = new object();
         private ObservableCollection<ApplicationItem> _applicationItems;
         private ObservableCollection<Display> _monitors;
@@ -51,7 +52,8 @@ namespace AutoHDR
 
         [DataMember]
         public HDRActivationMode HDRMode { get => _hdrMode; set { _hdrMode = value; OnPropertyChanged(); } }
-
+        [DataMember]
+        public OnOff DesktopHDRDefault { get => _desktopHDRDefault; set { _desktopHDRDefault = value; OnPropertyChanged(); } }
         [DataMember]
         public ObservableCollection<ApplicationItem> ApplicationItems { get => _applicationItems; set {_applicationItems = value; OnPropertyChanged();} }
 
@@ -87,6 +89,7 @@ namespace AutoHDR
             convertedSettings.CloseToTray = settings.CloseToTray;
             convertedSettings.GlobalAutoHDR = settings.GlobalAutoHDR;
             convertedSettings.HDRMode = settings.HDRMode;
+            convertedSettings.DesktopHDRDefault = settings.DesktopHDRDefault;
             convertedSettings.Logging = settings.Logging;
             convertedSettings.Monitors = settings.Monitors;
             convertedSettings.StartMinimizedToTray = settings.StartMinimizedToTray;

@@ -23,6 +23,13 @@
                 <x:Type TypeName="root:HDRActivationMode" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues"
+        ObjectType="{x:Type sys:Enum}"
+        x:Key="OnOffEnum">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="root:OnOff" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </UserControl.Resources>
 
     <Grid  Grid.Row="1"  Width="Auto" HorizontalAlignment="Left">
@@ -49,7 +56,7 @@
 
         <TextBlock  Text="{x:Static pres:Locale_Texts.HDRMode}"  Grid.Column="0" Grid.Row="5" Margin="10,5,0,1" HorizontalAlignment="Left"/>
         <TextBlock  Text="{x:Static pres:Locale_Texts.GlobalAutoHDR}"  Grid.Column="0" Grid.Row="6" Margin="10,3,3,3" HorizontalAlignment="Left"/>
-
+        <TextBlock  Text="{x:Static pres:Locale_Texts.GlobalDesktopDefaultHDROnOff}"  Grid.Column="0" Grid.Row="7" Margin="10,3,3,3" HorizontalAlignment="Left"/>
         <CheckBox  IsChecked="{Binding AutoStart}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="15" Width="71"/>
         <CheckBox  IsChecked="{Binding StartMinimizedToTray}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Grid.Row="1" Height="15" Width="71"/>
         <CheckBox  IsChecked="{Binding CloseToTray}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Grid.Row="2" Height="15" Width="71"/>
@@ -58,6 +65,7 @@
 
         <ComboBox  ItemsSource="{Binding Source={StaticResource HDRModeValues}}" SelectedItem="{Binding HDRMode}" Grid.Column="1" HorizontalAlignment="Left" Margin="11,3,3,3" Grid.Row="5" VerticalAlignment="Top" Width="120" Height="22"/>
         <CheckBox  IsChecked="{Binding GlobalAutoHDR}" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="15" Width="71"/>
+        <ComboBox  ItemsSource="{Binding Source={StaticResource OnOffEnum}}" SelectedItem="{Binding DesktopHDRDefault}" Grid.Column="1" HorizontalAlignment="Left" Margin="11,3,3,3" Grid.Row="7" VerticalAlignment="Top" Width="120" Height="22"/>
 
 
 
