@@ -1,4 +1,4 @@
-﻿using CodectoryCore.Logging;
+using CodectoryCore.Logging;
 using CodectoryCore.UI.Wpf;
 using Hardcodet.Wpf.TaskbarNotification;
 using AutoHDR.Displays;
@@ -324,7 +324,12 @@ namespace AutoHDR
             }
             catch (Exception ex)
             {
-                Tools.Logs.AddException(ex);
+                try
+                {
+                    //can throw an error
+                    Tools.Logs.AddException(ex);
+                }
+                catch { }
             }
         }
 
