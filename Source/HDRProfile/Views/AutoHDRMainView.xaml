@@ -38,13 +38,16 @@
         <DataTemplate x:Key="ApplicationItemTemplate" DataType="ApplicationItem">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="50" Height="50"  Stretch="Fill"></Image>
-                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <DockPanel Grid.Column="0" Grid.ColumnSpan="2">
+                    <Image Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" HorizontalAlignment="Left" Width="50" Height="50"  Stretch="Fill"></Image>
+                    <TextBlock Text="{Binding DisplayName}" Margin="5" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </DockPanel>
+                <CheckBox Grid.Column="2"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding PreventHdr, Mode=TwoWay}" Margin="5" VerticalAlignment="Center"  />
                 <CheckBox Grid.Column="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartProcess, Mode=TwoWay}" Margin="5" VerticalAlignment="Center"  />
             </Grid>
         </DataTemplate>
@@ -87,7 +90,7 @@
                             </Button>
 
                             <Ellipse Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="10" >
-    
+
                                 <Ellipse.Style>
                                     <Style TargetType="{x:Type Ellipse}">
                                         <Style.Triggers>
@@ -133,8 +136,15 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"  />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{x:Static pres:Locale_Texts.RestartProccessOnFirstOccurence}" HorizontalAlignment="Right" Width="Auto" Height="16" VerticalAlignment="Top" Margin="0,5,5,0"/>
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{x:Static pres:Locale_Texts.RestartProccessOnFirstOccurence}" Width="Auto" Height="16" VerticalAlignment="Top" Margin="0,5,5,0" Grid.Column="3"/>
+                            <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{x:Static pres:Locale_Texts.PreventHDROnProgramStart}" Width="Auto" Height="16" VerticalAlignment="Top" Margin="0,5,5,0" Grid.Column="2"/>
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="4">
                                 <ListBox   x:Name="ApplicationList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.VerticalScrollBarVisibility="Disabled"  Background="{x:Null}"  BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top"/>
                             </ScrollViewer>
                         </Grid>

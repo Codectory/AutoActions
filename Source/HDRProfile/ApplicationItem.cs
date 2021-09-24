@@ -18,7 +18,9 @@ namespace AutoHDR
         private string _applicationFilePath;
         private string _applicationName;
         private System.Drawing.Bitmap icon = null;
+        /// compatibility checkbox in mainView
         private bool _restartProcess = false;
+        private bool _preventHdr = false;
         private string _uwpFamilyPackageName;
         private string _uwpApplicationID;
         private string _uwpIconPath;
@@ -28,6 +30,7 @@ namespace AutoHDR
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
         public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = Tools.GetFileIcon(value); } catch { } OnPropertyChanged(); } }
         public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
+        public bool PreventHdr { get => _preventHdr; set { _preventHdr = value; OnPropertyChanged(); } }
         public bool IsUWP { get => _isUWP; set { _isUWP = value; OnPropertyChanged(); } }
 
         [XmlIgnore]
