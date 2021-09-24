@@ -25,6 +25,7 @@ namespace AutoHDR
         private bool _closeToTray;
         private bool _checkForNewVersion = true;
         private HDRActivationMode _hdrMode;
+        private OnOff _desktopHDRDefault;
         readonly object _audioDevicesLock = new object();
         private ObservableCollection<ApplicationItem> _applicationItems;
         private ObservableCollection<Display> _monitors;
@@ -46,12 +47,14 @@ namespace AutoHDR
         [DataMember]
         public bool CloseToTray { get => _closeToTray; set { _closeToTray = value; OnPropertyChanged(); } }
 
-
         [DataMember]
         public bool CheckForNewVersion { get => _checkForNewVersion; set { _checkForNewVersion = value; OnPropertyChanged(); } }
 
         [DataMember]
         public HDRActivationMode HDRMode { get => _hdrMode; set { _hdrMode = value; OnPropertyChanged(); } }
+
+        [DataMember]
+        public OnOff DesktopHDRDefault { get => _desktopHDRDefault; set { _desktopHDRDefault = value; OnPropertyChanged(); } }
 
         [DataMember]
         public ObservableCollection<ApplicationItem> ApplicationItems { get => _applicationItems; set {_applicationItems = value; OnPropertyChanged();} }
