@@ -9,9 +9,8 @@ namespace AutoHDR.Profiles.Actions
 {
     public abstract class BaseProfileAction : BaseViewModel, IProfileAction
     {
-        public abstract string LocalizeCaption { get; }
-        private string _name = string.Empty;
-        public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
+        public abstract string ActionDisplayName { get; }
+        public abstract string ActionTypeCaption { get; }
 
         public abstract ActionEndResult RunAction();
     }

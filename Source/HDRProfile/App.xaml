@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:AutoHDR"
              xmlns:views="clr-namespace:AutoHDR.Views"
              xmlns:uwp="clr-namespace:AutoHDR.UWP"
+             xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
              xmlns:info="clr-namespace:AutoHDR.Info"
              xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -18,6 +19,9 @@
 
         <Color x:Key="ControlMouseOverColor">#fa8e8e</Color>
         <Color x:Key="ControlPressedColor">#e36b6b</Color>
+
+
+
 
         <!--Control colors.-->
         <Color x:Key="WindowColor">#FFE8EDF9</Color>
@@ -99,13 +103,13 @@
 
 
 
-        <system:String x:Key="DonateLink">https://paypal.me/pools/c/8vksshrMln</system:String>
+        <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
         <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
         <!--<Color x:Key="AccentColor">#5d9ac7</Color> -->
         <SolidColorBrush x:Key="ButtonForegroundBrush">White</SolidColorBrush>
 
-        <SolidColorBrush x:Key="ActiveBrush"  Color="{DynamicResource ActiveColor}"/>
-        <SolidColorBrush x:Key="AccentBrush"  Color="{DynamicResource AccentColor}"/>
+        <SolidColorBrush x:Key="ActiveBrush"  Color="{StaticResource ActiveColor}"/>
+        <SolidColorBrush x:Key="AccentBrush"  Color="{StaticResource AccentColor}"/>
         <SolidColorBrush x:Key="InactiveAccentBrush">#ad7b7b</SolidColorBrush>
         <SolidColorBrush x:Key="DisabledAccentBrush">#949ea6</SolidColorBrush>
         <SolidColorBrush x:Key="HighlightedInactiveAccentBrush" Color="#95bfdb"/>
@@ -117,7 +121,7 @@
         </Style>
 
         <Style x:Key="RoundedBorder" TargetType="Border">
-            <Setter Property="CornerRadius" Value="{DynamicResource CornerRadius}"/>
+            <Setter Property="CornerRadius" Value="{StaticResource CornerRadius}"/>
         </Style>
 
         <Style x:Key="HDRCircle" TargetType="Ellipse">
@@ -125,7 +129,7 @@
             <Setter Property="VerticalAlignment"  Value="Center" />
             <Style.Triggers>
                 <Trigger Property="Tag"  Value="True">
-                    <Setter Property="Fill" Value="{DynamicResource ActiveBrush}"/>
+                    <Setter Property="Fill" Value="{StaticResource ActiveBrush}"/>
                 </Trigger>
                 <Trigger Property="Tag"  Value="False">
                     <Setter Property="Fill" Value="Transparent"/>
@@ -135,8 +139,8 @@
 
 
         <Style x:Key="DefaultButton" TargetType="Button" >
-            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrush}"/>
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
             <Setter Property="Height" Value="25"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -616,10 +620,12 @@
 
         <local:EnumLocaleConverter x:Key="EnumLocaleConverter"/>
         <corewpf:DialogService x:Key="DialogService" />
+        <corewpf:DialogService x:Key="ProfileDialogService" />
         <corewpf:BitmapToBitmapImageConverter x:Key="BitmapToBitmapImageConverter"/>
         <corewpf:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
         <corewpf:MainWindowBase x:Key="MainWindowBase"/>
         <corewpf:IsNotNullConverter x:Key="IsNotNullConverter"/>
+        <corewpf:SizeTextConverter x:Key="SizeTextConverter"/>
         <corewpf:IsNotZeroConverter x:Key="IsNotZeroConverter"/>
         <corewpf:StringFormatConcatenator x:Key="StringFormatConcatenator"/>
         <corewpf:VisibilityBooleanConverter x:Key="VisibilityBooleanConverter"/>
@@ -634,6 +640,12 @@
 
         <DataTemplate DataType="{x:Type local:ApplicationAdder}">
             <views:ApplicationAdderView></views:ApplicationAdderView>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type prflActns:ApplicationAction}">
+            <views:ApplicationActionView></views:ApplicationActionView>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type prflActns:ProfileActionAdder}">
+            <views:ProfileActionAdderView></views:ProfileActionAdderView>
         </DataTemplate>
         <DataTemplate DataType="{x:Type uwp:UWPApplicationDialog}">
             <views:UWPApplicationDialogView></views:UWPApplicationDialogView>

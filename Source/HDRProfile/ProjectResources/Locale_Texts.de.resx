@@ -129,6 +129,9 @@
   <data name="AddApplication" xml:space="preserve">
     <value>Anwendung hinzufügen</value>
   </data>
+  <data name="AddProfileAction" xml:space="preserve">
+    <value>Aktion hinzufügen</value>
+  </data>
   <data name="AlreadyRunning" xml:space="preserve">
     <value>AutoHDR wurde bereits gestartet.</value>
   </data>
@@ -246,6 +249,9 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
   <data name="NoApplication" xml:space="preserve">
     <value>keine Anwedung</value>
   </data>
@@ -257,6 +263,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Öffnen</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
   </data>
   <data name="Profiles" xml:space="preserve">
     <value>Profile</value>
@@ -274,7 +283,7 @@
     <value>Auflösung</value>
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
-    <value>Kompatibilitätsmodus</value>
+    <value>Neustart, beim ersten Start</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>
@@ -296,5 +305,8 @@
   </data>
   <data name="VolumeSyncDevices" xml:space="preserve">
     <value>Lautstärkesynchronisierung</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
   </data>
 </root>

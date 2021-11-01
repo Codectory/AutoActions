@@ -115,6 +115,24 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add profile ähnelt.
+        /// </summary>
+        public static string AddProfile {
+            get {
+                return ResourceManager.GetString("AddProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add profile action ähnelt.
+        /// </summary>
+        public static string AddProfileAction {
+            get {
+                return ResourceManager.GetString("AddProfileAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die AutoHDR is already running. ähnelt.
         /// </summary>
         public static string AlreadyRunning {
@@ -291,6 +309,15 @@ namespace AutoHDR.ProjectResources {
         public static string DeviceID {
             get {
                 return ResourceManager.GetString("DeviceID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Display ähnelt.
+        /// </summary>
+        public static string Display {
+            get {
+                return ResourceManager.GetString("Display", resourceCulture);
             }
         }
         
@@ -485,6 +512,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No ähnelt.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die No application is running ähnelt.
         /// </summary>
         public static string NoApplication {
@@ -517,6 +553,15 @@ namespace AutoHDR.ProjectResources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Profile ähnelt.
+        /// </summary>
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
             }
         }
         
@@ -557,6 +602,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Remove profile ähnelt.
+        /// </summary>
+        public static string RemoveProfile {
+            get {
+                return ResourceManager.GetString("RemoveProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Resolution ähnelt.
         /// </summary>
         public static string Resolution {
@@ -571,6 +625,24 @@ namespace AutoHDR.ProjectResources {
         public static string RestartProccessOnFirstOccurence {
             get {
                 return ResourceManager.GetString("RestartProccessOnFirstOccurence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Set HDR ähnelt.
+        /// </summary>
+        public static string SetHDR {
+            get {
+                return ResourceManager.GetString("SetHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Set resolution ähnelt.
+        /// </summary>
+        public static string SetResolution {
+            get {
+                return ResourceManager.GetString("SetResolution", resourceCulture);
             }
         }
         
@@ -634,6 +706,15 @@ namespace AutoHDR.ProjectResources {
         public static string VolumeSyncDevices {
             get {
                 return ResourceManager.GetString("VolumeSyncDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Yes ähnelt.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

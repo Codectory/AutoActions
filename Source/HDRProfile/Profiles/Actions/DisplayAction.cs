@@ -1,5 +1,7 @@
-﻿using System;
+﻿using AutoHDR.ProjectResources;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,9 +12,9 @@ namespace AutoHDR.Profiles.Actions
 
     public class DisplayAction : BaseProfileAction
     {
-
+        public List<Displays.Display> AllDisplays => AutoHDR.Displays.DisplayManager.GetActiveMonitors(); 
         public Displays.Display Display { get; private set; } = null;
-        public override string LocalizeCaption => ProjectResources.Locale_Texts.Action_HDRSwitch;
+        public override string ActionTypeCaption => ProjectResources.Locale_Texts.Action_HDRSwitch;
 
 
         private bool _setHDR = false;
@@ -29,6 +31,21 @@ namespace AutoHDR.Profiles.Actions
 
         public Size _resolution;
         public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }
+
+        public override string ActionDisplayName
+        {
+            get
+            {
+                string returnValue = $"[{ActionTypeCaption} {Display.Name}]:";
+                if (SetHDR)
+                    returnValue += $" {Locale_Texts.HDR} {(EnableHDR ? Locale_Texts.Yes : Locale_Texts.No)}";
+                if (SetResolution)
+                    returnValue += $" {Locale_Texts.Resolution} {Resolution.Width}x{Resolution.Height}";
+                if (SetRefreshRate)
+                    returnValue += $" {Locale_Texts.RefreshRate} 0Hz";
+                return returnValue;
+            }
+        }
 
 
         public DisplayAction(Displays.Display display = null)

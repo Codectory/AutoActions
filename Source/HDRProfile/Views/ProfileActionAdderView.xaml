@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="AutoHDR.Views.ProfileActionAdderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"                     
+             xmlns:root="clr-namespace:AutoHDR"
+             xmlns:pres="clr-namespace:AutoHDR.ProjectResources"
+             xmlns:local="clr-namespace:AutoHDR.Views"
+             xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=prflActns:ProfileActionAdder, IsDesignTimeCreatable=False}"
+             Height="130.159" Width="414" MinWidth="414">
+
+    <Grid Margin="0,0,0,-181" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Content="{x:Static pres:Locale_Texts.ActionType}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="111"/>
+        <ComboBox x:Name="ActionType" HorizontalAlignment="Left" Margin="126,14,0,0" VerticalAlignment="Top" Width="278"/>
+
+        <ContentControl Margin="0,41,0,0"  DataContext="{Binding ElementName=ActionType, Path=SelectedItem}"/>
+
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width=" Auto"/>
+                <ColumnDefinition/>
+
+            </Grid.ColumnDefinitions>
+             <Button Grid.Column="2" Content="{x:Static pres:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="5"/>
+        </Grid>
+    </Grid>
+</UserControl>

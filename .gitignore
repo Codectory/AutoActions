@@ -24,8 +24,10 @@ mono_crash.*
 **/x64/
 **/x86/
 **/Debug_x64/
+**/Debug_Any/
 **/Debug_x86/
 **/Release_x64/
+**/Release_Any/
 **/Release_x86/
 [Dd]ebug_x64/
 [Dd]ebug_x86/

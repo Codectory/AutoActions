@@ -26,8 +26,15 @@ namespace AutoHDR.Displays
 
         public bool HDRState { get => _hdrState; set { _hdrState = value; OnPropertyChanged(); } }
 
+        internal void SetResolution(Size value)
+        {
+            throw new NotImplementedException();
+        }
 
-
+        internal void SetRefreshRate(int value)
+        {
+            throw new NotImplementedException();
+        }
 
         private Size _resolution;
         public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }
@@ -54,21 +61,6 @@ namespace AutoHDR.Displays
         public void UpdateHDRState()
         {
             HDRState= HDRController.GetHDRState(UID);
-        }
-
-        public void UpdateResolution()
-        {
-            Resolution = HDRController.GetResolution(UID);
-        }
-
-        public void SetHDR(bool enabled)
-        {
-            HDRController.SetHDRState(UID, enabled);
-        }
-
-        public void SetResolution(Size value)
-        {
-            HDRController.SetResolution(UID, Convert.ToUInt32(value.Width), Convert.ToUInt32(value.Height));
         }
 
 

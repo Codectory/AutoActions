@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using AutoHDR.Profiles;
 
 namespace AutoHDR
 {
@@ -26,7 +27,7 @@ namespace AutoHDR
         private HDRActivationMode _hdrMode;
         readonly object _audioDevicesLock = new object();
         private ObservableCollection<ApplicationItem> _applicationItems;
-        private ObservableCollection<Profiles.Profile> _applicationProfiles;
+        private ObservableCollection<Profile> _applicationProfiles;
         private ObservableCollection<Display> _monitors;
 
 
@@ -58,7 +59,7 @@ namespace AutoHDR
 
         [DataMember]
 
-        public ObservableCollection<Profiles.Profile> ApplicationProfiles { get => _applicationProfiles; set { _applicationProfiles = value; OnPropertyChanged(); } }
+        public ObservableCollection<Profile> ApplicationProfiles { get => _applicationProfiles; set { _applicationProfiles = value; OnPropertyChanged(); } }
 
 
         [DataMember]
@@ -68,7 +69,7 @@ namespace AutoHDR
         public UserAppSettings()
         {
             ApplicationItems = new ObservableCollection<ApplicationItem>();
-            ApplicationProfiles = new ObservableCollection<Profiles.Profile>();
+            ApplicationProfiles = new ObservableCollection<Profile>();
             Monitors = new ObservableCollection<Display>();
         }
 

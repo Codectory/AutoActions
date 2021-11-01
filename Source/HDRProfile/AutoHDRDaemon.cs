@@ -1,30 +1,19 @@
-﻿using CodectoryCore.Logging;
-using CodectoryCore.UI.Wpf;
-using Hardcodet.Wpf.TaskbarNotification;
-using AutoHDR.Displays;
+﻿using AutoHDR.Displays;
 using AutoHDR.Info;
 using AutoHDR.Info.Github;
-using Microsoft.Win32;
+using AutoHDR.Profiles;
+using CodectoryCore.Logging;
+using CodectoryCore.UI.Wpf;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Xml.Serialization;
-using AutoHDR.Profiles;
-using AutoHDR.Profiles.Actions;
 
 namespace AutoHDR
 {
@@ -56,9 +45,12 @@ namespace AutoHDR
         public RelayCommand ActivateHDRCommand { get; private set; }
         public RelayCommand DeactivateHDRCommand { get; private set; }
         public RelayCommand AddApplicationCommand { get; private set; }
+        public RelayCommand<ApplicationItem> RemoveApplicationCommand { get; private set; }
+
+        public RelayCommand AddProfileCommand { get; private set; }
+        public RelayCommand<Profile> RemoveProfileCommand { get; private set; }
         public RelayCommand ShowInfoCommand { get; private set; }
 
-        public RelayCommand<ApplicationItem> RemoveApplicationCommand { get; private set; }
         public RelayCommand LoadingCommand { get; private set; }
         public RelayCommand ClosingCommand { get; private set; }
         public RelayCommand ShutdownCommand { get; private set; }
@@ -148,48 +140,43 @@ namespace AutoHDR
 
         private void UpdateHDRModeBasedOnCurrentApplication(ApplicationItem application, ApplicationChangedType changedType)
         {
-            lock (_accessLock)
-            {
-                Profile profile = Settings.ApplicationProfiles.FirstOrDefault(ap => ap.Application.Equals(application));
+            //lock (_accessLock)
+            //{
+            //    Profile profile = Settings.ApplicationProfiles.FirstOrDefault(ap => ap.Application.Equals(application));
 
-                if (
-                    (CurrentProfile != null && !CurrentProfile.Equals(profile))
-                    ||
-                    (profile.Mode != ProfileMode.OnFocus && changedType == ApplicationChangedType.GotFocus)
-                    )
-                    return;
-                CurrentProfile = profile;
-                if (CurrentProfile.Mode == ProfileMode.OnRunning)
-                {
-                    switch (changedType)
-                    {
-                        case ApplicationChangedType.Started:
-                            foreach (IProfileAction action in profile.ApplicationStarted)
-                                action.RunAction();
-                            break;
-                        case ApplicationChangedType.Closed:
-                            foreach (IProfileAction action in profile.ApplicationClosed)
-                                action.RunAction();
-                            break;
-                    }
-                }
-                else
-                {
+            //    if (
+            //        (CurrentProfile != null && !CurrentProfile.Equals(profile))
+            //        ||
+            //        (profile.Mode != ProfileMode.OnFocus && changedType == ApplicationChangedType.GotFocus)
+            //        )
+            //        return;
+            //    CurrentProfile = profile;
+            //    if (CurrentProfile.Mode == ProfileMode.OnRunning)
+            //    {
+            //        switch (changedType)
+            //        {
+            //            case ApplicationChangedType.Started:
+            //                profile.ApplicationStarted.RunAction();
+            //                break;
+            //            case ApplicationChangedType.Closed:
+            //                profile.ApplicationClosed.RunAction();
+            //                break;
+            //        }
+            //    }
+            //    else
+            //    {
 
-                }
-                switch (changedType)
-                {
-                    case ApplicationChangedType.GotFocus:
-                        foreach (IProfileAction action in profile.ApplicationGotFocus)
-                            action.RunAction();
-                        break;
-                    case ApplicationChangedType.LostFocus:
-                        foreach (IProfileAction action in profile.ApplicationLostFocus)
-                            action.RunAction();
-
-                        break;
-                }
-            }
+            //    }
+            //    switch (changedType)
+            //    {
+            //        case ApplicationChangedType.GotFocus:
+            //            profile.ApplicationGotFocus.RunAction();
+            //            break;
+            //        case ApplicationChangedType.LostFocus:
+            //            profile.ApplicationLostFocus.RunAction();
+            //            break;
+            //    }
+            //}
         }
 
         private void CheckForNewVersion()
@@ -242,6 +229,9 @@ namespace AutoHDR
             DeactivateHDRCommand = new RelayCommand(MonitorManager.DeactivateHDR);
             AddApplicationCommand = new RelayCommand(AddAplication);
             RemoveApplicationCommand = new RelayCommand<ApplicationItem>(RemoveApplication);
+            AddProfileCommand = new RelayCommand(AddProfile);
+            RemoveProfileCommand = new RelayCommand<Profile>(RemoveProfile);
+
             ClosingCommand = new RelayCommand(Closing);
             ShutdownCommand = new RelayCommand(Shutdown);
             StartApplicationCommand = new RelayCommand<ApplicationItem>(StartApplication);
@@ -299,9 +289,12 @@ namespace AutoHDR
             catch (Exception ex)
             {
                 string backupFile = $"{System.AppDomain.CurrentDomain.BaseDirectory}Backup_Settings_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xml.bak";
-                File.Move(SettingsPath, backupFile);
-                Tools.Logs.Add($"Created backup of invalid settings file: {backupFile}", false);
-                File.Delete(SettingsPath);
+                if (File.Exists(SettingsPath))
+                {
+                    File.Move(SettingsPath, backupFile);
+                    Tools.Logs.Add($"Created backup of invalid settings file: {backupFile}", false);
+                    File.Delete(SettingsPath);
+                }
                 Tools.Logs.Add("Failed to load settings", false);
                 Tools.Logs.AddException(ex);
                 Settings = new UserAppSettings();
@@ -499,6 +492,27 @@ namespace AutoHDR
             Settings.ApplicationItems.Remove(process);
 
         }
+
+        private void AddProfile()
+        {
+            int count = 0;
+            string profileName = string.Empty;
+            while (string.IsNullOrEmpty(profileName) ||  Settings.ApplicationProfiles.Any(p => p.Name.ToUpperInvariant().Equals(profileName.ToUpperInvariant())))
+            {
+                count++;
+                profileName = $"{ProjectResources.Locale_Texts.Profile} {count}";
+            }
+            Settings.ApplicationProfiles.Add(new Profile() { Name = profileName });
+            SaveSettings();
+        }
+
+
+        private void RemoveProfile(Profile profile)
+        {
+            Settings.ApplicationProfiles.Remove(profile);
+            SaveSettings();
+        }
+
 
 
         private void UpdateHDRModeBasedOnCurrentApplication()

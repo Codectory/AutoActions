@@ -118,6 +118,9 @@
                     <Button Content="{x:Static pres:Locale_Texts.Shutdown}"  Command="{Binding ShutdownCommand}" Height="Auto"  HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Bottom" Margin="0,0,10,10" />
                 </Grid>
             </TabItem>
+            <TabItem Header="{x:Static pres:Locale_Texts.Profiles}"   >
+                <local:ProfileManagerView   DataContext="{Binding ElementName=MainWindow , Path=DataContext}"/>
+            </TabItem>
             <TabItem Header="{x:Static pres:Locale_Texts.Applications}" >
                 <Grid >
                     <Grid.ColumnDefinitions>

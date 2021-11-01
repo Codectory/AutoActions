@@ -135,6 +135,12 @@
   <data name="AddApplication" xml:space="preserve">
     <value>Add application</value>
   </data>
+  <data name="AddProfile" xml:space="preserve">
+    <value>Add profile</value>
+  </data>
+  <data name="AddProfileAction" xml:space="preserve">
+    <value>Add profile action</value>
+  </data>
   <data name="AlreadyRunning" xml:space="preserve">
     <value>AutoHDR is already running.</value>
   </data>
@@ -194,6 +200,9 @@
   </data>
   <data name="DeviceID" xml:space="preserve">
     <value>Device ID</value>
+  </data>
+  <data name="Display" xml:space="preserve">
+    <value>Display</value>
   </data>
   <data name="DisplayAction" xml:space="preserve">
     <value>Display action</value>
@@ -259,6 +268,9 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="NoApplication" xml:space="preserve">
     <value>No application is running</value>
   </data>
@@ -270,6 +282,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
   </data>
   <data name="Profiles" xml:space="preserve">
     <value>Profiles</value>
@@ -283,11 +298,20 @@
   <data name="RemoveApplication" xml:space="preserve">
     <value>Remove application</value>
   </data>
+  <data name="RemoveProfile" xml:space="preserve">
+    <value>Remove profile</value>
+  </data>
   <data name="Resolution" xml:space="preserve">
     <value>Resolution</value>
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
     <value>Compatibility mode</value>
+  </data>
+  <data name="SetHDR" xml:space="preserve">
+    <value>Set HDR</value>
+  </data>
+  <data name="SetResolution" xml:space="preserve">
+    <value>Set resolution</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
@@ -309,5 +333,8 @@
   </data>
   <data name="VolumeSyncDevices" xml:space="preserve">
     <value>Volume sync devices</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

@@ -137,7 +137,7 @@ namespace AutoHDR.Displays
             }
         }
 
-        private List<Display> GetActiveMonitors()
+        public static  List<Display> GetActiveMonitors()
         {
             List<Display> monitors = new List<Display>();
 
