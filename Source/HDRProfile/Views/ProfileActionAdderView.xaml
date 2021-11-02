@@ -9,26 +9,37 @@
              xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=prflActns:ProfileActionAdder, IsDesignTimeCreatable=False}"
-             Height="130.159" Width="414" MinWidth="414">
+              MinWidth="414">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type prflActns:DisplayAction}">
+            <local:DisplayActionView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type prflActns:ApplicationAction}">
+            <local:ApplicationActionView/>
+        </DataTemplate>
+        <DataTemplate x:Key="ProfileTypeTemplate" DataType="Type">
+            <TextBlock Text="{Binding Name}"/>
+        </DataTemplate>
+    </UserControl.Resources>
 
-    <Grid Margin="0,0,0,-181" >
+    <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="23*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Content="{x:Static pres:Locale_Texts.ActionType}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="111"/>
-        <ComboBox x:Name="ActionType" HorizontalAlignment="Left" Margin="126,14,0,0" VerticalAlignment="Top" Width="278"/>
+        <ComboBox x:Name="ActionType" ItemsSource="{Binding ProfileActions}" SelectedItem="{Binding ActionType}" ItemTemplate="{StaticResource ProfileTypeTemplate}" HorizontalAlignment="Left" Margin="126,14,0,0" Width="278" Height="22" VerticalAlignment="Top"/>
 
-        <ContentControl Margin="0,41,0,0"  DataContext="{Binding ElementName=ActionType, Path=SelectedItem}"/>
-
-        <Grid Grid.Row="1" >
+        <ContentPresenter Grid.Row="1" Content="{Binding ContentControlViewModel}" Margin="10,0"/>
+        <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width=" Auto"/>
                 <ColumnDefinition/>
 
             </Grid.ColumnDefinitions>
-             <Button Grid.Column="2" Content="{x:Static pres:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="5"/>
+            <Button Grid.Column="2" Content="{x:Static pres:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="5"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -12,6 +12,6 @@ namespace AutoHDR.Profiles.Actions
         public abstract string ActionDisplayName { get; }
         public abstract string ActionTypeCaption { get; }
 
-        public abstract ActionEndResult RunAction();
+        public abstract ActionEndResult RunAction(params object[] parameter);
     }
 }

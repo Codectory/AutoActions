@@ -12,8 +12,10 @@ namespace AutoHDR.Profiles.Actions
 
     public class DisplayAction : BaseProfileAction
     {
-        public List<Displays.Display> AllDisplays => AutoHDR.Displays.DisplayManager.GetActiveMonitors(); 
-        public Displays.Display Display { get; private set; } = null;
+        public List<Displays.Display> AllDisplays => AutoHDR.Displays.DisplayManager.GetActiveMonitors();
+
+        private Displays.Display _display = null;
+        public Displays.Display Display { get => _display; set { _display = value;  OnPropertyChanged(); Resolution = _display.Resolution;  } }
         public override string ActionTypeCaption => ProjectResources.Locale_Texts.Action_HDRSwitch;
 
 
@@ -48,13 +50,11 @@ namespace AutoHDR.Profiles.Actions
         }
 
 
-        public DisplayAction(Displays.Display display = null)
+        public DisplayAction()
         {
-            Display = display;
-            Resolution = display.Resolution;
         }
 
-        public override ActionEndResult RunAction()
+        public override ActionEndResult RunAction(params object[] parameters)
         {
             try
             {

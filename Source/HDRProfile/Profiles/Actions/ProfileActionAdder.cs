@@ -24,12 +24,46 @@ namespace AutoHDR.Profiles.Actions
 
         {
             get { return _actionType; }
-            set { _actionType = value; OnPropertyChanged(); }
+            set 
+            {
+                _actionType = value;
+                UpdateCanCreate();
+                ContentControlViewModel = (BaseViewModel)Activator.CreateInstance(_actionType);
+                //if (_actionType.Equals(typeof(ApplicationAction)))
+                //{
+                //    ContentControlViewModel = new ApplicationAction();
+                //}
+                //else if (_actionType.Equals(typeof(DisplayAction)))
+                //{
+                //    ContentControlViewModel = new DisplayAction();
+                //}
+                OnPropertyChanged(); 
+            }
         }
+
+            private BaseViewModel _contentControlViewModel;
+        public BaseViewModel ContentControlViewModel
+        {
+            get { return _contentControlViewModel; }
+            set
+            {
+                _contentControlViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+    
 
         private IProfileAction _profileAction = null;
 
         public IProfileAction ProfileAction { get => _profileAction; private set { _profileAction = value; OnPropertyChanged(); } }
+
+        public List<Type> ProfileActions
+        {
+            get
+            {
+                return new List<Type>() { typeof(ApplicationAction), typeof(DisplayAction) };
+            }
+        }
 
 
         public RelayCommand<object> OKClickCommand { get; private set; }

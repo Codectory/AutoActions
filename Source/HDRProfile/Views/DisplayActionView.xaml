@@ -9,8 +9,12 @@
              xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=prflActns:DisplayAction, IsDesignTimeCreatable=False}">
-
-        <Grid VerticalAlignment="Top">
+    <UserControl.Resources>
+        <DataTemplate x:Key="DisplayItemTemplate" DataType="Display">
+            <TextBlock Text="{Binding Name}"></TextBlock>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -24,7 +28,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Grid.Column="0"  Grid.Row="0" Content="{x:Static pres:Locale_Texts.Display}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AllDisplays}" />
+        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AllDisplays}" SelectedItem="{Binding Display}" ItemTemplate="{StaticResource DisplayItemTemplate}" Margin="3,2,2,2" />
         <Label Grid.Column="0"  Grid.Row="1" Content="{x:Static pres:Locale_Texts.SetHDR}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <CheckBox  Grid.Column="1" Grid.Row="1"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
         <Label Grid.Column="0"  Grid.Row="2" Content="{x:Static pres:Locale_Texts.ActivateHDR}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -34,7 +38,7 @@
         <CheckBox  Grid.Column="1" Grid.Row="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetResolution, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
 
         <Label Grid.Column="0"  Grid.Row="4" Content="{x:Static pres:Locale_Texts.Resolution}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBlock  Grid.Column="1" Grid.Row="4"  IsEnabled="{Binding SetResolution}" Text="{Binding Resolution, Mode=TwoWay,Converter={StaticResource SizeTextConverter}}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
+        <TextBox  Grid.Column="1" Grid.Row="4"  IsEnabled="{Binding SetResolution}" Text="{Binding Resolution, Mode=TwoWay,Converter={StaticResource SizeTextConverter}}" VerticalAlignment="Center" Margin="5,4,2,4"  />
 
     </Grid>
 </UserControl>

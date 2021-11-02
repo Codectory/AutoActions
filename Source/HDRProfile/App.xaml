@@ -638,6 +638,11 @@
             <corewpf:VisibilityBooleanConverter />
         </corewpf:ConverterChain>
 
+        <corewpf:ConverterChain x:Key="NotNullVisibilityConverter">
+            <corewpf:IsNotNullConverter />
+            <corewpf:VisibilityBooleanConverter />
+        </corewpf:ConverterChain>
+
         <DataTemplate DataType="{x:Type local:ApplicationAdder}">
             <views:ApplicationAdderView></views:ApplicationAdderView>
         </DataTemplate>

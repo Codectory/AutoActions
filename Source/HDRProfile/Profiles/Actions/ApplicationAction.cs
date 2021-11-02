@@ -20,21 +20,19 @@ namespace AutoHDR.Profiles.Actions
         private bool _restartApplication = false;
         public bool RestartApplication { get => _restartApplication; set { _restartApplication = value; OnPropertyChanged(); } }
 
-        public ApplicationItem Application { get; }
 
         public override string ActionDisplayName => $"[{ActionTypeCaption}]: {Locale_Texts.RestartProccessOnFirstOccurence}: {(RestartApplication ? Locale_Texts.Yes : Locale_Texts.No)}";
 
-        public ApplicationAction(ApplicationItem application)
+        public ApplicationAction()
         {
-            Application = application;
         }
 
-        public override ActionEndResult RunAction()
+        public override ActionEndResult RunAction(params object[] parameter)
         {
             try
             {
                 if (RestartApplication)
-                    Application.Restart();
+                    ((ApplicationItem)parameter[0]).Restart();
                 return new ActionEndResult(true);
             }
             catch (Exception ex)

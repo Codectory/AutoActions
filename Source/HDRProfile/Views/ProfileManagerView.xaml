@@ -78,7 +78,7 @@
             <ListBox   x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}"  BorderThickness="0"/>
         </Border>
         <Border Grid.Column="1" Grid.Row="1"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
-            <Grid Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}">
+            <Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}"  Visibility="{Binding  ElementName=ProfileList, Path=SelectedItem, Converter={StaticResource NotNullVisibilityConverter}}">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -97,7 +97,7 @@
                 <TextBlock  Grid.Column="0"  Grid.Row="3"   Text="{x:Static pres:Locale_Texts.AppFocusedActions}" Margin="5"></TextBlock>
                 <TextBlock  Grid.Column="0"  Grid.Row="4"   Text="{x:Static pres:Locale_Texts.AppLostFocusActions}" Margin="5"></TextBlock>
 
-                <TextBlock  Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="5"></TextBlock>
+                <TextBox Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="5"></TextBox>
                 <Border Grid.Column="1"  Grid.Row="1"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -151,7 +151,7 @@
 
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"  Width="Auto" Command="{Binding AddProfileCommand}" Content="{x:Static pres:Locale_Texts.AddProfile}"    Margin="10,5,5,10" Height="Auto" />
-            <Button Grid.Column="1" Width="Auto" Command="{Binding RemoveProfileCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Height="Auto" Content="{x:Static pres:Locale_Texts.RemoveProfile}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580"  />
+            <Button Grid.Column="1" Width="Auto" Command="{Binding RemoveProfileCommand}" CommandParameter="{Binding ElementName=ProfileList, Path=SelectedItem}"  Height="Auto" Content="{x:Static pres:Locale_Texts.RemoveProfile}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580"  />
         </Grid>
 
     </Grid>
