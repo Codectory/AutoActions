@@ -150,6 +150,9 @@
   <data name="AppFocusedActions" xml:space="preserve">
     <value>Application got focus actions</value>
   </data>
+  <data name="ApplicationAction" xml:space="preserve">
+    <value>Application action</value>
+  </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>Application name</value>
   </data>
@@ -306,6 +309,9 @@
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
     <value>Compatibility mode</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="SetHDR" xml:space="preserve">
     <value>Set HDR</value>

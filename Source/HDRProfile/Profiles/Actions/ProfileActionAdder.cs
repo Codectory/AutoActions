@@ -49,6 +49,8 @@ namespace AutoHDR.Profiles.Actions
             {
                 _contentControlViewModel = value;
                 OnPropertyChanged();
+                ProfileAction = (IProfileAction)ContentControlViewModel;
+
             }
         }
     

@@ -26,13 +26,10 @@ namespace AutoHDR
         
 
         private bool _hdrIsActive;
-        private UserAppSettings _settings;
+
         private DisplayManager _monitorManager;
 
 
-        private string SettingsPathCompatible => $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings.xml";
-
-        private string SettingsPath => $"{System.AppDomain.CurrentDomain.BaseDirectory}UserSettings.xml";
 
         private bool started = false;
         public bool Started { get => started; private set { started = value; OnPropertyChanged(); } }
@@ -60,9 +57,9 @@ namespace AutoHDR
 
         #endregion RelayCommands
 
+        public UserAppSettings Settings { get => Globals.Instance.Settings; set { Globals.Instance.Settings = value; OnPropertyChanged(); } }
         public Profile CurrentProfile { get => _currentProfile; set { _currentProfile = value; OnPropertyChanged(); } }
 
-        public UserAppSettings Settings { get => _settings; set { _settings = value; OnPropertyChanged(); } }
         public DisplayManager MonitorManager { get => _monitorManager; set { _monitorManager = value; OnPropertyChanged(); } }
 
         public bool Initialized { get; private set; } = false;
@@ -130,7 +127,7 @@ namespace AutoHDR
         {
             Tools.Logs.Add($"Application {e.Application} changed: {e.ChangedType}", false);
 
-            UpdateHDRModeBasedOnCurrentApplication(e.Application, e.ChangedType);
+            UpdateCurrentProfile(e.Application, e.ChangedType);
         }
 
         private void ApplicationWatcher_NewLog(object sender, string e)
@@ -138,7 +135,7 @@ namespace AutoHDR
             Tools.Logs.Add(e, false);
         }
 
-        private void UpdateHDRModeBasedOnCurrentApplication(ApplicationItem application, ApplicationChangedType changedType)
+        private void UpdateCurrentProfile(ApplicationItem application, ApplicationChangedType changedType)
         {
             //lock (_accessLock)
             //{
@@ -266,45 +263,10 @@ namespace AutoHDR
 
         private void LoadSettings()
         {
-            try
-            {
-                if (File.Exists(SettingsPath))
-                {
-                    Tools.Logs.Add("Loading settings...", false);
-                    Settings = UserAppSettings.ReadSettings(SettingsPath);
-                }
-                else if (File.Exists(SettingsPathCompatible))
-                {
-                    Tools.Logs.Add("Loading settings...", false);
-                    Settings = UserAppSettings.Convert(HDRProfileSettings.ReadSettings(SettingsPathCompatible));
-                    File.Delete(SettingsPathCompatible);
-                }
-                else
-                {
-                    Tools.Logs.Add("Creating settings file", false);
-                    Settings = new UserAppSettings();
-                    SaveSettings();
-                }
-            }
-            catch (Exception ex)
-            {
-                string backupFile = $"{System.AppDomain.CurrentDomain.BaseDirectory}Backup_Settings_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xml.bak";
-                if (File.Exists(SettingsPath))
-                {
-                    File.Move(SettingsPath, backupFile);
-                    Tools.Logs.Add($"Created backup of invalid settings file: {backupFile}", false);
-                    File.Delete(SettingsPath);
-                }
-                Tools.Logs.Add("Failed to load settings", false);
-                Tools.Logs.AddException(ex);
-                Settings = new UserAppSettings();
-                SaveSettings();
-                Tools.Logs.Add("Created new settings file", false);
-            }
+            Globals.Instance.LoadSettings();
 
             Settings.ApplicationItems.CollectionChanged += ApplicationItems_CollectionChanged;
-            _settings.PropertyChanged += Settings_PropertyChanged;
-            Logs.LoggingEnabled = Settings.Logging;
+            Settings.PropertyChanged += Settings_PropertyChanged;
             foreach (var application in Settings.ApplicationItems)
             {
                 ApplicationWatcher.AddProcess(application);
@@ -322,7 +284,7 @@ namespace AutoHDR
             {
                 try
                 {
-                    Tools.SetAutoStart(ProjectResources.Locale_Texts.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location, _settings.AutoStart);
+                    Tools.SetAutoStart(ProjectResources.Locale_Texts.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location, Settings.AutoStart);
 
                 }
                 catch (Exception ex)
@@ -455,17 +417,7 @@ namespace AutoHDR
 
         private void SaveSettings()
         {
-            Tools.Logs.Add("Saving settings..", false);
-            try
-            {
-                Settings.SaveSettings(SettingsPath);
-                Tools.Logs.Add("Settings saved", false);
-
-            }
-            catch (Exception ex)
-            {
-                Tools.Logs.AddException(ex);
-            }
+            Globals.Instance.SaveSettings();
         }
 
         private void ApplicationItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -483,7 +435,7 @@ namespace AutoHDR
                     Settings.ApplicationItems.Add(adder.ApplicationItem);
             };
             if (DialogService != null)
-                DialogService.ShowDialogModal(adder);
+                DialogService.ShowDialogModal(adder, new System.Drawing.Size(640, 450));
         }
 
 

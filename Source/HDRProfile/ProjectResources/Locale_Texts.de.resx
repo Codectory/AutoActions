@@ -141,6 +141,9 @@
   <data name="AppFocusedActions" xml:space="preserve">
     <value>"Anwendung im Fokus"-Aktionen</value>
   </data>
+  <data name="ApplicationAction" xml:space="preserve">
+    <value>App-Aktion</value>
+  </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>Anwendungsname</value>
   </data>
@@ -193,7 +196,7 @@
     <value>Geräte ID</value>
   </data>
   <data name="DisplayAction" xml:space="preserve">
-    <value>Monitoraktion</value>
+    <value>Displayaktion</value>
   </data>
   <data name="DisplayName" xml:space="preserve">
     <value>Anzeigename</value>
@@ -284,6 +287,9 @@
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
     <value>Neustart, beim ersten Start</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>

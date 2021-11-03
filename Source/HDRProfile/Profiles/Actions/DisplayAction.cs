@@ -16,7 +16,7 @@ namespace AutoHDR.Profiles.Actions
 
         private Displays.Display _display = null;
         public Displays.Display Display { get => _display; set { _display = value;  OnPropertyChanged(); Resolution = _display.Resolution;  } }
-        public override string ActionTypeCaption => ProjectResources.Locale_Texts.Action_HDRSwitch;
+        public override string ActionTypeName => ProjectResources.Locale_Texts.DisplayAction;
 
 
         private bool _setHDR = false;
@@ -34,11 +34,11 @@ namespace AutoHDR.Profiles.Actions
         public Size _resolution;
         public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }
 
-        public override string ActionDisplayName
+        public override string ActionName
         {
             get
             {
-                string returnValue = $"[{ActionTypeCaption} {Display.Name}]:";
+                string returnValue = $"[{ActionTypeName} {Display.Name}]:";
                 if (SetHDR)
                     returnValue += $" {Locale_Texts.HDR} {(EnableHDR ? Locale_Texts.Yes : Locale_Texts.No)}";
                 if (SetResolution)

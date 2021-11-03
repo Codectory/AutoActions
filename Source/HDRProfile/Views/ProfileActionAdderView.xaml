@@ -9,7 +9,7 @@
              xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=prflActns:ProfileActionAdder, IsDesignTimeCreatable=False}"
-              MinWidth="414">
+              MinWidth="414"  >
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type prflActns:DisplayAction}">
             <local:DisplayActionView/>

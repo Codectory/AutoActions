@@ -14,14 +14,14 @@ namespace AutoHDR.Profiles.Actions
     {
 
         public Displays.Display Display { get; private set; } = null;
-        public override string ActionTypeCaption => ProjectResources.Locale_Texts.Action_HDRSwitch;
+        public override string ActionTypeName => ProjectResources.Locale_Texts.ApplicationAction;
 
 
         private bool _restartApplication = false;
         public bool RestartApplication { get => _restartApplication; set { _restartApplication = value; OnPropertyChanged(); } }
 
 
-        public override string ActionDisplayName => $"[{ActionTypeCaption}]: {Locale_Texts.RestartProccessOnFirstOccurence}: {(RestartApplication ? Locale_Texts.Yes : Locale_Texts.No)}";
+        public override string ActionName => $"[{ActionTypeName}]: {Locale_Texts.RestartProccessOnFirstOccurence}: {(RestartApplication ? Locale_Texts.Yes : Locale_Texts.No)}";
 
         public ApplicationAction()
         {

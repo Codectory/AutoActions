@@ -175,6 +175,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ApplicationChangedEventArgs.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Profiles\Actions\ActionEndResult.cs" />
     <Compile Include="Profiles\Actions\BaseProfileAction.cs" />
     <Compile Include="Profiles\Actions\ApplicationAction.cs" />

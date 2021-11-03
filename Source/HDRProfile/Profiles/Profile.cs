@@ -53,6 +53,12 @@ namespace AutoHDR.Profiles
             RemoveClosedActionCommand = new RelayCommand<IProfileAction>((pa) => RemoveProfileAction(ProfileActionListType.Closed, pa));
             RemoveGotFocusActionCommand = new RelayCommand<IProfileAction>((pa) => RemoveProfileAction(ProfileActionListType.GotFocus, pa));
             RemoveLostFocusActionCommand = new RelayCommand<IProfileAction>((pa) => RemoveProfileAction(ProfileActionListType.LostFocus, pa));
+            PropertyChanged += Profile_PropertyChanged;
+        }
+
+        private void Profile_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Globals.Instance.SaveSettings();
         }
 
         private string _name = "-";
@@ -129,7 +135,7 @@ namespace AutoHDR.Profiles
                 }
             };
             if (DialogService != null)
-                DialogService.ShowDialogModal(adder);
+                DialogService.ShowDialogModal(adder, new System.Drawing.Size(640,450));
         }
 
         public void RemoveProfileAction( IProfileAction profileAction)

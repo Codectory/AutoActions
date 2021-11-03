@@ -160,6 +160,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application action ähnelt.
+        /// </summary>
+        public static string ApplicationAction {
+            get {
+                return ResourceManager.GetString("ApplicationAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Application name ähnelt.
         /// </summary>
         public static string ApplicationName {
@@ -625,6 +634,15 @@ namespace AutoHDR.ProjectResources {
         public static string RestartProccessOnFirstOccurence {
             get {
                 return ResourceManager.GetString("RestartProccessOnFirstOccurence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Save ähnelt.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
