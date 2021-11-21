@@ -19,9 +19,12 @@ namespace AutoHDR
 
         private UserAppSettings _settings;
         public UserAppSettings Settings { get => _settings; set { _settings = value; OnPropertyChanged(); } }
+        private bool _settingsLoadedOnce = false;
 
         public void SaveSettings()
         {
+            if (!_settingsLoadedOnce)
+                return;
             Tools.Logs.Add("Saving settings..", false);
             try
             {
@@ -43,17 +46,20 @@ namespace AutoHDR
                 {
                     Tools.Logs.Add("Loading settings...", false);
                     Settings = UserAppSettings.ReadSettings(SettingsPath);
+                    _settingsLoadedOnce = true;
                 }
                 else if (File.Exists(SettingsPathCompatible))
                 {
                     Tools.Logs.Add("Loading settings...", false);
                     Settings = UserAppSettings.Convert(HDRProfileSettings.ReadSettings(SettingsPathCompatible));
+                    _settingsLoadedOnce = true;
                     File.Delete(SettingsPathCompatible);
                 }
                 else
                 {
                     Tools.Logs.Add("Creating settings file", false);
                     Settings = new UserAppSettings();
+                    _settingsLoadedOnce = true;
                     SaveSettings();
                 }
             }

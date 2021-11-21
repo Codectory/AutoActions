@@ -35,7 +35,7 @@
         <ItemsPanelTemplate x:Key="StackListViewTemplate">
             <StackPanel/>
         </ItemsPanelTemplate>
-        <DataTemplate x:Key="ApplicationItemTemplate" DataType="ApplicationItem">
+        <DataTemplate x:Key="AssignmentTemplate" DataType="ApplicationProfileAssignment">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -43,9 +43,9 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="50" Height="50"  Stretch="Fill"></Image>
-                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <CheckBox Grid.Column="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartProcess, Mode=TwoWay}" Margin="5" VerticalAlignment="Center"  />
+                <Image Grid.Column="0" Source="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="50" Height="50"  Stretch="Fill"></Image>
+                <TextBlock Grid.Column="1" Text="{Binding Application.DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <ComboBox Grid.Column="2" SelectedItem="{Binding Profile}" ItemsSource="{Binding Settings.ApplicationProfiles}"/>
             </Grid>
         </DataTemplate>
 
@@ -136,9 +136,8 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"  />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{x:Static pres:Locale_Texts.RestartProccessOnFirstOccurence}" HorizontalAlignment="Right" Width="Auto" Height="16" VerticalAlignment="Top" Margin="0,5,5,0"/>
                             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                <ListBox   x:Name="ApplicationList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding Settings.ApplicationItems}" ScrollViewer.VerticalScrollBarVisibility="Disabled"  Background="{x:Null}"  BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top"/>
+                                <ListBox   x:Name="ApplicationList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource AssignmentTemplate}" ItemsSource="{Binding Settings.ApplicationProfileAssignments}" ScrollViewer.VerticalScrollBarVisibility="Disabled"  Background="{x:Null}"  BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top"/>
                             </ScrollViewer>
                         </Grid>
                     </Border>
@@ -151,8 +150,8 @@
 
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="4" Width="Auto"  IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Height="Auto" Content="{x:Static pres:Locale_Texts.StartInHDR}" Command="{Binding StartApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Margin="5,5,10,10"/>
-                        <Button Grid.Column="0"  Width="Auto" Command="{Binding AddApplicationCommand}" Content="{x:Static pres:Locale_Texts.AddApplication}"    Margin="10,5,5,10" Height="Auto" />
-                        <Button Grid.Column="1" Width="Auto" Command="{Binding RemoveApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Height="Auto" Content="{x:Static pres:Locale_Texts.RemoveApplication}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580"  />
+                        <Button Grid.Column="0"  Width="Auto" Command="{Binding AddAssignmentCommand}" Content="{x:Static pres:Locale_Texts.AddApplication}"    Margin="10,5,5,10" Height="Auto" />
+                        <Button Grid.Column="1" Width="Auto" Command="{Binding RemoveAssignmentCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Height="Auto" Content="{x:Static pres:Locale_Texts.RemoveApplication}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580"  />
 
                     </Grid>
                 </Grid>

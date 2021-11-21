@@ -9,7 +9,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,8 +40,8 @@ namespace AutoHDR
 
         public RelayCommand ActivateHDRCommand { get; private set; }
         public RelayCommand DeactivateHDRCommand { get; private set; }
-        public RelayCommand AddApplicationCommand { get; private set; }
-        public RelayCommand<ApplicationItem> RemoveApplicationCommand { get; private set; }
+        public RelayCommand AddAssignmentCommand { get; private set; }
+        public RelayCommand<ApplicationProfileAssignment> RemoveAssignmentCommand { get; private set; }
 
         public RelayCommand AddProfileCommand { get; private set; }
         public RelayCommand<Profile> RemoveProfileCommand { get; private set; }
@@ -224,8 +223,8 @@ namespace AutoHDR
         {
             ActivateHDRCommand = new RelayCommand(MonitorManager.ActivateHDR);
             DeactivateHDRCommand = new RelayCommand(MonitorManager.DeactivateHDR);
-            AddApplicationCommand = new RelayCommand(AddAplication);
-            RemoveApplicationCommand = new RelayCommand<ApplicationItem>(RemoveApplication);
+            AddAssignmentCommand = new RelayCommand(AddAssignment);
+            RemoveAssignmentCommand = new RelayCommand<ApplicationProfileAssignment>(RemoveAssignment);
             AddProfileCommand = new RelayCommand(AddProfile);
             RemoveProfileCommand = new RelayCommand<Profile>(RemoveProfile);
 
@@ -265,12 +264,12 @@ namespace AutoHDR
         {
             Globals.Instance.LoadSettings();
 
-            Settings.ApplicationItems.CollectionChanged += ApplicationItems_CollectionChanged;
+            Settings.ApplicationProfileAssignments.CollectionChanged += ApplicationProfileAssigments_CollectionChanged;
             Settings.PropertyChanged += Settings_PropertyChanged;
-            foreach (var application in Settings.ApplicationItems)
+            foreach (var assignment in Settings.ApplicationProfileAssignments)
             {
-                ApplicationWatcher.AddProcess(application);
-                application.PropertyChanged += ApplicationItem_PropertyChanged;
+                ApplicationWatcher.AddProcess(assignment.Application);
+                assignment.Application.PropertyChanged += ApplicationItem_PropertyChanged;
             }
             Tools.Logs.Add("Settings loaded", false);
         }
@@ -384,27 +383,27 @@ namespace AutoHDR
 
         #region Process handling
 
-        private void ApplicationItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ApplicationProfileAssigments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             lock (_accessLock)
             {
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
-                        foreach (var applicationItem in e.NewItems)
+                        foreach (var assignment in e.NewItems)
                         {
-                            Tools.Logs.Add($"Application added: {((ApplicationItem)applicationItem).ApplicationName}", false);
-                            ApplicationWatcher.AddProcess(((ApplicationItem)applicationItem));
-                            ((ApplicationItem)applicationItem).PropertyChanged += ApplicationItem_PropertyChanged;
+                            Tools.Logs.Add($"Application added: {((ApplicationProfileAssignment)assignment).Application.ApplicationName}", false);
+                            ApplicationWatcher.AddProcess(((ApplicationProfileAssignment)assignment).Application);
+                            ((ApplicationProfileAssignment)assignment).PropertyChanged += ApplicationItem_PropertyChanged;
                         }
 
                         break;
                     case NotifyCollectionChangedAction.Remove:
-                        foreach (var applicationItem in e.OldItems)
+                        foreach (var assignment in e.OldItems)
                         {
-                            Tools.Logs.Add($"Application removed: {((ApplicationItem)applicationItem).ApplicationName}", false);
-                            ApplicationWatcher.RemoveProcess(((ApplicationItem)applicationItem));
-                            ((ApplicationItem)applicationItem).PropertyChanged -= ApplicationItem_PropertyChanged;
+                            Tools.Logs.Add($"Application removed: {((ApplicationProfileAssignment)assignment).Application.ApplicationName}", false);
+                            ApplicationWatcher.RemoveProcess(((ApplicationProfileAssignment)assignment).Application);
+                            ((ApplicationProfileAssignment)assignment).PropertyChanged -= ApplicationItem_PropertyChanged;
 
                         }
                         break;
@@ -425,23 +424,25 @@ namespace AutoHDR
             SaveSettings();
         }
 
-        private void AddAplication()
+        private void AddAssignment()
         {
             ApplicationAdder adder = new ApplicationAdder();
             adder.DialogService = DialogService;
             adder.OKClicked += (o, e) =>
             {
-                if (!Settings.ApplicationItems.Any(pi => pi.ApplicationFilePath == adder.ApplicationItem.ApplicationFilePath))
-                    Settings.ApplicationItems.Add(adder.ApplicationItem);
+                if (!Settings.ApplicationProfileAssignments.Any(pi => pi.Application.ApplicationFilePath == adder.ApplicationItem.ApplicationFilePath))
+                {
+                    ApplicationProfileAssignment.NewAssigment(adder.ApplicationItem);
+                }
             };
             if (DialogService != null)
                 DialogService.ShowDialogModal(adder, new System.Drawing.Size(640, 450));
         }
 
 
-        private void RemoveApplication(ApplicationItem process)
+        private void RemoveAssignment(ApplicationProfileAssignment process)
         {
-            Settings.ApplicationItems.Remove(process);
+            Settings.ApplicationProfileAssignments.Remove(process);
 
         }
 

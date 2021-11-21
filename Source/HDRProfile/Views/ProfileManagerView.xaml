@@ -152,7 +152,7 @@
                 <ColumnDefinition/>
 
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"  Width="Auto" Command="{Binding AddProfileCommand}" Content="{x:Static pres:Locale_Texts.AddProfile}"    Margin="10,5,5,10" Height="Auto" />
+            <Button Grid.Column="0"  Width="Auto" Command="{Binding AddProfileCommand}" Content="{x:Static pres:Locale_Texts.AddProfile}"    Margin="10,5,5,10" Height="Auto"  />
             <Button Grid.Column="1" Width="Auto" Command="{Binding RemoveProfileCommand}" CommandParameter="{Binding ElementName=ProfileList, Path=SelectedItem}"  Height="Auto" Content="{x:Static pres:Locale_Texts.RemoveProfile}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580"  />
         </Grid>
 

@@ -58,6 +58,7 @@ namespace AutoHDR.Profiles
 
         private void Profile_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+
             Globals.Instance.SaveSettings();
         }
 
@@ -170,6 +171,11 @@ namespace AutoHDR.Profiles
 
             }
 
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

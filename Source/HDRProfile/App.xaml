@@ -211,6 +211,12 @@
 
 
         <Style x:Key="DefaultCheckBox"  TargetType="{x:Type CheckBox}">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush"  Value="{StaticResource DisabledAccentBrush}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+
             <Setter Property="SnapsToDevicePixels"
           Value="true" />
             <Setter Property="OverridesDefaultStyle"
@@ -234,7 +240,7 @@
                                                 <SolidColorBrush Color="{DynamicResource GlyphColor}" />
                                             </Path.Stroke>
                                         </Path>
-                
+
                                     </Grid>
                                 </Border>
                             </BulletDecorator.Bullet>
@@ -255,10 +261,17 @@
                                                 Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
                                                 <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
                                             </ColorAnimationUsingKeyFrames>
-
                                         </Storyboard>
                                     </VisualState>
-                                    <VisualState x:Name="Disabled" />
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledBorderDarkColor}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+
                                 </VisualStateGroup>
                                 <VisualStateGroup x:Name="CheckStates">
                                     <VisualState x:Name="Checked">

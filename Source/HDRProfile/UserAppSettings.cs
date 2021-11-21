@@ -17,7 +17,6 @@ namespace AutoHDR
     [DataContract]
     public class UserAppSettings : BaseViewModel
     {
-
         private bool _globalAutoHDR = true;
         private bool _logging = false;
         private bool _autoStart;
@@ -26,7 +25,7 @@ namespace AutoHDR
         private bool _checkForNewVersion = true;
         private HDRActivationMode _hdrMode;
         readonly object _audioDevicesLock = new object();
-        private ObservableCollection<ApplicationItem> _applicationItems;
+        private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
         private ObservableCollection<Profile> _applicationProfiles;
         private ObservableCollection<Display> _monitors;
 
@@ -55,7 +54,7 @@ namespace AutoHDR
         public HDRActivationMode HDRMode { get => _hdrMode; set { _hdrMode = value; OnPropertyChanged(); } }
 
         [DataMember]
-        public ObservableCollection<ApplicationItem> ApplicationItems { get => _applicationItems; set {_applicationItems = value; OnPropertyChanged();} }
+        public SortableObservableCollection<ApplicationProfileAssignment> ApplicationProfileAssignments { get => _applicationProfileAssignments; set { _applicationProfileAssignments = value; OnPropertyChanged();} }
 
         [DataMember]
 
@@ -68,11 +67,10 @@ namespace AutoHDR
 
         public UserAppSettings()
         {
-            ApplicationItems = new ObservableCollection<ApplicationItem>();
+            ApplicationProfileAssignments = new SortableObservableCollection<ApplicationProfileAssignment>(new ObservableCollection<ApplicationProfileAssignment>());
             ApplicationProfiles = new ObservableCollection<Profile>();
             Monitors = new ObservableCollection<Display>();
         }
-
 
         public static UserAppSettings ReadSettings(string path)
         {
@@ -88,7 +86,6 @@ namespace AutoHDR
         public static UserAppSettings Convert(HDRProfileSettings settings)
         {
             UserAppSettings convertedSettings = new UserAppSettings();
-            convertedSettings.ApplicationItems = settings.ApplicationItems;
             convertedSettings.AutoStart = settings.AutoStart;
             convertedSettings.CheckForNewVersion = settings.CheckForNewVersion;
             convertedSettings.CloseToTray = settings.CloseToTray;

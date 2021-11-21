@@ -175,6 +175,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ApplicationChangedEventArgs.cs" />
+    <Compile Include="ApplicationProfileAssignment.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Profiles\Actions\ActionEndResult.cs" />
     <Compile Include="Profiles\Actions\BaseProfileAction.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Profiles\Actions\ProfileActionAdder.cs" />
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Profiles\ProfileMode.cs" />
+    <Compile Include="SortedObservableCollection.cs" />
     <Compile Include="Views\ApplicationActionView.xaml.cs">
       <DependentUpon>ApplicationActionView.xaml</DependentUpon>
     </Compile>
