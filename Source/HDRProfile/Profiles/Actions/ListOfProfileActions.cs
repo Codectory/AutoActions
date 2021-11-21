@@ -19,20 +19,16 @@ namespace AutoHDR.Profiles.Actions
         public void ReadXml(XmlReader reader)
         {
 
-            try
-            {
-                object value = reader.GetAttribute("ProfileActions");
-                if (string.IsNullOrEmpty((string)value))
-                    return;
-            }
-            catch (Exception)
-            {
+            reader.Read();
+            if (!reader.IsStartElement("IProfileAction"))
                 return;
-            }
-            reader.ReadStartElement("ProfileActions");
             while (reader.IsStartElement("IProfileAction"))
             {
-                Type type = Type.GetType(reader.GetAttribute("AssemblyQualifiedName"));
+                object value = reader.GetAttribute("AssemblyQualifiedName");
+                if (string.IsNullOrEmpty((string)value))
+                    return;
+
+                Type type = Type.GetType((string)value);
                 XmlSerializer serial = new XmlSerializer(type);
 
                 reader.ReadStartElement("IProfileAction");

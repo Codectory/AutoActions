@@ -30,15 +30,15 @@ namespace AutoHDR.Profiles
         [XmlIgnore]
         public RelayCommand AddLostFocusActionCommand { get; private set; }
         [XmlIgnore]
-        public RelayCommand<IProfileAction> RemoveProfileActionCommand { get; private set; }
+        public RelayCommand<ProfileActionBase> RemoveProfileActionCommand { get; private set; }
         [XmlIgnore]
-        public RelayCommand<IProfileAction> RemoveStartedActionCommand { get; private set; }
+        public RelayCommand<ProfileActionBase> RemoveStartedActionCommand { get; private set; }
         [XmlIgnore]
-        public RelayCommand<IProfileAction> RemoveClosedActionCommand { get; private set; }
+        public RelayCommand<ProfileActionBase> RemoveClosedActionCommand { get; private set; }
         [XmlIgnore]
-        public RelayCommand<IProfileAction> RemoveGotFocusActionCommand { get; private set; }
+        public RelayCommand<ProfileActionBase> RemoveGotFocusActionCommand { get; private set; }
         [XmlIgnore]
-        public RelayCommand<IProfileAction> RemoveLostFocusActionCommand { get; private set; }
+        public RelayCommand<ProfileActionBase> RemoveLostFocusActionCommand { get; private set; }
 
 
         public Profile()
@@ -47,12 +47,12 @@ namespace AutoHDR.Profiles
             AddClosedActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.Closed));
             AddGotFocusActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.GotFocus));
             AddLostFocusActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.LostFocus));
-            RemoveProfileActionCommand = new RelayCommand<IProfileAction>((pa) => RemoveProfileAction(pa));
+            RemoveProfileActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(pa));
 
-            RemoveStartedActionCommand = new RelayCommand<IProfileAction>((pa) => RemoveProfileAction(ProfileActionListType.Started, pa));
-            RemoveClosedActionCommand = new RelayCommand<IProfileAction>((pa) => RemoveProfileAction(ProfileActionListType.Closed, pa));
-            RemoveGotFocusActionCommand = new RelayCommand<IProfileAction>((pa) => RemoveProfileAction(ProfileActionListType.GotFocus, pa));
-            RemoveLostFocusActionCommand = new RelayCommand<IProfileAction>((pa) => RemoveProfileAction(ProfileActionListType.LostFocus, pa));
+            RemoveStartedActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.Started, pa));
+            RemoveClosedActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.Closed, pa));
+            RemoveGotFocusActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.GotFocus, pa));
+            RemoveLostFocusActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.LostFocus, pa));
             PropertyChanged += Profile_PropertyChanged;
         }
 
@@ -67,14 +67,6 @@ namespace AutoHDR.Profiles
         {
             get { return _name; }
             set { _name = value; OnPropertyChanged(); }
-        }
-
-        private ProfileMode _mode = ProfileMode.OnRunning;
-
-        public ProfileMode Mode
-        {
-            get { return _mode; }
-            set { _mode = value; OnPropertyChanged(); }
         }
 
         private ListOfProfileActions _applicationStarted = new ListOfProfileActions();
@@ -139,7 +131,7 @@ namespace AutoHDR.Profiles
                 DialogService.ShowDialogModal(adder, new System.Drawing.Size(640,450));
         }
 
-        public void RemoveProfileAction( IProfileAction profileAction)
+        public void RemoveProfileAction(ProfileActionBase profileAction)
         {
             if (ApplicationStarted.Contains(profileAction))
                 ApplicationStarted.Remove(profileAction);
@@ -152,7 +144,7 @@ namespace AutoHDR.Profiles
         }
 
 
-        public void RemoveProfileAction(ProfileActionListType listType, IProfileAction profileAction)
+        public void RemoveProfileAction(ProfileActionListType listType, ProfileActionBase profileAction)
         {
             switch (listType)
             {

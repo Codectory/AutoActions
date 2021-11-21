@@ -38,14 +38,13 @@
         <DataTemplate x:Key="AssignmentTemplate" DataType="ApplicationProfileAssignment">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" Source="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="50" Height="50"  Stretch="Fill"></Image>
                 <TextBlock Grid.Column="1" Text="{Binding Application.DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <ComboBox Grid.Column="2" SelectedItem="{Binding Profile}" ItemsSource="{Binding Settings.ApplicationProfiles}"/>
+                <ComboBox Grid.Column="2" SelectedItem="{Binding Profile}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
             </Grid>
         </DataTemplate>
 
@@ -124,13 +123,18 @@
             <TabItem Header="{x:Static pres:Locale_Texts.Applications}" >
                 <Grid >
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"  />
                     </Grid.RowDefinitions>
-                    <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
+                    <TextBlock Text="{x:Static pres:Locale_Texts.Applications}" Grid.Row="0" Grid.Column="0" Margin="10,10,10,00" />
+                    <TextBlock Text="{x:Static pres:Locale_Texts.Profiles}" Grid.Row="0" Grid.Column="1" Margin="10,10,10,0" />
+
+                    <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="1" Grid.ColumnSpan="2">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -141,7 +145,7 @@
                             </ScrollViewer>
                         </Grid>
                     </Border>
-                    <Grid Grid.Row="1" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <Grid Grid.Row="2" Grid.ColumnSpan="2" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>

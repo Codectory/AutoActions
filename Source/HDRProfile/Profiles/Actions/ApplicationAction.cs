@@ -1,4 +1,5 @@
 ﻿using AutoHDR.ProjectResources;
+using CodectoryCore.UI.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,10 +11,8 @@ using System.Threading.Tasks;
 namespace AutoHDR.Profiles.Actions
 {
 
-    public class ApplicationAction : BaseProfileAction
+    public class ApplicationAction : ProfileActionBase
     {
-
-        public Displays.Display Display { get; private set; } = null;
         public override string ActionTypeName => ProjectResources.Locale_Texts.ApplicationAction;
 
 

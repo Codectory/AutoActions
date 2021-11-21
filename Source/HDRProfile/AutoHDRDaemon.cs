@@ -136,43 +136,38 @@ namespace AutoHDR
 
         private void UpdateCurrentProfile(ApplicationItem application, ApplicationChangedType changedType)
         {
-            //lock (_accessLock)
-            //{
-            //    Profile profile = Settings.ApplicationProfiles.FirstOrDefault(ap => ap.Application.Equals(application));
+            lock (_accessLock)
+            {
+                ApplicationProfileAssignment assignment = Settings.ApplicationProfileAssignments.First(a => a.Application.ApplicationFilePath.Equals(application.ApplicationFilePath));
 
-            //    if (
-            //        (CurrentProfile != null && !CurrentProfile.Equals(profile))
-            //        ||
-            //        (profile.Mode != ProfileMode.OnFocus && changedType == ApplicationChangedType.GotFocus)
-            //        )
-            //        return;
-            //    CurrentProfile = profile;
-            //    if (CurrentProfile.Mode == ProfileMode.OnRunning)
-            //    {
-            //        switch (changedType)
-            //        {
-            //            case ApplicationChangedType.Started:
-            //                profile.ApplicationStarted.RunAction();
-            //                break;
-            //            case ApplicationChangedType.Closed:
-            //                profile.ApplicationClosed.RunAction();
-            //                break;
-            //        }
-            //    }
-            //    else
-            //    {
+                if (assignment == null)
+                {
+                    Tools.Logs.Add($"No assignmet for {application.ApplicationFilePath}.", false);
+                    return;
+                }
+                Profile profile = assignment.Profile;
 
-            //    }
-            //    switch (changedType)
-            //    {
-            //        case ApplicationChangedType.GotFocus:
-            //            profile.ApplicationGotFocus.RunAction();
-            //            break;
-            //        case ApplicationChangedType.LostFocus:
-            //            profile.ApplicationLostFocus.RunAction();
-            //            break;
-            //    }
-            //}
+                CurrentProfile = profile;
+                switch (changedType)
+                {
+                    case ApplicationChangedType.Started:
+                        foreach (var action in profile.ApplicationStarted)
+                            action.RunAction();
+                        break;
+                    case ApplicationChangedType.Closed:
+                        foreach (var action in profile.ApplicationClosed)
+                            action.RunAction();
+                        break;
+                    case ApplicationChangedType.GotFocus:
+                        foreach (var action in profile.ApplicationGotFocus)
+                            action.RunAction();
+                        break;
+                    case ApplicationChangedType.LostFocus:
+                        foreach (var action in profile.ApplicationLostFocus)
+                            action.RunAction();
+                        break;
+                }
+            }
         }
 
         private void CheckForNewVersion()
@@ -247,7 +242,7 @@ namespace AutoHDR
         private void DisplayManager_AutoHDRChanged(object sender, EventArgs e)
         {
             SaveSettings();
-            UpdateHDRModeBasedOnCurrentApplication();
+           // UpdateHDRModeBasedOnCurrentApplication();
         }
 
         private void TrayMenuHelper_OpenViewRequested(object sender, EventArgs e)
@@ -265,15 +260,28 @@ namespace AutoHDR
             Globals.Instance.LoadSettings();
 
             Settings.ApplicationProfileAssignments.CollectionChanged += ApplicationProfileAssigments_CollectionChanged;
+            Settings.ApplicationProfiles.CollectionChanged += ApplicationProfiles_CollectionChanged;
             Settings.PropertyChanged += Settings_PropertyChanged;
             foreach (var assignment in Settings.ApplicationProfileAssignments)
             {
                 ApplicationWatcher.AddProcess(assignment.Application);
-                assignment.Application.PropertyChanged += ApplicationItem_PropertyChanged;
+                assignment.Application.PropertyChanged += SaveSettingsOnPropertyChanged;
+                if (assignment.Profile != null)
+                assignment.Profile.PropertyChanged += SaveSettingsOnPropertyChanged;      
+
+            }
+
+            foreach (Profile profile in Settings.ApplicationProfiles)
+            {
+                profile.ApplicationClosed.CollectionChanged += ProfileActions_CollectionChanged;
+                profile.ApplicationStarted.CollectionChanged += ProfileActions_CollectionChanged;
+                profile.ApplicationLostFocus.CollectionChanged += ProfileActions_CollectionChanged;
+                profile.ApplicationGotFocus.CollectionChanged += ProfileActions_CollectionChanged;
+                profile.PropertyChanged += SaveSettingsOnPropertyChanged;
+
             }
             Tools.Logs.Add("Settings loaded", false);
         }
-
 
 
 
@@ -290,8 +298,6 @@ namespace AutoHDR
                 {
                     Tools.Logs.AddException(ex);
                 }
-                if (e.PropertyName.Equals(nameof(Settings.HDRMode)))
-                    UpdateHDRModeBasedOnCurrentApplication();
                 Logs.LoggingEnabled = Settings.Logging;
                 SaveSettings();
             }
@@ -360,7 +366,7 @@ namespace AutoHDR
                 MonitorManager.StartMonitoring();
                 Tools.Logs.Add($"HDR Monitoring started", false);
                 Started = true;
-                UpdateHDRModeBasedOnCurrentApplication();
+               // UpdateHDRModeBasedOnCurrentApplication();
             }
         }
 
@@ -383,6 +389,49 @@ namespace AutoHDR
 
         #region Process handling
 
+        private void ApplicationProfiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            {
+                switch (e.Action)
+                {
+                    case NotifyCollectionChangedAction.Add:
+                        foreach (Profile profile in e.NewItems)
+                        {
+                            Tools.Logs.Add($"Profile added: {profile.Name}", false);
+                            profile.ApplicationClosed.CollectionChanged += ProfileActions_CollectionChanged;
+                            profile.ApplicationStarted.CollectionChanged += ProfileActions_CollectionChanged;
+                            profile.ApplicationLostFocus.CollectionChanged += ProfileActions_CollectionChanged;
+                            profile.ApplicationGotFocus.CollectionChanged += ProfileActions_CollectionChanged;
+                            profile.PropertyChanged += SaveSettingsOnPropertyChanged;
+
+                        }
+
+                        break;
+                    case NotifyCollectionChangedAction.Remove:
+                        foreach (Profile profile in e.OldItems)
+                        {
+                            Tools.Logs.Add($"Profile removed: {profile.Name}", false);
+                            profile.ApplicationClosed.CollectionChanged -= ProfileActions_CollectionChanged;
+                            profile.ApplicationStarted.CollectionChanged -= ProfileActions_CollectionChanged;
+                            profile.ApplicationLostFocus.CollectionChanged -= ProfileActions_CollectionChanged;
+                            profile.ApplicationGotFocus.CollectionChanged -= ProfileActions_CollectionChanged;
+                            profile.PropertyChanged -= SaveSettingsOnPropertyChanged;
+
+
+                        }
+                        break;
+
+                }
+
+                SaveSettings();
+            }
+        }
+
+        private void ProfileActions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SaveSettings();
+        }
+
         private void ApplicationProfileAssigments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             lock (_accessLock)
@@ -390,20 +439,25 @@ namespace AutoHDR
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
-                        foreach (var assignment in e.NewItems)
+                        foreach (ApplicationProfileAssignment assignment in e.NewItems)
                         {
-                            Tools.Logs.Add($"Application added: {((ApplicationProfileAssignment)assignment).Application.ApplicationName}", false);
-                            ApplicationWatcher.AddProcess(((ApplicationProfileAssignment)assignment).Application);
-                            ((ApplicationProfileAssignment)assignment).PropertyChanged += ApplicationItem_PropertyChanged;
+                            Tools.Logs.Add($"Application added: {assignment.Application.ApplicationName}", false);
+                            ApplicationWatcher.AddProcess(assignment.Application);
+                            assignment.Application.PropertyChanged += SaveSettingsOnPropertyChanged;
+                            if (assignment.Profile != null)
+                            assignment.Profile.PropertyChanged += SaveSettingsOnPropertyChanged;
+
                         }
 
                         break;
                     case NotifyCollectionChangedAction.Remove:
-                        foreach (var assignment in e.OldItems)
+                        foreach (ApplicationProfileAssignment assignment in e.OldItems)
                         {
-                            Tools.Logs.Add($"Application removed: {((ApplicationProfileAssignment)assignment).Application.ApplicationName}", false);
-                            ApplicationWatcher.RemoveProcess(((ApplicationProfileAssignment)assignment).Application);
-                            ((ApplicationProfileAssignment)assignment).PropertyChanged -= ApplicationItem_PropertyChanged;
+                            Tools.Logs.Add($"Application removed: {assignment.Application.ApplicationName}", false);
+                            ApplicationWatcher.RemoveProcess(assignment.Application);
+                            assignment.Application.PropertyChanged -= SaveSettingsOnPropertyChanged;
+                            if (assignment.Profile != null)
+                            assignment.Profile.PropertyChanged -= SaveSettingsOnPropertyChanged;
 
                         }
                         break;
@@ -419,10 +473,12 @@ namespace AutoHDR
             Globals.Instance.SaveSettings();
         }
 
-        private void ApplicationItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void SaveSettingsOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             SaveSettings();
         }
+
+
 
         private void AddAssignment()
         {
@@ -468,61 +524,71 @@ namespace AutoHDR
 
 
 
-        private void UpdateHDRModeBasedOnCurrentApplication()
-        {
-            //lock (_accessLock)
-            //{
-            //    try
-            //    {
-            //        bool activateHDR = false;
-            //        switch (Settings.HDRMode)
-            //        {
-            //            case HDRActivationMode.Running:
-            //                activateHDR = ApplicationWatcher.OneProcessIsRunning;
-            //                break;
-            //            case HDRActivationMode.Focused:
-            //                activateHDR = ApplicationWatcher.OneProcessIsFocused;
-            //                break;
-            //            default:
-            //                return;
+        //private void UpdateHDRModeBasedOnCurrentApplication()
+        //{
+        //    lock (_accessLock)
+        //    {
+        //        try
+        //        {
+        //            foreach (ApplicationProfileAssignment assignment in Settings.ApplicationProfileAssignments)
+        //            {
+        //                if (ApplicationWatcher.Applications.Any(a => a.Key.ApplicationFilePath.Equals(assignment.Application.ApplicationFilePath)))
+        //                {
+                            
+        //                }
+        //            }
 
-            //        }
 
-            //        if (activateHDR == HDRIsActive)
-            //            return;
-            //        if (activateHDR)
-            //        {
-            //            Tools.Logs.Add($"Activating HDR...", false);
-            //            MonitorManager.ActivateHDR();
 
-            //        }
-            //        else if (DisplayManager.GlobalHDRIsActive && Settings.HDRMode != HDRActivationMode.None)
-            //        {
-            //            Tools.Logs.Add($"Deactivating HDR...", false);
-            //            if (Settings.GlobalAutoHDR)
-            //                MonitorManager.DeactivateHDR();
-            //            else
-            //            {
-            //                foreach (Display display in Settings.Monitors)
-            //                    if (display.Managed)
-            //                        DisplayManager.DeactivateHDR(display);
-            //            }
-            //        }
-            //        var currentApplications = ApplicationWatcher.Applications;
-            //        UpdateRestartAppStates((IDictionary<ApplicationItem, ApplicationState>)currentApplications, activateHDR);
+        //            bool activateHDR = false;
+        //            switch (Settings.HDRMode)
+        //            {
+        //                case HDRActivationMode.Running:
+        //                    activateHDR = ApplicationWatcher.OneProcessIsRunning;
+        //                    break;
+        //                case HDRActivationMode.Focused:
+        //                    activateHDR = ApplicationWatcher.OneProcessIsFocused;
+        //                    break;
+        //                default:
+        //                    return;
 
-            //        if (DisplayManager.GlobalHDRIsActive)
-            //            Tools.Logs.Add($"HDR is active", false);
-            //        else
-            //            Tools.Logs.Add($"HDR is inactive", false);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Tools.Logs.AddException(ex);
-            //        throw ex;
-            //    }
-            //}
-        }
+        //            }
+
+        //            if (activateHDR == HDRIsActive)
+        //                return;
+        //            if (activateHDR)
+        //            {
+        //                Tools.Logs.Add($"Activating HDR...", false);
+        //                MonitorManager.ActivateHDR();
+
+        //            }
+        //            else if (DisplayManager.GlobalHDRIsActive && Settings.HDRMode != HDRActivationMode.None)
+        //            {
+        //                Tools.Logs.Add($"Deactivating HDR...", false);
+        //                if (Settings.GlobalAutoHDR)
+        //                    MonitorManager.DeactivateHDR();
+        //                else
+        //                {
+        //                    foreach (Display display in Settings.Monitors)
+        //                        if (display.Managed)
+        //                            DisplayManager.DeactivateHDR(display);
+        //                }
+        //            }
+        //            var currentApplications = ApplicationWatcher.Applications;
+        //            UpdateRestartAppStates((IDictionary<ApplicationItem, ApplicationState>)currentApplications, activateHDR);
+
+        //            if (DisplayManager.GlobalHDRIsActive)
+        //                Tools.Logs.Add($"HDR is active", false);
+        //            else
+        //                Tools.Logs.Add($"HDR is inactive", false);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Tools.Logs.AddException(ex);
+        //            throw ex;
+        //        }
+        //    }
+        //}
 
 
         #endregion Process handling 

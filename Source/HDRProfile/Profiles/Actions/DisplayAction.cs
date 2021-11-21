@@ -1,16 +1,15 @@
 ﻿using AutoHDR.ProjectResources;
+using CodectoryCore.UI.Wpf;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace AutoHDR.Profiles.Actions
 {
 
-    public class DisplayAction : BaseProfileAction
+    public class DisplayAction : ProfileActionBase
     {
         public List<Displays.Display> AllDisplays => AutoHDR.Displays.DisplayManager.GetActiveMonitors();
 
@@ -69,6 +68,5 @@ namespace AutoHDR.Profiles.Actions
                 return new ActionEndResult(false, ex.Message, ex);
             }
         }
-
     }
 }
