@@ -15,12 +15,14 @@ namespace AutoHDR.Profiles.Actions
 {
     public class ProfileActionAdder : DialogViewModelBase
     {
+
+
         private bool _canCreate = false;
 
 
-        private Type _actionType = null;
+        private ActionTypeDescription _actionType = null;
 
-        public Type ActionType
+        public ActionTypeDescription ActionType
 
         {
             get { return _actionType; }
@@ -28,15 +30,8 @@ namespace AutoHDR.Profiles.Actions
             {
                 _actionType = value;
                 UpdateCanCreate();
-                ContentControlViewModel = (BaseViewModel)Activator.CreateInstance(_actionType);
-                //if (_actionType.Equals(typeof(ApplicationAction)))
-                //{
-                //    ContentControlViewModel = new ApplicationAction();
-                //}
-                //else if (_actionType.Equals(typeof(DisplayAction)))
-                //{
-                //    ContentControlViewModel = new DisplayAction();
-                //}
+                ContentControlViewModel = (BaseViewModel)Activator.CreateInstance(_actionType.ActionType);
+
                 OnPropertyChanged(); 
             }
         }
@@ -59,11 +54,11 @@ namespace AutoHDR.Profiles.Actions
 
         public IProfileAction ProfileAction { get => _profileAction; private set { _profileAction = value; OnPropertyChanged(); } }
 
-        public List<Type> ProfileActions
+        public List<ActionTypeDescription> ProfileActions
         {
             get
             {
-                return new List<Type>() { typeof(ApplicationAction), typeof(DisplayAction) };
+                return new List<ActionTypeDescription>() { new ActionTypeDescription(typeof(ApplicationAction), Locale_Texts.ApplicationAction), new ActionTypeDescription(typeof(DisplayAction), Locale_Texts.DisplayAction), new ActionTypeDescription(typeof(RunProgramAction), Locale_Texts.RunProgramAction) };
             }
         }
 

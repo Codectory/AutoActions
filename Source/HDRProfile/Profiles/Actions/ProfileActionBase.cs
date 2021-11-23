@@ -12,7 +12,7 @@ namespace AutoHDR.Profiles.Actions
 {
     public abstract class ProfileActionBase : BaseViewModel, IProfileAction
     {
-        public abstract string ActionName { get; }
+        public abstract string ActionDescription { get; }
         public abstract string ActionTypeName { get; }
         public abstract ActionEndResult RunAction(params object[] parameter);
 

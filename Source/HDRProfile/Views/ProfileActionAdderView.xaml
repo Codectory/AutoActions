@@ -17,9 +17,13 @@
         <DataTemplate DataType="{x:Type prflActns:ApplicationAction}">
             <local:ApplicationActionView/>
         </DataTemplate>
-        <DataTemplate x:Key="ProfileTypeTemplate" DataType="Type">
-            <TextBlock Text="{Binding Name}"/>
+        <DataTemplate DataType="{x:Type prflActns:RunProgramAction}">
+            <local:RunProgramActionView/>
         </DataTemplate>
+        <DataTemplate x:Key="ActionTypeTemplate" DataType="ActionTypeDescription">
+            <TextBlock Text="{Binding TypeDescription }"/>
+        </DataTemplate>
+        
     </UserControl.Resources>
 
     <Grid >
@@ -28,8 +32,8 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Content="{x:Static pres:Locale_Texts.ActionType}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="111"/>
-        <ComboBox x:Name="ActionType" ItemsSource="{Binding ProfileActions}" SelectedItem="{Binding ActionType}" ItemTemplate="{StaticResource ProfileTypeTemplate}" HorizontalAlignment="Left" Margin="126,14,0,0" Width="278" Height="22" VerticalAlignment="Top"/>
+        <Label Content="{x:Static pres:Locale_Texts.ActionType}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" FontWeight="DemiBold" FontSize="18" Width="111"/>
+        <ComboBox x:Name="ActionType" ItemsSource="{Binding ProfileActions}" SelectedItem="{Binding ActionType}" ItemTemplate="{StaticResource ActionTypeTemplate}" HorizontalAlignment="Left" Margin="126,14,0,0" Width="278" Height="22" VerticalAlignment="Top"/>
 
         <ContentPresenter Grid.Row="1" Content="{Binding ContentControlViewModel}" Margin="10,0"/>
         <Grid Grid.Row="2" >

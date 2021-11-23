@@ -43,6 +43,9 @@ namespace AutoHDR
         public RelayCommand AddAssignmentCommand { get; private set; }
         public RelayCommand<ApplicationProfileAssignment> RemoveAssignmentCommand { get; private set; }
 
+        public RelayCommand<ApplicationProfileAssignment> MoveAssignmentUpCommand { get; private set; }
+        public RelayCommand<ApplicationProfileAssignment> MoveAssignmentDownCommand { get; private set; }
+
         public RelayCommand AddProfileCommand { get; private set; }
         public RelayCommand<Profile> RemoveProfileCommand { get; private set; }
         public RelayCommand ShowInfoCommand { get; private set; }
@@ -59,7 +62,6 @@ namespace AutoHDR
         public UserAppSettings Settings { get => Globals.Instance.Settings; set { Globals.Instance.Settings = value; OnPropertyChanged(); } }
         public Profile CurrentProfile { get => _currentProfile; set { _currentProfile = value; OnPropertyChanged(); } }
 
-        public DisplayManager MonitorManager { get => _monitorManager; set { _monitorManager = value; OnPropertyChanged(); } }
 
         public bool Initialized { get; private set; } = false;
         public bool ShowView { get => _showView; set { _showView = value; OnPropertyChanged(); } }
@@ -107,7 +109,7 @@ namespace AutoHDR
                 LoadSettings();
                 if (Settings.CheckForNewVersion)
                     CheckForNewVersion();
-                InitializeMonitorManager();
+                InitializeDisplayManager();
                 SaveSettings();
                 InitializeTrayMenuHelper();
                 CreateRelayCommands();
@@ -125,8 +127,10 @@ namespace AutoHDR
         private void ApplicationWatcher_ApplicationChanged(object sender, ApplicationChangedEventArgs e)
         {
             Tools.Logs.Add($"Application {e.Application} changed: {e.ChangedType}", false);
-
+            CurrentApplication = e.Application;
             UpdateCurrentProfile(e.Application, e.ChangedType);
+            if (e.ChangedType == ApplicationChangedType.Closed)
+                CurrentApplication = null;
         }
 
         private void ApplicationWatcher_NewLog(object sender, string e)
@@ -143,11 +147,16 @@ namespace AutoHDR
                 if (assignment == null)
                 {
                     Tools.Logs.Add($"No assignmet for {application.ApplicationFilePath}.", false);
+                    CurrentProfile = null;
                     return;
                 }
                 Profile profile = assignment.Profile;
 
-                CurrentProfile = profile;
+
+                if (profile == null)
+                    return;
+                Tools.Logs.Add($"Profile changed to {profile.Name}", false);
+
                 switch (changedType)
                 {
                     case ApplicationChangedType.Started:
@@ -167,6 +176,9 @@ namespace AutoHDR
                             action.RunAction();
                         break;
                 }
+                CurrentProfile = profile;
+                if (changedType == ApplicationChangedType.Closed)
+                    CurrentProfile = null;
             }
         }
 
@@ -200,26 +212,30 @@ namespace AutoHDR
         private void InitializeTrayMenuHelper()
         {
             TrayMenuHelper = new TrayMenuHelper();
-            TrayMenuHelper.Initialize(MonitorManager);
+            TrayMenuHelper.Initialize(DisplayManager.Instance);
             TrayMenuHelper.OpenViewRequested += TrayMenuHelper_OpenViewRequested;
             TrayMenuHelper.CloseApplicationRequested += TrayMenuHelper_CloseApplicationRequested;
             //TrayMenuHelper.SwitchTrayIcon(Settings.StartMinimizedToTray);
         }
 
-        private void InitializeMonitorManager()
+        private void InitializeDisplayManager()
         {
-            MonitorManager = new DisplayManager(Settings);
+            DisplayManager.Instance.LoadSettings(Settings);
             DisplayManager.HDRIsActiveChanged += DisplayManager_HDRIsActiveChanged;
-            MonitorManager.AutoHDRChanged += DisplayManager_AutoHDRChanged;
+            DisplayManager.Instance.AutoHDRChanged += DisplayManager_AutoHDRChanged;
             HDRIsActive = DisplayManager.GlobalHDRIsActive;
 
         }
         private void CreateRelayCommands()
         {
-            ActivateHDRCommand = new RelayCommand(MonitorManager.ActivateHDR);
-            DeactivateHDRCommand = new RelayCommand(MonitorManager.DeactivateHDR);
+            ActivateHDRCommand = new RelayCommand(DisplayManager.Instance.ActivateHDR);
+            DeactivateHDRCommand = new RelayCommand(DisplayManager.Instance.DeactivateHDR);
             AddAssignmentCommand = new RelayCommand(AddAssignment);
             RemoveAssignmentCommand = new RelayCommand<ApplicationProfileAssignment>(RemoveAssignment);
+
+            MoveAssignmentUpCommand = new RelayCommand<ApplicationProfileAssignment>(MoveAssignmentUp);
+            MoveAssignmentDownCommand = new RelayCommand<ApplicationProfileAssignment>(MoveAssignmentDown);
+
             AddProfileCommand = new RelayCommand(AddProfile);
             RemoveProfileCommand = new RelayCommand<Profile>(RemoveProfile);
 
@@ -229,6 +245,8 @@ namespace AutoHDR
             ShowInfoCommand = new RelayCommand(ShowInfo);
             BuyBeerCommand = new RelayCommand(BuyBeer);
         }
+
+
 
 
         #endregion Initialization
@@ -242,7 +260,6 @@ namespace AutoHDR
         private void DisplayManager_AutoHDRChanged(object sender, EventArgs e)
         {
             SaveSettings();
-           // UpdateHDRModeBasedOnCurrentApplication();
         }
 
         private void TrayMenuHelper_OpenViewRequested(object sender, EventArgs e)
@@ -318,7 +335,7 @@ namespace AutoHDR
             Tools.Logs.Add($"Start application {application.ApplicationName}", false);
             try
             {
-                MonitorManager.ActivateHDR();
+                DisplayManager.Instance.ActivateHDR();
                 System.Threading.Thread.Sleep(2500);
                 application.StartApplication();
                
@@ -363,7 +380,7 @@ namespace AutoHDR
                 if (Started)
                     return;
                 Tools.Logs.Add($"Starting HDR Monitoring...", false);
-                MonitorManager.StartMonitoring();
+                DisplayManager.Instance.StartMonitoring();
                 Tools.Logs.Add($"HDR Monitoring started", false);
                 Started = true;
                // UpdateHDRModeBasedOnCurrentApplication();
@@ -377,7 +394,7 @@ namespace AutoHDR
                 if (!Started)
                     return;
                 Tools.Logs.Add($"Stopping HDR Monitoring...", false);
-                MonitorManager.StopMonitoring();
+                DisplayManager.Instance.StopMonitoring();
                 Tools.Logs.Add($"HDR Monitoring stopped", false);
                 Started = false;
                 Tools.Logs.Add($"Process watcher stopped", false);
@@ -496,10 +513,20 @@ namespace AutoHDR
         }
 
 
-        private void RemoveAssignment(ApplicationProfileAssignment process)
+        private void RemoveAssignment(ApplicationProfileAssignment assignment)
         {
-            Settings.ApplicationProfileAssignments.Remove(process);
+            Settings.ApplicationProfileAssignments.Remove(assignment);
 
+        }
+
+        private void MoveAssignmentDown(ApplicationProfileAssignment assignment)
+        {
+            assignment.ChangePosition(false);
+        }
+
+        private void MoveAssignmentUp(ApplicationProfileAssignment assignment)
+        {
+            assignment.ChangePosition(true);
         }
 
         private void AddProfile()

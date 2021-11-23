@@ -5,11 +5,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace AutoHDR.Displays
 {
     public class Display : BaseViewModel
     {
+        public static readonly Display AllDisplays = new Display(ProjectResources.Locale_Texts.AllDisplays, UInt32.MaxValue, new Size(0, 0), 0);
         private bool _managed = true;
 
         public bool Managed { get => _managed; set { _managed = value; OnPropertyChanged(); } }
@@ -22,19 +24,14 @@ namespace AutoHDR.Displays
         private UInt32 _uid;
         public UInt32 UID { get => _uid;  set { _uid = value; OnPropertyChanged(); } }
 
+        private uint _id;
+        public uint ID { get => _id; set { _id = value; OnPropertyChanged(); } }
+
         private bool _hdrState;
 
         public bool HDRState { get => _hdrState; set { _hdrState = value; OnPropertyChanged(); } }
 
-        internal void SetResolution(Size value)
-        {
-            throw new NotImplementedException();
-        }
 
-        internal void SetRefreshRate(int value)
-        {
-            throw new NotImplementedException();
-        }
 
         private Size _resolution;
         public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }
@@ -63,6 +60,52 @@ namespace AutoHDR.Displays
             HDRState= HDRController.GetHDRState(UID);
         }
 
+        internal void SetResolution(Size resolution)
+        {
+            DisplayManager.Instance.SetResolutionAndRefreshRate(ID, resolution, RefreshRate);
+        }
 
+        internal void SetRefreshRate(int refreshRate)
+        {
+            DisplayManager.Instance.SetResolutionAndRefreshRate(ID, Resolution, refreshRate);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType().Equals(typeof(Display)))
+            {
+                Display display = (Display)obj;
+                return
+                   Managed == display.Managed &&
+                   Name == display.Name &&
+                   UID == display.UID &&
+                   ID == display.ID &&
+                   _hdrState == display._hdrState &&
+                   HDRState == display.HDRState &&
+                   EqualityComparer<Size>.Default.Equals(_resolution, display._resolution) &&
+                   EqualityComparer<Size>.Default.Equals(Resolution, display.Resolution) &&
+                   _refreshRate == display._refreshRate &&
+                   RefreshRate == display.RefreshRate;
+            }
+            else 
+                return false;
+          
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -254808592;
+            hashCode = hashCode * -1521134295 + Managed.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + UID.GetHashCode();
+            hashCode = hashCode * -1521134295 + ID.GetHashCode();
+            hashCode = hashCode * -1521134295 + _hdrState.GetHashCode();
+            hashCode = hashCode * -1521134295 + HDRState.GetHashCode();
+            hashCode = hashCode * -1521134295 + _resolution.GetHashCode();
+            hashCode = hashCode * -1521134295 + Resolution.GetHashCode();
+            hashCode = hashCode * -1521134295 + _refreshRate.GetHashCode();
+            hashCode = hashCode * -1521134295 + RefreshRate.GetHashCode();
+            return hashCode;
+        }
     }
 }

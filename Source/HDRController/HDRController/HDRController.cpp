@@ -10,7 +10,7 @@
 #include <winerror.h>
 #include <wingdi.h>
 #include <stdexcept>
-
+#include <string> 
 
 #include <stdint.h>
 #include <cstdlib>
@@ -199,48 +199,6 @@ static void  SetHDR(UINT32 uid, bool enabled)
 }
 
 
-static void _SetResolution(UINT32 uid, UINT32 width, UINT32 height)
-{
-	uint32_t pathCount, modeCount;
-	UINT32 numPathArrayElements = 0, numModeInfoArrayElements = 0;
-	UINT32 filter = QDC_ALL_PATHS;
-	if (ERROR_SUCCESS == GetDisplayConfigBufferSizes(QDC_ONLY_ACTIVE_PATHS, &pathCount, &modeCount))
-	{
-
-		const size_t sizePathsArray = pathCount * sizeof(DISPLAYCONFIG_PATH_INFO);
-		const size_t sizeModesArray = modeCount * sizeof(DISPLAYCONFIG_MODE_INFO);
-
-
-		DISPLAYCONFIG_PATH_INFO* pathsArray = new DISPLAYCONFIG_PATH_INFO[pathCount];
-		DISPLAYCONFIG_MODE_INFO* modesArray = new DISPLAYCONFIG_MODE_INFO[modeCount];
-
-
-		ZeroMemory(pathsArray, sizeof(DISPLAYCONFIG_PATH_INFO) * pathCount);
-		ZeroMemory(modesArray, sizeof(DISPLAYCONFIG_MODE_INFO) * modeCount);
-		QueryDisplayConfig(filter, &pathCount, pathsArray, &modeCount, modesArray, NULL);
-
-
-		for (short i = 0; i < pathCount; i++)
-		{
-			try
-			{
-				int ix = pathsArray[i].sourceInfo.modeInfoIdx; //assuming path[0] is primary
-
-				if (modesArray[ix].id != uid)
-
-				{
-					modesArray[ix].sourceMode.width = width;
-					modesArray[ix].sourceMode.height = height;
-					SetDisplayConfig(pathCount, pathsArray, modeCount, modesArray, SDC_APPLY | SDC_USE_SUPPLIED_DISPLAY_CONFIG | SDC_ALLOW_CHANGES | SDC_SAVE_TO_DATABASE);
-				}
-			}
-			catch (const std::exception&)
-			{
-
-			}
-		}
-	}
-}
 
 static SIZE _GetResolution(UINT32 uid)
 {
@@ -462,11 +420,6 @@ extern "C"
 	__declspec(dllexport) bool GetHDRState(UINT32 uid)
 	{
 		return HDRIsOn(uid);
-	}
-
-	__declspec(dllexport) void SetResolution(UINT32 uid, UINT32 width, UINT32 height)
-	{
-		_SetResolution(uid, width, height);
 	}
 
 	__declspec(dllexport) SIZE GetResolution(UINT32 uid)

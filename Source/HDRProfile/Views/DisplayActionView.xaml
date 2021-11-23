@@ -26,6 +26,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Grid.Column="0"  Grid.Row="0" Content="{x:Static pres:Locale_Texts.Display}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AllDisplays}" SelectedItem="{Binding Display}" ItemTemplate="{StaticResource DisplayItemTemplate}" Margin="3,2,2,2" SelectedIndex="0" />
@@ -39,6 +41,13 @@
 
         <Label Grid.Column="0"  Grid.Row="4" Content="{x:Static pres:Locale_Texts.Resolution}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox  Grid.Column="1" Grid.Row="4"  IsEnabled="{Binding SetResolution}" Text="{Binding Resolution, Mode=TwoWay,Converter={StaticResource SizeTextConverter}}" VerticalAlignment="Center" Margin="5,4,2,4"  />
+
+        <Label Grid.Column="0"  Grid.Row="5" Content="{x:Static pres:Locale_Texts.SetRefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <CheckBox  Grid.Column="1" Grid.Row="5"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding _setRefreshRate, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
+
+        <Label Grid.Column="0"  Grid.Row="6" Content="{x:Static pres:Locale_Texts.RefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox  Grid.Column="1" Grid.Row="6"  IsEnabled="{Binding SetRefreshRate}" Text="{Binding RefreshRate, Mode=TwoWay}" VerticalAlignment="Center" Margin="5,4,2,4"  />
+
 
     </Grid>
 </UserControl>

@@ -141,6 +141,9 @@
   <data name="AddProfileAction" xml:space="preserve">
     <value>Add profile action</value>
   </data>
+  <data name="AllDisplays" xml:space="preserve">
+    <value>All displays</value>
+  </data>
   <data name="AlreadyRunning" xml:space="preserve">
     <value>AutoHDR is already running.</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="AppFocusedActions" xml:space="preserve">
     <value>Application got focus actions</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Application</value>
   </data>
   <data name="ApplicationAction" xml:space="preserve">
     <value>Application action</value>
@@ -164,6 +170,9 @@
   </data>
   <data name="AppStartedActions" xml:space="preserve">
     <value>Application started actions</value>
+  </data>
+  <data name="Arguments" xml:space="preserve">
+    <value>Arguments</value>
   </data>
   <data name="AutoHDR" xml:space="preserve">
     <value>AutoHDR</value>
@@ -277,6 +286,9 @@
   <data name="NoApplication" xml:space="preserve">
     <value>No application is running</value>
   </data>
+  <data name="NoProfile" xml:space="preserve">
+    <value>No profile assigned</value>
+  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -285,6 +297,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priority</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
@@ -310,11 +325,20 @@
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
     <value>Compatibility mode</value>
   </data>
+  <data name="RunAction" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="RunProgramAction" xml:space="preserve">
+    <value>Run program</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="SetHDR" xml:space="preserve">
     <value>Set HDR</value>
+  </data>
+  <data name="SetRefreshRate" xml:space="preserve">
+    <value>Set refresh rate</value>
   </data>
   <data name="SetResolution" xml:space="preserve">
     <value>Set resolution</value>
@@ -339,6 +363,9 @@
   </data>
   <data name="VolumeSyncDevices" xml:space="preserve">
     <value>Volume sync devices</value>
+  </data>
+  <data name="WaitForProgramEnd" xml:space="preserve">
+    <value>Wait for program to exit</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

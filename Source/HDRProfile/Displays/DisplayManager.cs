@@ -15,57 +15,18 @@ using System.Threading;
 
 namespace AutoHDR.Displays
 {
-
-    [Flags()]
-    public enum DisplayDeviceStateFlags : int
-    {
-        /// <summary>The device is part of the desktop.</summary>
-        AttachedToDesktop = 0x1,
-        MultiDriver = 0x2,
-        /// <summary>The device is part of the desktop.</summary>
-        PrimaryDevice = 0x4,
-        /// <summary>Represents a pseudo device used to mirror application drawing for remoting or other purposes.</summary>
-        MirroringDriver = 0x8,
-        /// <summary>The device is VGA compatible.</summary>
-        VGACompatible = 0x16,
-        /// <summary>The device is removable; it cannot be the primary display.</summary>
-        Removable = 0x20,
-        /// <summary>The device has more display modes than its output devices support.</summary>
-        ModesPruned = 0x8000000,
-        Remote = 0x4000000,
-        Disconnect = 0x2000000
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct DISPLAY_DEVICE
-    {
-        [MarshalAs(UnmanagedType.U4)]
-        public int cb;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public string DeviceName;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-        public string DeviceString;
-        [MarshalAs(UnmanagedType.U4)]
-        public DisplayDeviceStateFlags StateFlags;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-        public string DeviceID;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-        public string DeviceKey;
-    }
-
-
-
     public class DisplayManager : BaseViewModel
     {
-        [DllImport("user32.dll")]
-        private static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
-
 
         Thread _updateThread = null;
         readonly object _threadControlLock = new object();
         bool _monitorCancelRequested = false;
 
+        public static readonly DisplayManager Instance = new DisplayManager();
+        private DisplayManager()
+        {
 
+        }
 
         public static bool GlobalHDRIsActive { get; private set; } = false;
 
@@ -75,14 +36,14 @@ namespace AutoHDR.Displays
         public bool Monitoring { get; private set; } = false;
 
 
-        public readonly UserAppSettings Settings;
+        public  UserAppSettings Settings { get; private set; }
 
         public event EventHandler AutoHDRChanged;
 
 
         public ObservableCollection<Display> Monitors => Settings.Monitors;
 
-        public DisplayManager(UserAppSettings settings)
+        public void LoadSettings(UserAppSettings settings)
         {
             Settings = settings;
             MergeMonitors(GetActiveMonitors());
@@ -94,7 +55,7 @@ namespace AutoHDR.Displays
             {
                 if (Monitoring)
                     return;
-                _updateThread = new Thread(HDRMonitorLoop);
+                _updateThread = new Thread(UpdateMonitorLoop);
                 _updateThread.IsBackground = true;
                 Monitoring = true;
                 _monitorCancelRequested = false;
@@ -115,7 +76,7 @@ namespace AutoHDR.Displays
             }
         }
 
-        private void HDRMonitorLoop()
+        private void UpdateMonitorLoop()
         {
             while (!_monitorCancelRequested)
             {
@@ -126,6 +87,9 @@ namespace AutoHDR.Displays
                     monitor.UpdateHDRState();
                     if (monitor.Managed)
                         currentValue = currentValue || monitor.HDRState;
+                    monitor.Resolution = GetResolution(monitor.ID);
+                    monitor.RefreshRate = GetRefreshRate(monitor.ID);
+
                 }
                 bool changed = GlobalHDRIsActive != currentValue;
                 GlobalHDRIsActive = currentValue;
@@ -136,6 +100,67 @@ namespace AutoHDR.Displays
                 System.Threading.Thread.Sleep(100);
             }
         }
+
+        public void SetResolutionAndRefreshRate(uint deviceID, Size resolution, int refreshRate)
+        {
+            DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+            DEVMODE dm = new DEVMODE();
+            d.cb = Marshal.SizeOf(d);
+
+
+            NativeMethods.EnumDisplayDevices(null, deviceID, ref d, 0);
+
+            if (0 != NativeMethods.EnumDisplaySettings(
+                d.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+            {
+                int temp = dm.dmPelsHeight;
+                dm.dmPelsHeight = Convert.ToInt32(resolution.Height);
+                dm.dmPelsWidth = Convert.ToInt32(resolution.Width);
+                dm.dmDisplayFrequency = refreshRate;
+
+                DISP_CHANGE iRet = NativeMethods.ChangeDisplaySettingsEx(
+                    d.DeviceName, ref dm, IntPtr.Zero,
+                    DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
+            }       
+        }
+
+        public Size GetResolution(uint deviceID)
+        {
+            DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+            DEVMODE dm = new DEVMODE();
+            d.cb = Marshal.SizeOf(d);
+
+
+            NativeMethods.EnumDisplayDevices(null, deviceID, ref d, 0);
+
+            if (0 != NativeMethods.EnumDisplaySettings(
+                d.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+            {
+                Size resolution = new Size(dm.dmPelsWidth, dm.dmPelsHeight);
+                return resolution;
+
+            }
+            else return Size.Empty;
+        }
+
+        public int GetRefreshRate(uint deviceID)
+        {
+            DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+            DEVMODE dm = new DEVMODE();
+            d.cb = Marshal.SizeOf(d);
+
+
+            NativeMethods.EnumDisplayDevices(null, deviceID, ref d, 0);
+
+            if (0 != NativeMethods.EnumDisplaySettings(
+                d.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+            {
+                return dm.dmDisplayFrequency;
+
+            }
+            else return 0;
+        }
+
 
         public static  List<Display> GetActiveMonitors()
         {

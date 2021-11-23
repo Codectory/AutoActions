@@ -110,6 +110,10 @@
 
         <SolidColorBrush x:Key="ActiveBrush"  Color="{StaticResource ActiveColor}"/>
         <SolidColorBrush x:Key="AccentBrush"  Color="{StaticResource AccentColor}"/>
+        <SolidColorBrush x:Key="HighlightedBrush"  Color="{StaticResource SelectedBackgroundColor}"/>
+        <SolidColorBrush x:Key="MouseOverBrush"  Color="{StaticResource ControlMouseOverColor}"/>
+
+
         <SolidColorBrush x:Key="InactiveAccentBrush">#ad7b7b</SolidColorBrush>
         <SolidColorBrush x:Key="DisabledAccentBrush">#949ea6</SolidColorBrush>
         <SolidColorBrush x:Key="HighlightedInactiveAccentBrush" Color="#95bfdb"/>
@@ -136,6 +140,50 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="DefaultTextBox" TargetType="TextBox" >
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBoxBase">
+                        <Border  Height="Auto" Width="Auto" BorderBrush="{StaticResource AccentBrush}" Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="{StaticResource CornerRadius}">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Padding" Value="5,5"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Background" Value="{StaticResource DisabledAccentBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="{StaticResource ControlMouseOverColor}"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
+                                        FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
+                                            FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}"/>
 
 
         <Style x:Key="DefaultButton" TargetType="Button" >
@@ -366,7 +414,7 @@
                 </VisualStateManager.VisualStateGroups>
                 <Border x:Name="Border"
             Grid.ColumnSpan="2"
-            CornerRadius="2"
+            CornerRadius="{StaticResource CornerRadius}"
             BorderThickness="1">
                     <Border.BorderBrush>
                         <SolidColorBrush Color="{StaticResource AccentColor}"/>
@@ -400,7 +448,7 @@
                  TargetType="{x:Type TextBox}">
             <Border x:Name="PART_ContentHost"
           Focusable="False"
-          Background="{TemplateBinding Background}" />
+          Background="{TemplateBinding Background}"  />
         </ControlTemplate>
 
         <Style x:Key="DefaultComboBox"
@@ -419,6 +467,8 @@
           Value="120" />
             <Setter Property="MinHeight"
           Value="20" />
+
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -481,7 +531,6 @@
                    Margin="3,3,23,3"
                    Focusable="True"
                    Background="Transparent"
-                   Visibility="Hidden"
                    IsReadOnly="{TemplateBinding IsReadOnly}" />
                             <Popup x:Name="Popup"
                  Placement="Bottom"
@@ -496,7 +545,7 @@
                                     <Border x:Name="DropDownBorder"
                       BorderThickness="1">
                                         <Border.BorderBrush>
-                                            <SolidColorBrush Color="{DynamicResource BorderMediumColor}" />
+                                            <SolidColorBrush Color="{StaticResource AccentColor}" />
                                         </Border.BorderBrush>
                                         <Border.Background>
                                             <SolidColorBrush Color="{DynamicResource ControlLightColor}" />
@@ -511,8 +560,7 @@
                             </Popup>
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="HasItems"
-                   Value="false">
+                            <Trigger Property="HasItems"  Value="false">
                                 <Setter TargetName="DropDownBorder"
                     Property="MinHeight"
                     Value="95" />
@@ -527,7 +575,7 @@
                    Value="true">
                                 <Setter TargetName="DropDownBorder"
                     Property="CornerRadius"
-                    Value="4" />
+                    Value="{StaticResource CornerRadius}" />
                                 <Setter TargetName="DropDownBorder"
                     Property="Margin"
                     Value="0,2,0,0" />
@@ -627,6 +675,81 @@
         </Style>
 
         <Style TargetType="TabItem" BasedOn="{StaticResource DefaultTabHeader}"/>
+
+
+        <Style x:Key="GridHeaderRight" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                        <Border BorderBrush="White" BorderThickness="1,0,1,0">
+                        <TextBlock Text="{TemplateBinding Content}" Padding="10,5,10,5" Width="{TemplateBinding Width}" TextAlignment="Left" Background="{StaticResource AccentBrush}" Style="{x:Null}"/>
+                        </Border>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+
+        </Style>
+
+
+        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource GridHeaderRight}"/>
+
+
+        <Style x:Key="DefaultListViewItem"  TargetType="{x:Type ListViewItem}">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border x:Name="ListBoxItemRoot" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="1,0" 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="2" 
+                            Uid="Border_57">
+                            <GridViewRowPresenter Columns="{TemplateBinding GridView.ColumnCollection}" 
+                                              Content="{TemplateBinding Content}" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Margin="{TemplateBinding Padding}" 
+                                              Uid="GridViewRowPresenter_1" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"></VisualState>
+                                    <VisualState x:Name="Disabled"></VisualState>
+                                    <VisualState x:Name="MouseOver"></VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Selected"></VisualState>
+                                    <VisualState x:Name="Unselected"></VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource MouseOverBrush}" />
+                    <Setter Property="Foreground" Value="White" />
+
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="{StaticResource HighlightedBrush}" />
+                    <Setter Property="Foreground" Value="White" />
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource DefaultListViewItem}"/>
 
 
 

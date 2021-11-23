@@ -23,7 +23,6 @@ namespace AutoHDR
         private bool _startMinimizedToTray;
         private bool _closeToTray;
         private bool _checkForNewVersion = true;
-        private HDRActivationMode _hdrMode;
         readonly object _audioDevicesLock = new object();
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
         private ObservableCollection<Profile> _applicationProfiles;
@@ -50,14 +49,11 @@ namespace AutoHDR
         [DataMember]
         public bool CheckForNewVersion { get => _checkForNewVersion; set { _checkForNewVersion = value; OnPropertyChanged(); } }
 
-        [DataMember]
-        public HDRActivationMode HDRMode { get => _hdrMode; set { _hdrMode = value; OnPropertyChanged(); } }
 
         [DataMember]
         public SortableObservableCollection<ApplicationProfileAssignment> ApplicationProfileAssignments { get => _applicationProfileAssignments; set { _applicationProfileAssignments = value; OnPropertyChanged();} }
 
         [DataMember]
-
         public ObservableCollection<Profile> ApplicationProfiles { get => _applicationProfiles; set { _applicationProfiles = value; OnPropertyChanged(); } }
 
 
@@ -90,7 +86,6 @@ namespace AutoHDR
             convertedSettings.CheckForNewVersion = settings.CheckForNewVersion;
             convertedSettings.CloseToTray = settings.CloseToTray;
             convertedSettings.GlobalAutoHDR = settings.GlobalAutoHDR;
-            convertedSettings.HDRMode = settings.HDRMode;
             convertedSettings.Logging = settings.Logging;
             convertedSettings.Monitors = settings.Monitors;
             convertedSettings.StartMinimizedToTray = settings.StartMinimizedToTray;

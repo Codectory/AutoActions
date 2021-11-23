@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace AutoHDR.Views
 {
     /// <summary>
-    /// Interaktionslogik für ApplicationAdderView.xaml
+    /// Interaktionslogik für ApplicationActionView.xaml
     /// </summary>
-    public partial class ApplicationAdderView : UserControl
+    public partial class RunProgramActionView : UserControl
     {
-        public ApplicationAdderView()
+        public RunProgramActionView()
         {
             InitializeComponent();
         }

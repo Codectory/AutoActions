@@ -121,7 +121,7 @@
     <value>Aktionen</value>
   </data>
   <data name="ActionType" xml:space="preserve">
-    <value>Type</value>
+    <value>Typ</value>
   </data>
   <data name="ActivateHDR" xml:space="preserve">
     <value>HDR aktivieren</value>
@@ -132,6 +132,9 @@
   <data name="AddProfileAction" xml:space="preserve">
     <value>Aktion hinzufügen</value>
   </data>
+  <data name="AllDisplays" xml:space="preserve">
+    <value>Alle Displays</value>
+  </data>
   <data name="AlreadyRunning" xml:space="preserve">
     <value>AutoHDR wurde bereits gestartet.</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="AppFocusedActions" xml:space="preserve">
     <value>"Anwendung im Fokus"-Aktionen</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Anwendung</value>
   </data>
   <data name="ApplicationAction" xml:space="preserve">
     <value>App-Aktion</value>
@@ -155,6 +161,9 @@
   </data>
   <data name="AppStartedActions" xml:space="preserve">
     <value>"Anwendung startet"-Aktionen</value>
+  </data>
+  <data name="Arguments" xml:space="preserve">
+    <value>Argumente</value>
   </data>
   <data name="AutoHDR" xml:space="preserve">
     <value>AutoHDR</value>
@@ -258,6 +267,9 @@
   <data name="NoApplication" xml:space="preserve">
     <value>keine Anwedung</value>
   </data>
+  <data name="NoProfile" xml:space="preserve">
+    <value>Kein Profil zugewiesen</value>
+  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -266,6 +278,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Öffnen</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorität</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>
@@ -288,8 +303,26 @@
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
     <value>Neustart, beim ersten Start</value>
   </data>
+  <data name="RunAction" xml:space="preserve">
+    <value>Ausführen</value>
+  </data>
+  <data name="RunProgram" xml:space="preserve">
+    <value>Ausführen</value>
+  </data>
+  <data name="RunProgramAction" xml:space="preserve">
+    <value>Programm ausführen</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
+  </data>
+  <data name="SetHDR" xml:space="preserve">
+    <value>HDR ändern</value>
+  </data>
+  <data name="SetRefreshRate" xml:space="preserve">
+    <value>Bildwiederholrate ändern</value>
+  </data>
+  <data name="SetResolution" xml:space="preserve">
+    <value>Auflösung ändern</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>
@@ -311,6 +344,9 @@
   </data>
   <data name="VolumeSyncDevices" xml:space="preserve">
     <value>Lautstärkesynchronisierung</value>
+  </data>
+  <data name="WaitForProgramEnd" xml:space="preserve">
+    <value>Warte auf Ende des Programms</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Ja</value>

@@ -21,9 +21,12 @@ namespace AutoHDR
         public ApplicationItem Application { get => _application; set { _application = value; OnPropertyChanged(); }
         }
 
-        public Profile Profile { get => _profile; set { _profile = value; OnPropertyChanged(); } }
+        public Profile Profile { 
+            get => _profile; 
+            set { _profile = value; OnPropertyChanged(); Globals.Instance.SaveSettings(); }
+        }
 
-        public int Position { get => _position;  set { _position = value; OnPropertyChanged(); } }
+        public int Position { get => _position;  set { _position = value; OnPropertyChanged(); Globals.Instance.SaveSettings(); } }
 
 
         private ApplicationProfileAssignment()
@@ -46,11 +49,15 @@ namespace AutoHDR
             }
             Assignments.Remove(this);
             Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
-
+            Globals.Instance.SaveSettings();
         }
 
         public void ChangePosition(bool up)
         {
+            if (up && Position == 0)
+                return;
+            if (!up && Position == Assignments.Count - 1)
+                return;
             int newPosition = up ? Position - 1 : Position + 1;
             if (Assignments.Any(x => x.Position == newPosition))
             {
@@ -59,7 +66,7 @@ namespace AutoHDR
             Position = newPosition;
             Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
 
-
+            Globals.Instance.SaveSettings();
         }
 
 
@@ -70,7 +77,7 @@ namespace AutoHDR
             assigment.Position = GetNextPosition();
             Assignments.Add(assigment);
             Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
-
+            Globals.Instance.SaveSettings();
             return assigment;
         }
 

@@ -24,5 +24,10 @@ namespace AutoHDR.Displays
 
         [DllImport("HDRController.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool GetHDRState(UInt32 uid);
+
+
+        [DllImport("HDRController.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool GetResolution(UInt32 uid);
+
     }
 }

@@ -20,7 +20,7 @@ namespace AutoHDR.Profiles.Actions
         public bool RestartApplication { get => _restartApplication; set { _restartApplication = value; OnPropertyChanged(); } }
 
 
-        public override string ActionName => $"[{ActionTypeName}]: {Locale_Texts.RestartProccessOnFirstOccurence}: {(RestartApplication ? Locale_Texts.Yes : Locale_Texts.No)}";
+        public override string ActionDescription => $"{Locale_Texts.RestartProccessOnFirstOccurence}: {(RestartApplication ? Locale_Texts.Yes : Locale_Texts.No)}";
 
         public ApplicationAction()
         {
@@ -38,6 +38,11 @@ namespace AutoHDR.Profiles.Actions
             {
                 return new ActionEndResult(false, ex.Message, ex);
             }
+        }
+
+        public override string ToString()
+        {
+            return Locale_Texts.ApplicationAction;
         }
     }
 }

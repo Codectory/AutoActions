@@ -133,6 +133,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die All displays ähnelt.
+        /// </summary>
+        public static string AllDisplays {
+            get {
+                return ResourceManager.GetString("AllDisplays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die AutoHDR is already running. ähnelt.
         /// </summary>
         public static string AlreadyRunning {
@@ -156,6 +165,15 @@ namespace AutoHDR.ProjectResources {
         public static string AppFocusedActions {
             get {
                 return ResourceManager.GetString("AppFocusedActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application ähnelt.
+        /// </summary>
+        public static string Application {
+            get {
+                return ResourceManager.GetString("Application", resourceCulture);
             }
         }
         
@@ -201,6 +219,15 @@ namespace AutoHDR.ProjectResources {
         public static string AppStartedActions {
             get {
                 return ResourceManager.GetString("AppStartedActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Arguments ähnelt.
+        /// </summary>
+        public static string Arguments {
+            get {
+                return ResourceManager.GetString("Arguments", resourceCulture);
             }
         }
         
@@ -539,6 +566,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No profile assigned ähnelt.
+        /// </summary>
+        public static string NoProfile {
+            get {
+                return ResourceManager.GetString("NoProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die OK ähnelt.
         /// </summary>
         public static string OK {
@@ -562,6 +598,15 @@ namespace AutoHDR.ProjectResources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Priority ähnelt.
+        /// </summary>
+        public static string Priority {
+            get {
+                return ResourceManager.GetString("Priority", resourceCulture);
             }
         }
         
@@ -638,6 +683,24 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Run ähnelt.
+        /// </summary>
+        public static string RunAction {
+            get {
+                return ResourceManager.GetString("RunAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Run program ähnelt.
+        /// </summary>
+        public static string RunProgramAction {
+            get {
+                return ResourceManager.GetString("RunProgramAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Save ähnelt.
         /// </summary>
         public static string Save {
@@ -652,6 +715,15 @@ namespace AutoHDR.ProjectResources {
         public static string SetHDR {
             get {
                 return ResourceManager.GetString("SetHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Set refresh rate ähnelt.
+        /// </summary>
+        public static string SetRefreshRate {
+            get {
+                return ResourceManager.GetString("SetRefreshRate", resourceCulture);
             }
         }
         
@@ -724,6 +796,15 @@ namespace AutoHDR.ProjectResources {
         public static string VolumeSyncDevices {
             get {
                 return ResourceManager.GetString("VolumeSyncDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Wait for program to exit ähnelt.
+        /// </summary>
+        public static string WaitForProgramEnd {
+            get {
+                return ResourceManager.GetString("WaitForProgramEnd", resourceCulture);
             }
         }
         

@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace AutoHDR.Profiles
 {
-    public class Profile : BaseViewModel
+    public class Profile : BaseViewModel, IEquatable<Profile>
     {
 
         public enum ProfileActionListType
@@ -109,26 +109,22 @@ namespace AutoHDR.Profiles
                 switch (listType)
                 {
                     case ProfileActionListType.Started:
-                        if (!ApplicationStarted.Any(a => a.GetType().Equals(adder.ActionType)))
-                            ApplicationStarted.Add(adder.ProfileAction);
+                        ApplicationStarted.Add(adder.ProfileAction);
                         break;
                     case ProfileActionListType.Closed:
-                        if (!ApplicationClosed.Any(a => a.GetType().Equals(adder.ActionType)))
-                            ApplicationClosed.Add(adder.ProfileAction);
+                        ApplicationClosed.Add(adder.ProfileAction);
                         break;
                     case ProfileActionListType.GotFocus:
-                        if (!ApplicationGotFocus.Any(a => a.GetType().Equals(adder.ActionType)))
-                            ApplicationGotFocus.Add(adder.ProfileAction);
+                        ApplicationGotFocus.Add(adder.ProfileAction);
                         break;
                     case ProfileActionListType.LostFocus:
-                        if (!ApplicationLostFocus.Any(a => a.GetType().Equals(adder.ActionType)))
-                            ApplicationLostFocus.Add(adder.ProfileAction);
+                        ApplicationLostFocus.Add(adder.ProfileAction);
                         break;
 
                 }
             };
             if (DialogService != null)
-                DialogService.ShowDialogModal(adder, new System.Drawing.Size(640,450));
+                DialogService.ShowDialogModal(adder, new System.Drawing.Size(640, 450));
         }
 
         public void RemoveProfileAction(ProfileActionBase profileAction)
@@ -140,7 +136,7 @@ namespace AutoHDR.Profiles
             if (ApplicationGotFocus.Contains(profileAction))
                 ApplicationGotFocus.Remove(profileAction);
             if (ApplicationLostFocus.Contains(profileAction))
-                ApplicationLostFocus.Remove(profileAction);   
+                ApplicationLostFocus.Remove(profileAction);
         }
 
 
@@ -168,6 +164,32 @@ namespace AutoHDR.Profiles
         public override string ToString()
         {
             return Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Profile);
+        }
+
+        public bool Equals(Profile other)
+        {
+            return other != null &&
+                   Name == other.Name &&
+                   EqualityComparer<ListOfProfileActions>.Default.Equals(ApplicationStarted, other.ApplicationStarted) &&
+                   EqualityComparer<ListOfProfileActions>.Default.Equals(ApplicationClosed, other.ApplicationClosed) &&
+                   EqualityComparer<ListOfProfileActions>.Default.Equals(ApplicationGotFocus, other.ApplicationGotFocus) &&
+                   EqualityComparer<ListOfProfileActions>.Default.Equals(ApplicationLostFocus, other.ApplicationLostFocus);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 210938521;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ListOfProfileActions>.Default.GetHashCode(ApplicationStarted);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ListOfProfileActions>.Default.GetHashCode(ApplicationClosed);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ListOfProfileActions>.Default.GetHashCode(ApplicationGotFocus);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ListOfProfileActions>.Default.GetHashCode(ApplicationLostFocus);
+            return hashCode;
         }
     }
 }
