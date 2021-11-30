@@ -96,7 +96,7 @@ namespace AutoHDR
                 }
             };
             if (DialogService != null)
-                DialogService.ShowDialogModal(uwpDialog);
+                DialogService.ShowDialogModal(uwpDialog, new System.Drawing.Size(800,600));
         }
 
     }

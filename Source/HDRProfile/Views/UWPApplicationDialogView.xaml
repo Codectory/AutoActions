@@ -8,7 +8,7 @@
         xmlns:uwp="clr-namespace:AutoHDR.UWP"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=uwp:UWPApplicationDialog, IsDesignTimeCreatable=False}"
-         Height="306.826" Width="376.667" MinWidth="414">
+         MinWidth="414">
     <UserControl.Resources>
         <ItemsPanelTemplate x:Key="StackListViewTemplate">
             <StackPanel/>
@@ -17,28 +17,28 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="20" Height="20" Margin="5" Stretch="Fill"></Image>
-                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="40" Height="40" Margin="5" Stretch="Fill"></Image>
+                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="5" FontSize="15"  VerticalAlignment="Center" HorizontalAlignment="Left" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
 
 
-    <Grid Margin="0,0,2,0">
+    <Grid Margin="0,0,2,0" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="23*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListBox  Grid.Row="0" x:Name="ApplicationList"  SelectedItem="{Binding ApplicationItem}" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding UWPApplications}" ScrollViewer.VerticalScrollBarVisibility="Auto"   BorderThickness="0" Margin="0,0,0,5"/>
+        <ListBox  Grid.Row="0" x:Name="ApplicationList" SelectedItem="{Binding ApplicationItem}" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding UWPApplications}" ScrollViewer.VerticalScrollBarVisibility="Auto"   BorderThickness="0" Margin="0,0,0,5"/>
 
-        <Grid Grid.Row="1" >
+        <Grid Grid.Row="1" Height="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width=" Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="2" Content="{x:Static pres:Locale_Texts.OK}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="5"/>
+            <Button Grid.Column="1" Content="{x:Static pres:Locale_Texts.OK}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Right" Width="Auto" Height="26"  Margin="0,0,5,5" VerticalAlignment="Bottom"/>
 
         </Grid>
 

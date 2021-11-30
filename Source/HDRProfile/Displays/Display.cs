@@ -6,25 +6,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace AutoHDR.Displays
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Display : BaseViewModel
     {
         public static readonly Display AllDisplays = new Display(ProjectResources.Locale_Texts.AllDisplays, UInt32.MaxValue, new Size(0, 0), 0);
         private bool _managed = true;
 
+        [JsonProperty]
         public bool Managed { get => _managed; set { _managed = value; OnPropertyChanged(); } }
 
 
         private string _name;
+
+        [JsonProperty]
         public string Name { get => _name;  set { _name = value; OnPropertyChanged(); } }
 
 
         private UInt32 _uid;
+
+        [JsonProperty]
         public UInt32 UID { get => _uid;  set { _uid = value; OnPropertyChanged(); } }
 
         private uint _id;
+
+        [JsonProperty]
         public uint ID { get => _id; set { _id = value; OnPropertyChanged(); } }
 
         private bool _hdrState;

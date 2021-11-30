@@ -53,12 +53,16 @@ namespace AutoHDR.UWP
                     XmlSerializer serializer = new XmlSerializer(typeof(AppxManifest));
                     AppxManifest appxManifest = (AppxManifest)serializer.Deserialize(reader);
                     Name = ((XmlNode[])appxManifest.Properties.DisplayName)[0].Value;
+                    if (Name.Contains("ms-resource:"))
+                    {
+                        Name = GetNameOfStrangeMicrosoftAppxManifest(appxManifest);
+                    }
                     Executable = string.Empty;
                     if (appxManifest.Applications != null && appxManifest.Applications.Application != null)
                         Executable = appxManifest.Applications.Application.Executable;
                     FamilyPackageName = package.Id.FamilyName;
                     ApplicationID = appxManifest.Applications.Application.Id;
-                    IconPath = Path.Combine(InstallLocation, ((XmlNode[])(appxManifest.Properties.Logo))[0].Value);
+                    IconPath = GetIconPath(Path.Combine(InstallLocation, ((XmlNode[])(appxManifest.Properties.Logo))[0].Value));
                 }
             }
             catch (Exception ex)
@@ -68,6 +72,52 @@ namespace AutoHDR.UWP
                     manifestContent = File.ReadAllText(appxManifestPath);
                 Tools.Logs.AddException($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.", ex);
             }
+        }
+
+        private static string GetIconPath(string iconPath)
+        {
+            FileInfo fi = new FileInfo(iconPath);
+            if (fi.Exists) 
+                return fi.FullName;
+            string fileName = fi.Name.Replace(fi.Extension, "");
+            string scale400 = $"{Path.Combine(fi.Directory.FullName, fi.Directory.FullName, fileName)}.scale-400{fi.Extension}";
+            if (File.Exists(scale400))
+                return scale400;
+
+            string scale200 = $"{Path.Combine(fi.Directory.FullName, fi.Directory.FullName, fileName)}.scale-200{fi.Extension}";
+            if (File.Exists(scale200))
+                return scale200;
+
+            string scale150 = $"{Path.Combine(fi.Directory.FullName, fi.Directory.FullName, fileName)}.scale-150{fi.Extension}";
+            if (File.Exists(scale150))
+                return scale150;
+            string scale125 = $"{Path.Combine(fi.Directory.FullName, fi.Directory.FullName, fileName)}.scale-125{fi.Extension}";
+            if (File.Exists(scale125))
+                return scale125;
+            string scale100 = $"{Path.Combine(fi.Directory.FullName, fi.Directory.FullName, fileName)}.scale-100{fi.Extension}";
+            if (File.Exists(scale100))
+                return scale100;
+            return string.Empty;
+        }
+
+        private string GetNameOfStrangeMicrosoftAppxManifest(AppxManifest appxManifest)
+        {
+            string name = appxManifest.Identity.Name;
+            name = name.Replace("Microsoft.", "");
+            string newName = string.Empty;
+            for (int i = 0; i < name.Length; i++)
+            {
+                if (i == 0)
+                {
+                    newName += name[i];
+                }
+                else if (char.IsUpper(name[i]))
+                    newName += $" {name[i]}";
+                else
+                    newName += name[i];
+            }
+            return newName;
+
         }
 
         public override string ToString()

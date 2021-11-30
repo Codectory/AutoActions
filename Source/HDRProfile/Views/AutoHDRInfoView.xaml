@@ -43,7 +43,7 @@
                 <RowDefinition Height="Auto"/>
 
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" Source="pack://siteoforigin:,,,/Resources/Logo.png" Grid.ColumnSpan="3" />
+            <Image Grid.Row="0"  Grid.ColumnSpan="3" Source="/AutoHDR;component/Resources/Logo.png" />
         </Grid>
         <TextBlock Grid.Row="1" Text="{x:Static pres:Locale_Texts.Local}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
         <Border Style="{StaticResource RoundedBorder}"  Grid.Row="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" >

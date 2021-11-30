@@ -14,9 +14,9 @@
         <DataTemplate DataType="{x:Type prflActns:DisplayAction}">
             <local:DisplayActionView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type prflActns:ApplicationAction}">
+        <!--<DataTemplate DataType="{x:Type prflActns:ApplicationAction}">
             <local:ApplicationActionView/>
-        </DataTemplate>
+        </DataTemplate>-->
         <DataTemplate DataType="{x:Type prflActns:RunProgramAction}">
             <local:RunProgramActionView/>
         </DataTemplate>

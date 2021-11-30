@@ -33,6 +33,7 @@ namespace AutoHDR.UWP
             {
                 foreach (var package in packages)
                 {
+                    string s = package.DisplayName;
                     if (package.IsFramework || package.IsResourcePackage || package.SignatureKind != PackageSignatureKind.Store )
                     {
                         continue;
@@ -53,7 +54,7 @@ namespace AutoHDR.UWP
                     try
                     {
                         UWPApp uwpApp = new UWPApp(package);
-                        if (!string.IsNullOrEmpty(uwpApp.Executable) && !uwpApp.Name.Contains("ms-resource:"))
+                        if (!string.IsNullOrEmpty(uwpApp.Executable) /*&& !uwpApp.Name.Contains("ms-resource:")*/)
                             uwpApps.Add(new ApplicationItem(uwpApp.Name, Path.Combine(uwpApp.InstallLocation, uwpApp.Executable), uwpApp.FamilyPackageName, uwpApp.ApplicationID, uwpApp.IconPath));
                     }
                     catch
@@ -61,7 +62,7 @@ namespace AutoHDR.UWP
                         continue;
                     }
                 }
-                return uwpApps;
+                return uwpApps.OrderBy(u => u.DisplayName).ToList();
             }
             catch (Exception ex)
             {

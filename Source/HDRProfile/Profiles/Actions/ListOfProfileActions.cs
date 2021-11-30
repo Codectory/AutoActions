@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -10,7 +11,8 @@ using System.Xml.Serialization;
 namespace AutoHDR.Profiles.Actions
 {
 
-    public class ListOfProfileActions : ObservableCollection<IProfileAction>, IXmlSerializable
+
+    public class ListOfProfileActions : ObservableCollection<IProfileAction>/*, IXmlSerializable*/
     {
         public ListOfProfileActions() : base() { }
 
@@ -29,6 +31,7 @@ namespace AutoHDR.Profiles.Actions
                     return;
 
                 Type type = Type.GetType((string)value);
+
                 XmlSerializer serial = new XmlSerializer(type);
 
                 reader.ReadStartElement("IProfileAction");
@@ -47,10 +50,36 @@ namespace AutoHDR.Profiles.Actions
                 writer.WriteStartElement("IProfileAction");
                 writer.WriteAttributeString
                 ("AssemblyQualifiedName", dispatcher.GetType().AssemblyQualifiedName);
-                XmlSerializer xmlSerializer = new XmlSerializer(dispatcher.GetType());
-                xmlSerializer.Serialize(writer, dispatcher);
+
+                DataContractSerializer serializer = new DataContractSerializer(dispatcher.GetType());
+                serializer.WriteObject(writer, dispatcher);
                 writer.WriteEndElement();
             }
         }
+
+
+        public static void SaveSettings(UserAppSettings settings, string path)
+        {
+                 try
+                {
+                    DataContractSerializer serializer = new DataContractSerializer(typeof(UserAppSettings));
+
+                    var writeSettings = new XmlWriterSettings()
+                    {
+                        Indent = true
+
+                    };
+
+
+                    using (var xmlWriter = XmlWriter.Create(path, writeSettings))
+                        serializer.WriteObject(xmlWriter, settings);
+                }
+                catch (Exception ex)
+                {
+                    Tools.Logs.AddException(ex);
+                    throw;
+                }
+            }
+        
     }
 }

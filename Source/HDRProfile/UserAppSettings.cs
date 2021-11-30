@@ -11,12 +11,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using AutoHDR.Profiles;
+using System.Xml;
+using Newtonsoft.Json;
 
 namespace AutoHDR
 {
-    [DataContract]
+    [JsonObject(MemberSerialization.OptIn)]
     public class UserAppSettings : BaseViewModel
     {
+        public static readonly object _settingsLock = new object();
+
+
         private bool _globalAutoHDR = true;
         private bool _logging = false;
         private bool _autoStart;
@@ -30,34 +35,33 @@ namespace AutoHDR
 
 
 
-        [DataMember]
+        [JsonProperty]
         public bool GlobalAutoHDR { get => _globalAutoHDR; set { _globalAutoHDR = value; OnPropertyChanged(); } }
 
-        [DataMember]
+        [JsonProperty]
         public bool AutoStart { get => _autoStart; set { _autoStart = value; OnPropertyChanged(); } }
 
-        [DataMember]
+        [JsonProperty]
         public bool Logging { get => _logging; set { _logging = value; OnPropertyChanged(); } }
 
-        [DataMember]
-        public bool StartMinimizedToTray { get => _startMinimizedToTray; set { _startMinimizedToTray = value; OnPropertyChanged(); }  }
+        [JsonProperty]
+        public bool StartMinimizedToTray { get => _startMinimizedToTray; set { _startMinimizedToTray = value; OnPropertyChanged(); } }
 
-        [DataMember]
+        [JsonProperty]
         public bool CloseToTray { get => _closeToTray; set { _closeToTray = value; OnPropertyChanged(); } }
 
-
-        [DataMember]
+        [JsonProperty]
         public bool CheckForNewVersion { get => _checkForNewVersion; set { _checkForNewVersion = value; OnPropertyChanged(); } }
 
 
-        [DataMember]
-        public SortableObservableCollection<ApplicationProfileAssignment> ApplicationProfileAssignments { get => _applicationProfileAssignments; set { _applicationProfileAssignments = value; OnPropertyChanged();} }
+        [JsonProperty(Order = 1)]
+        public SortableObservableCollection<ApplicationProfileAssignment> ApplicationProfileAssignments { get => _applicationProfileAssignments; set { _applicationProfileAssignments = value; OnPropertyChanged(); } }
 
-        [DataMember]
+        [JsonProperty(Order = 0)]
         public ObservableCollection<Profile> ApplicationProfiles { get => _applicationProfiles; set { _applicationProfiles = value; OnPropertyChanged(); } }
 
 
-        [DataMember]
+        [JsonProperty]
         public ObservableCollection<Display> Monitors { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
 
 
@@ -71,6 +75,40 @@ namespace AutoHDR
         public static UserAppSettings ReadSettings(string path)
         {
             UserAppSettings settings = null;
+
+            lock (_settingsLock)
+            {
+
+                try
+                {
+                    string serializedJson = File.ReadAllText(path);
+                    settings =(UserAppSettings) JsonConvert.DeserializeObject<UserAppSettings>(serializedJson, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Objects,
+                        TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+                    });          
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        settings = TryReadXML(path);
+                        Tools.Logs.Add("Loaded deprecated xml settings.", false);
+                        return settings;
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    Tools.Logs.AddException(ex);
+                    throw;
+                }
+            }
+            return settings;
+        }
+
+        private static UserAppSettings TryReadXML(string path)
+        {
+            UserAppSettings settings = null;
             XmlSerializer serializer = new XmlSerializer(typeof(UserAppSettings));
             using (TextReader reader = new StreamReader(path))
             {
@@ -79,6 +117,28 @@ namespace AutoHDR
             return settings;
         }
 
+        public static void SaveSettings(UserAppSettings settings, string path)
+        {
+            lock (_settingsLock)
+            {
+                try
+                {
+                    string serializedJson = JsonConvert.SerializeObject(settings, Newtonsoft.Json.Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Objects,
+                        TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+                    });
+                    File.WriteAllText(path, serializedJson);
+                }
+                catch (Exception ex)
+                {
+                    Tools.Logs.AddException(ex);
+                    throw;
+                }
+            }
+        }
+
+        [Obsolete]
         public static UserAppSettings Convert(HDRProfileSettings settings)
         {
             UserAppSettings convertedSettings = new UserAppSettings();
@@ -96,13 +156,9 @@ namespace AutoHDR
     public static class UserAppSettingsExtension
     {
 
-        public static void SaveSettings(this UserAppSettings setting, string path)
+        public static void SaveSettings(this UserAppSettings settings, string path)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(UserAppSettings));
-            using (TextWriter writer = new StreamWriter(path))
-            {
-                serializer.Serialize(writer, setting);
-            }
+            UserAppSettings.SaveSettings(settings, path);
         }
 
     }

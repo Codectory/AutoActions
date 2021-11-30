@@ -115,7 +115,7 @@ namespace AutoHDR
             {
                 lock (_applicationsLock)
                     UpdateApplications();
-                Thread.Sleep(Tools.GlobalRefreshInterval);
+                Thread.Sleep(Globals.GlobalRefreshInterval);
             }
         }
 

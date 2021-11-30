@@ -1,48 +1,45 @@
 ﻿using AutoHDR.Profiles.Actions;
 using CodectoryCore.UI.Wpf;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace AutoHDR.Profiles
 {
+    public enum ProfileActionListType
+    {
+        Started,
+        Closed,
+        GotFocus,
+        LostFocus
+    }
+
+    [JsonObject(MemberSerialization.OptIn)]
     public class Profile : BaseViewModel, IEquatable<Profile>
     {
 
-        public enum ProfileActionListType
-        {
-            Started,
-            Closed,
-            GotFocus,
-            LostFocus
-        }
+     
 
-        [XmlIgnore]
         public RelayCommand AddStartedActionCommand { get; private set; }
-        [XmlIgnore]
         public RelayCommand AddClosedActionCommand { get; private set; }
-        [XmlIgnore]
         public RelayCommand AddGotFocusActionCommand { get; private set; }
-        [XmlIgnore]
         public RelayCommand AddLostFocusActionCommand { get; private set; }
-        [XmlIgnore]
         public RelayCommand<ProfileActionBase> RemoveProfileActionCommand { get; private set; }
-        [XmlIgnore]
         public RelayCommand<ProfileActionBase> RemoveStartedActionCommand { get; private set; }
-        [XmlIgnore]
         public RelayCommand<ProfileActionBase> RemoveClosedActionCommand { get; private set; }
-        [XmlIgnore]
         public RelayCommand<ProfileActionBase> RemoveGotFocusActionCommand { get; private set; }
-        [XmlIgnore]
         public RelayCommand<ProfileActionBase> RemoveLostFocusActionCommand { get; private set; }
 
 
         public Profile()
         {
+            _guid = Guid.NewGuid();
             AddStartedActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.Started));
             AddClosedActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.Closed));
             AddGotFocusActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.GotFocus));
@@ -53,16 +50,20 @@ namespace AutoHDR.Profiles
             RemoveClosedActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.Closed, pa));
             RemoveGotFocusActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.GotFocus, pa));
             RemoveLostFocusActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.LostFocus, pa));
-            PropertyChanged += Profile_PropertyChanged;
         }
 
-        private void Profile_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
+        private Guid _guid = Guid.Empty;
 
-            Globals.Instance.SaveSettings();
+        [JsonProperty]
+        public Guid GUID
+        {
+            get { return _guid; }
+            set { if (value.Equals(Guid.Empty)) _guid = Guid.NewGuid(); _guid = value; OnPropertyChanged(); }
         }
 
         private string _name = "-";
+
+        [JsonProperty]
         public string Name
         {
             get { return _name; }
@@ -70,6 +71,8 @@ namespace AutoHDR.Profiles
         }
 
         private ListOfProfileActions _applicationStarted = new ListOfProfileActions();
+
+        [JsonProperty]
         public ListOfProfileActions ApplicationStarted
         {
             get { return _applicationStarted; }
@@ -77,6 +80,8 @@ namespace AutoHDR.Profiles
         }
 
         private ListOfProfileActions _applicationClosed = new ListOfProfileActions();
+
+        [JsonProperty]
         public ListOfProfileActions ApplicationClosed
         {
             get { return _applicationClosed; }
@@ -85,6 +90,7 @@ namespace AutoHDR.Profiles
 
         private ListOfProfileActions _applicationGotFocus = new ListOfProfileActions();
 
+        [JsonProperty]
         public ListOfProfileActions ApplicationGotFocus
         {
             get { return _applicationGotFocus; }
@@ -93,15 +99,24 @@ namespace AutoHDR.Profiles
 
         private ListOfProfileActions _applicationLostFocus = new ListOfProfileActions();
 
+        [JsonProperty]
         public ListOfProfileActions ApplicationLostFocus
         {
             get { return _applicationLostFocus; }
             set { _applicationLostFocus = value; OnPropertyChanged(); }
+
+
         }
+
+        private bool _restartApplication = false;
+
+        [JsonProperty]
+        public bool RestartApplication { get => _restartApplication; set { _restartApplication = value; OnPropertyChanged(); } }
+
+
 
         public void AddProfileAction(ProfileActionListType listType)
         {
-
             ProfileActionAdder adder = new ProfileActionAdder();
             adder.DialogService = DialogService;
             adder.OKClicked += (o, e) =>
@@ -124,7 +139,7 @@ namespace AutoHDR.Profiles
                 }
             };
             if (DialogService != null)
-                DialogService.ShowDialogModal(adder, new System.Drawing.Size(640, 450));
+                DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
         }
 
         public void RemoveProfileAction(ProfileActionBase profileAction)

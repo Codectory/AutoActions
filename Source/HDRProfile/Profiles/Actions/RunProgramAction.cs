@@ -1,37 +1,51 @@
 ﻿using AutoHDR.ProjectResources;
 using CodectoryCore.UI.Wpf;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AutoHDR.Profiles.Actions
 {
-
+    [JsonObject(MemberSerialization.OptIn)]
     public class RunProgramAction : ProfileActionBase
     {
         public override string ActionTypeName => ProjectResources.Locale_Texts.RunAction;
 
 
         private string _filePath = "";
+
+        [JsonProperty]
         public string FilePath { get => _filePath; set { _filePath = value; OnPropertyChanged(); } }
 
         private string _arguments = "";
+
+        [JsonProperty]
         public string Arguments { get => _arguments; set { _arguments = value; OnPropertyChanged(); } }
 
         private bool _waitForEnd = false;
+
+        [JsonProperty]
         public bool WaitForEnd { get => _waitForEnd; set { _waitForEnd = value; OnPropertyChanged(); } }
 
 
 
         public override string ActionDescription => $"{Path.GetFileName(FilePath)} {Arguments}";
 
+        public RelayCommand GetFileCommand { get; private set; }
+
+
         public RunProgramAction()
         {
+            GetFileCommand = new RelayCommand(GetFile);
+
         }
 
         public override ActionEndResult RunAction(params object[] parameter)
@@ -59,5 +73,22 @@ namespace AutoHDR.Profiles.Actions
                 return new ActionEndResult(false, ex.Message, ex);
             }
         }
+
+        public void GetFile()
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.DefaultExt = ".exe";
+            fileDialog.Filter = "Executables (.exe)|*.exe";
+            Nullable<bool> result = fileDialog.ShowDialog();
+            string filePath = string.Empty;
+            if (result == true)
+                filePath = fileDialog.FileName;
+            else
+                return;
+            if (!File.Exists(filePath))
+                throw new Exception("Invalid file path.");
+            FilePath = filePath;
+        }
+
     }
 }

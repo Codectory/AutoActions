@@ -1,15 +1,18 @@
 ﻿using AutoHDR.Displays;
 using AutoHDR.ProjectResources;
 using CodectoryCore.UI.Wpf;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace AutoHDR.Profiles.Actions
 {
-
+    [JsonObject(MemberSerialization.OptIn)]
     public class DisplayAction : ProfileActionBase
     {
         public List<Displays.Display> AllDisplays
@@ -22,8 +25,9 @@ namespace AutoHDR.Profiles.Actions
                 return displays;
             }
         }
-
         private Displays.Display _display = null;
+
+        [JsonProperty]
         public Displays.Display Display { 
             get => _display; 
             set 
@@ -40,25 +44,39 @@ namespace AutoHDR.Profiles.Actions
                     Resolution = value.Resolution;
                     RefreshRate = value.RefreshRate;
                 }
-            } }
+            } 
+        }
         public override string ActionTypeName => ProjectResources.Locale_Texts.DisplayAction;
 
+       
+
         private bool _setHDR = false;
+        [JsonProperty]
         public bool SetHDR { get => _setHDR; set { _setHDR = value; OnPropertyChanged(); } }
 
-        public bool _setResolution = false;
+        private bool _setResolution = false;
+
+        [JsonProperty]
         public bool SetResolution { get => _setResolution; set { _setResolution = value; OnPropertyChanged(); } }
 
-        public bool _setRefreshRate = false;
+        private bool _setRefreshRate = false;
+
+        [JsonProperty]
         public bool SetRefreshRate { get => _setRefreshRate; set { _setRefreshRate = value; OnPropertyChanged(); } }
 
-        public bool _enableHDR = false;
+        private bool _enableHDR = false;
+
+        [JsonProperty]
         public bool EnableHDR { get => _enableHDR; set { _enableHDR = value; OnPropertyChanged(); } }
 
-        public Size _resolution;
+        private Size _resolution;
+
+        [JsonProperty]
         public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }
 
-        public int _refreshRate;
+        private int _refreshRate;
+
+        [JsonProperty]
         public int RefreshRate { get => _refreshRate; set { _refreshRate = value; OnPropertyChanged(); } }
 
         public override string ActionDescription
@@ -87,8 +105,10 @@ namespace AutoHDR.Profiles.Actions
             {
                 if (SetHDR)
                     if (Display.Equals(Displays.Display.AllDisplays))
-                        DisplayManager.Instance.ActivateHDR();
-
+                        if (EnableHDR)
+                            DisplayManager.Instance.ActivateHDR();
+                        else
+                            DisplayManager.Instance.DeactivateHDR();
                     else
                         Displays.HDRController.SetHDRState(Display.UID, EnableHDR);
                 if (SetResolution)

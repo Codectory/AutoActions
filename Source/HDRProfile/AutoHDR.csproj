@@ -381,7 +381,7 @@
     <Resource Include="Logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Logo.png" />
+    <Resource Include="Resources\Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\" />

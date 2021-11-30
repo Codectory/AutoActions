@@ -1,32 +1,64 @@
 ﻿using AutoHDR.Profiles;
 using CodectoryCore.UI.Wpf;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AutoHDR
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class ApplicationProfileAssignment : BaseViewModel
     {
         private int _position = -1;
         private ApplicationItem _application = null;
 
-        private Profiles.Profile _profile = null;
 
         private static SortableObservableCollection<ApplicationProfileAssignment> Assignments => Globals.Instance.Settings.ApplicationProfileAssignments;
 
+        [JsonProperty]
         public ApplicationItem Application { get => _application; set { _application = value; OnPropertyChanged(); }
         }
 
-        public Profile Profile { 
-            get => _profile; 
-            set { _profile = value; OnPropertyChanged(); Globals.Instance.SaveSettings(); }
+        private Guid _profileGuid = Guid.Empty;
+
+        [JsonProperty]
+        public Guid ProfileGUID
+        {
+            get => _profileGuid;
+            set
+            {
+                _profileGuid = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Profile));
+            }
         }
 
-        public int Position { get => _position;  set { _position = value; OnPropertyChanged(); Globals.Instance.SaveSettings(); } }
+        public Profile Profile {
+            get
+            {
+                if (Globals.Instance.Settings.ApplicationProfiles.Any(p => p.GUID.Equals(_profileGuid)))
+                    return Globals.Instance.Settings.ApplicationProfiles.First(p => p.GUID.Equals(_profileGuid));
+                else
+                    return null;
+            }
+            set 
+            { 
+                if (value == null) 
+                {_profileGuid = Guid.Empty; 
+                    return; 
+                } 
+                _profileGuid = value.GUID.Equals(Guid.Empty) ? Guid.NewGuid() : value.GUID;   OnPropertyChanged(); OnPropertyChanged(nameof(ProfileGUID)); 
+            }
+        }
+
+        [JsonProperty]
+
+        public int Position { get => _position;  set { _position = value; OnPropertyChanged(); } }
 
 
         private ApplicationProfileAssignment()
@@ -48,9 +80,7 @@ namespace AutoHDR
                     a.Position = a.Position - 1;
             }
             Assignments.Remove(this);
-            Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
-            Globals.Instance.SaveSettings();
-        }
+            Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);        }
 
         public void ChangePosition(bool up)
         {
@@ -65,8 +95,6 @@ namespace AutoHDR
             }
             Position = newPosition;
             Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
-
-            Globals.Instance.SaveSettings();
         }
 
 
@@ -77,7 +105,6 @@ namespace AutoHDR
             assigment.Position = GetNextPosition();
             Assignments.Add(assigment);
             Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
-            Globals.Instance.SaveSettings();
             return assigment;
         }
 

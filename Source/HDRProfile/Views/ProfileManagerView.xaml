@@ -78,8 +78,8 @@
         </Border>
         <Border Grid.Column="1" Grid.Row="1"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}">
-                <!--   <Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}" Visibility="{Binding  ElementName=ProfileList, Path=SelectedItem, Converter={StaticResource NotNullVisibilityConverter}}" > -->
+            <!--<Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}">-->
+                   <Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}" Visibility="{Binding  ElementName=ProfileList, Path=SelectedItem, Converter={StaticResource NotNullVisibilityConverter}}" > 
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -92,17 +92,22 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="*"/>
 
                 </Grid.RowDefinitions>
                 <TextBlock  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:Locale_Texts.Name}" Margin="5,10,5,5" FontWeight="Bold" FontSize="20"></TextBlock>
-                    <TextBlock  Grid.Column="0"  Grid.Row="1"   Text="{x:Static pres:Locale_Texts.Actions}" FontWeight="Bold" FontSize="20" Margin="5,30,5,15"></TextBlock>
-                    <TextBlock  Grid.Column="0"  Grid.Row="2"   Text="{x:Static pres:Locale_Texts.AppStartedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
-                    <TextBlock  Grid.Column="0"  Grid.Row="3"   Text="{x:Static pres:Locale_Texts.AppClosedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
-                    <TextBlock  Grid.Column="0"  Grid.Row="4"   Text="{x:Static pres:Locale_Texts.AppFocusedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
-                    <TextBlock  Grid.Column="0"  Grid.Row="5"   Text="{x:Static pres:Locale_Texts.AppLostFocusActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
+                    <TextBlock  Grid.Column="0"  Grid.Row="1"   Text="{x:Static pres:Locale_Texts.RestartProccessOnFirstOccurence}" Margin="5,10,5,5" FontWeight="Bold" FontSize="20"></TextBlock>
+                    <TextBlock  Grid.Column="0"  Grid.Row="2"   Text="{x:Static pres:Locale_Texts.Actions}" FontWeight="Bold" FontSize="20" Margin="5,30,5,15"></TextBlock>
+                    <TextBlock  Grid.Column="0"  Grid.Row="3"   Text="{x:Static pres:Locale_Texts.AppStartedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
+                    <TextBlock  Grid.Column="0"  Grid.Row="4"   Text="{x:Static pres:Locale_Texts.AppClosedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
+                    <TextBlock  Grid.Column="0"  Grid.Row="5"   Text="{x:Static pres:Locale_Texts.AppFocusedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
+                    <TextBlock  Grid.Column="0"  Grid.Row="6"   Text="{x:Static pres:Locale_Texts.AppLostFocusActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
                     <TextBox Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="10,5" FontSize="15" FontWeight="DemiBold" ></TextBox>
-                <Border Grid.Column="1"  Grid.Row="2"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
+                    <CheckBox  Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartApplication, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"  />
+
+                    <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -115,7 +120,7 @@
 
                     </Grid>
                 </Border>
-                <Border  Grid.Column="1"  Grid.Row="3" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
+                <Border  Grid.Column="1"  Grid.Row="4" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -128,7 +133,7 @@
 
                     </Grid>
                 </Border>
-                <Border Grid.Column="1"  Grid.Row="4" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" >
+                <Border Grid.Column="1"  Grid.Row="5" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -142,7 +147,7 @@
 
                     </Grid>
                 </Border>
-                <Border Grid.Column="1"  Grid.Row="5" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" >
+                <Border Grid.Column="1"  Grid.Row="6" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>

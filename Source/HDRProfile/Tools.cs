@@ -25,7 +25,6 @@ namespace AutoHDR
 	public static class Tools
 	{
 
-		public static int GlobalRefreshInterval = 500;
 
 		public static void SetAutoStart(string applicationName, string filePath, bool autostart)
 		{

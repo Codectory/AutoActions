@@ -38,8 +38,6 @@ namespace AutoHDR.Displays
 
         public  UserAppSettings Settings { get; private set; }
 
-        public event EventHandler AutoHDRChanged;
-
 
         public ObservableCollection<Display> Monitors => Settings.Monitors;
 
@@ -201,18 +199,18 @@ namespace AutoHDR.Displays
         }
 
 
-        private void MergeMonitors(List<Display> monitors)
+        private void MergeMonitors(List<Display> activeMonitors)
         {
 
             List<Display> toRemove = new List<Display>();
             foreach (Display monitor in Monitors)
             {
-                if (!monitors.Any(m => m.UID.Equals(monitor.UID)))
+                if (!activeMonitors.Any(m => m.UID.Equals(monitor.UID)))
                     toRemove.Add(monitor);
             }
             foreach (Display monitor in toRemove)
                 Monitors.Remove(monitor);
-            foreach (Display monitor in monitors)
+            foreach (Display monitor in activeMonitors)
             {
                 if (!Settings.Monitors.Any(m => m.UID.Equals(monitor.UID)))
                     Settings.Monitors.Add(monitor);
@@ -224,18 +222,9 @@ namespace AutoHDR.Displays
                     existingMonitor.Resolution = monitor.Resolution;
                 }
             }
-
-            foreach (Display monitor in Monitors)
-            {
-                monitor.PropertyChanged += Monitor_PropertyChanged;
-            }
         }
 
-        private void Monitor_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Display.Managed))
-                AutoHDRChanged?.Invoke(this, EventArgs.Empty);
-        }
+  
 
 
         public void ActivateHDR()

@@ -164,7 +164,7 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{x:Static pres:Locale_Texts.Application}"  Width="Auto" >
+                                            <GridViewColumn Header="{x:Static pres:Locale_Texts.Application}"  Width="Auto"    ctrl:RangeColumn.MinWidth="50" >
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Width="Auto"  FontSize="15"   Text="{Binding Application.DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
@@ -174,7 +174,7 @@
                                             <GridViewColumn Header="{x:Static pres:Locale_Texts.Profile}"  Width="Auto"  ctrl:RangeColumn.IsFillColumn="true">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox Width="Auto"  FontSize="15" FontWeight="Bold" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedValue="{Binding Profile.Name}" SelectedItem="{Binding Profile}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
+                                                        <ComboBox Width="Auto"  Margin="0,0,5,0" FontSize="15" FontWeight="Bold" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedValue="{Binding Profile.Name}" SelectedItem="{Binding Profile}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>

@@ -1,10 +1,12 @@
 ﻿using CodectoryCore.UI.Wpf;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -12,6 +14,7 @@ using System.Xml.Serialization;
 
 namespace AutoHDR
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class ApplicationItem : BaseViewModel, IEquatable<ApplicationItem>
     {
         private bool _isUWP = false;
@@ -24,19 +27,22 @@ namespace AutoHDR
         private string _uwpApplicationID;
         private string _uwpIconPath;
 
-
+        [JsonProperty]
         public string DisplayName { get => displayName; set { displayName = value; OnPropertyChanged(); } }
+        [JsonProperty]
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
+        [JsonProperty]
         public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = Tools.GetFileIcon(value); } catch { } OnPropertyChanged(); } }
-       // public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
+        // public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
+        [JsonProperty]
         public bool IsUWP { get => _isUWP; set { _isUWP = value; OnPropertyChanged(); } }
 
-        [XmlIgnore]
         public Bitmap Icon { get => icon; set { icon = value; OnPropertyChanged(); } }
-
+        [JsonProperty]
         public string UWPFamilyPackageName { get => _uwpFamilyPackageName; set { _uwpFamilyPackageName = value; OnPropertyChanged(); } }
-
+        [JsonProperty]
         public string UWPApplicationID { get => _uwpApplicationID; set { _uwpApplicationID = value; OnPropertyChanged(); } }
+        [JsonProperty]
         public string UWPIconPath { get => _uwpIconPath; set { _uwpIconPath = value; try { Icon = new Bitmap(Bitmap.FromFile(value)); } catch { }OnPropertyChanged(); } }
 
 

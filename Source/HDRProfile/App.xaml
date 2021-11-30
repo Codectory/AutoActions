@@ -782,9 +782,6 @@
         <DataTemplate DataType="{x:Type local:ApplicationAdder}">
             <views:ApplicationAdderView></views:ApplicationAdderView>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type prflActns:ApplicationAction}">
-            <views:ApplicationActionView></views:ApplicationActionView>
-        </DataTemplate>
         <DataTemplate DataType="{x:Type prflActns:ProfileActionAdder}">
             <views:ProfileActionAdderView></views:ProfileActionAdderView>
         </DataTemplate>

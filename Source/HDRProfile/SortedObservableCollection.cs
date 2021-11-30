@@ -19,6 +19,11 @@ namespace AutoHDR
         {
         }
 
+        public SortableObservableCollection() : base()
+        {
+
+        }
+
         public void Sort<TKey>(Func<T, TKey> keySelector, System.ComponentModel.ListSortDirection direction)
         {
             switch (direction)

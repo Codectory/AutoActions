@@ -9,10 +9,15 @@ using System.Threading.Tasks;
 
 namespace AutoHDR
 {
-    public  class Globals : BaseViewModel
+    public class Globals : BaseViewModel
     {
+        public static int GlobalRefreshInterval = 500;
+
         private string SettingsPathCompatible => $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings.xml";
-        private string SettingsPath => $"{System.AppDomain.CurrentDomain.BaseDirectory}UserSettings.xml";
+
+        private string SettingsPathCompatible2 => $"{System.AppDomain.CurrentDomain.BaseDirectory}UserSettings.xml";
+
+        private string SettingsPath => $"{System.AppDomain.CurrentDomain.BaseDirectory}UserSettings.json";
 
 
         public static Globals Instance = new Globals();
@@ -42,26 +47,33 @@ namespace AutoHDR
         {
             try
             {
+                Tools.Logs.Add("Loading settings...", false);
                 if (File.Exists(SettingsPath))
                 {
-                    Tools.Logs.Add("Loading settings...", false);
                     Settings = UserAppSettings.ReadSettings(SettingsPath);
+                    _settingsLoadedOnce = true;
+                }
+                else if (File.Exists(SettingsPathCompatible2))
+                {
+                    Settings = UserAppSettings.ReadSettings(SettingsPathCompatible2);
                     _settingsLoadedOnce = true;
                 }
                 else if (File.Exists(SettingsPathCompatible))
                 {
-                    Tools.Logs.Add("Loading settings...", false);
-                    Settings = UserAppSettings.Convert(HDRProfileSettings.ReadSettings(SettingsPathCompatible));
+                    Settings = LoadObsoleteHDRSettings();
                     _settingsLoadedOnce = true;
                     File.Delete(SettingsPathCompatible);
                 }
                 else
                 {
-                    Tools.Logs.Add("Creating settings file", false);
+                    Tools.Logs.Add("No settings found. Creating settings file...", false);
                     Settings = new UserAppSettings();
                     _settingsLoadedOnce = true;
-                    SaveSettings();
+
                 }
+
+                SaveSettings();
+
             }
             catch (Exception ex)
             {
@@ -80,6 +92,12 @@ namespace AutoHDR
             }
             Logs.LoggingEnabled = Settings.Logging;
             Tools.Logs.Add("Settings loaded", false);
+        }
+
+        [Obsolete]
+        private UserAppSettings LoadObsoleteHDRSettings()
+        {
+            return UserAppSettings.Convert(HDRProfileSettings.ReadSettings(SettingsPathCompatible));
         }
     }
 }

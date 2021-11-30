@@ -7,8 +7,8 @@
              xmlns:root="clr-namespace:AutoHDR"
              xmlns:pres="clr-namespace:AutoHDR.ProjectResources"
              xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
-             mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=prflActns:ApplicationAction, IsDesignTimeCreatable=False}">
+             mc:Ignorable="d">
+    <!--d:DataContext="{d:DesignInstance Type=prflActns:ApplicationAction, IsDesignTimeCreatable=False}">-->
 
         <Grid VerticalAlignment="Top">
             <Grid.ColumnDefinitions>

@@ -82,6 +82,7 @@ namespace AutoHDR
 
     public static class HDRProfileHandlerExtension
     {
+        [Obsolete]
         public static void SaveSettings(this HDRProfileSettings setting, string path)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(HDRProfileSettings));
