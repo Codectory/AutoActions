@@ -12,6 +12,5 @@ namespace AutoHDR.Views
         {
             InitializeComponent();
         }
-
     }
 }

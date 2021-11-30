@@ -24,7 +24,7 @@
 
             <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
                 <Grid>
-                    <TextBlock  Text="{Binding Name}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"  FontWeight="DemiBold"/>
+                    <TextBlock  Text="{Binding Name, Mode=OneWay}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"  FontWeight="DemiBold"/>
                 </Grid>
             </Border>
         </DataTemplate>
@@ -74,12 +74,12 @@
         <TextBlock  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:Locale_Texts.Profiles}" Margin="10,10,10,10" FontWeight="Bold" FontSize="18"></TextBlock>
         <TextBlock  Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:Locale_Texts.CurrentProfile}" Margin="10,10,10,10" FontWeight="Bold" FontSize="18"></TextBlock>
         <Border Grid.Column="0"   Grid.Row="1"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
-            <ListBox   x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}"  BorderThickness="0"/>
+            <ListBox   x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
         </Border>
         <Border Grid.Column="1" Grid.Row="1"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <!--<Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}">-->
-                   <Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}" Visibility="{Binding  ElementName=ProfileList, Path=SelectedItem, Converter={StaticResource NotNullVisibilityConverter}}" > 
+                <Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem, Mode=OneWay}" Visibility="{Binding  ElementName=ProfileList, Path=SelectedItem,Mode=OneWay, Converter={StaticResource NotNullVisibilityConverter}}" > 
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -104,7 +104,7 @@
                     <TextBlock  Grid.Column="0"  Grid.Row="4"   Text="{x:Static pres:Locale_Texts.AppClosedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
                     <TextBlock  Grid.Column="0"  Grid.Row="5"   Text="{x:Static pres:Locale_Texts.AppFocusedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
                     <TextBlock  Grid.Column="0"  Grid.Row="6"   Text="{x:Static pres:Locale_Texts.AppLostFocusActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
-                    <TextBox Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="10,5" FontSize="15" FontWeight="DemiBold" ></TextBox>
+                    <TextBox x:Name="NameTextBox" Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="10,5" FontSize="15" FontWeight="DemiBold"></TextBox>
                     <CheckBox  Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartApplication, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"  />
 
                     <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">

@@ -178,7 +178,7 @@ namespace AutoHDR.Profiles
 
         public override string ToString()
         {
-            return Name;
+            return $"{Name} {GetHashCode()}";
         }
 
         public override bool Equals(object obj)
@@ -189,7 +189,7 @@ namespace AutoHDR.Profiles
         public bool Equals(Profile other)
         {
             return other != null &&
-                   Name == other.Name &&
+                   GUID == other._guid &&
                    EqualityComparer<ListOfProfileActions>.Default.Equals(ApplicationStarted, other.ApplicationStarted) &&
                    EqualityComparer<ListOfProfileActions>.Default.Equals(ApplicationClosed, other.ApplicationClosed) &&
                    EqualityComparer<ListOfProfileActions>.Default.Equals(ApplicationGotFocus, other.ApplicationGotFocus) &&
@@ -199,7 +199,7 @@ namespace AutoHDR.Profiles
         public override int GetHashCode()
         {
             int hashCode = 210938521;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(GUID.ToString());
             hashCode = hashCode * -1521134295 + EqualityComparer<ListOfProfileActions>.Default.GetHashCode(ApplicationStarted);
             hashCode = hashCode * -1521134295 + EqualityComparer<ListOfProfileActions>.Default.GetHashCode(ApplicationClosed);
             hashCode = hashCode * -1521134295 + EqualityComparer<ListOfProfileActions>.Default.GetHashCode(ApplicationGotFocus);

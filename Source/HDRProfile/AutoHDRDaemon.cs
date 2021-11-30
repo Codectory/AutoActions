@@ -407,20 +407,26 @@ namespace AutoHDR
 
         private void AddProfile()
         {
-            int count = 0;
-            string profileName = string.Empty;
-            while (string.IsNullOrEmpty(profileName) ||  Settings.ApplicationProfiles.Any(p => p.Name.ToUpperInvariant().Equals(profileName.ToUpperInvariant())))
+            lock (_accessLock)
             {
-                count++;
-                profileName = $"{ProjectResources.Locale_Texts.Profile} {count}";
+                int count = 0;
+                string profileName = string.Empty;
+                while (string.IsNullOrEmpty(profileName) || Settings.ApplicationProfiles.Any(p => p.Name.ToUpperInvariant().Equals(profileName.ToUpperInvariant())))
+                {
+                    count++;
+                    profileName = $"{ProjectResources.Locale_Texts.Profile} {count}";
+                }
+                Settings.ApplicationProfiles.Add(new Profile() { Name = profileName });
             }
-            Settings.ApplicationProfiles.Add(new Profile() { Name = profileName });
         }
 
 
         private void RemoveProfile(Profile profile)
         {
-            Settings.ApplicationProfiles.Remove(profile);
+            lock (_accessLock)
+            {
+                Settings.ApplicationProfiles.Remove(profile);
+            }
         }
 
         #endregion Process handling 
