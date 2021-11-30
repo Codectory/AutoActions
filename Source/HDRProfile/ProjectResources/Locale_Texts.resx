@@ -323,7 +323,7 @@
     <value>Resolution</value>
   </data>
   <data name="RestartProccessOnFirstOccurence" xml:space="preserve">
-    <value>Compatibility mode</value>
+    <value>Restart app</value>
   </data>
   <data name="RunAction" xml:space="preserve">
     <value>Run</value>

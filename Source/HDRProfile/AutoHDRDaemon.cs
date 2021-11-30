@@ -76,7 +76,7 @@ namespace AutoHDR
 
         public AutoHDRDaemon()
         {
-            //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+            ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Initialize();
         }
 

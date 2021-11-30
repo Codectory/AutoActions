@@ -28,7 +28,7 @@ namespace AutoHDR
 
         public void SaveSettings(bool force = false)
         {
-            if (!force && _settingsLoadedOnce)
+            if (!force && !_settingsLoadedOnce)
                 return;
             Tools.Logs.Add("Saving settings..", false);
             try

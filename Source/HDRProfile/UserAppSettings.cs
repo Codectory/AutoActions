@@ -54,10 +54,10 @@ namespace AutoHDR
         public bool CheckForNewVersion { get => _checkForNewVersion; set { _checkForNewVersion = value; OnPropertyChanged(); } }
 
 
-        [JsonProperty(Order = 1)]
+        [JsonProperty(Order = 2)]
         public SortableObservableCollection<ApplicationProfileAssignment> ApplicationProfileAssignments { get => _applicationProfileAssignments; set { _applicationProfileAssignments = value; OnPropertyChanged(); } }
 
-        [JsonProperty(Order = 0)]
+        [JsonProperty(Order = 1)]
         public ObservableCollection<Profile> ApplicationProfiles { get => _applicationProfiles; set { _applicationProfiles = value; OnPropertyChanged(); } }
 
 

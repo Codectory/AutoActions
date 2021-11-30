@@ -11,9 +11,9 @@
         xmlns:local="clr-namespace:AutoHDR.Views"
         xmlns:root="clr-namespace:AutoHDR"
         mc:Ignorable="d"
-        Title="AutoHDR" Name="MainWindow" MinHeight="480" MinWidth="640" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
-        Height="362"
-        Width="550" Loaded="MainWindow_Loaded">
+        Title="AutoHDR" Name="MainWindow" MinHeight="480" MinWidth="480" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
+        Height="397.405"
+        Width="387.927" Loaded="MainWindow_Loaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>
@@ -50,6 +50,12 @@
                 <ComboBox Grid.Column="3" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedValue="{Binding Profile, Mode=TwoWay}" SelectedItem="{Binding Profile, Mode=TwoWay}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" />
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile">
+            <TextBlock Text="{Binding Name }"/>
+        </DataTemplate>
+
+
 
     </Window.Resources>
     <Grid x:Name="MainGrid">
@@ -92,7 +98,7 @@
                             </Button>
 
                             <Ellipse Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="10" >
-    
+
                                 <Ellipse.Style>
                                     <Style TargetType="{x:Type Ellipse}">
                                         <Style.Triggers>
@@ -146,9 +152,9 @@
                             </Grid.RowDefinitions>
                             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                 <ListView x:Name="ApplicationList"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}"  ctrl:ListViewLayoutManager.Enabled="true" BorderBrush="{x:Null}" Foreground="{x:Null}">
-                        
+
                                     <ListView.View>
-              
+
                                         <GridView>
                                             <GridViewColumn Header="{x:Static pres:Locale_Texts.Priority}"  Width="Auto">
                                                 <GridViewColumn.CellTemplate>
@@ -174,7 +180,7 @@
                                             <GridViewColumn Header="{x:Static pres:Locale_Texts.Profile}"  Width="Auto"  ctrl:RangeColumn.IsFillColumn="true">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ComboBox Width="Auto"  Margin="0,0,5,0" FontSize="15" FontWeight="Bold" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedValue="{Binding Profile.Name}" SelectedItem="{Binding Profile}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
+                                                        <ComboBox Width="Auto"  Margin="0,0,5,0" FontSize="15" FontWeight="Bold"  SelectedItem="{Binding Profile}" ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>

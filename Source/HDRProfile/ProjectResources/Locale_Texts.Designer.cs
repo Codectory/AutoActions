@@ -674,7 +674,7 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Compatibility mode ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Restart app ähnelt.
         /// </summary>
         public static string RestartProccessOnFirstOccurence {
             get {
