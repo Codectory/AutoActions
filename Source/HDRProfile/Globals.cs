@@ -26,9 +26,9 @@ namespace AutoHDR
         public UserAppSettings Settings { get => _settings; set { _settings = value; OnPropertyChanged(); } }
         private bool _settingsLoadedOnce = false;
 
-        public void SaveSettings()
+        public void SaveSettings(bool force = false)
         {
-            if (!_settingsLoadedOnce)
+            if (!force && _settingsLoadedOnce)
                 return;
             Tools.Logs.Add("Saving settings..", false);
             try
@@ -87,7 +87,7 @@ namespace AutoHDR
                 Tools.Logs.Add("Failed to load settings", false);
                 Tools.Logs.AddException(ex);
                 Settings = new UserAppSettings();
-                SaveSettings();
+                SaveSettings(true);
                 Tools.Logs.Add("Created new settings file", false);
             }
             Logs.LoggingEnabled = Settings.Logging;
