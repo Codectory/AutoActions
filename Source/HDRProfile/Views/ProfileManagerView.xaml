@@ -22,7 +22,7 @@
 
         <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile" >
 
-            <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
+            <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5,5" Grid.Row="0">
                 <Grid>
                     <TextBlock  Text="{Binding Name, Mode=OneWay}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"  FontWeight="DemiBold"/>
                 </Grid>
@@ -34,8 +34,8 @@
         </ItemsPanelTemplate>
 
         <DataTemplate x:Key="ProfileActionItemTemplate" DataType="IProfileAction">
-            <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}"  BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
-                <Grid MinWidth="250" MinHeight="50" Width="250" >
+            <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}"  BorderThickness="1" Margin="5,5" Grid.Row="0">
+                <Grid MinWidth="100" MinHeight="50" Width="Auto" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -46,7 +46,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Column="2" Grid.Row="0" Content="-"  VerticalAlignment="top" HorizontalAlignment="Left" Margin="5" Height="15" Width="15" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
+                    <Button Grid.Column="2" Grid.Row="0" Content="-"  VerticalAlignment="top" HorizontalAlignment="Left" Margin="5" Height="15" Width="15" FontSize="5" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:Locale_Texts.ActionType}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="DemiBold" />
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static pres:Locale_Texts.Actions}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="DemiBold" />
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ActionTypeName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
@@ -60,7 +60,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -68,8 +68,8 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:Locale_Texts.Profiles}" Margin="10,10,10,10" FontWeight="Bold" FontSize="18"></TextBlock>
-        <TextBlock  Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:Locale_Texts.CurrentProfile}" Margin="10,10,10,10" FontWeight="Bold" FontSize="18"></TextBlock>
+        <TextBlock  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:Locale_Texts.Profiles}" Margin="5" FontWeight="Bold" FontSize="25"></TextBlock>
+        <TextBlock  Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:Locale_Texts.CurrentProfile}" Margin="5" FontWeight="Bold" FontSize="25"></TextBlock>
         <Border Grid.Column="0"   Grid.Row="1"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
             <ListBox   x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
         </Border>
@@ -96,7 +96,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:Locale_Texts.Name}" Margin="5,10,5,5" FontWeight="Bold" FontSize="20"></TextBlock>
                     <TextBlock  Grid.Column="0"  Grid.Row="1"   Text="{x:Static pres:Locale_Texts.RestartProccessOnFirstOccurence}" Margin="5,10,5,5" FontWeight="Bold" FontSize="20"></TextBlock>
-                    <TextBlock  Grid.Column="0"  Grid.Row="2"   Text="{x:Static pres:Locale_Texts.Actions}" FontWeight="Bold" FontSize="20" Margin="5,30,5,15"></TextBlock>
+                    <TextBlock  Grid.Column="0"  Grid.Row="2"   Text="{x:Static pres:Locale_Texts.Actions}" FontWeight="Bold" FontSize="20" Margin="5,10,5,5"></TextBlock>
                     <TextBlock  Grid.Column="0"  Grid.Row="3"   Text="{x:Static pres:Locale_Texts.AppStartedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
                     <TextBlock  Grid.Column="0"  Grid.Row="4"   Text="{x:Static pres:Locale_Texts.AppClosedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
                     <TextBlock  Grid.Column="0"  Grid.Row="5"   Text="{x:Static pres:Locale_Texts.AppFocusedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
@@ -104,7 +104,7 @@
                     <TextBox x:Name="NameTextBox" Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="10,5" FontSize="15" FontWeight="DemiBold"></TextBox>
                     <CheckBox  Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartApplication, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"  />
 
-                    <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
+                    <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="75">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -117,7 +117,7 @@
 
                     </Grid>
                 </Border>
-                <Border  Grid.Column="1"  Grid.Row="4" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
+                    <Border  Grid.Column="1"  Grid.Row="4" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="75">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -130,7 +130,7 @@
 
                     </Grid>
                 </Border>
-                <Border Grid.Column="1"  Grid.Row="5" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" >
+                    <Border Grid.Column="1"  Grid.Row="5" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="75">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -144,7 +144,7 @@
 
                     </Grid>
                 </Border>
-                <Border Grid.Column="1"  Grid.Row="6" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" >
+                    <Border Grid.Column="1"  Grid.Row="6" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="75" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -163,7 +163,7 @@
             </Grid>
             </ScrollViewer>
         </Border>
-        <Grid Grid.Row="2" Grid.Column="0"  Height="Auto">
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Height="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width=" Auto"/>

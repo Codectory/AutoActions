@@ -55,6 +55,7 @@ namespace AutoHDR
         public RelayCommand<Profile> RemoveProfileCommand { get; private set; }
         public RelayCommand ShowInfoCommand { get; private set; }
         public RelayCommand ShowLogsCommand { get; private set; }
+        public RelayCommand ShowLicenseCommand { get; private set; }
 
 
         public RelayCommand LoadingCommand { get; private set; }
@@ -293,6 +294,7 @@ namespace AutoHDR
             ClosingCommand = new RelayCommand(Closing);
             ShutdownCommand = new RelayCommand(Shutdown);
             StartApplicationCommand = new RelayCommand<ApplicationItem>(StartApplication);
+            ShowLicenseCommand = new RelayCommand(ShowLicense);
             ShowInfoCommand = new RelayCommand(ShowInfo);
             ShowLogsCommand = new RelayCommand(ShowLogs);
 
@@ -630,6 +632,13 @@ namespace AutoHDR
             if (DialogService != null)
                 DialogService.ShowDialogModal(_logsStorage, new System.Drawing.Size(600, 1000));
         }
+
+        private void ShowLicense()
+        {
+            if (DialogService != null)
+                DialogService.ShowDialogModal(new AutoHDRLicense(), new System.Drawing.Size(600, 1000));
+        }
+
 
         private void ShowInfo(GitHubData data)
         {

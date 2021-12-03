@@ -18,10 +18,6 @@
 
         <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
         <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
-
-
-
-
         <Color x:Key="ActiveColor">#2ac987</Color>
         <Color x:Key="AccentColor">#ff6666</Color>
 
@@ -66,7 +62,7 @@
         <Color x:Key="HeaderTopColor">#FFC5CBF9</Color>
         <Color x:Key="DatagridCurrentCellBorderColor">Black</Color>
         <Color x:Key="SliderTrackDarkColor">#FFC5CBF9</Color>
-        
+        <system:Double x:Key="DefaultFontSize">15</system:Double>
         
 
         <Color x:Key="NavButtonFrameColor">#fa4d4d</Color>
@@ -125,9 +121,20 @@
         <StaticResource x:Key="ButtonBackgroundBrush"  ResourceKey="AccentBrush"/>
         <CornerRadius x:Key="CornerRadius">3</CornerRadius>
 
-        <Style TargetType="TextBlock" >
-            <Setter Property="Foreground" Value="Black"/>
+        <Style x:Key="DefaultLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
         </Style>
+        <Style TargetType="Label" BasedOn="{StaticResource DefaultLabel}"/>
+
+
+
+        <Style x:Key="DefaultTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="Black"/>
+
+        </Style>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}"/>
+
 
         <Style x:Key="RoundedBorder" TargetType="Border">
             <Setter Property="CornerRadius" Value="{StaticResource CornerRadius}"/>
@@ -148,6 +155,8 @@
 
         <Style x:Key="DefaultTextBox" TargetType="TextBox" >
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBoxBase">
@@ -190,11 +199,12 @@
         </Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}"/>
 
-
         <Style x:Key="DefaultButton" TargetType="Button" >
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
             <Setter Property="Height" Value="25"/>
+            <Setter Property="FontSize" Value="20"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -272,6 +282,11 @@
 
             <Setter Property="SnapsToDevicePixels"
           Value="true" />
+
+            <Setter Property="Height"
+          Value="25" />
+            <Setter Property="Width"
+          Value="25" />
             <Setter Property="OverridesDefaultStyle"
           Value="true" />
             <Setter Property="FocusVisualStyle"
@@ -281,7 +296,7 @@
                     <ControlTemplate TargetType="{x:Type CheckBox}">
                         <BulletDecorator Background="Transparent">
                             <BulletDecorator.Bullet>
-                                <Border x:Name="Border" Width="15" Height="15" CornerRadius="{StaticResource CornerRadius}" BorderThickness="1" BorderBrush="{DynamicResource AccentBrush}">
+                                <Border x:Name="Border" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="{StaticResource CornerRadius}" BorderThickness="1" BorderBrush="{DynamicResource AccentBrush}">
                                     <Border.Background>
                                         <SolidColorBrush Color="Transparent"/>
                                     </Border.Background>
@@ -640,7 +655,6 @@
         </Style>
         <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}"/>
 
-
         <Style x:Key="DefaultTabHeader" TargetType="TabItem">
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
@@ -655,12 +669,15 @@
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" >
                                 <Setter TargetName="HeaderContent"  Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
                                 <Setter TargetName="HeaderBorder" Property="Background" Value="{StaticResource AccentBrush}"/>
-                                <Setter TargetName="HeaderContent" Property="FontSize" Value="18"/>
+                                <Setter TargetName="HeaderContent" Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                                <Setter TargetName="HeaderContent" Property="FontWeight" Value="DemiBold"/>
 
                             </DataTrigger>
 
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" >
                                 <Setter  TargetName="HeaderContent" Property="Foreground" Value="Black"/>
+                                <Setter TargetName="HeaderContent" Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+
                             </DataTrigger>
 
                         </ControlTemplate.Triggers>
@@ -787,6 +804,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type info:AutoHDRInfo}">
             <views:AutoHDRInfoView></views:AutoHDRInfoView>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type info:AutoHDRLicense}">
+            <views:AutoHDRLicenseView></views:AutoHDRLicenseView>
         </DataTemplate>
         <DataTemplate DataType="{x:Type info:LogsStorage}">
             <views:AutoHDRLogsView></views:AutoHDRLogsView>

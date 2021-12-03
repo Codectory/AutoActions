@@ -78,7 +78,19 @@
         <TabControl  BorderBrush="{StaticResource AccentBrush}" Margin="0,0,0,20" BorderThickness="0 5 0 1">
             <TabItem Header="{x:Static pres:Locale_Texts.Status}" HorizontalAlignment="Left" Width="58"  >
                 <Grid >
-                    <Border Style="{StaticResource RoundedBorder}" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1"  Margin="10,10,10,51">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+
+                    </Grid.RowDefinitions>
+                    <Border Style="{StaticResource RoundedBorder}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1"  Margin="5">
                         <Grid Height="Auto" Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -93,11 +105,12 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="25"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="25"/>
                                 <RowDefinition Height="*"/>
 
                             </Grid.RowDefinitions>
-                            <TextBlock  Grid.Row="0" Grid.Column="0" Text="{x:Static pres:Locale_Texts.HDR}"  Width="Auto" VerticalAlignment="Center" FontWeight="Bold" FontSize="15" HorizontalAlignment="Left"  />
-                            <Button Grid.Row="0" Grid.Column="1" Content="{x:Static pres:Locale_Texts.ActivateHDR }" Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                            <TextBlock  Grid.Row="0" Grid.Column="0" Text="{x:Static pres:Locale_Texts.HDR}"  Width="Auto" VerticalAlignment="Center" FontWeight="Bold" FontSize="25" HorizontalAlignment="Left"  Margin="5" />
+                            <Button Grid.Row="0" Grid.Column="1" Margin="5" Content="{x:Static pres:Locale_Texts.ActivateHDR }" Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" >
                                 <Button.Style>
                                     <Style  BasedOn="{StaticResource DefaultButton}" TargetType="{x:Type Button}">
                                         <Style.Triggers>
@@ -130,9 +143,9 @@
                                 </Ellipse.Style>
 
                             </Ellipse>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.CurrentApplication}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="15" VerticalAlignment="Center" Margin="5"  />
-                            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.CurrentProfile}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="15" VerticalAlignment="Center" Margin="5"  />
-                            <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.LastAction}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="15" VerticalAlignment="Top" Margin="5"  />
+                            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.CurrentApplication}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="25" VerticalAlignment="Center" Margin="5"  />
+                            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.CurrentProfile}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="25" VerticalAlignment="Center" Margin="5"  />
+                            <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.LastAction}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="25" VerticalAlignment="Top" Margin="5"  />
 
                             <Border Grid.Row="2" Grid.Column="3" BorderThickness="1" BorderBrush="LightGray" Style="{StaticResource RoundedBorder}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Padding="0">
                                 <Rectangle RadiusX="3" RadiusY="3" Width="40" Height="40" Margin="2  ">
@@ -143,12 +156,41 @@
                             </Border>
                             <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static pres:Locale_Texts.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
                             <TextBlock Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:Locale_Texts.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
-                            <Border  Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2"  Style="{StaticResource RoundedBorder}" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1" >
+                            <Border  Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"  Style="{StaticResource RoundedBorder}" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1" >
                                 <ListBox BorderThickness="0" Margin="5" ItemsSource="{Binding LastActions}" ItemTemplate="{StaticResource ProfileActionTemplate}"   ItemsPanel="{StaticResource StackListViewTemplate}"  />
                             </Border>
                         </Grid>
                     </Border>
-                    <Button Content="{x:Static pres:Locale_Texts.Shutdown}"  Command="{Binding ShutdownCommand}" Height="Auto"  HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Bottom" Margin="0,0,10,10" />
+
+                    <Button Grid.Row="1" Grid.Column="0" Content="{x:Static pres:Locale_Texts.Info}"  Command="{Binding ShowInfoCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />
+                    <Button Grid.Row="1" Grid.Column="1" Content="{x:Static pres:Locale_Texts.Logs}"  Command="{Binding ShowLogsCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />
+                    <!--<Button Grid.Row="1" Grid.Column="2" Content="{x:Static pres:Locale_Texts.BuyBeer}"  Command="{Binding BuyBeerCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />-->
+
+                    <Button   Grid.Row="1" Grid.Column="3"  Command="{Binding BuyBeerCommand}" Content="{x:Static pres:Locale_Texts.BuyBeer}" Margin="5" Height="Auto"  >
+                        <Button.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="BeerButton"  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="{StaticResource CornerRadius}">
+                                                <Grid >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="/AutoHDR;component/Resources/beer.png" Stretch="Fill"  Margin="5,5"   Height="{TemplateBinding FontSize}" />
+                                                    <TextBlock Grid.Column="1"   FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Resources>
+   
+                    </Button>
+
+                    <Button Grid.Row="1" Grid.Column="5" Content="{x:Static pres:Locale_Texts.Shutdown}"  Command="{Binding ShutdownCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />
                 </Grid>
             </TabItem>
             <TabItem Header="{x:Static pres:Locale_Texts.Profiles}"   >
@@ -228,8 +270,8 @@
                         <Button Grid.Column="4" Width="Auto"  IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Height="Auto" Content="{x:Static pres:Locale_Texts.StartInHDR}" Command="{Binding StartApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Margin="5,5,10,10"/>
                         <Button Grid.Column="0"  Width="Auto" Command="{Binding AddAssignmentCommand}" Content="{x:Static pres:Locale_Texts.AddApplication}"    Margin="10,5,5,10" Height="Auto" />
                         <Button Grid.Column="1" Width="Auto" Command="{Binding RemoveAssignmentCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Height="Auto" Content="{x:Static pres:Locale_Texts.RemoveApplication}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580"  />
-                        <Button Grid.Column="2"  Width="Auto" Command="{Binding MoveAssignmentUpCommand}" Content="⏶" FontSize="20"  CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Margin="10,5,5,10" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}" HorizontalAlignment="Left"/>
-                        <Button Grid.Column="3" Width="Auto" Command="{Binding MoveAssignmentDownCommand}" Content="⏷" FontSize="20" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"   IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580"  />
+                        <Button Grid.Column="2"  Width="Auto" Command="{Binding MoveAssignmentUpCommand}" Content="⏶" FontSize="20"  CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Margin="10,5,5,10" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}" Height="Auto"/>
+                        <Button Grid.Column="3" Width="Auto" Command="{Binding MoveAssignmentDownCommand}" Content="⏷" FontSize="20" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"   IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580" Height="Auto"  />
 
 
                     </Grid>
@@ -270,32 +312,11 @@
 
             <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Width="Auto" Margin="5,0"  Grid.Row="1"  Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"  />
 
-            <Button  Grid.Column="1" Padding="0"  Command="{Binding ShowInfoCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
+            <Button  Grid.Column="1" Padding="0"  Command="{Binding ShowLicenseCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
                 <Button.Resources>
                     <Style TargetType="Button"/>
                 </Button.Resources>
-                <TextBlock  Text="{x:Static pres:Locale_Texts.Info}" Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
-                    <TextBlock.Foreground>
-                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                    </TextBlock.Foreground>
-                </TextBlock>
-            </Button>
-            <Button  Grid.Column="2" Padding="0"  Command="{Binding BuyBeerCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
-                <Button.Resources>
-                    <Style TargetType="Button"/>
-                </Button.Resources>
-                <TextBlock  Text="{x:Static pres:Locale_Texts.BuyBeer}" Width="Auto" Margin="0"   Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
-                    <TextBlock.Foreground>
-                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                    </TextBlock.Foreground>
-                </TextBlock>
-            </Button>
-
-            <Button  Grid.Column="3" Padding="0"  Command="{Binding ShowLogsCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
-                <Button.Resources>
-                    <Style TargetType="Button"/>
-                </Button.Resources>
-                <TextBlock  Text="{x:Static pres:Locale_Texts.Logs}" Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
+                <TextBlock  Text="{x:Static pres:Locale_Texts.License}" Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
                     </TextBlock.Foreground>

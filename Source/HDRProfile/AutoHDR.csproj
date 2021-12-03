@@ -192,6 +192,7 @@
     <Compile Include="Displays\DisplayInterop.cs" />
     <Compile Include="FastObservableCollection.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Info\AutoHDRLicense.cs" />
     <Compile Include="Info\LogsStorage.cs" />
     <Compile Include="Profiles\Actions\ActionEndResult.cs" />
     <Compile Include="Profiles\Actions\ActionTypeDescription.cs" />
@@ -210,9 +211,17 @@
     <Compile Include="Profiles\Actions\ProfileActionBase.cs" />
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Profiles\ProfileMode.cs" />
+    <Compile Include="ProjectResources\Locale_Texts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Locale_Texts.resx</DependentUpon>
+    </Compile>
     <Compile Include="SortedObservableCollection.cs" />
     <Compile Include="Views\AudioActionView.xaml.cs">
       <DependentUpon>AudioActionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AutoHDRLicenseView.xaml.cs">
+      <DependentUpon>AutoHDRLicenseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AutoHDRLogsView.xaml.cs">
       <DependentUpon>AutoHDRLogsView.xaml</DependentUpon>
@@ -251,17 +260,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Locale_Texts.de.resx</DependentUpon>
     </Compile>
-    <Compile Include="ProjectResources\Locale_Texts.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Locale_Texts.resx</DependentUpon>
-    </Compile>
     <Compile Include="NightLightManager.cs" />
     <Compile Include="TrayMenuHelper.cs" />
     <Compile Include="UWP\AppxManifest.cs" />
     <Compile Include="UWP\UWPAppsManager.cs" />
     <Compile Include="UWP\UWPApp.cs" />
     <Page Include="Views\AudioActionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AutoHDRLicenseView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -365,8 +373,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectResources\Locale_Texts.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Locale_Texts.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Locale_Texts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -410,6 +418,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Costura32\HDRController.dll" />
     <EmbeddedResource Include="Costura64\HDRController.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\beer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />

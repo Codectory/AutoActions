@@ -30,7 +30,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Height="Auto">
             <Grid.ColumnDefinitions>
@@ -112,41 +111,6 @@
                 <TextBlock Text="{Binding ChangeLog}" TextWrapping="Wrap" FontSize="16"/>
             </ScrollViewer>
         </Border>
-        <Grid Grid.Row="7"  Height="30" VerticalAlignment="Bottom" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Width="Auto" Margin="5,0"  Grid.Row="1"  Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"  />
-
-            <Button  Grid.Column="1" Padding="0"  Command="{Binding OpenGitHubCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
-                <Button.Resources>
-                    <Style TargetType="Button"/>
-                </Button.Resources>
-                <TextBlock  Text="{x:Static pres:Locale_Texts.GitHub}" Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
-                    <TextBlock.Foreground>
-                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                    </TextBlock.Foreground>
-                </TextBlock>
-            </Button>
-            <Button  Grid.Column="2" Padding="0"  Command="{Binding BuyBeerCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
-                <Button.Resources>
-                    <Style TargetType="Button"/>
-                </Button.Resources>
-                <TextBlock  Text="{x:Static pres:Locale_Texts.BuyBeer}" Width="Auto" Margin="0"   Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
-                    <TextBlock.Foreground>
-                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                    </TextBlock.Foreground>
-                </TextBlock>
-            </Button>
-        </Grid>
 
     </Grid>
 </UserControl>

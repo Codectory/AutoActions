@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AutoHDR.Views.AutoHDRLogsView"
+﻿<UserControl x:Class="AutoHDR.Views.AutoHDRLicenseView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,6 @@
              xmlns:pres="clr-namespace:AutoHDR.ProjectResources"
              xmlns:info="clr-namespace:AutoHDR.Info"
              xmlns:local="clr-namespace:AutoHDR.Views"
-             d:DataContext="{d:DesignInstance Type=info:LogsStorage, IsDesignTimeCreatable=False}"
              mc:Ignorable="d" MinWidth="300" MinHeight="600" Background="White" >
 
     <i:Interaction.Triggers>
@@ -17,25 +16,15 @@
     </i:Interaction.Triggers>
 
     <UserControl.Resources>
-        <DataTemplate x:Key="LogEntryTemplate" DataType="LogEntry">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}" Margin="5,0,0,0"/>
-                <TextBlock Grid.Column="1" Text="{Binding EntryType}" Margin="5,0,0,0"/>
-                <TextBlock Grid.Column="2" Text="{Binding Content}" Margin="5,0,0,0"/>
-            </Grid>
-        </DataTemplate>
+        <Style x:Key="InfoText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Height="Auto">
             <Grid.ColumnDefinitions>
@@ -50,8 +39,9 @@
             </Grid.RowDefinitions>
             <Image Grid.Row="0"  Grid.ColumnSpan="3" Source="/AutoHDR;component/Resources/Logo.png" />
         </Grid>
+        <TextBlock Grid.Row="1" Text="{x:Static pres:Locale_Texts.License}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
         <Border Style="{StaticResource RoundedBorder}"  Grid.Row="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" >
-            <ListBox Grid.Row="1" ItemsSource="{Binding Entries}" ItemTemplate="{StaticResource LogEntryTemplate }" Margin="5" FontSize="15"/>
+            <TextBlock Text="{x:Static pres:Locale_Texts.LicenseContent}"/>
         </Border>
 
 

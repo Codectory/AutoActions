@@ -31,31 +31,31 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Grid.Column="0"  Grid.Row="0" Content="{x:Static pres:Locale_Texts.Display}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AllDisplays}" SelectedItem="{Binding Display}" ItemTemplate="{StaticResource DisplayItemTemplate}" Margin="3,2,2,2" SelectedIndex="0" />
-        <Label Grid.Column="0"  Grid.Row="1" Content="{x:Static pres:Locale_Texts.SetHDR}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <CheckBox  Grid.Column="1" Grid.Row="1"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
-        <Label Grid.Column="0"  Grid.Row="2" Content="{x:Static pres:Locale_Texts.ActivateHDR}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <CheckBox  Grid.Column="1" Grid.Row="2"  IsEnabled="{Binding SetHDR}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding EnableHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
+        <Label Grid.Column="0"  Grid.Row="0" Content="{x:Static pres:Locale_Texts.Display}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AllDisplays}" SelectedItem="{Binding Display}" ItemTemplate="{StaticResource DisplayItemTemplate}" SelectedIndex="0"  Margin="5"/>
+        <Label Grid.Column="0"  Grid.Row="1" Content="{x:Static pres:Locale_Texts.SetHDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <CheckBox  Grid.Column="1" Grid.Row="1"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"/>
+        <Label Grid.Column="0"  Grid.Row="2" Content="{x:Static pres:Locale_Texts.ActivateHDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <CheckBox  Grid.Column="1" Grid.Row="2"  IsEnabled="{Binding SetHDR}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding EnableHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"/>
 
-        <Label Grid.Column="0"  Grid.Row="3" Content="{x:Static pres:Locale_Texts.SetResolution}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <CheckBox  Grid.Column="1" Grid.Row="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetResolution, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
+        <Label Grid.Column="0"  Grid.Row="3" Content="{x:Static pres:Locale_Texts.SetResolution}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+            <CheckBox  Grid.Column="1" Grid.Row="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetResolution, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" />
 
-        <Label Grid.Column="0"  Grid.Row="4" Content="{x:Static pres:Locale_Texts.Resolution}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox  Grid.Column="1" Grid.Row="4"  IsEnabled="{Binding SetResolution}" Text="{Binding Resolution, Mode=TwoWay,Converter={StaticResource SizeTextConverter}}" VerticalAlignment="Center" Margin="5,4,2,4"  />
+        <Label Grid.Column="0"  Grid.Row="4" Content="{x:Static pres:Locale_Texts.Resolution}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <TextBox  Grid.Column="1" Grid.Row="4"  IsEnabled="{Binding SetResolution}" Text="{Binding Resolution, Mode=TwoWay,Converter={StaticResource SizeTextConverter}}" VerticalAlignment="Center"  Margin="5"  />
 
-        <Label Grid.Column="0"  Grid.Row="5" Content="{x:Static pres:Locale_Texts.SetRefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <CheckBox  Grid.Column="1" Grid.Row="5"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetRefreshRate, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
+        <Label Grid.Column="0"  Grid.Row="5" Content="{x:Static pres:Locale_Texts.SetRefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <CheckBox  Grid.Column="1" Grid.Row="5"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetRefreshRate, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"  />
 
-        <Label Grid.Column="0"  Grid.Row="6" Content="{x:Static pres:Locale_Texts.RefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox  Grid.Column="1" Grid.Row="6"  IsEnabled="{Binding SetRefreshRate}" Text="{Binding RefreshRate, Mode=TwoWay}" VerticalAlignment="Center" Margin="5,4,2,4"  />
+        <Label Grid.Column="0"  Grid.Row="6" Content="{x:Static pres:Locale_Texts.RefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <TextBox  Grid.Column="1" Grid.Row="6"  IsEnabled="{Binding SetRefreshRate}" Text="{Binding RefreshRate, Mode=TwoWay}" VerticalAlignment="Center"  Margin="5" />
 
 
-        <Label Visibility="Hidden" Grid.Column="0"  Grid.Row="7" Content="{x:Static pres:Locale_Texts.SetColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <CheckBox Visibility="Hidden" Grid.Column="1" Grid.Row="7"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetColorDepth, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />
+        <Label Visibility="Hidden" Grid.Column="0"  Grid.Row="7" Content="{x:Static pres:Locale_Texts.SetColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
+        <CheckBox Visibility="Hidden" Grid.Column="1" Grid.Row="7"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetColorDepth, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" />
 
-        <Label Visibility="Hidden" Grid.Column="0"  Grid.Row="8" Content="{x:Static pres:Locale_Texts.ColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox  Visibility="Hidden" Grid.Column="1" Grid.Row="8"  IsEnabled="{Binding SetColorDepth}" Text="{Binding ColorDepth, Mode=TwoWay}" VerticalAlignment="Center" Margin="5,4,2,4"  />
+        <Label Visibility="Hidden" Grid.Column="0"  Grid.Row="8" Content="{x:Static pres:Locale_Texts.ColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
+        <TextBox  Visibility="Hidden" Grid.Column="1" Grid.Row="8"  IsEnabled="{Binding SetColorDepth}" Text="{Binding ColorDepth, Mode=TwoWay}" VerticalAlignment="Center"  Margin="5" />
 
 
 

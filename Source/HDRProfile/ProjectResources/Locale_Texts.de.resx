@@ -127,10 +127,13 @@
     <value>HDR aktivieren</value>
   </data>
   <data name="AddApplication" xml:space="preserve">
-    <value>Anwendung hinzufügen</value>
+    <value>Hinzufügen</value>
+  </data>
+  <data name="AddProfile" xml:space="preserve">
+    <value>Hinzufügen</value>
   </data>
   <data name="AddProfileAction" xml:space="preserve">
-    <value>Aktion hinzufügen</value>
+    <value>Hinzufügen</value>
   </data>
   <data name="AllDisplays" xml:space="preserve">
     <value>Alle Displays</value>
@@ -258,6 +261,9 @@
   <data name="LastAction" xml:space="preserve">
     <value>Letzte Aktion</value>
   </data>
+  <data name="License" xml:space="preserve">
+    <value>License</value>
+  </data>
   <data name="Local" xml:space="preserve">
     <value>Lokal</value>
   </data>
@@ -316,7 +322,10 @@
     <value>Veröffentlichung</value>
   </data>
   <data name="RemoveApplication" xml:space="preserve">
-    <value>Anwendung entfernen</value>
+    <value>Entfernen</value>
+  </data>
+  <data name="RemoveProfile" xml:space="preserve">
+    <value>Entfernen</value>
   </data>
   <data name="Resolution" xml:space="preserve">
     <value>Auflösung</value>

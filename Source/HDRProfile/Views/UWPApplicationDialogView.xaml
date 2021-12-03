@@ -38,7 +38,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width=" Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Content="{x:Static pres:Locale_Texts.OK}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Right" Width="Auto" Height="26"  Margin="0,0,5,5" VerticalAlignment="Bottom"/>
+            <Button Grid.Column="1" Content="{x:Static pres:Locale_Texts.OK}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="0,0,5,5" VerticalAlignment="Bottom"/>
 
         </Grid>
 

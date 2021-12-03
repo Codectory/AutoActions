@@ -21,7 +21,7 @@
             <ColumnDefinition Width="*"/>
 
         </Grid.ColumnDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Content="{x:Static pres:Locale_Texts.DisplayName}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top"/>
+        <Label Grid.Column="0" Grid.Row="0" Content="{x:Static pres:Locale_Texts.DisplayName}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" FontSize="15"/>
         <Label Grid.Column="0" Grid.Row="1" Content="{x:Static pres:Locale_Texts.FilePath}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" />
         <TextBox Grid.Column="1" Grid.Row="0" Height="Auto" Margin="5" TextWrapping="Wrap" Text="{Binding DisplayName, Mode=TwoWay }" VerticalAlignment="Top"/>
         <Label  Grid.Column="1" Grid.Row="1" Content="{Binding FilePath}" Margin="5" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
@@ -35,8 +35,8 @@
                 <ColumnDefinition/>
 
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="3" Content="{x:Static pres:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Right" Width="Auto" Height="26"  Margin="0,0,5,5" VerticalAlignment="Bottom"/>
-            <Button Grid.Column="0" Content="{Binding Source={x:Static pres:Locale_Texts.ChooseApplication}, StringFormat={}{0}...}"  Command="{Binding GetFileCommand}"  HorizontalAlignment="Left" Width="Auto" Height="26" Margin="5,0,0,5" VerticalAlignment="Bottom"/>
+            <Button Grid.Column="3" Content="{x:Static pres:Locale_Texts.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="0,0,5,5" VerticalAlignment="Bottom"/>
+            <Button Grid.Column="0" Content="{Binding Source={x:Static pres:Locale_Texts.ChooseApplication}, StringFormat={}{0}...}"  Command="{Binding GetFileCommand}"  HorizontalAlignment="Left" Width="Auto" Height="Auto" Margin="5,0,0,5" VerticalAlignment="Bottom"/>
             <Button Grid.Column="1" Content="{Binding Source={x:Static pres:Locale_Texts.ChooseUWPApplication}, StringFormat={}{0}...}"  Command="{Binding GetUWPAppCommand}" Height="Auto" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
         </Grid>
     </Grid>
