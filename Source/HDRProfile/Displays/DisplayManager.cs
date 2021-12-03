@@ -99,7 +99,7 @@ namespace AutoHDR.Displays
             }
         }
 
-        public void SetResolutionAndRefreshRate(uint deviceID, Size resolution, int refreshRate)
+        private void ChangeDisplaySetting(uint deviceID, Func<DEVMODE, DEVMODE> func)
         {
             DISPLAY_DEVICE d = new DISPLAY_DEVICE();
             DEVMODE dm = new DEVMODE();
@@ -111,16 +111,66 @@ namespace AutoHDR.Displays
             if (0 != NativeMethods.EnumDisplaySettings(
                 d.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
             {
-                int temp = dm.dmPelsHeight;
-                dm.dmPelsHeight = Convert.ToInt32(resolution.Height);
-                dm.dmPelsWidth = Convert.ToInt32(resolution.Width);
-                dm.dmDisplayFrequency = refreshRate;
 
+                dm= func.Invoke(dm);
+    
                 DISP_CHANGE iRet = NativeMethods.ChangeDisplaySettingsEx(
                     d.DeviceName, ref dm, IntPtr.Zero,
                     DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
-            }       
+            }
         }
+
+        public void SetResolution(uint deviceID, Size resolution)
+        {
+            Func<DEVMODE, DEVMODE> func = (dm) =>
+            {
+                dm.dmPelsHeight = Convert.ToInt32(resolution.Height);
+                dm.dmPelsWidth = Convert.ToInt32(resolution.Width);
+                return dm;
+            };
+
+            ChangeDisplaySetting(deviceID, func);
+        }
+
+        public void SetRefreshRate(uint deviceID, int refreshRate)
+        {
+            Func<DEVMODE, DEVMODE> func = (dm) =>
+            {
+                dm.dmDisplayFrequency = refreshRate;
+
+                return dm;
+            };
+        }
+
+        public void SetColorDepth(uint deviceID, int colorDepth)
+        {
+            Func<DEVMODE, DEVMODE> func = (dm) =>
+            {
+                dm.dmBitsPerPel = colorDepth;
+
+                return dm;
+            };
+        }
+
+
+        public static int GetColorDepth(uint deviceID)
+        {
+            DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+            DEVMODE dm = new DEVMODE();
+            d.cb = Marshal.SizeOf(d);
+
+
+            NativeMethods.EnumDisplayDevices(null, deviceID, ref d, 0);
+
+            if (0 != NativeMethods.EnumDisplaySettings(
+                d.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+            {
+
+                return dm.dmBitsPerPel;
+            }
+            return 0;
+        }
+
 
         public Size GetResolution(uint deviceID)
         {
@@ -177,7 +227,7 @@ namespace AutoHDR.Displays
                     Width = sourceModeInfo.sourceMode.width,
                     Height = sourceModeInfo.sourceMode.height
                 };
-
+                int colorDepth = 0;
                 var refreshRate =
                     (int)Math.Round((double)path.targetInfo.refreshRate.numerator / path.targetInfo.refreshRate.denominator);
                 var rotationOriginal = path.targetInfo.rotation;
@@ -192,7 +242,7 @@ namespace AutoHDR.Displays
                 if (nameStatus == StatusCode.Success)
                     displayName = displayConfigSourceDeviceName.viewGdiDeviceName;
 
-                Display monitor = new Display(displayName, path.targetInfo.id, resolution,  refreshRate);
+                Display monitor = new Display(displayName, path.targetInfo.id, sourceModeInfo.id, resolution,  refreshRate, colorDepth);
                 monitors.Add(monitor);
             }
             return monitors;
@@ -349,7 +399,6 @@ namespace AutoHDR.Displays
             };
             return Wrapper.DisplayConfigGetDeviceInfo(ref displayConfigSourceDeviceName);
         }
-
 
     }
 }

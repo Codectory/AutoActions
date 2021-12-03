@@ -64,6 +64,11 @@ namespace AutoHDR.Profiles.Actions
         [JsonProperty]
         public bool SetRefreshRate { get => _setRefreshRate; set { _setRefreshRate = value; OnPropertyChanged(); } }
 
+
+        private bool _setColorDepth =false;
+        [JsonProperty]
+        public bool SetColorDepth { get => _setColorDepth; set { _setColorDepth = value; OnPropertyChanged(); } }
+
         private bool _enableHDR = false;
 
         [JsonProperty]
@@ -78,6 +83,11 @@ namespace AutoHDR.Profiles.Actions
 
         [JsonProperty]
         public int RefreshRate { get => _refreshRate; set { _refreshRate = value; OnPropertyChanged(); } }
+        
+        int _colorDepth;
+
+        [JsonProperty]
+        public int ColorDepth { get => _colorDepth; set { _colorDepth = value; OnPropertyChanged(); } }
 
         public override string ActionDescription
         {
@@ -105,29 +115,58 @@ namespace AutoHDR.Profiles.Actions
             {
                 if (SetHDR)
                     if (Display.Equals(Displays.Display.AllDisplays))
+                    {
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"{(EnableHDR ? "Activating" : "Deactivating")} HDR for all displays."));
                         if (EnableHDR)
                             DisplayManager.Instance.ActivateHDR();
                         else
                             DisplayManager.Instance.DeactivateHDR();
+                    }
                     else
+                    {
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"{(EnableHDR ? "Activating" : "Deactivating")} HDR for display {Display.Name}"));
                         Displays.HDRController.SetHDRState(Display.UID, EnableHDR);
+                    }
                 if (SetResolution)
                     if (Display.Equals(Displays.Display.AllDisplays))
                     {
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting resolution {Resolution} for all displays."));
                         foreach (Displays.Display display in AutoHDR.Displays.DisplayManager.GetActiveMonitors())
                             display.SetResolution(Resolution);
                     }
                     else
+                    {
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting resolution {Resolution} for display {Display.Name}"));
                         Display.SetResolution(Resolution);
+                    }
 
                 if (SetRefreshRate)
                     if (Display.Equals(Displays.Display.AllDisplays))
                     {
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting refresh rate {RefreshRate} for all displays."));
+
                         foreach (Displays.Display display in AutoHDR.Displays.DisplayManager.GetActiveMonitors())
                             display.SetRefreshRate(RefreshRate);
                     }
                     else
+                    {
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting refresh rate {RefreshRate} for display {Display.Name}"));
                         Display.SetRefreshRate(RefreshRate);
+                    }
+
+                if (SetColorDepth)
+                    if (Display.Equals(Displays.Display.AllDisplays))
+                    {
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting color depth {ColorDepth} for all displays."));
+
+                        foreach (Displays.Display display in AutoHDR.Displays.DisplayManager.GetActiveMonitors())
+                            display.SetColorDepth(ColorDepth);
+                    }
+                    else
+                    {
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting color depth {ColorDepth} for display {Display.Name}"));
+                        Display.SetColorDepth(RefreshRate);
+                    }
 
                 return new ActionEndResult(true);
             }

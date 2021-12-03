@@ -30,6 +30,22 @@
         </Binding>
     </corewpf:MainWindowBase.DialogService>
     <Window.Resources>
+
+        <DataTemplate x:Key="ProfileActionTemplate" DataType="IProfileAction">
+            <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}"  BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Margin="5,0,5,0"  Text="{Binding ActionTypeName}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
+                    <TextBlock Grid.Row="1" Margin="5,0,5,0"   Text="{Binding ActionDescription}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
+                </Grid>
+
+
+            </Border>
+        </DataTemplate>
+
         <ItemsPanelTemplate x:Key="WrapListViewTemplate">
             <WrapPanel/>
         </ItemsPanelTemplate>
@@ -63,7 +79,7 @@
             <TabItem Header="{x:Static pres:Locale_Texts.Status}" HorizontalAlignment="Left" Width="58"  >
                 <Grid >
                     <Border Style="{StaticResource RoundedBorder}" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1"  Margin="10,10,10,51">
-                        <Grid Height="Auto" VerticalAlignment="Top" Margin="10">
+                        <Grid Height="Auto" Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -77,6 +93,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="25"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
 
                             </Grid.RowDefinitions>
                             <TextBlock  Grid.Row="0" Grid.Column="0" Text="{x:Static pres:Locale_Texts.HDR}"  Width="Auto" VerticalAlignment="Center" FontWeight="Bold" FontSize="15" HorizontalAlignment="Left"  />
@@ -115,6 +132,7 @@
                             </Ellipse>
                             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.CurrentApplication}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="15" VerticalAlignment="Center" Margin="5"  />
                             <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.CurrentProfile}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="15" VerticalAlignment="Center" Margin="5"  />
+                            <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:Locale_Texts.LastAction}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="15" VerticalAlignment="Top" Margin="5"  />
 
                             <Border Grid.Row="2" Grid.Column="3" BorderThickness="1" BorderBrush="LightGray" Style="{StaticResource RoundedBorder}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Padding="0">
                                 <Rectangle RadiusX="3" RadiusY="3" Width="40" Height="40" Margin="2  ">
@@ -124,7 +142,10 @@
                                 </Rectangle>
                             </Border>
                             <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static pres:Locale_Texts.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
-                            <TextBlock Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:Locale_Texts.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
+                            <TextBlock Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:Locale_Texts.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
+                            <Border  Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2"  Style="{StaticResource RoundedBorder}" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1" >
+                                <ListBox BorderThickness="0" Margin="5" ItemsSource="{Binding LastActions}" ItemTemplate="{StaticResource ProfileActionTemplate}"   ItemsPanel="{StaticResource StackListViewTemplate}"  />
+                            </Border>
                         </Grid>
                     </Border>
                     <Button Content="{x:Static pres:Locale_Texts.Shutdown}"  Command="{Binding ShutdownCommand}" Height="Auto"  HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Bottom" Margin="0,0,10,10" />
@@ -239,6 +260,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
@@ -263,6 +285,17 @@
                     <Style TargetType="Button"/>
                 </Button.Resources>
                 <TextBlock  Text="{x:Static pres:Locale_Texts.BuyBeer}" Width="Auto" Margin="0"   Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+            </Button>
+
+            <Button  Grid.Column="3" Padding="0"  Command="{Binding ShowLogsCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
+                <Button.Resources>
+                    <Style TargetType="Button"/>
+                </Button.Resources>
+                <TextBlock  Text="{x:Static pres:Locale_Texts.Logs}" Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
                     </TextBlock.Foreground>

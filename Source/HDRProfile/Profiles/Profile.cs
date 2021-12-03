@@ -115,6 +115,7 @@ namespace AutoHDR.Profiles
 
 
 
+
         public void AddProfileAction(ProfileActionListType listType)
         {
             ProfileActionAdder adder = new ProfileActionAdder();

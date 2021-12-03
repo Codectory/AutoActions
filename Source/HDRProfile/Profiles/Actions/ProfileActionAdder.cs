@@ -58,7 +58,7 @@ namespace AutoHDR.Profiles.Actions
         {
             get
             {
-                return new List<ActionTypeDescription>() { new ActionTypeDescription(typeof(DisplayAction), Locale_Texts.DisplayAction), new ActionTypeDescription(typeof(RunProgramAction), Locale_Texts.RunProgramAction) };
+                return new List<ActionTypeDescription>() { new ActionTypeDescription(typeof(DisplayAction), Locale_Texts.DisplayAction), new ActionTypeDescription(typeof(RunProgramAction), Locale_Texts.RunProgramAction), new ActionTypeDescription(typeof(AudioDeviceAction), Locale_Texts.AudioAction) };
             }
         }
 

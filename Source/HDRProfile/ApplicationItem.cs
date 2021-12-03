@@ -1,4 +1,7 @@
 ﻿using CodectoryCore.UI.Wpf;
+using CodectoryCore.Windows;
+using CodectoryCore.Windows.FileSystem;
+using CodectoryCore.Windows.Icons;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,7 +35,7 @@ namespace AutoHDR
         [JsonProperty]
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
         [JsonProperty]
-        public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = Tools.GetFileIcon(value); } catch { } OnPropertyChanged(); } }
+        public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = IconHelper.GetFileIcon(value); } catch { } OnPropertyChanged(); } }
         // public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
         [JsonProperty]
         public bool IsUWP { get => _isUWP; set { _isUWP = value; OnPropertyChanged(); } }
@@ -72,7 +75,7 @@ namespace AutoHDR
         //private void UpdateRestartAppStates(IDictionary<ApplicationItem, ApplicationState> applicationStates, bool restartApps)
         //{
         //    Dictionary<ApplicationItem, ApplicationState> newLastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
-        //    Tools.Logs.Add($"Updating application states...", false);
+        //    Globals.Logs.Add($"Updating application states...", false);
         //    foreach (var applicationState in applicationStates)
         //    {
         //        newLastAppStates.Add(applicationState.Key, applicationState.Value);
@@ -93,11 +96,11 @@ namespace AutoHDR
         {
             try
             {
-                Tools.Logs.Add($"Restarting application {ApplicationName}", false);
+                Globals.Logs.Add($"Restarting application {ApplicationName}", false);
                 foreach (Process process in Process.GetProcessesByName(ApplicationName).ToList())
                     if (process.StartTime < Process.GetCurrentProcess().StartTime)
                     {
-                        Tools.Logs.Add($"Won't restart application {ApplicationName} as it was running before { ProjectResources.Locale_Texts.AutoHDR}.", false);
+                        Globals.Logs.Add($"Won't restart application {ApplicationName} as it was running before { ProjectResources.Locale_Texts.AutoHDR}.", false);
 
                         return;
                     }
@@ -107,14 +110,14 @@ namespace AutoHDR
             }
             catch (Exception ex)
             {
-                Tools.Logs.AddException($"Failed to restart process {DisplayName} ({ApplicationFilePath}).", ex);
+                Globals.Logs.AddException($"Failed to restart process {DisplayName} ({ApplicationFilePath}).", ex);
                 throw;
             }
         }
 
         public void StartApplication()
         {
-            Tools.Logs.Add($"Start application {ApplicationName}", false);
+            Globals.Logs.Add($"Start application {ApplicationName}", false);
             try
             {
                 if (IsUWP)
@@ -132,18 +135,18 @@ namespace AutoHDR
                 if (processes.Count > 0)
                 {
                     Process foundProcess = new Process();
-                    Tools.Logs.Add($"Bring application to front: {ApplicationName}", false);
+                    Globals.Logs.Add($"Bring application to front: {ApplicationName}", false);
                     foundProcess = processes[0];
                     if (!foundProcess.HasExited && foundProcess.Responding)
-                        Tools.BringMainWindowToFront(foundProcess.ProcessName);
+                        Window.BringMainWindowToFront(foundProcess.ProcessName);
                 }
                 else
-                    Tools.Logs.Add($"No started application found: {ApplicationName}", false);
+                    Globals.Logs.Add($"No started application found: {ApplicationName}", false);
 
             }
             catch (Exception ex)
             {
-                Tools.Logs.AddException(ex);
+                Globals.Logs.AddException(ex);
             }
         }
 

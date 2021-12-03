@@ -76,7 +76,7 @@ namespace AutoHDR.Profiles.Actions
                 }
                 catch (Exception ex)
                 {
-                    Tools.Logs.AddException(ex);
+                    Globals.Logs.AddException(ex);
                     throw;
                 }
             }

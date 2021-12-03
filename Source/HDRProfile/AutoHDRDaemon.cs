@@ -1,10 +1,15 @@
-﻿using AutoHDR.Displays;
+﻿using AutoHDR.Audio;
+using AutoHDR.Displays;
 using AutoHDR.Info;
 using AutoHDR.Info.Github;
 using AutoHDR.Profiles;
+using AutoHDR.Profiles.Actions;
+using CodectoryCore;
 using CodectoryCore.Logging;
 using CodectoryCore.UI.Wpf;
+using CodectoryCore.Windows;
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -22,7 +27,9 @@ namespace AutoHDR
         private bool _showView = false;
         private ApplicationItem _currentApplication = null;
         private Profile _currentProfile = null;
-        
+        private ObservableCollection<IProfileAction> _lastActions;
+
+
         private bool _hdrIsActive;
 
 
@@ -30,6 +37,8 @@ namespace AutoHDR
         public bool Started { get => started; private set { started = value; OnPropertyChanged(); } }
         ProcessWatcher ApplicationWatcher;
         TrayMenuHelper TrayMenuHelper;
+
+        LogsStorage _logsStorage;
 
 
         #region RelayCommands
@@ -45,6 +54,8 @@ namespace AutoHDR
         public RelayCommand AddProfileCommand { get; private set; }
         public RelayCommand<Profile> RemoveProfileCommand { get; private set; }
         public RelayCommand ShowInfoCommand { get; private set; }
+        public RelayCommand ShowLogsCommand { get; private set; }
+
 
         public RelayCommand LoadingCommand { get; private set; }
         public RelayCommand ClosingCommand { get; private set; }
@@ -57,6 +68,8 @@ namespace AutoHDR
 
         public UserAppSettings Settings { get => Globals.Instance.Settings; set { Globals.Instance.Settings = value; OnPropertyChanged(); } }
         public Profile CurrentProfile { get => _currentProfile; set { _currentProfile = value; OnPropertyChanged(); } }
+        public ObservableCollection<IProfileAction> LastActions { get => _lastActions; set { _lastActions = value; OnPropertyChanged(); } }
+
 
 
         public bool Initialized { get; private set; } = false;
@@ -69,14 +82,14 @@ namespace AutoHDR
         {
             get
             {
-                return Tools.ApplicationVersion;
+                return VersionExtension.ApplicationVersion(System.Reflection.Assembly.GetExecutingAssembly());
             }
         }
 
 
         public AutoHDRDaemon()
         {
-            ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+            //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Initialize();
         }
 
@@ -97,32 +110,33 @@ namespace AutoHDR
             {
                 if (Initialized)
                     return;
+                _logsStorage = new LogsStorage();
+                _lastActions = new ObservableCollection<IProfileAction>();
                 ApplicationWatcher = new ProcessWatcher();
                 ApplicationWatcher.NewLog += ApplicationWatcher_NewLog;
                 ApplicationWatcher.ApplicationChanged += ApplicationWatcher_ApplicationChanged;
                 LoadSettings();
-                Tools.Logs.Add("Initializing...", false);
+                Globals.Logs.Add("Initializing...", false);
 
                 if (Settings.CheckForNewVersion)
                     CheckForNewVersion();
                 InitializeDisplayManager();
+                InitializeAudioManager();
                 Globals.Instance.SaveSettings(); 
                 InitializeTrayMenuHelper();
                 CreateRelayCommands();
                 ShowView = !Settings.StartMinimizedToTray;
                 Initialized = true;
-                Tools.Logs.Add("Initialized", false);
+                Globals.Logs.Add("Initialized", false);
                 Start();
-                Tools.Logs.Add($"Starting process watcher...", false);
                 ApplicationWatcher.Start();
-                Tools.Logs.Add($"Process watcher started", false);
 
             }
         }
 
         private void ApplicationWatcher_ApplicationChanged(object sender, ApplicationChangedEventArgs e)
         {
-            Tools.Logs.Add($"Application {e.Application} changed: {e.ChangedType}", false);
+            Globals.Logs.Add($"Application {e.Application} changed: {e.ChangedType}", false);
             CurrentApplication = e.Application;
             UpdateCurrentProfile(e.Application, e.ChangedType);
             if (e.ChangedType == ApplicationChangedType.Closed)
@@ -131,7 +145,7 @@ namespace AutoHDR
 
         private void ApplicationWatcher_NewLog(object sender, string e)
         {
-            Tools.Logs.Add(e, false);
+            Globals.Logs.Add(e, false);
         }
 
         private void UpdateCurrentProfile(ApplicationItem application, ApplicationChangedType changedType)
@@ -142,7 +156,7 @@ namespace AutoHDR
 
                 if (assignment == null)
                 {
-                    Tools.Logs.Add($"No assignmet for {application.ApplicationFilePath}.", false);
+                    Globals.Logs.Add($"No assignmet for {application.ApplicationFilePath}.", false);
                     CurrentProfile = null;
                     return;
                 }
@@ -151,25 +165,54 @@ namespace AutoHDR
 
                 if (profile == null)
                     return;
-                Tools.Logs.Add($"Profile changed to {profile.Name}", false);
-
+                Globals.Logs.Add($"Profile changed to {profile.Name}", false);
+     
                 switch (changedType)
                 {
                     case ApplicationChangedType.Started:
+                        if (profile.ApplicationStarted.Count > 0)
+                            App.Current.Dispatcher.Invoke(() => LastActions.Clear());
                         foreach (var action in profile.ApplicationStarted)
+                        {
+                            App.Current.Dispatcher.Invoke(() => LastActions.Add(action));                       
+                            action.NewLog += ActionLog;
                             action.RunAction();
+                            action.NewLog -= ActionLog;
+                        }
                         break;
                     case ApplicationChangedType.Closed:
+                        if (profile.ApplicationClosed.Count > 0)
+                            App.Current.Dispatcher.Invoke(() => LastActions.Clear());
                         foreach (var action in profile.ApplicationClosed)
+                        {
+                            App.Current.Dispatcher.Invoke(() => LastActions.Add(action));
+                            action.NewLog += ActionLog;
                             action.RunAction();
+                            action.NewLog -= ActionLog;
+                        }
                         break;
                     case ApplicationChangedType.GotFocus:
+                        if (profile.ApplicationGotFocus.Count > 0)
+                            App.Current.Dispatcher.Invoke(() => LastActions.Clear());
                         foreach (var action in profile.ApplicationGotFocus)
+                        {
+                            App.Current.Dispatcher.Invoke(() => LastActions.Add(action));
+                            action.NewLog += ActionLog;
                             action.RunAction();
+                            action.NewLog -= ActionLog;
+
+                        }
                         break;
                     case ApplicationChangedType.LostFocus:
+                        if (profile.ApplicationLostFocus.Count > 0)
+                            App.Current.Dispatcher.Invoke(() => LastActions.Clear());
                         foreach (var action in profile.ApplicationLostFocus)
+                        {
+                            App.Current.Dispatcher.Invoke(() => LastActions.Add(action));
+                            action.NewLog += ActionLog;
                             action.RunAction();
+                            action.NewLog -= ActionLog;
+                        }
                         break;
                 }
                 if (profile.RestartApplication && changedType == ApplicationChangedType.Started)
@@ -179,19 +222,24 @@ namespace AutoHDR
                     CurrentProfile = null;
             }
         }
+        
+        private void ActionLog(object sender, LogEntry entry)
+        {
+            Globals.Logs.AppendLogEntry(entry);
+        }
 
         private void CheckForNewVersion()
         {
             Task.Run(() =>
             {
-                Tools.Logs.Add($"Checking for new version...", false);
+                Globals.Logs.Add($"Checking for new version...", false);
 
                 GitHubData data = GitHubIntegration.GetGitHubData();
-                Version localVersion = Tools.ApplicationVersion;
+                Version localVersion = VersionExtension.ApplicationVersion(System.Reflection.Assembly.GetExecutingAssembly());
                 int versionComparison = localVersion.CompareTo(data.CurrentVersion);
                 if (versionComparison < 0)
                 {
-                    Tools.Logs.Add($"Newer version availabe.", false);
+                    Globals.Logs.Add($"Newer version availabe.", false);
 
                     Application.Current.Dispatcher.Invoke(
                       (Action)(() =>
@@ -201,7 +249,7 @@ namespace AutoHDR
 
                 }
                 else
-                    Tools.Logs.Add($"Local version is up to date.", false);
+                    Globals.Logs.Add($"Local version is up to date.", false);
 
             });
         }
@@ -223,6 +271,12 @@ namespace AutoHDR
             HDRIsActive = DisplayManager.GlobalHDRIsActive;
 
         }
+
+        private void InitializeAudioManager()
+        {
+            AudioManager.Initialize();
+        }
+
         private void CreateRelayCommands()
         {
             ActivateHDRCommand = new RelayCommand(DisplayManager.Instance.ActivateHDR);
@@ -240,6 +294,8 @@ namespace AutoHDR
             ShutdownCommand = new RelayCommand(Shutdown);
             StartApplicationCommand = new RelayCommand<ApplicationItem>(StartApplication);
             ShowInfoCommand = new RelayCommand(ShowInfo);
+            ShowLogsCommand = new RelayCommand(ShowLogs);
+
             BuyBeerCommand = new RelayCommand(BuyBeer);
         }
 
@@ -283,14 +339,14 @@ namespace AutoHDR
             Monitors_CollectionChanged( Settings.Monitors, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.Monitors.ToList()));
 
 
-            Logs.LoggingEnabled = Settings.Logging;
-            Tools.Logs.Add("Settings loaded", false);
+            Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
+            Globals.Logs.Add("Settings loaded", false);
         }
 
 
         private void TrayMenu_TrayLeftMouseDown(object sender, RoutedEventArgs e)
         {
-            Tools.Logs.Add("Open app from Tray", false);
+            Globals.Logs.Add("Open app from Tray", false);
             ShowView = true;
 
         }
@@ -298,7 +354,7 @@ namespace AutoHDR
 
         private void StartApplication(ApplicationItem application)
         {
-            Tools.Logs.Add($"Start application {application.ApplicationName}", false);
+            Globals.Logs.Add($"Start application {application.ApplicationName}", false);
             try
             {
                 DisplayManager.Instance.ActivateHDR();
@@ -308,7 +364,7 @@ namespace AutoHDR
             }
             catch (Exception ex)
             {
-                Tools.Logs.AddException(ex);
+                Globals.Logs.AddException(ex);
             }
         }
 
@@ -316,21 +372,21 @@ namespace AutoHDR
         {
             if (Settings.CloseToTray)
             {
-                Tools.Logs.Add($"Minimizing to tray...", false);
+                Globals.Logs.Add($"Minimizing to tray...", false);
                 //  TrayMenuHelper.SwitchTrayIcon(true);
             }
             else
             {
                 TrayMenuHelper.SwitchTrayIcon(false);
 
-                Tools.Logs.Add($"Shutting down...", false);
+                Globals.Logs.Add($"Shutting down...", false);
                 Shutdown();
             }
         }
 
         private void Shutdown()
         {
-            Tools.Logs.Add($"Stopping application watcher...", false);
+            Globals.Logs.Add($"Stopping application watcher...", false);
             ApplicationWatcher.NewLog -= ApplicationWatcher_NewLog;
             ApplicationWatcher.ApplicationChanged -= ApplicationWatcher_ApplicationChanged;
             ApplicationWatcher.Stop();
@@ -345,9 +401,9 @@ namespace AutoHDR
             {
                 if (Started)
                     return;
-                Tools.Logs.Add($"Starting HDR Monitoring...", false);
+                Globals.Logs.Add($"Starting HDR Monitoring...", false);
                 DisplayManager.Instance.StartMonitoring();
-                Tools.Logs.Add($"HDR Monitoring started", false);
+                Globals.Logs.Add($"HDR Monitoring started", false);
                 Started = true;
                // UpdateHDRModeBasedOnCurrentApplication();
             }
@@ -359,11 +415,11 @@ namespace AutoHDR
             {
                 if (!Started)
                     return;
-                Tools.Logs.Add($"Stopping HDR Monitoring...", false);
+                Globals.Logs.Add($"Stopping HDR Monitoring...", false);
                 DisplayManager.Instance.StopMonitoring();
-                Tools.Logs.Add($"HDR Monitoring stopped", false);
+                Globals.Logs.Add($"HDR Monitoring stopped", false);
                 Started = false;
-                Tools.Logs.Add($"Process watcher stopped", false);
+                Globals.Logs.Add($"Process watcher stopped", false);
 
             }
 
@@ -438,14 +494,16 @@ namespace AutoHDR
             {
                 try
                 {
-                    Tools.SetAutoStart(ProjectResources.Locale_Texts.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location, Settings.AutoStart);
-
+                    if (Settings.AutoStart)
+                        AutoStart.Activate(ProjectResources.Locale_Texts.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location);
+                    else
+                        AutoStart.Deactivate(ProjectResources.Locale_Texts.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location);
                 }
                 catch (Exception ex)
                 {
-                    Tools.Logs.AddException(ex);
+                    Globals.Logs.AddException(ex);
                 }
-                Logs.LoggingEnabled = Settings.Logging;
+                Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
                 Globals.Instance.SaveSettings();
             }
         }
@@ -460,14 +518,14 @@ namespace AutoHDR
 
                     foreach (Display display in e.NewItems)
                     {
-                        Tools.Logs.Add($"Display added: {display.Name}", false);
+                        Globals.Logs.Add($"Display added: {display.Name}", false);
                         display.PropertyChanged += Monitor_PropertyChanged;
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     foreach (Display display in e.OldItems)
                     {
-                        Tools.Logs.Add($"Display removed: {display.Name}", false);
+                        Globals.Logs.Add($"Display removed: {display.Name}", false);
                         display.PropertyChanged += Monitor_PropertyChanged;
                     }
                     break;
@@ -490,7 +548,7 @@ namespace AutoHDR
                 case NotifyCollectionChangedAction.Add:
                     foreach (Profile profile in e.NewItems)
                     {
-                        Tools.Logs.Add($"Profile added: {profile.Name}", false);
+                        Globals.Logs.Add($"Profile added: {profile.Name}", false);
                         profile.ApplicationClosed.CollectionChanged += ProfileActions_CollectionChanged;
                         profile.ApplicationStarted.CollectionChanged += ProfileActions_CollectionChanged;
                         profile.ApplicationLostFocus.CollectionChanged += ProfileActions_CollectionChanged;
@@ -501,7 +559,7 @@ namespace AutoHDR
                 case NotifyCollectionChangedAction.Remove:
                     foreach (Profile profile in e.OldItems)
                     {
-                        Tools.Logs.Add($"Profile removed: {profile.Name}", false);
+                        Globals.Logs.Add($"Profile removed: {profile.Name}", false);
                         profile.ApplicationClosed.CollectionChanged -= ProfileActions_CollectionChanged;
                         profile.ApplicationStarted.CollectionChanged -= ProfileActions_CollectionChanged;
                         profile.ApplicationLostFocus.CollectionChanged -= ProfileActions_CollectionChanged;
@@ -530,7 +588,7 @@ namespace AutoHDR
                     {
 
 
-                        Tools.Logs.Add($"Application added: {assignment.Application.ApplicationName}", false);
+                        Globals.Logs.Add($"Application added: {assignment.Application.ApplicationName}", false);
                         assignment.PropertyChanged += SaveSettingsOnPropertyChanged;
                         ApplicationWatcher.AddProcess(assignment.Application);
                         assignment.Application.PropertyChanged += SaveSettingsOnPropertyChanged;
@@ -540,7 +598,7 @@ namespace AutoHDR
                 case NotifyCollectionChangedAction.Remove:
                     foreach (ApplicationProfileAssignment assignment in e.OldItems)
                     {
-                        Tools.Logs.Add($"Application removed: {assignment.Application.ApplicationName}", false);
+                        Globals.Logs.Add($"Application removed: {assignment.Application.ApplicationName}", false);
                         assignment.PropertyChanged -= SaveSettingsOnPropertyChanged;
 
                         ApplicationWatcher.RemoveProcess(assignment.Application);
@@ -565,6 +623,12 @@ namespace AutoHDR
         private void ShowInfo()
         {
             ShowInfo(null);
+        }
+
+        private void ShowLogs()
+        {
+            if (DialogService != null)
+                DialogService.ShowDialogModal(_logsStorage, new System.Drawing.Size(600, 1000));
         }
 
         private void ShowInfo(GitHubData data)

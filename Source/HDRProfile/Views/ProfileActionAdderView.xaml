@@ -20,6 +20,9 @@
         <DataTemplate DataType="{x:Type prflActns:RunProgramAction}">
             <local:RunProgramActionView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type prflActns:AudioDeviceAction}">
+            <local:AudioActionView/>
+        </DataTemplate>
         <DataTemplate x:Key="ActionTypeTemplate" DataType="ActionTypeDescription">
             <TextBlock Text="{Binding TypeDescription }"/>
         </DataTemplate>

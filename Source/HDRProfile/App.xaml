@@ -14,6 +14,14 @@
 
     <Application.Resources>
 
+
+
+        <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
+        <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
+
+
+
+
         <Color x:Key="ActiveColor">#2ac987</Color>
         <Color x:Key="AccentColor">#ff6666</Color>
 
@@ -102,9 +110,6 @@
 
 
 
-
-        <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
-        <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
         <!--<Color x:Key="AccentColor">#5d9ac7</Color> -->
         <SolidColorBrush x:Key="ButtonForegroundBrush">White</SolidColorBrush>
 
@@ -421,15 +426,6 @@
                     </Border.BorderBrush>
                     <Border.Background>
                         <SolidColorBrush Color="Transparent"/>
-
-
-                    </Border.Background>
-                </Border>
-                <Border Grid.Column="0"
-            CornerRadius="2,0,0,2"
-            Margin="1" >
-                    <Border.Background>
-                        <SolidColorBrush Color="Transparent"/>
                     </Border.Background>
                 </Border>
                 <Path x:Name="Arrow"
@@ -453,6 +449,7 @@
 
         <Style x:Key="DefaultComboBox"
        TargetType="{x:Type ComboBox}">
+            
             <Setter Property="SnapsToDevicePixels"
           Value="true" />
             <Setter Property="OverridesDefaultStyle"
@@ -467,7 +464,6 @@
           Value="120" />
             <Setter Property="MinHeight"
           Value="20" />
-
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -584,6 +580,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+
         </Style>
 
         <Style x:Key="{x:Type ComboBoxItem}"
@@ -778,7 +775,7 @@
             <corewpf:IsNotNullConverter />
             <corewpf:VisibilityBooleanConverter />
         </corewpf:ConverterChain>
-
+        <corewpf:TupleConverter x:Key="TupleConverter"/>
         <DataTemplate DataType="{x:Type local:ApplicationAdder}">
             <views:ApplicationAdderView></views:ApplicationAdderView>
         </DataTemplate>
@@ -790,6 +787,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type info:AutoHDRInfo}">
             <views:AutoHDRInfoView></views:AutoHDRInfoView>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type info:LogsStorage}">
+            <views:AutoHDRLogsView></views:AutoHDRLogsView>
         </DataTemplate>
     </Application.Resources>
 

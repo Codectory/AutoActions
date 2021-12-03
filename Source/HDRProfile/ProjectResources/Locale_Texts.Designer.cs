@@ -232,6 +232,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Audio ähnelt.
+        /// </summary>
+        public static string AudioAction {
+            get {
+                return ResourceManager.GetString("AudioAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die AutoHDR ähnelt.
         /// </summary>
         public static string AutoHDR {
@@ -304,11 +313,29 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Color depth [bit] ähnelt.
+        /// </summary>
+        public static string ColorDepth {
+            get {
+                return ResourceManager.GetString("ColorDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Restarts the application on first occurence, as the application may need HDR to be activated before launching it. ähnelt.
         /// </summary>
         public static string CompatibilityModeToolTip {
             get {
                 return ResourceManager.GetString("CompatibilityModeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Create logfile ähnelt.
+        /// </summary>
+        public static string CreateLogFile {
+            get {
+                return ResourceManager.GetString("CreateLogFile", resourceCulture);
             }
         }
         
@@ -484,6 +511,24 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Input device ähnelt.
+        /// </summary>
+        public static string InputDevice {
+            get {
+                return ResourceManager.GetString("InputDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Last action ähnelt.
+        /// </summary>
+        public static string LastAction {
+            get {
+                return ResourceManager.GetString("LastAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Local ähnelt.
         /// </summary>
         public static string Local {
@@ -508,6 +553,15 @@ namespace AutoHDR.ProjectResources {
             get {
                 object obj = ResourceManager.GetObject("Logo", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Logs ähnelt.
+        /// </summary>
+        public static string Logs {
+            get {
+                return ResourceManager.GetString("Logs", resourceCulture);
             }
         }
         
@@ -598,6 +652,15 @@ namespace AutoHDR.ProjectResources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Output device ähnelt.
+        /// </summary>
+        public static string OutputDevice {
+            get {
+                return ResourceManager.GetString("OutputDevice", resourceCulture);
             }
         }
         
@@ -706,6 +769,15 @@ namespace AutoHDR.ProjectResources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Set color depth ähnelt.
+        /// </summary>
+        public static string SetColorDepth {
+            get {
+                return ResourceManager.GetString("SetColorDepth", resourceCulture);
             }
         }
         

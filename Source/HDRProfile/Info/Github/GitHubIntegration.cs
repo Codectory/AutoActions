@@ -17,7 +17,7 @@ namespace AutoHDR.Info.Github
         {
             if (Initialized)
                 return;
-            Tools.Logs.Add($"Connecting to GitHub...", false);
+            Globals.Logs.Add($"Connecting to GitHub...", false);
             _client = new GitHubClient(new ProductHeaderValue("AutoHDR"));
             _client.SetRequestTimeout(new TimeSpan(0, 0, 10));
             Initialized = true;
@@ -25,12 +25,12 @@ namespace AutoHDR.Info.Github
         public static GitHubData GetGitHubData()
         {
             InitializeClient();
-            Tools.Logs.Add($"Requesting releases...", false);
+            Globals.Logs.Add($"Requesting releases...", false);
             IReadOnlyList<Release> releases = _client.Repository.Release.GetAll("Codectory", "AutoHDR").Result;
 
             Version latestGitHubVersion = new Version(releases[0].TagName);
             DateTime latestReleaseDate = releases[0].PublishedAt.HasValue ? releases[0].PublishedAt.Value.DateTime : DateTime.MinValue;
-            Tools.Logs.Add($"Releases found: {releases.Count} Latest version: {latestGitHubVersion}", false);
+            Globals.Logs.Add($"Releases found: {releases.Count} Latest version: {latestGitHubVersion}", false);
 
             List<string> sourceForgeAdditions = new List<string>()
             {
@@ -43,7 +43,7 @@ namespace AutoHDR.Info.Github
             };
 
             string changelog = string.Empty;
-            Tools.Logs.Add($"Building changelog...", false);
+            Globals.Logs.Add($"Building changelog...", false);
 
             foreach (Release release in releases)
             {
@@ -59,7 +59,7 @@ namespace AutoHDR.Info.Github
 
                 changelog += $"[{release.TagName}]\r\n\r\n{releaseChangelog}";
             }
-            Tools.Logs.Add($"Creating GitHubData...", false);
+            Globals.Logs.Add($"Creating GitHubData...", false);
             return new GitHubData(changelog, latestGitHubVersion, latestReleaseDate, $@"https://github.com/Codectory/HDR-Profile/releases/tag/{latestGitHubVersion}");
         }
     }

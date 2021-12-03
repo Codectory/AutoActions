@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,9 @@ namespace AutoHDR
 {
     public class Globals : BaseViewModel
     {
+
+        public static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}AutoHDR.log", "AutoHDR", Assembly.GetExecutingAssembly().GetName().Version.ToString(), false);
+
         public static int GlobalRefreshInterval = 500;
 
         private string SettingsPathCompatible => $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings.xml";
@@ -30,16 +34,15 @@ namespace AutoHDR
         {
             if (!force && !_settingsLoadedOnce)
                 return;
-            Tools.Logs.Add("Saving settings..", false);
+            Globals.Logs.Add("Saving settings..", false);
             try
             {
                 Settings.SaveSettings(SettingsPath);
-                Tools.Logs.Add("Settings saved", false);
-
+                Globals.Logs.Add("Settings saved", false);
             }
             catch (Exception ex)
             {
-                Tools.Logs.AddException(ex);
+                Globals.Logs.AddException(ex);
             }
         }
 
@@ -47,7 +50,7 @@ namespace AutoHDR
         {
             try
             {
-                Tools.Logs.Add("Loading settings...", false);
+                Globals.Logs.Add("Loading settings...", false);
                 if (File.Exists(SettingsPath))
                 {
                     Settings = UserAppSettings.ReadSettings(SettingsPath);
@@ -66,7 +69,7 @@ namespace AutoHDR
                 }
                 else
                 {
-                    Tools.Logs.Add("No settings found. Creating settings file...", false);
+                    Globals.Logs.Add("No settings found. Creating settings file...", false);
                     Settings = new UserAppSettings();
                     _settingsLoadedOnce = true;
 
@@ -81,17 +84,17 @@ namespace AutoHDR
                 if (File.Exists(SettingsPath))
                 {
                     File.Move(SettingsPath, backupFile);
-                    Tools.Logs.Add($"Created backup of invalid settings file: {backupFile}", false);
+                    Globals.Logs.Add($"Created backup of invalid settings file: {backupFile}", false);
                     File.Delete(SettingsPath);
                 }
-                Tools.Logs.Add("Failed to load settings", false);
-                Tools.Logs.AddException(ex);
+                Globals.Logs.Add("Failed to load settings", false);
+                Globals.Logs.AddException(ex);
                 Settings = new UserAppSettings();
                 SaveSettings(true);
-                Tools.Logs.Add("Created new settings file", false);
+                Globals.Logs.Add("Created new settings file", false);
             }
-            Logs.LoggingEnabled = Settings.Logging;
-            Tools.Logs.Add("Settings loaded", false);
+            Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
+            Globals.Logs.Add("Settings loaded", false);
         }
 
         [Obsolete]

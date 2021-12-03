@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using CodectoryCore;
 
 namespace AutoHDR.Info
 {
@@ -92,7 +93,7 @@ namespace AutoHDR.Info
         public AutoHDRInfo()
         {
             CreateRelayCommands();
-            Version = Tools.ApplicationVersion;
+            Version = VersionExtension.ApplicationVersion(System.Reflection.Assembly.GetExecutingAssembly());
         }
 
         private void CreateRelayCommands()

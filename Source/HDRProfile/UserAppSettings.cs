@@ -23,7 +23,7 @@ namespace AutoHDR
 
 
         private bool _globalAutoHDR = true;
-        private bool _logging = false;
+        private bool _createLogFile = false;
         private bool _autoStart;
         private bool _startMinimizedToTray;
         private bool _closeToTray;
@@ -42,7 +42,7 @@ namespace AutoHDR
         public bool AutoStart { get => _autoStart; set { _autoStart = value; OnPropertyChanged(); } }
 
         [JsonProperty]
-        public bool Logging { get => _logging; set { _logging = value; OnPropertyChanged(); } }
+        public bool CreateLogFile { get => _createLogFile; set { _createLogFile = value; OnPropertyChanged(); } }
 
         [JsonProperty]
         public bool StartMinimizedToTray { get => _startMinimizedToTray; set { _startMinimizedToTray = value; OnPropertyChanged(); } }
@@ -93,13 +93,13 @@ namespace AutoHDR
                     try
                     {
                         settings = TryReadXML(path);
-                        Tools.Logs.Add("Loaded deprecated xml settings.", false);
+                        Globals.Logs.Add("Loaded deprecated xml settings.", false);
                         return settings;
                     }
                     catch (Exception)
                     {
                     }
-                    Tools.Logs.AddException(ex);
+                    Globals.Logs.AddException(ex);
                     throw;
                 }
             }
@@ -132,7 +132,7 @@ namespace AutoHDR
                 }
                 catch (Exception ex)
                 {
-                    Tools.Logs.AddException(ex);
+                    Globals.Logs.AddException(ex);
                     throw;
                 }
             }
@@ -146,7 +146,7 @@ namespace AutoHDR
             convertedSettings.CheckForNewVersion = settings.CheckForNewVersion;
             convertedSettings.CloseToTray = settings.CloseToTray;
             convertedSettings.GlobalAutoHDR = settings.GlobalAutoHDR;
-            convertedSettings.Logging = settings.Logging;
+            convertedSettings.CreateLogFile = settings.Logging;
             convertedSettings.Monitors = settings.Monitors;
             convertedSettings.StartMinimizedToTray = settings.StartMinimizedToTray;
             return convertedSettings;

@@ -165,6 +165,9 @@
   <data name="Arguments" xml:space="preserve">
     <value>Argumente</value>
   </data>
+  <data name="AudioAction" xml:space="preserve">
+    <value>Audio</value>
+  </data>
   <data name="AutoHDR" xml:space="preserve">
     <value>AutoHDR</value>
   </data>
@@ -189,8 +192,14 @@
   <data name="ChooseUWPApplication" xml:space="preserve">
     <value>UWP App auswählen...</value>
   </data>
+  <data name="ColorDepth" xml:space="preserve">
+    <value>Farbtiefe [bit]</value>
+  </data>
   <data name="CompatibilityModeToolTip" xml:space="preserve">
     <value>Startet die Anwendung neu, sobald sie erstmalig erkannt wurde, da für einige Anwendung HDR vor dem Start aktiv sein muss.</value>
+  </data>
+  <data name="CreateLogFile" xml:space="preserve">
+    <value>Logdatei erstellen</value>
   </data>
   <data name="CurrentApplication" xml:space="preserve">
     <value>Aktuelle Anwendung</value>
@@ -243,11 +252,20 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="InputDevice" xml:space="preserve">
+    <value>Eingangsgerät</value>
+  </data>
+  <data name="LastAction" xml:space="preserve">
+    <value>Letzte Aktion</value>
+  </data>
   <data name="Local" xml:space="preserve">
     <value>Lokal</value>
   </data>
   <data name="Logging" xml:space="preserve">
     <value>Logging</value>
+  </data>
+  <data name="Logs" xml:space="preserve">
+    <value>Logs</value>
   </data>
   <data name="ManagedHDR" xml:space="preserve">
     <value>Automatischer HDR-Modus</value>
@@ -268,7 +286,7 @@
     <value>keine Anwedung</value>
   </data>
   <data name="NoProfile" xml:space="preserve">
-    <value>Kein Profil zugewiesen</value>
+    <value>Kein Profil</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
@@ -278,6 +296,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Öffnen</value>
+  </data>
+  <data name="OutputDevice" xml:space="preserve">
+    <value>Ausgangsgerät</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorität</value>
@@ -314,6 +335,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
+  </data>
+  <data name="SetColorDepth" xml:space="preserve">
+    <value>Farbtiefe ändern</value>
   </data>
   <data name="SetHDR" xml:space="preserve">
     <value>HDR ändern</value>

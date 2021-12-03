@@ -59,17 +59,27 @@ namespace AutoHDR.Profiles.Actions
                         proc.StartInfo = new ProcessStartInfo(FilePath);
                         if (!string.IsNullOrEmpty(Arguments))
                             proc.StartInfo.Arguments = Arguments;
+                        CallNewLog(new CodectoryCore.Logging.LogEntry($"Starting {FilePath}"));
+
                         proc.Start();
                         if (WaitForEnd)
+                        {
+                            CallNewLog(new CodectoryCore.Logging.LogEntry($"Wait for end of {FilePath}"));
                             proc.WaitForExit();
+                            CallNewLog(new CodectoryCore.Logging.LogEntry($"Process {FilePath} ended."));
+                        }
                     }
                 }
                 else
-                    Tools.Logs.Add($"File {FilePath} not found.", true);
+                {
+                    CallNewLog(new CodectoryCore.Logging.LogEntry($"File {FilePath} doesn't exist.", CodectoryCore.Logging.LogEntryType.Error));
+                    return new ActionEndResult(false);
+                }
                 return new ActionEndResult(true);
             }
             catch (Exception ex)
             {
+                CallNewLog(new CodectoryCore.Logging.LogEntry($"{ ex.Message }\r\n{ ex.StackTrace}", CodectoryCore.Logging.LogEntryType.Error));
                 return new ActionEndResult(false, ex.Message, ex);
             }
         }

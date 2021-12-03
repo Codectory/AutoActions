@@ -24,7 +24,7 @@ namespace AutoHDR.UWP
         public static List<ApplicationItem> GetUWPApps()
         {
 
-            Tools.Logs.Add($"Retrieving UWP apps...", false);
+            Globals.Logs.Add($"Retrieving UWP apps...", false);
 
             List<ApplicationItem> uwpApps = new List<ApplicationItem>();
             var manager = new PackageManager();
@@ -66,7 +66,7 @@ namespace AutoHDR.UWP
             }
             catch (Exception ex)
             {
-                Tools.Logs.AddException($"Retrieving UWP apps failed.", ex);
+                Globals.Logs.AddException($"Retrieving UWP apps failed.", ex);
                 throw;
             }
         }

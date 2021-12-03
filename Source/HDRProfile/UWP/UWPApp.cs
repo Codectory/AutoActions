@@ -45,7 +45,7 @@ namespace AutoHDR.UWP
             }
             InstallLocation = package.InstalledLocation.Path;
             appxManifestPath = Path.Combine(InstallLocation, appxManifestPath);
-            Tools.Logs.Add($"Retrieving data of UWP app ({appxManifestPath})", false);
+            Globals.Logs.Add($"Retrieving data of UWP app ({appxManifestPath})", false);
             try
             {
                 using (StreamReader reader = new StreamReader(appxManifestPath))
@@ -70,7 +70,7 @@ namespace AutoHDR.UWP
                 string manifestContent = string.Empty;
                 if (File.Exists(appxManifestPath))
                     manifestContent = File.ReadAllText(appxManifestPath);
-                Tools.Logs.AddException($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.", ex);
+                Globals.Logs.AddException($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.", ex);
             }
         }
 

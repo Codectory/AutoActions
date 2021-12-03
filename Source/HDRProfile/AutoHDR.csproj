@@ -99,21 +99,30 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AudioSwitcher.AudioApi, Version=4.0.0.308, Culture=neutral, PublicKeyToken=fda5729e2db3a64f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AudioSwitcher.AudioApi.4.0.0-alpha5\lib\net45\AudioSwitcher.AudioApi.dll</HintPath>
+    </Reference>
+    <Reference Include="AudioSwitcher.AudioApi.CoreAudio, Version=4.0.0.308, Culture=neutral, PublicKeyToken=fda5729e2db3a64f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AudioSwitcher.AudioApi.CoreAudio.4.0.0-alpha5\lib\net45\AudioSwitcher.AudioApi.CoreAudio.dll</HintPath>
+    </Reference>
     <Reference Include="CCDWrapper, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CCDWrapper.1.0.1\lib\net35\CCDWrapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CodectoryCore.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Externals\CodectoryCore.Logging.dll</HintPath>
+    <Reference Include="CodectoryCore">
+      <HintPath>..\Externals\CodectoryCore.dll</HintPath>
     </Reference>
-    <Reference Include="CodectoryCore.UI.Wpf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Release\CodectoryCore.UI.Wpf.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CodectoryCore.Logging">
+      <HintPath>..\Externals\CodectoryCore.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="CodectoryCore.UI.Wpf">
+      <HintPath>..\Externals\CodectoryCore.UI.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="CodectoryCore.Windows">
-      <HintPath>Externals\CodectoryCore.Windows.dll</HintPath>
+      <HintPath>..\Externals\CodectoryCore.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="CodectoryCore.Windows.FileSystem">
+      <HintPath>..\Externals\CodectoryCore.Windows.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
@@ -177,10 +186,16 @@
     </Page>
     <Compile Include="ApplicationChangedEventArgs.cs" />
     <Compile Include="ApplicationProfileAssignment.cs" />
+    <Compile Include="Audio\AudioManager.cs" />
+    <Compile Include="Audio\AudioMasterChangedProvider.cs" />
+    <Compile Include="Audio\VolumeProvider.cs" />
     <Compile Include="Displays\DisplayInterop.cs" />
+    <Compile Include="FastObservableCollection.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Info\LogsStorage.cs" />
     <Compile Include="Profiles\Actions\ActionEndResult.cs" />
     <Compile Include="Profiles\Actions\ActionTypeDescription.cs" />
+    <Compile Include="Profiles\Actions\AudioDeviceAction.cs" />
     <Compile Include="Profiles\Actions\RunProgramAction.cs" />
     <Compile Include="Profiles\Actions\ApplicationAction.cs" />
     <Compile Include="Profiles\Actions\DisplayAction.cs" />
@@ -196,6 +211,12 @@
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Profiles\ProfileMode.cs" />
     <Compile Include="SortedObservableCollection.cs" />
+    <Compile Include="Views\AudioActionView.xaml.cs">
+      <DependentUpon>AudioActionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AutoHDRLogsView.xaml.cs">
+      <DependentUpon>AutoHDRLogsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RunProgramActionView.xaml.cs">
       <DependentUpon>RunProgramActionView.xaml</DependentUpon>
     </Compile>
@@ -236,11 +257,18 @@
       <DependentUpon>Locale_Texts.resx</DependentUpon>
     </Compile>
     <Compile Include="NightLightManager.cs" />
-    <Compile Include="Tools.cs" />
     <Compile Include="TrayMenuHelper.cs" />
     <Compile Include="UWP\AppxManifest.cs" />
     <Compile Include="UWP\UWPAppsManager.cs" />
     <Compile Include="UWP\UWPApp.cs" />
+    <Page Include="Views\AudioActionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AutoHDRLogsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\RunProgramActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -369,13 +397,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Externals\CodectoryCore.UI.Wpf.dll" />
-    <None Include="Externals\System.Windows.Interactivity.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Externals\CodectoryCore.Logging.dll" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Logo.ico" />

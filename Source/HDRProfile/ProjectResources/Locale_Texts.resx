@@ -174,6 +174,9 @@
   <data name="Arguments" xml:space="preserve">
     <value>Arguments</value>
   </data>
+  <data name="AudioAction" xml:space="preserve">
+    <value>Audio</value>
+  </data>
   <data name="AutoHDR" xml:space="preserve">
     <value>AutoHDR</value>
   </data>
@@ -198,8 +201,14 @@
   <data name="ChooseUWPApplication" xml:space="preserve">
     <value>Choose UWP app...</value>
   </data>
+  <data name="ColorDepth" xml:space="preserve">
+    <value>Color depth [bit]</value>
+  </data>
   <data name="CompatibilityModeToolTip" xml:space="preserve">
     <value>Restarts the application on first occurence, as the application may need HDR to be activated before launching it.</value>
+  </data>
+  <data name="CreateLogFile" xml:space="preserve">
+    <value>Create logfile</value>
   </data>
   <data name="CurrentApplication" xml:space="preserve">
     <value>Current application</value>
@@ -258,6 +267,12 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="InputDevice" xml:space="preserve">
+    <value>Input device</value>
+  </data>
+  <data name="LastAction" xml:space="preserve">
+    <value>Last action</value>
+  </data>
   <data name="Local" xml:space="preserve">
     <value>Local</value>
   </data>
@@ -267,6 +282,9 @@
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Logo.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Logs" xml:space="preserve">
+    <value>Logs</value>
   </data>
   <data name="ManagedHDR" xml:space="preserve">
     <value>Automated HDR mode</value>
@@ -297,6 +315,9 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="OutputDevice" xml:space="preserve">
+    <value>Output device</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priority</value>
@@ -333,6 +354,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SetColorDepth" xml:space="preserve">
+    <value>Set color depth</value>
   </data>
   <data name="SetHDR" xml:space="preserve">
     <value>Set HDR</value>

@@ -14,7 +14,7 @@ namespace AutoHDR.Displays
     [JsonObject(MemberSerialization.OptIn)]
     public class Display : BaseViewModel
     {
-        public static readonly Display AllDisplays = new Display(ProjectResources.Locale_Texts.AllDisplays, UInt32.MaxValue, new Size(0, 0), 0);
+        public static readonly Display AllDisplays = new Display(ProjectResources.Locale_Texts.AllDisplays, UInt32.MaxValue, UInt32.MaxValue, new Size(0, 0),0,0);
         private bool _managed = true;
 
         [JsonProperty]
@@ -35,7 +35,7 @@ namespace AutoHDR.Displays
         private uint _id;
 
         [JsonProperty]
-        public uint ID { get => _id; set { _id = value; OnPropertyChanged(); } }
+        public uint ID { get => _id; private set { _id = value; OnPropertyChanged(); } }
 
         private bool _hdrState;
 
@@ -51,18 +51,24 @@ namespace AutoHDR.Displays
 
         public int RefreshRate { get => _refreshRate; set { _refreshRate = value; OnPropertyChanged(); } }
 
+        private int _colorDepth;
+
+        public int ColorDepth { get => _colorDepth; set { _colorDepth = value; OnPropertyChanged(); } }
+
         private Display()
         {
 
 
         }
 
-        public Display(string name, uint uID, Size resolution,  int refreshRate)
+        public Display(string name, uint uID, uint id, Size resolution,  int refreshRate, int colorDepth)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             UID = uID;
+            ID = id;
             Resolution = resolution;
             RefreshRate = refreshRate;
+            ColorDepth = colorDepth;
         }
 
         public void UpdateHDRState()
@@ -72,12 +78,17 @@ namespace AutoHDR.Displays
 
         internal void SetResolution(Size resolution)
         {
-            DisplayManager.Instance.SetResolutionAndRefreshRate(ID, resolution, RefreshRate);
+            DisplayManager.Instance.SetResolution(ID, resolution);
         }
 
         internal void SetRefreshRate(int refreshRate)
         {
-            DisplayManager.Instance.SetResolutionAndRefreshRate(ID, Resolution, refreshRate);
+            DisplayManager.Instance.SetRefreshRate(ID, refreshRate);
+        }
+
+        internal void SetColorDepth(int colorDepth)
+        {
+            DisplayManager.Instance.SetColorDepth(ID, colorDepth);
         }
 
         public override bool Equals(object obj)
