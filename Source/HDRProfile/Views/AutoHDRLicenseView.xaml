@@ -41,7 +41,9 @@
         </Grid>
         <TextBlock Grid.Row="1" Text="{x:Static pres:Locale_Texts.License}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
         <Border Style="{StaticResource RoundedBorder}"  Grid.Row="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" >
-            <TextBlock Text="{x:Static pres:Locale_Texts.LicenseContent}"/>
+            <ScrollViewer>
+            <TextBlock Text="{x:Static pres:Locale_Texts.LicenseContent}" TextAlignment="Center"/>
+            </ScrollViewer>
         </Border>
 
 
