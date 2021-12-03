@@ -127,6 +127,7 @@ namespace AutoHDR.Profiles.Actions
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"{(EnableHDR ? "Activating" : "Deactivating")} HDR for display {Display.Name}"));
                         Displays.HDRController.SetHDRState(Display.UID, EnableHDR);
                     }
+                System.Threading.Thread.Sleep(100);
                 if (SetResolution)
                     if (Display.Equals(Displays.Display.AllDisplays))
                     {
@@ -139,7 +140,7 @@ namespace AutoHDR.Profiles.Actions
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting resolution {Resolution} for display {Display.Name}"));
                         Display.SetResolution(Resolution);
                     }
-
+                System.Threading.Thread.Sleep(100);
                 if (SetRefreshRate)
                     if (Display.Equals(Displays.Display.AllDisplays))
                     {
@@ -153,7 +154,7 @@ namespace AutoHDR.Profiles.Actions
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting refresh rate {RefreshRate} for display {Display.Name}"));
                         Display.SetRefreshRate(RefreshRate);
                     }
-
+                System.Threading.Thread.Sleep(100);
                 if (SetColorDepth)
                     if (Display.Equals(Displays.Display.AllDisplays))
                     {
@@ -167,7 +168,7 @@ namespace AutoHDR.Profiles.Actions
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting color depth {ColorDepth} for display {Display.Name}"));
                         Display.SetColorDepth(RefreshRate);
                     }
-
+                System.Threading.Thread.Sleep(100);
                 return new ActionEndResult(true);
             }
             catch (Exception ex)

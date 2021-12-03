@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using AutoHDR.ProjectResources;
+using AutoHDR.Theming;
 
 namespace AutoHDR
 {
@@ -14,9 +15,11 @@ namespace AutoHDR
     /// Interaktionslogik für "App.xaml"
     /// </summary>
     ///
-
     public partial class App : Application
     {
+
+        public static Theme Theme { get; set; } = Theme.Light;
+
         static Mutex mutex;
 
         [STAThread]

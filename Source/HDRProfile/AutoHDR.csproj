@@ -180,6 +180,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Theming\ThemeResourceDirectory.cs" />
+    <Compile Include="Theming\Theme.cs" />
+    <Compile Include="Windows\UI.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -265,6 +268,10 @@
     <Compile Include="UWP\AppxManifest.cs" />
     <Compile Include="UWP\UWPAppsManager.cs" />
     <Compile Include="UWP\UWPApp.cs" />
+    <Page Include="Theming\LightColors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AudioActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -208,16 +208,9 @@
                         <RowDefinition Height="Auto"  />
                     </Grid.RowDefinitions>
                     <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0" Grid.ColumnSpan="3">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"  />
-                            </Grid.RowDefinitions>
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                <ListView x:Name="ApplicationList"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}"  ctrl:ListViewLayoutManager.Enabled="true" BorderBrush="{x:Null}" Foreground="{x:Null}">
-
+     
+                            <ListView x:Name="ApplicationList" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding Settings.ApplicationProfileAssignments}"  ctrl:ListViewLayoutManager.Enabled="true" BorderBrush="{x:Null}" Foreground="{x:Null}">
                                     <ListView.View>
-
                                         <GridView>
                                             <GridViewColumn Header="{x:Static pres:Locale_Texts.Priority}"  Width="Auto">
                                                 <GridViewColumn.CellTemplate>
@@ -251,11 +244,9 @@
                                     </ListView.View>
                                 </ListView>
 
-
-
                                 <!--<ListBox   x:Name="ApplicationList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource AssignmentTemplate}" ItemsSource="{Binding Settings.ApplicationProfileAssignments}" ScrollViewer.VerticalScrollBarVisibility="Disabled"  Background="{x:Null}"  BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top"/>-->
-                            </ScrollViewer>
-                        </Grid>
+                      
+               
                     </Border>
                     <Grid Grid.Row="1" Grid.ColumnSpan="3" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                         <Grid.ColumnDefinitions>

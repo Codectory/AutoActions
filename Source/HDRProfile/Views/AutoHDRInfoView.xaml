@@ -8,7 +8,7 @@
              xmlns:info="clr-namespace:AutoHDR.Info"
              xmlns:local="clr-namespace:AutoHDR.Views"
              d:DataContext="{d:DesignInstance Type=info:AutoHDRInfo, IsDesignTimeCreatable=False}"
-             mc:Ignorable="d" MinWidth="300" MinHeight="600" Background="White" >
+             mc:Ignorable="d" MinWidth="300" MinHeight="600" >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

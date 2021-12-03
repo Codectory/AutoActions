@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="ActiveColor">#2ac987</Color>
+    <Color x:Key="AccentColor">#ff6666</Color>
+
+    <Color x:Key="ControlMouseOverColor">#fa8e8e</Color>
+    <Color x:Key="ControlPressedColor">#e36b6b</Color>
+
+    <Color x:Key="WindowColor">White</Color>
+    <Color x:Key="SelectedBackgroundColor">#fca9a9</Color>
+    <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
+    <Color x:Key="ControlLightColor">White</Color>
+    <Color x:Key="ControlMediumColor">#FFCCCCCC</Color>
+    <Color x:Key="GlyphColor">#FF444444</Color>
+    <Color x:Key="DisabledBorderDarkColor">#FF888888</Color>
+</ResourceDictionary>

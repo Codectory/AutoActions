@@ -35,7 +35,7 @@
 
         <DataTemplate x:Key="ProfileActionItemTemplate" DataType="IProfileAction">
             <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}"  BorderThickness="1" Margin="5,5" Grid.Row="0">
-                <Grid MinWidth="100" MinHeight="50" Width="Auto" >
+                <Grid MinWidth="100" MinHeight="60" Width="Auto" Height="60" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -46,11 +46,11 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Column="2" Grid.Row="0" Content="-"  VerticalAlignment="top" HorizontalAlignment="Left" Margin="5" Height="15" Width="15" FontSize="5" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:Locale_Texts.ActionType}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="DemiBold" />
-                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static pres:Locale_Texts.Actions}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="DemiBold" />
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ActionTypeName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ActionDescription}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ActionDescription}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <Button Grid.Column="2" Grid.Row="0" Content="-"  VerticalAlignment="top" HorizontalAlignment="Left" Margin="5" Height="20" Width="20" FontSize="10" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:Locale_Texts.ActionType}" Margin="5,1" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static pres:Locale_Texts.Actions}"  Margin="5,1" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ActionTypeName}"  Margin="5,1" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ActionDescription}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ActionDescription}"  Margin="5,1" VerticalAlignment="Center" HorizontalAlignment="Left" />
                 </Grid>
             </Border>
         </DataTemplate>
@@ -104,7 +104,7 @@
                     <TextBox x:Name="NameTextBox" Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="10,5" FontSize="15" FontWeight="DemiBold"></TextBox>
                     <CheckBox  Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartApplication, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"  />
 
-                    <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="75">
+                    <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="95">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -117,7 +117,7 @@
 
                     </Grid>
                 </Border>
-                    <Border  Grid.Column="1"  Grid.Row="4" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="75">
+                    <Border  Grid.Column="1"  Grid.Row="4" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="95">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -130,7 +130,7 @@
 
                     </Grid>
                 </Border>
-                    <Border Grid.Column="1"  Grid.Row="5" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="75">
+                    <Border Grid.Column="1"  Grid.Row="5" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="95">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -144,7 +144,7 @@
 
                     </Grid>
                 </Border>
-                    <Border Grid.Column="1"  Grid.Row="6" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="75" >
+                    <Border Grid.Column="1"  Grid.Row="6" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="95" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>

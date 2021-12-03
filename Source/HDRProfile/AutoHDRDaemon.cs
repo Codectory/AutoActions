@@ -9,6 +9,7 @@ using CodectoryCore.Logging;
 using CodectoryCore.UI.Wpf;
 using CodectoryCore.Windows;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -166,59 +167,39 @@ namespace AutoHDR
 
                 if (profile == null)
                     return;
-                Globals.Logs.Add($"Profile changed to {profile.Name}", false);
-     
+                bool profileChanged =  Equals(profile, CurrentProfile);
+      
+                CurrentProfile = profile;
+                if (profileChanged)
+                    Globals.Logs.Add($"Profile changed to {profile.Name}", false);
+                List<IProfileAction> actions = new List<IProfileAction>();
                 switch (changedType)
                 {
                     case ApplicationChangedType.Started:
-                        if (profile.ApplicationStarted.Count > 0)
-                            App.Current.Dispatcher.Invoke(() => LastActions.Clear());
-                        foreach (var action in profile.ApplicationStarted)
-                        {
-                            App.Current.Dispatcher.Invoke(() => LastActions.Add(action));                       
-                            action.NewLog += ActionLog;
-                            action.RunAction();
-                            action.NewLog -= ActionLog;
-                        }
+                        actions = profile.ApplicationStarted.ToList();
                         break;
                     case ApplicationChangedType.Closed:
-                        if (profile.ApplicationClosed.Count > 0)
-                            App.Current.Dispatcher.Invoke(() => LastActions.Clear());
-                        foreach (var action in profile.ApplicationClosed)
-                        {
-                            App.Current.Dispatcher.Invoke(() => LastActions.Add(action));
-                            action.NewLog += ActionLog;
-                            action.RunAction();
-                            action.NewLog -= ActionLog;
-                        }
+                        actions = profile.ApplicationClosed.ToList();
                         break;
                     case ApplicationChangedType.GotFocus:
-                        if (profile.ApplicationGotFocus.Count > 0)
-                            App.Current.Dispatcher.Invoke(() => LastActions.Clear());
-                        foreach (var action in profile.ApplicationGotFocus)
-                        {
-                            App.Current.Dispatcher.Invoke(() => LastActions.Add(action));
-                            action.NewLog += ActionLog;
-                            action.RunAction();
-                            action.NewLog -= ActionLog;
-
-                        }
+                        actions = profile.ApplicationGotFocus.ToList();
                         break;
                     case ApplicationChangedType.LostFocus:
-                        if (profile.ApplicationLostFocus.Count > 0)
-                            App.Current.Dispatcher.Invoke(() => LastActions.Clear());
-                        foreach (var action in profile.ApplicationLostFocus)
-                        {
-                            App.Current.Dispatcher.Invoke(() => LastActions.Add(action));
-                            action.NewLog += ActionLog;
-                            action.RunAction();
-                            action.NewLog -= ActionLog;
-                        }
+                        actions = profile.ApplicationLostFocus.ToList();
                         break;
+                }
+                if (actions.Count > 0)
+                    App.Current.Dispatcher.Invoke(() => LastActions.Clear());
+                foreach (var action in actions)
+                {
+                    App.Current.Dispatcher.Invoke(() => LastActions.Add(action));
+                    action.NewLog += ActionLog;
+                    action.RunAction();
+                    action.NewLog -= ActionLog;
+                    System.Threading.Thread.Sleep(100);
                 }
                 if (profile.RestartApplication && changedType == ApplicationChangedType.Started)
                     assignment.Application.Restart();
-                CurrentProfile = profile;
                 if (changedType == ApplicationChangedType.Closed)
                     CurrentProfile = null;
             }
@@ -247,15 +228,11 @@ namespace AutoHDR
                       {
                           ShowInfo(data);
                       }));
-
                 }
                 else
                     Globals.Logs.Add($"Local version is up to date.", false);
-
             });
         }
-
-
         private void InitializeTrayMenuHelper()
         {
             TrayMenuHelper = new TrayMenuHelper();

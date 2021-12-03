@@ -6,6 +6,7 @@
              xmlns:uwp="clr-namespace:AutoHDR.UWP"
              xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
              xmlns:info="clr-namespace:AutoHDR.Info"
+             xmlns:thm="clr-namespace:AutoHDR.Theming"
              xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
@@ -13,108 +14,41 @@
              StartupUri="Views\AutoHDRMainView.xaml">
 
     <Application.Resources>
-
-
-
         <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
         <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
+ 
+        
         <Color x:Key="ActiveColor">#2ac987</Color>
         <Color x:Key="AccentColor">#ff6666</Color>
 
         <Color x:Key="ControlMouseOverColor">#fa8e8e</Color>
         <Color x:Key="ControlPressedColor">#e36b6b</Color>
 
-
-
-
-        <!--Control colors.-->
-        <Color x:Key="WindowColor">#FFE8EDF9</Color>
-        <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
-        <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
-
-        <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
-        <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
-        <Color x:Key="DisabledForegroundColor">#FF888888</Color>
-
+        <Color x:Key="WindowColor">White</Color>
         <Color x:Key="SelectedBackgroundColor">#fca9a9</Color>
         <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
-
         <Color x:Key="ControlLightColor">White</Color>
         <Color x:Key="ControlMediumColor">#FFCCCCCC</Color>
-        <Color x:Key="ControlDarkColor">#FF444444</Color>
-
         <Color x:Key="GlyphColor">#FF444444</Color>
+        <Color x:Key="DisabledForegroundColor">#cfcfcf</Color>
+        <Color x:Key="DisabledControlDarkColor">#8a8a8a</Color>
 
-        <!--Border colors-->
-        <Color x:Key="BorderLightColor">#FFCCCCCC</Color>
-        <Color x:Key="BorderMediumColor">#fa4d4d</Color>
-        <Color x:Key="BorderDarkColor">#de2323</Color>
-
-        <Color x:Key="PressedBorderLightColor">#FF888888</Color>
-        <Color x:Key="PressedBorderDarkColor">#FF444444</Color>
-
-        <Color x:Key="DisabledBorderLightColor">#FFAAAAAA</Color>
         <Color x:Key="DisabledBorderDarkColor">#FF888888</Color>
 
-        <Color x:Key="DefaultBorderBrushDarkColor">Black</Color>
-
-        <!--Control-specific resources.-->
-        <Color x:Key="HeaderTopColor">#FFC5CBF9</Color>
-        <Color x:Key="DatagridCurrentCellBorderColor">Black</Color>
-        <Color x:Key="SliderTrackDarkColor">#FFC5CBF9</Color>
+        
+        
         <system:Double x:Key="DefaultFontSize">15</system:Double>
         
 
-        <Color x:Key="NavButtonFrameColor">#fa4d4d</Color>
-
-        <LinearGradientBrush x:Key="MenuPopupBrush"
-                     EndPoint="0.5,1"
-                     StartPoint="0.5,0">
-            <GradientStop Color="{DynamicResource ControlLightColor}"
-                Offset="0" />
-            <GradientStop Color="{DynamicResource ControlMediumColor}"
-                Offset="0.5" />
-            <GradientStop Color="{DynamicResource ControlLightColor}"
-                Offset="1" />
-        </LinearGradientBrush>
-
-        <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill"
-                     StartPoint="0,0"
-                     EndPoint="1,0">
-            <LinearGradientBrush.GradientStops>
-                <GradientStopCollection>
-                    <GradientStop Color="#000000FF"
-                    Offset="0" />
-                    <GradientStop Color="#ff6666"
-                    Offset="0.4" />
-                    <GradientStop Color="#ff6666"
-                    Offset="0.6" />
-                    <GradientStop Color="#000000FF"
-                    Offset="1" />
-                </GradientStopCollection>
-            </LinearGradientBrush.GradientStops>
-        </LinearGradientBrush>
 
 
 
-
-
-
-
-
-
-
-
-
-        <!--<Color x:Key="AccentColor">#5d9ac7</Color> -->
-        <SolidColorBrush x:Key="ButtonForegroundBrush">White</SolidColorBrush>
-
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowColor}"/>
+        <SolidColorBrush x:Key="ButtonForegroundBrush"  Color="{StaticResource WindowColor}"/>
         <SolidColorBrush x:Key="ActiveBrush"  Color="{StaticResource ActiveColor}"/>
         <SolidColorBrush x:Key="AccentBrush"  Color="{StaticResource AccentColor}"/>
         <SolidColorBrush x:Key="HighlightedBrush"  Color="{StaticResource SelectedBackgroundColor}"/>
         <SolidColorBrush x:Key="MouseOverBrush"  Color="{StaticResource ControlMouseOverColor}"/>
-
-
         <SolidColorBrush x:Key="InactiveAccentBrush">#ad7b7b</SolidColorBrush>
         <SolidColorBrush x:Key="DisabledAccentBrush">#949ea6</SolidColorBrush>
         <SolidColorBrush x:Key="HighlightedInactiveAccentBrush" Color="#95bfdb"/>
@@ -133,7 +67,16 @@
             <Setter Property="Foreground" Value="Black"/>
 
         </Style>
+        
         <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}"/>
+
+
+        <Style x:Key="DefaultUserControl" TargetType="UserControl">
+            <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="Black"/>
+
+        </Style>
+        <Style TargetType="UserControl" BasedOn="{StaticResource DefaultUserControl}"/>
 
 
         <Style x:Key="RoundedBorder" TargetType="Border">
