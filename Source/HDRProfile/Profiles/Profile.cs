@@ -14,6 +14,7 @@ namespace AutoHDR.Profiles
 {
     public enum ProfileActionListType
     {
+        None,
         Started,
         Closed,
         GotFocus,
@@ -24,17 +25,32 @@ namespace AutoHDR.Profiles
     public class Profile : BaseViewModel, IEquatable<Profile>
     {
 
-     
+        public static Profile DefaultProfile()
+        {
+            Profiles.Profile defaultProfile = new Profiles.Profile();
+            defaultProfile.Name = "HDR";
+            Profiles.Actions.DisplayAction startAction = new Profiles.Actions.DisplayAction();
+            startAction.Display = Displays.Display.AllDisplays;
+            startAction.SetHDR = true;
+            startAction.EnableHDR = true;
+            Profiles.Actions.DisplayAction endAction = new Profiles.Actions.DisplayAction();
+            endAction.Display = Displays.Display.AllDisplays;
+            endAction.SetHDR = true;
+            endAction.EnableHDR = false;
+            defaultProfile.ApplicationStarted.Add(startAction);
+            defaultProfile.ApplicationClosed.Add(endAction);
+            return defaultProfile;
+        }
+
 
         public RelayCommand AddStartedActionCommand { get; private set; }
         public RelayCommand AddClosedActionCommand { get; private set; }
         public RelayCommand AddGotFocusActionCommand { get; private set; }
         public RelayCommand AddLostFocusActionCommand { get; private set; }
+
+        public RelayCommand<ProfileActionBase> EditProfileActionCommand { get; private set; }
         public RelayCommand<ProfileActionBase> RemoveProfileActionCommand { get; private set; }
-        public RelayCommand<ProfileActionBase> RemoveStartedActionCommand { get; private set; }
-        public RelayCommand<ProfileActionBase> RemoveClosedActionCommand { get; private set; }
-        public RelayCommand<ProfileActionBase> RemoveGotFocusActionCommand { get; private set; }
-        public RelayCommand<ProfileActionBase> RemoveLostFocusActionCommand { get; private set; }
+
 
 
         public Profile()
@@ -44,12 +60,8 @@ namespace AutoHDR.Profiles
             AddClosedActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.Closed));
             AddGotFocusActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.GotFocus));
             AddLostFocusActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.LostFocus));
+            EditProfileActionCommand = new RelayCommand<ProfileActionBase>((pa) => EditProfileAction(pa));
             RemoveProfileActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(pa));
-
-            RemoveStartedActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.Started, pa));
-            RemoveClosedActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.Closed, pa));
-            RemoveGotFocusActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.GotFocus, pa));
-            RemoveLostFocusActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(ProfileActionListType.LostFocus, pa));
         }
 
         private Guid _guid = Guid.Empty;
@@ -141,6 +153,49 @@ namespace AutoHDR.Profiles
             };
             if (DialogService != null)
                 DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
+        }
+
+        public void EditProfileAction(ProfileActionBase profileAction)
+        {
+            ProfileActionListType listType = GetProfileActionListType(profileAction);
+            ProfileActionAdder adder = new ProfileActionAdder(profileAction);
+
+            adder.DialogService = DialogService;
+            adder.OKClicked += (o, e) =>
+            {
+                RemoveProfileAction(listType, profileAction);
+                switch (listType)
+                {
+                    case ProfileActionListType.Started:
+                        ApplicationStarted.Add(adder.ProfileAction);
+                        break;
+                    case ProfileActionListType.Closed:
+                        ApplicationClosed.Add(adder.ProfileAction);
+                        break;
+                    case ProfileActionListType.GotFocus:
+                        ApplicationGotFocus.Add(adder.ProfileAction);
+                        break;
+                    case ProfileActionListType.LostFocus:
+                        ApplicationLostFocus.Add(adder.ProfileAction);
+                        break;
+
+                }
+            };
+            if (DialogService != null)
+                DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
+        }
+
+        private ProfileActionListType GetProfileActionListType(ProfileActionBase profileAction)
+        {
+            if (ApplicationStarted.Contains(profileAction))
+                return ProfileActionListType.Started;
+            if (ApplicationClosed.Contains(profileAction))
+                return ProfileActionListType.Closed;
+            if (ApplicationGotFocus.Contains(profileAction))
+                return ProfileActionListType.GotFocus;
+            if (ApplicationLostFocus.Contains(profileAction))
+                return ProfileActionListType.LostFocus;
+            return ProfileActionListType.None;
         }
 
         public void RemoveProfileAction(ProfileActionBase profileAction)

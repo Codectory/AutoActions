@@ -35,22 +35,26 @@
 
         <DataTemplate x:Key="ProfileActionItemTemplate" DataType="IProfileAction">
             <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}"  BorderThickness="1" Margin="5,5" Grid.Row="0">
-                <Grid MinWidth="100" MinHeight="60" Width="Auto" Height="60" >
+                <Grid MinWidth="100" Width="300" Height="80">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Column="2" Grid.Row="0" Content="-"  VerticalAlignment="top" HorizontalAlignment="Left" Margin="5" Height="20" Width="20" FontSize="10" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:Locale_Texts.ActionType}" Margin="5,1" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="DemiBold" />
-                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static pres:Locale_Texts.Actions}"  Margin="5,1" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="DemiBold" />
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ActionTypeName}"  Margin="5,1" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ActionDescription}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ActionDescription}"  Margin="5,1" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="1" Content="..."   VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,5,0" Width="20"  FontSize="20" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.EditProfileActionCommand}" CommandParameter="{Binding}" />
+                    <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="1"   Content="-"  VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,5,0" Width="20" FontSize="20" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:Locale_Texts.ActionType}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3"  Grid.Row="1" Text="{Binding ActionTypeName}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{x:Static pres:Locale_Texts.Actions}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBlock Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="3" Text="{Binding ActionDescription}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ActionDescription}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" />
                 </Grid>
             </Border>
         </DataTemplate>
@@ -104,39 +108,39 @@
                     <TextBox x:Name="NameTextBox" Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="10,5" FontSize="15" FontWeight="DemiBold"></TextBox>
                     <CheckBox  Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartApplication, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"  />
 
-                    <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="95">
+                    <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="120">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5"  Height="Auto"  Command="{Binding AddStartedActionCommand }" />
+                            <Button Grid.Column="0" FontSize="20" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5"  Height="Auto"  Command="{Binding AddStartedActionCommand }" />
                         <ScrollViewer Grid.Column="1" x:Name="ScrollViewerStart" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Height="Auto">
                                 <ItemsControl  MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationStarted}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
                         </ScrollViewer>
 
                     </Grid>
                 </Border>
-                    <Border  Grid.Column="1"  Grid.Row="4" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="95">
+                    <Border  Grid.Column="1"  Grid.Row="4" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="120">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5" Height="Auto"  Command="{Binding AddClosedActionCommand}"/>
+                            <Button Grid.Column="0" FontSize="20" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5" Height="Auto"  Command="{Binding AddClosedActionCommand}"/>
                         <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerStopped" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                                 <ItemsControl Grid.Column="1" MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationClosed}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
                         </ScrollViewer>
 
                     </Grid>
                 </Border>
-                    <Border Grid.Column="1"  Grid.Row="5" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="95">
+                    <Border Grid.Column="1"  Grid.Row="5" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="120">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5" Height="Auto" Command="{Binding AddGotFocusActionCommand}"/>
+                            <Button Grid.Column="0" FontSize="20" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5" Height="Auto" Command="{Binding AddGotFocusActionCommand}"/>
                         <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerFocused" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
                                 <ItemsControl Grid.Column="1" MinHeight="50"   ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationGotFocus}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
@@ -144,13 +148,13 @@
 
                     </Grid>
                 </Border>
-                    <Border Grid.Column="1"  Grid.Row="6" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="95" >
+                    <Border Grid.Column="1"  Grid.Row="6" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,2" Height="120" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="+" Background="{StaticResource ActiveBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="5" Height="Auto" Command="{Binding AddLostFocusActionCommand}" />
+                            <Button Grid.Column="0" FontSize="20" Content="+" Background="{StaticResource ActiveBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="5" Height="Auto" Command="{Binding AddLostFocusActionCommand}" />
                         <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerLost" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
                                 <ItemsControl Grid.Column="1" MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationLostFocus}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
@@ -165,13 +169,14 @@
         </Border>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Height="Auto">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width=" Auto"/>
                 <ColumnDefinition/>
 
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"  Width="Auto" Command="{Binding AddProfileCommand}" Content="{x:Static pres:Locale_Texts.AddProfile}"    Margin="10,5,5,10" Height="Auto"  />
-            <Button Grid.Column="1" Width="Auto" Command="{Binding RemoveProfileCommand}" CommandParameter="{Binding ElementName=ProfileList, Path=SelectedItem}"  Height="Auto" Content="{x:Static pres:Locale_Texts.RemoveProfile}" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" BorderBrush="#FF1C8580"  />
+            <Button Grid.Column="1"  Width="30" FontSize="20" Command="{Binding AddProfileCommand}" Content="+"    Margin="10,5,5,10" Height="Auto"  />
+            <Button Grid.Column="2" Width="30" FontSize="20" Command="{Binding RemoveProfileCommand}" CommandParameter="{Binding ElementName=ProfileList, Path=SelectedItem}"  Height="Auto" Content="-" IsEnabled="{Binding ElementName=ProfileList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" />
         </Grid>
 
     </Grid>

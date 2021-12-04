@@ -9,5 +9,9 @@ namespace AutoHDR.Info
 {
     public class AutoHDRLicense : DialogViewModelBase
     {
+        public AutoHDRLicense()
+        {
+            Title = ProjectResources.Locale_Texts.License;
+        }
     }
 }

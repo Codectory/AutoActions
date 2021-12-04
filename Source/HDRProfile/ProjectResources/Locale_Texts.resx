@@ -240,6 +240,9 @@
   <data name="DownloadNewestVersion" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="EditProfileAction" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>

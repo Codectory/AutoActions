@@ -17,7 +17,11 @@ namespace AutoHDR.Profiles.Actions
     {
 
 
+        private bool _editMode = false;
         private bool _canCreate = false;
+
+        public bool CanCreate { get => _canCreate; set { _canCreate = value; OnPropertyChanged(); } }
+        public bool EditMode { get => _editMode; set { _editMode = value; OnPropertyChanged(); } }
 
 
         private ActionTypeDescription _actionType = null;
@@ -52,7 +56,7 @@ namespace AutoHDR.Profiles.Actions
 
         private IProfileAction _profileAction = null;
 
-        public IProfileAction ProfileAction { get => _profileAction; private set { _profileAction = value; OnPropertyChanged(); } }
+        public IProfileAction ProfileAction { get => _profileAction; set { _profileAction = value; OnPropertyChanged(); } }
 
         public List<ActionTypeDescription> ProfileActions
         {
@@ -69,7 +73,19 @@ namespace AutoHDR.Profiles.Actions
 
         public ProfileActionAdder()
         {
+            EditMode = false;
             Title = Locale_Texts.AddProfileAction;
+            CreateRelayCommands();
+        }
+
+        public ProfileActionAdder(IProfileAction action)
+        {
+            EditMode = true;
+            ActionType = ProfileActions.First(d => d.ActionType.Equals(action.GetType()));
+            ContentControlViewModel = (BaseViewModel)action;
+
+            Title = Locale_Texts.EditProfileAction;
+
             CreateRelayCommands();
         }
 
@@ -85,7 +101,7 @@ namespace AutoHDR.Profiles.Actions
             CanCreate = ActionType != null;
         }
 
-        public bool CanCreate { get => _canCreate; set { _canCreate = value; OnPropertyChanged(); } }
+
 
 
         public void CreateBaseProfileAction(object parameter)

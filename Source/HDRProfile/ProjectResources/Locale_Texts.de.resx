@@ -231,6 +231,9 @@
   <data name="DownloadNewestVersion" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="EditProfileAction" xml:space="preserve">
+    <value>Editieren</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
   </data>
@@ -371,6 +374,9 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>

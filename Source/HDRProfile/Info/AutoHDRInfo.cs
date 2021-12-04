@@ -94,6 +94,7 @@ namespace AutoHDR.Info
         {
             CreateRelayCommands();
             Version = VersionExtension.ApplicationVersion(System.Reflection.Assembly.GetExecutingAssembly());
+            Title = ProjectResources.Locale_Texts.Info;
         }
 
         private void CreateRelayCommands()

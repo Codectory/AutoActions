@@ -1,4 +1,5 @@
-﻿using CodectoryCore.Logging;
+﻿using AutoHDR.Profiles;
+using CodectoryCore.Logging;
 using CodectoryCore.UI.Wpf;
 using System;
 using System.Collections.Generic;
@@ -71,10 +72,9 @@ namespace AutoHDR
                 {
                     Globals.Logs.Add("No settings found. Creating settings file...", false);
                     Settings = new UserAppSettings();
-                    _settingsLoadedOnce = true;
-
+                    Settings.ApplicationProfiles.Add(Profile.DefaultProfile());
+                   _settingsLoadedOnce = true;
                 }
-
                 SaveSettings();
 
             }
@@ -96,6 +96,7 @@ namespace AutoHDR
             Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
             Globals.Logs.Add("Settings loaded", false);
         }
+
 
         [Obsolete]
         private UserAppSettings LoadObsoleteHDRSettings()
