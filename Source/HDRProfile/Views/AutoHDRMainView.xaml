@@ -216,7 +216,8 @@
                     <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0" Grid.ColumnSpan="3">
 
                         <Grid Grid.IsSharedSizeScope="True">
-                        <ListBox Name="ApplicationList"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}" HorizontalContentAlignment="Stretch">
+                            <ScrollViewer>
+                        <ListBox Name="ApplicationList"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}" HorizontalContentAlignment="Stretch" >
                             <ListBox.Template>
                                 <ControlTemplate>
                                     <DockPanel LastChildFill="True">
@@ -253,6 +254,7 @@
                                     </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+                            </ScrollViewer>
                         </Grid>
                     </Border>
                     <Grid Grid.Row="1" Grid.ColumnSpan="3" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">
