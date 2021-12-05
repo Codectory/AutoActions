@@ -306,7 +306,8 @@ namespace AutoHDR
         private void LoadSettings()
         {
             Globals.Instance.LoadSettings();
-
+            FixAssignments();
+            Settings.ApplicationProfileAssignments.Sort(a => a.Position, ListSortDirection.Ascending);
             Settings.ApplicationProfileAssignments.CollectionChanged += ApplicationProfileAssigments_CollectionChanged;
             Settings.ApplicationProfiles.CollectionChanged += ApplicationProfiles_CollectionChanged;
             Settings.Monitors.CollectionChanged += Monitors_CollectionChanged;
@@ -323,6 +324,37 @@ namespace AutoHDR
 
             Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
             Globals.Logs.Add("Settings loaded", false);
+        }
+
+        private void FixAssignments()
+        {
+            int count = Settings.ApplicationProfileAssignments.Count;
+            for (int i = 0; i < count; i++)
+            {
+                int positionCount = Settings.ApplicationProfileAssignments.Count(a => a.Position == i);
+                if (positionCount == 0)
+                {
+                    int u = i;
+                    while (Settings.ApplicationProfileAssignments.Count(a => a.Position == i) == 0)
+                    {
+                        var assignemnt = Settings.ApplicationProfileAssignments.FirstOrDefault(a => a.Position == u);
+                        if (assignemnt != null)
+                            assignemnt.Position = i;
+                        u++;
+                    }
+                }
+                if (positionCount > 1)
+                    Settings.ApplicationProfileAssignments.First(a => a.Position == i).Position = i + 1;
+            }
+            while (Settings.ApplicationProfileAssignments.Any(a => a.Position >= count))
+            {
+                foreach (var assignment in Settings.ApplicationProfileAssignments)
+                    if (assignment.Position >= count)
+                        do
+                        {
+                            assignment.Position = assignment.Position - 1;
+                         } while (Settings.ApplicationProfileAssignments.Count(a => a.Position == assignment.Position) > 1);
+            }
         }
 
 

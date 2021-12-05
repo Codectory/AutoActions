@@ -79,7 +79,7 @@ namespace AutoHDR.Displays
             while (!_monitorCancelRequested)
             {
                 bool currentValue = false;
-
+                MergeMonitors(GetActiveMonitors());
                 foreach (Display monitor in Monitors)
                 {
                     monitor.UpdateHDRState();
