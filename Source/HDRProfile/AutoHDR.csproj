@@ -187,8 +187,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ApplicationChangedEventArgs.cs" />
-    <Compile Include="ApplicationProfileAssignment.cs" />
+    <Compile Include="Applications\ApplicationChangedEventArgs.cs" />
+    <Compile Include="Applications\ApplicationProfileAssignment.cs" />
     <Compile Include="Audio\AudioManager.cs" />
     <Compile Include="Audio\AudioMasterChangedProvider.cs" />
     <Compile Include="Audio\VolumeProvider.cs" />
@@ -251,7 +251,7 @@
       <DependentUpon>UWPApplicationDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UWP\UWPApplicationDialog.cs" />
-    <Compile Include="ApplicationState.cs" />
+    <Compile Include="Applications\ApplicationState.cs" />
     <Compile Include="Displays\HDRController.cs" />
     <Compile Include="Displays\Display.cs" />
     <Compile Include="Displays\DisplayManager.cs" />
@@ -350,11 +350,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Locale_Enums.resx</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationAdder.cs" />
+    <Compile Include="Applications\ApplicationAdder.cs" />
     <Compile Include="Views\ApplicationAdderView.xaml.cs">
       <DependentUpon>ApplicationAdderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationItem.cs" />
+    <Compile Include="Applications\ApplicationItem.cs" />
     <Compile Include="ProcessWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

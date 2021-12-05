@@ -47,6 +47,8 @@ namespace AutoHDR
         public RelayCommand ActivateHDRCommand { get; private set; }
         public RelayCommand DeactivateHDRCommand { get; private set; }
         public RelayCommand AddAssignmentCommand { get; private set; }
+        public RelayCommand<ApplicationProfileAssignment> EditApplicationCommand { get; private set; }
+
         public RelayCommand<ApplicationProfileAssignment> RemoveAssignmentCommand { get; private set; }
 
         public RelayCommand<ApplicationProfileAssignment> MoveAssignmentUpCommand { get; private set; }
@@ -260,6 +262,7 @@ namespace AutoHDR
             ActivateHDRCommand = new RelayCommand(DisplayManager.Instance.ActivateHDR);
             DeactivateHDRCommand = new RelayCommand(DisplayManager.Instance.DeactivateHDR);
             AddAssignmentCommand = new RelayCommand(AddAssignment);
+            EditApplicationCommand  = new RelayCommand<ApplicationProfileAssignment>(EditApplication);
             RemoveAssignmentCommand = new RelayCommand<ApplicationProfileAssignment>(RemoveAssignment);
 
             MoveAssignmentUpCommand = new RelayCommand<ApplicationProfileAssignment>(MoveAssignmentUp);
@@ -418,26 +421,49 @@ namespace AutoHDR
                 {
                     ApplicationProfileAssignment.NewAssigment(adder.ApplicationItem);
                 }
+                Settings.ApplicationProfileAssignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
+
             };
             if (DialogService != null)
                 DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
         }
 
 
+        private void EditApplication(ApplicationProfileAssignment assignment)
+        {
+
+
+            ApplicationAdder adder = new ApplicationAdder(assignment.Application);
+            adder.DialogService = DialogService;
+            adder.OKClicked += (o, e) =>
+            {
+                assignment.Application = adder.ApplicationItem;
+            };
+            if (DialogService != null)
+                DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
+        }
+
         private void RemoveAssignment(ApplicationProfileAssignment assignment)
         {
             Settings.ApplicationProfileAssignments.Remove(assignment);
+            Settings.ApplicationProfileAssignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
 
         }
 
         private void MoveAssignmentDown(ApplicationProfileAssignment assignment)
         {
-            assignment.ChangePosition(false);
+            if (assignment.Position == Settings.ApplicationProfileAssignments.Count - 1)
+                return;
+            Settings.ApplicationProfileAssignments.Move(assignment.Position, assignment.Position + 1);
+
         }
 
         private void MoveAssignmentUp(ApplicationProfileAssignment assignment)
         {
-            assignment.ChangePosition(true);
+            if (assignment.Position == 0)
+                return;
+            Settings.ApplicationProfileAssignments.Move(assignment.Position, assignment.Position - 1);
+
         }
 
         private void AddProfile()
@@ -559,6 +585,7 @@ namespace AutoHDR
 
         private void ApplicationProfileAssigments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            SortableObservableCollection<ApplicationProfileAssignment> collection = (SortableObservableCollection<ApplicationProfileAssignment>)sender;
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -580,12 +607,48 @@ namespace AutoHDR
                         Globals.Logs.Add($"Application removed: {assignment.Application.ApplicationName}", false);
                         assignment.PropertyChanged -= SaveSettingsOnPropertyChanged;
 
+
+                        int removedPosition = assignment.Position;
+                        foreach (ApplicationProfileAssignment a in collection)
+                        {
+                            if (a.Position >= removedPosition)
+                                a.Position = a.Position - 1;
+                        }
                         ApplicationWatcher.RemoveProcess(assignment.Application);
                         assignment.Application.PropertyChanged -= SaveSettingsOnPropertyChanged;
                     }
 
                     break;
+                case NotifyCollectionChangedAction.Move:
 
+                    int up, down, delta;
+
+                    if (e.OldStartingIndex < e.NewStartingIndex)
+                    {
+                        up = e.OldStartingIndex + 1;
+                        down = e.NewStartingIndex;
+                        delta = -1;
+                    }
+                    else
+                    {
+                        up = e.NewStartingIndex;
+                        down = e.OldStartingIndex - 1;
+                        delta = 1;
+                    }
+
+                    foreach (ApplicationProfileAssignment assingment in collection)
+                    {
+                        int position = assingment.Position;
+                        if (position == e.OldStartingIndex)
+                        {
+                            assingment.Position = e.NewStartingIndex;
+                        }
+                        else if (down <= position && position <= up)
+                        {
+                            assingment.Position = position + delta;
+                        }
+                    }
+                    break;
             }
             Globals.Instance.SaveSettings();
         }

@@ -71,33 +71,6 @@ namespace AutoHDR
             Application = application;
         }
 
-        public void RemoveAssignment()
-        {
-            int removedPosition = Position;
-            foreach (ApplicationProfileAssignment a in Assignments)
-            {
-                if (a.Position >= removedPosition)
-                    a.Position = a.Position - 1;
-            }
-            Assignments.Remove(this);
-            Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);        }
-
-        public void ChangePosition(bool up)
-        {
-            if (up && Position == 0)
-                return;
-            if (!up && Position == Assignments.Count - 1)
-                return;
-            int newPosition = up ? Position - 1 : Position + 1;
-            if (Assignments.Any(x => x.Position == newPosition))
-            {
-                Assignments.First(x => x.Position == newPosition).Position = up ? newPosition + 1 : newPosition - 1;
-            }
-            Position = newPosition;
-            Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
-        }
-
-
 
         public static ApplicationProfileAssignment NewAssigment(ApplicationItem application)
         {
@@ -107,7 +80,6 @@ namespace AutoHDR
             Assignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
             return assigment;
         }
-
 
         private static int GetNextPosition()
         {

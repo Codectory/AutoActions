@@ -108,27 +108,9 @@ namespace AutoHDR.ProjectResources {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add ähnelt.
         /// </summary>
-        public static string AddApplication {
+        public static string Add {
             get {
-                return ResourceManager.GetString("AddApplication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Add ähnelt.
-        /// </summary>
-        public static string AddProfile {
-            get {
-                return ResourceManager.GetString("AddProfile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Add profile action ähnelt.
-        /// </summary>
-        public static string AddProfileAction {
-            get {
-                return ResourceManager.GetString("AddProfileAction", resourceCulture);
+                return ResourceManager.GetString("Add", resourceCulture);
             }
         }
         
@@ -432,9 +414,9 @@ namespace AutoHDR.ProjectResources {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Edit ähnelt.
         /// </summary>
-        public static string EditProfileAction {
+        public static string Edit {
             get {
-                return ResourceManager.GetString("EditProfileAction", resourceCulture);
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         

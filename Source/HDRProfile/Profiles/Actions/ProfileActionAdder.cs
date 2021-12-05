@@ -74,7 +74,7 @@ namespace AutoHDR.Profiles.Actions
         public ProfileActionAdder()
         {
             EditMode = false;
-            Title = Locale_Texts.AddProfileAction;
+            Title = Locale_Texts.Add;
             CreateRelayCommands();
         }
 
@@ -84,7 +84,7 @@ namespace AutoHDR.Profiles.Actions
             ActionType = ProfileActions.First(d => d.ActionType.Equals(action.GetType()));
             ContentControlViewModel = (BaseViewModel)action;
 
-            Title = Locale_Texts.EditProfileAction;
+            Title = Locale_Texts.Edit;
 
             CreateRelayCommands();
         }

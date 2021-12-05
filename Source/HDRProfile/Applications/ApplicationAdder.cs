@@ -16,10 +16,13 @@ namespace AutoHDR
     public class ApplicationAdder : DialogViewModelBase
     {
         private bool _canCreate = false;
+
         private string _displayName = string.Empty;
         private string _filePath = string.Empty;
         private ApplicationItem applicationItem = null;
+        private bool _editMode = false;
 
+        public bool EditMode { get => _editMode; set { _editMode = value; OnPropertyChanged(); } }
         public ApplicationItem ApplicationItem { get => applicationItem; private set { applicationItem = value; OnPropertyChanged(); } }
 
         public RelayCommand GetFileCommand { get; private set; }
@@ -31,7 +34,20 @@ namespace AutoHDR
 
         public ApplicationAdder()
         {
-            Title = Locale_Texts.AddApplication;
+            EditMode = false;
+
+            Title = Locale_Texts.Add;
+            CreateRelayCommands();
+        }
+
+        public ApplicationAdder(ApplicationItem application)
+        {
+            EditMode = true;
+            Title = Locale_Texts.Edit;
+            DisplayName = application.DisplayName;
+            FilePath = application.ApplicationFilePath;
+            ApplicationItem = application;
+
             CreateRelayCommands();
         }
 

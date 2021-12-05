@@ -126,13 +126,7 @@
   <data name="ActivateHDR" xml:space="preserve">
     <value>HDR aktivieren</value>
   </data>
-  <data name="AddApplication" xml:space="preserve">
-    <value>Hinzufügen</value>
-  </data>
-  <data name="AddProfile" xml:space="preserve">
-    <value>Hinzufügen</value>
-  </data>
-  <data name="AddProfileAction" xml:space="preserve">
+  <data name="Add" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
   <data name="AllDisplays" xml:space="preserve">
@@ -231,7 +225,7 @@
   <data name="DownloadNewestVersion" xml:space="preserve">
     <value>Download</value>
   </data>
-  <data name="EditProfileAction" xml:space="preserve">
+  <data name="Edit" xml:space="preserve">
     <value>Editieren</value>
   </data>
   <data name="Error" xml:space="preserve">

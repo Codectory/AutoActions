@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -23,10 +24,13 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static pres:Locale_Texts.DisplayName}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" FontSize="15"/>
         <Label Grid.Column="0" Grid.Row="1" Content="{x:Static pres:Locale_Texts.FilePath}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" />
+        <Label Grid.Column="0" Grid.Row="2" Content="{x:Static pres:Locale_Texts.Icon}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" />
+
         <TextBox Grid.Column="1" Grid.Row="0" Height="Auto" Margin="5" TextWrapping="Wrap" Text="{Binding DisplayName, Mode=TwoWay }" VerticalAlignment="Top"/>
         <Label  Grid.Column="1" Grid.Row="1" Content="{Binding FilePath}" Margin="5" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+        <Image Grid.Column="1" Grid.Row="2" Margin="5"  Height="40" Width="40" Source="{Binding ApplicationItem.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
 
-        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  >
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width=" Auto"/>
