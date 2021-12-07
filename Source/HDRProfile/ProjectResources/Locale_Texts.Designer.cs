@@ -349,6 +349,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Default profile ähnelt.
+        /// </summary>
+        public static string DefaultProfile {
+            get {
+                return ResourceManager.GetString("DefaultProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Device ID ähnelt.
         /// </summary>
         public static string DeviceID {

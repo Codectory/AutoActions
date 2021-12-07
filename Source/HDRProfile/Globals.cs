@@ -18,9 +18,7 @@ namespace AutoHDR
 
         public static int GlobalRefreshInterval = 500;
 
-        private string SettingsPathCompatible => $"{System.AppDomain.CurrentDomain.BaseDirectory}HDRProfile_Settings.xml";
-
-        private string SettingsPathCompatible2 => $"{System.AppDomain.CurrentDomain.BaseDirectory}UserSettings.xml";
+        private string SettingsPathCompatible => $"{System.AppDomain.CurrentDomain.BaseDirectory}UserSettings.xml";
 
         private string SettingsPath => $"{System.AppDomain.CurrentDomain.BaseDirectory}UserSettings.json";
 
@@ -57,16 +55,10 @@ namespace AutoHDR
                     Settings = UserAppSettings.ReadSettings(SettingsPath);
                     _settingsLoadedOnce = true;
                 }
-                else if (File.Exists(SettingsPathCompatible2))
-                {
-                    Settings = UserAppSettings.ReadSettings(SettingsPathCompatible2);
-                    _settingsLoadedOnce = true;
-                }
                 else if (File.Exists(SettingsPathCompatible))
                 {
-                    Settings = LoadObsoleteHDRSettings();
+                    Settings = UserAppSettings.ReadSettings(SettingsPathCompatible);
                     _settingsLoadedOnce = true;
-                    File.Delete(SettingsPathCompatible);
                 }
                 else
                 {
@@ -95,13 +87,6 @@ namespace AutoHDR
             }
             Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
             Globals.Logs.Add("Settings loaded", false);
-        }
-
-
-        [Obsolete]
-        private UserAppSettings LoadObsoleteHDRSettings()
-        {
-            return UserAppSettings.Convert(HDRProfileSettings.ReadSettings(SettingsPathCompatible));
         }
     }
 }

@@ -193,7 +193,6 @@
     <Compile Include="Audio\AudioMasterChangedProvider.cs" />
     <Compile Include="Audio\VolumeProvider.cs" />
     <Compile Include="Displays\DisplayInterop.cs" />
-    <Compile Include="FastObservableCollection.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Info\AutoHDRLicense.cs" />
     <Compile Include="Info\LogsStorage.cs" />
@@ -206,7 +205,6 @@
     <Compile Include="Info\AutoHDRInfo.cs" />
     <Compile Include="Info\Github\GitHubData.cs" />
     <Compile Include="Info\Github\GitHubIntegration.cs" />
-    <Compile Include="HDRProfileSettings.cs" />
     <Compile Include="Info\ReleaseEntry.cs" />
     <Compile Include="Profiles\Actions\IProfileAction.cs" />
     <Compile Include="Profiles\Actions\ListOfProfileActions.cs" />
@@ -219,7 +217,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Locale_Texts.resx</DependentUpon>
     </Compile>
-    <Compile Include="SortedObservableCollection.cs" />
     <Compile Include="Views\AudioActionView.xaml.cs">
       <DependentUpon>AudioActionView.xaml</DependentUpon>
     </Compile>
@@ -328,8 +325,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EnumLocaleConverter.cs" />
-    <Compile Include="HDRActivationMode.cs" />
     <Compile Include="AutoHDRDaemon.cs" />
     <Compile Include="UserAppSettings.cs" />
     <Compile Include="Views\UserAppSettingsView.xaml.cs">

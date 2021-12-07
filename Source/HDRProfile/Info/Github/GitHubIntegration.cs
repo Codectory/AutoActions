@@ -60,7 +60,7 @@ namespace AutoHDR.Info.Github
                 changelog += $"[{release.TagName}]\r\n\r\n{releaseChangelog}";
             }
             Globals.Logs.Add($"Creating GitHubData...", false);
-            return new GitHubData(changelog, latestGitHubVersion, latestReleaseDate, $@"https://github.com/Codectory/HDR-Profile/releases/tag/{latestGitHubVersion}");
+            return new GitHubData(changelog, latestGitHubVersion, latestReleaseDate, $@"https://github.com/Codectory/AutoHDR/releases/tag/{latestGitHubVersion}");
         }
     }
 }

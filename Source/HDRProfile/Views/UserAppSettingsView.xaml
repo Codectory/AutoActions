@@ -13,16 +13,6 @@
 
 
     <UserControl.Resources>
-        <DataTemplate x:Key="HDRModeTemplate" DataType="Enum">
-            <TextBlock Text="{Binding Converter={StaticResource EnumLocaleConverter}}"/>
-        </DataTemplate>
-        <ObjectDataProvider MethodName="GetValues"
-        ObjectType="{x:Type sys:Enum}"
-        x:Key="HDRModeValues">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="root:HDRActivationMode" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
     </UserControl.Resources>
 
     <Grid  Grid.Row="1"  Width="Auto" HorizontalAlignment="Left">
@@ -33,12 +23,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBlock   Text="{x:Static pres:Locale_Texts.AutoStart}" Grid.Column="0" Grid.Row="0" Margin="10,4,10,2"  VerticalAlignment="Center"/>
         <TextBlock  Text="{x:Static pres:Locale_Texts.StartToTray}"  Grid.Column="0" Grid.Row="1" Margin="10,3,2,3"  VerticalAlignment="Center"/>
@@ -46,6 +37,7 @@
         <TextBlock  Text="{x:Static pres:Locale_Texts.CreateLogFile}"  Grid.Column="0" Grid.Row="3" Margin="10,3,2,3"  VerticalAlignment="Center"/>
         <TextBlock  Text="{x:Static pres:Locale_Texts.CheckForNewVersion}"  Grid.Column="0" Grid.Row="4" Margin="10,3,3,3"  VerticalAlignment="Center"/>
         <TextBlock  Text="{x:Static pres:Locale_Texts.GlobalAutoHDR}"  Grid.Column="0" Grid.Row="5" Margin="10,3,3,3" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+        <TextBlock  Text="{x:Static pres:Locale_Texts.DefaultProfile}"  Grid.Column="0" Grid.Row="6" Margin="10,3,3,3" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
 
         <CheckBox  IsChecked="{Binding AutoStart}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
         <CheckBox  IsChecked="{Binding StartMinimizedToTray}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
@@ -53,6 +45,8 @@
         <CheckBox  IsChecked="{Binding CreateLogFile}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
         <CheckBox  IsChecked="{Binding CheckForNewVersion}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
         <CheckBox  IsChecked="{Binding GlobalAutoHDR}" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox Grid.Column="1" Grid.Row="6"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedValue="{Binding DefaultProfile, Mode=TwoWay}" SelectedItem="{Binding DefaultProfile, Mode=TwoWay}" ItemsSource="{Binding ApplicationProfiles}" FontSize="18" FontWeight="Bold"  />
+
 
 
 

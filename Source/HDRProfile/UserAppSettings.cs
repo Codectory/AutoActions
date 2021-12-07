@@ -1,18 +1,12 @@
-﻿using CodectoryCore.UI.Wpf;
-using AutoHDR.Displays;
+﻿using AutoHDR.Displays;
+using AutoHDR.Profiles;
+using CodectoryCore.UI.Wpf;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using AutoHDR.Profiles;
-using System.Xml;
-using Newtonsoft.Json;
 
 namespace AutoHDR
 {
@@ -29,10 +23,17 @@ namespace AutoHDR
         private bool _closeToTray;
         private bool _checkForNewVersion = true;
         readonly object _audioDevicesLock = new object();
+        private Guid _defaultProfileGuid = Guid.Empty;
+
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
         private ObservableCollection<Profile> _applicationProfiles;
         private ObservableCollection<Display> _monitors;
 
+
+        [JsonProperty]
+        public Guid DefaultProfileGuid { get => _defaultProfileGuid; set { _defaultProfileGuid = value; OnPropertyChanged(); OnPropertyChanged(nameof(DefaultProfile)); } }
+
+        public Profile DefaultProfile { get => ApplicationProfiles.FirstOrDefault(p => p.GUID.Equals(DefaultProfileGuid)); set { DefaultProfileGuid =  value == null ? Guid.Empty : value.GUID;  } }
 
 
         [JsonProperty]
@@ -136,20 +137,6 @@ namespace AutoHDR
                     throw;
                 }
             }
-        }
-
-        [Obsolete]
-        public static UserAppSettings Convert(HDRProfileSettings settings)
-        {
-            UserAppSettings convertedSettings = new UserAppSettings();
-            convertedSettings.AutoStart = settings.AutoStart;
-            convertedSettings.CheckForNewVersion = settings.CheckForNewVersion;
-            convertedSettings.CloseToTray = settings.CloseToTray;
-            convertedSettings.GlobalAutoHDR = settings.GlobalAutoHDR;
-            convertedSettings.CreateLogFile = settings.Logging;
-            convertedSettings.Monitors = settings.Monitors;
-            convertedSettings.StartMinimizedToTray = settings.StartMinimizedToTray;
-            return convertedSettings;
         }
     }
 

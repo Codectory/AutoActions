@@ -207,6 +207,9 @@
   <data name="DeactivateHDR" xml:space="preserve">
     <value>HDR deaktivieren</value>
   </data>
+  <data name="DefaultProfile" xml:space="preserve">
+    <value>Standardprofil</value>
+  </data>
   <data name="DeviceID" xml:space="preserve">
     <value>Geräte ID</value>
   </data>

@@ -213,6 +213,9 @@
   <data name="DeactivateHDR" xml:space="preserve">
     <value>Deactivate HDR</value>
   </data>
+  <data name="DefaultProfile" xml:space="preserve">
+    <value>Default profile</value>
+  </data>
   <data name="DeviceID" xml:space="preserve">
     <value>Device ID</value>
   </data>

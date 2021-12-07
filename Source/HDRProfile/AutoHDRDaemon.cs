@@ -126,7 +126,7 @@ namespace AutoHDR
                     CheckForNewVersion();
                 InitializeDisplayManager();
                 InitializeAudioManager();
-                Globals.Instance.SaveSettings(); 
+                Globals.Instance.SaveSettings();
                 InitializeTrayMenuHelper();
                 CreateRelayCommands();
                 ShowView = !Settings.StartMinimizedToTray;
@@ -169,8 +169,8 @@ namespace AutoHDR
 
                 if (profile == null)
                     return;
-                bool profileChanged =  Equals(profile, CurrentProfile);
-      
+                bool profileChanged = Equals(profile, CurrentProfile);
+
                 CurrentProfile = profile;
                 if (profileChanged)
                     Globals.Logs.Add($"Profile changed to {profile.Name}", false);
@@ -206,7 +206,7 @@ namespace AutoHDR
                     CurrentProfile = null;
             }
         }
-        
+
         private void ActionLog(object sender, LogEntry entry)
         {
             Globals.Logs.AppendLogEntry(entry);
@@ -262,7 +262,7 @@ namespace AutoHDR
             ActivateHDRCommand = new RelayCommand(DisplayManager.Instance.ActivateHDR);
             DeactivateHDRCommand = new RelayCommand(DisplayManager.Instance.DeactivateHDR);
             AddAssignmentCommand = new RelayCommand(AddAssignment);
-            EditApplicationCommand  = new RelayCommand<ApplicationProfileAssignment>(EditApplication);
+            EditApplicationCommand = new RelayCommand<ApplicationProfileAssignment>(EditApplication);
             RemoveAssignmentCommand = new RelayCommand<ApplicationProfileAssignment>(RemoveAssignment);
 
             MoveAssignmentUpCommand = new RelayCommand<ApplicationProfileAssignment>(MoveAssignmentUp);
@@ -307,6 +307,7 @@ namespace AutoHDR
         {
             Globals.Instance.LoadSettings();
             FixAssignments();
+            Globals.Instance.SaveSettings();
             Settings.ApplicationProfileAssignments.Sort(a => a.Position, ListSortDirection.Ascending);
             Settings.ApplicationProfileAssignments.CollectionChanged += ApplicationProfileAssigments_CollectionChanged;
             Settings.ApplicationProfiles.CollectionChanged += ApplicationProfiles_CollectionChanged;
@@ -317,9 +318,9 @@ namespace AutoHDR
             ApplicationProfileAssigments_CollectionChanged(
             Settings.ApplicationProfileAssignments, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ApplicationProfileAssignments.ToList()));
 
-            ApplicationProfiles_CollectionChanged( Settings.ApplicationProfiles, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ApplicationProfiles.ToList()));
+            ApplicationProfiles_CollectionChanged(Settings.ApplicationProfiles, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ApplicationProfiles.ToList()));
 
-            Monitors_CollectionChanged( Settings.Monitors, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.Monitors.ToList()));
+            Monitors_CollectionChanged(Settings.Monitors, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.Monitors.ToList()));
 
 
             Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
@@ -353,7 +354,7 @@ namespace AutoHDR
                         do
                         {
                             assignment.Position = assignment.Position - 1;
-                         } while (Settings.ApplicationProfileAssignments.Count(a => a.Position == assignment.Position) > 1);
+                        } while (Settings.ApplicationProfileAssignments.Count(a => a.Position == assignment.Position) > 1);
             }
         }
 
@@ -374,7 +375,7 @@ namespace AutoHDR
                 DisplayManager.Instance.ActivateHDR();
                 System.Threading.Thread.Sleep(2500);
                 application.StartApplication();
-               
+
             }
             catch (Exception ex)
             {
@@ -419,7 +420,7 @@ namespace AutoHDR
                 DisplayManager.Instance.StartMonitoring();
                 Globals.Logs.Add($"HDR Monitoring started", false);
                 Started = true;
-               // UpdateHDRModeBasedOnCurrentApplication();
+                // UpdateHDRModeBasedOnCurrentApplication();
             }
         }
 
@@ -451,7 +452,9 @@ namespace AutoHDR
             {
                 if (!Settings.ApplicationProfileAssignments.Any(pi => pi.Application.ApplicationFilePath == adder.ApplicationItem.ApplicationFilePath))
                 {
-                    ApplicationProfileAssignment.NewAssigment(adder.ApplicationItem);
+                   var assignment = ApplicationProfileAssignment.NewAssigment(adder.ApplicationItem);
+                    if (Settings.DefaultProfile != null)
+                        assignment.Profile = Settings.DefaultProfile;
                 }
                 Settings.ApplicationProfileAssignments.Sort(x => x.Position, System.ComponentModel.ListSortDirection.Ascending);
 
@@ -615,76 +618,86 @@ namespace AutoHDR
             Globals.Instance.SaveSettings();
         }
 
+        readonly object _lockAssignments = new object();
+
         private void ApplicationProfileAssigments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            SortableObservableCollection<ApplicationProfileAssignment> collection = (SortableObservableCollection<ApplicationProfileAssignment>)sender;
-            switch (e.Action)
+            bool taken = Monitor.TryEnter(_lockAssignments);
+            if (!taken)
+                return;
+            try
             {
-                case NotifyCollectionChangedAction.Add:
+                SortableObservableCollection<ApplicationProfileAssignment> collection = (SortableObservableCollection<ApplicationProfileAssignment>)sender;
+                switch (e.Action)
+                {
+                    case NotifyCollectionChangedAction.Add:
 
-                    foreach (ApplicationProfileAssignment assignment in e.NewItems)
-                    {
-
-
-                        Globals.Logs.Add($"Application added: {assignment.Application.ApplicationName}", false);
-                        assignment.PropertyChanged += SaveSettingsOnPropertyChanged;
-                        ApplicationWatcher.AddProcess(assignment.Application);
-                        assignment.Application.PropertyChanged += SaveSettingsOnPropertyChanged;
-                    }
-
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    foreach (ApplicationProfileAssignment assignment in e.OldItems)
-                    {
-                        Globals.Logs.Add($"Application removed: {assignment.Application.ApplicationName}", false);
-                        assignment.PropertyChanged -= SaveSettingsOnPropertyChanged;
-
-
-                        int removedPosition = assignment.Position;
-                        foreach (ApplicationProfileAssignment a in collection)
+                        foreach (ApplicationProfileAssignment assignment in e.NewItems)
                         {
-                            if (a.Position >= removedPosition)
-                                a.Position = a.Position - 1;
+
+
+                            Globals.Logs.Add($"Application added: {assignment.Application.ApplicationName}", false);
+                            assignment.PropertyChanged += SaveSettingsOnPropertyChanged;
+                            ApplicationWatcher.AddProcess(assignment.Application);
+                            assignment.Application.PropertyChanged += SaveSettingsOnPropertyChanged;
                         }
-                        ApplicationWatcher.RemoveProcess(assignment.Application);
-                        assignment.Application.PropertyChanged -= SaveSettingsOnPropertyChanged;
-                    }
 
-                    break;
-                case NotifyCollectionChangedAction.Move:
-
-                    int up, down, delta;
-
-                    if (e.OldStartingIndex < e.NewStartingIndex)
-                    {
-                        up = e.OldStartingIndex + 1;
-                        down = e.NewStartingIndex;
-                        delta = -1;
-                    }
-                    else
-                    {
-                        up = e.NewStartingIndex;
-                        down = e.OldStartingIndex - 1;
-                        delta = 1;
-                    }
-
-                    foreach (ApplicationProfileAssignment assingment in collection)
-                    {
-                        int position = assingment.Position;
-                        if (position == e.OldStartingIndex)
+                        break;
+                    case NotifyCollectionChangedAction.Remove:
+                        foreach (ApplicationProfileAssignment assignment in e.OldItems)
                         {
-                            assingment.Position = e.NewStartingIndex;
+                            Globals.Logs.Add($"Application removed: {assignment.Application.ApplicationName}", false);
+                            assignment.PropertyChanged -= SaveSettingsOnPropertyChanged;
+
+
+                            int removedPosition = assignment.Position;
+                            foreach (ApplicationProfileAssignment a in collection)
+                            {
+                                if (a.Position >= removedPosition)
+                                    a.Position = a.Position - 1;
+                            }
+                            ApplicationWatcher.RemoveProcess(assignment.Application);
+                            assignment.Application.PropertyChanged -= SaveSettingsOnPropertyChanged;
                         }
-                        else if (down <= position && position <= up)
+
+                        break;
+                    case NotifyCollectionChangedAction.Move:
+                        int downFrom = e.NewStartingIndex;
+                        int upFrom = e.OldStartingIndex;
+
+                        if (e.OldStartingIndex == e.NewStartingIndex)
+                            break;
+
+
+
+                        foreach (ApplicationProfileAssignment assingment in collection)
                         {
-                            assingment.Position = position + delta;
+                            int position = assingment.Position;
+                            if (position == e.OldStartingIndex)
+                            {
+                                assingment.Position = e.NewStartingIndex;
+                            }
+                            else if (e.OldStartingIndex > e.NewStartingIndex && position < e.OldStartingIndex && position >= e.NewStartingIndex)
+                            {
+                                assingment.Position = position + 1;
+                            }
+                            else if (e.OldStartingIndex < e.NewStartingIndex && position > e.OldStartingIndex && position <= e.NewStartingIndex)
+                            {
+                                assingment.Position = position - 1;
+                            }
                         }
-                    }
-                    break;
+
+                        break;
+                }
+                Globals.Instance.SaveSettings();
             }
-            Globals.Instance.SaveSettings();
+            finally
+            {
+                if (taken)
+                    Monitor.Exit(_lockAssignments);
+            }
         }
-       
+
 
 
         private void SaveSettingsOnPropertyChanged(object sender, PropertyChangedEventArgs e)

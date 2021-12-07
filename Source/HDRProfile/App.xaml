@@ -832,7 +832,7 @@
 
 
 
-        <local:EnumLocaleConverter x:Key="EnumLocaleConverter"/>
+        <corewpf:EnumLocaleConverter x:Key="EnumLocaleConverter"/>
         <corewpf:DialogService x:Key="DialogService" />
         <corewpf:DialogService x:Key="ProfileDialogService" />
         <corewpf:BitmapToBitmapImageConverter x:Key="BitmapToBitmapImageConverter"/>
@@ -874,6 +874,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type info:LogsStorage}">
             <views:AutoHDRLogsView></views:AutoHDRLogsView>
+        </DataTemplate>
+        <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile">
+            <TextBlock Text="{Binding Name }"/>
         </DataTemplate>
     </Application.Resources>
 
