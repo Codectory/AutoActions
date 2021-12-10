@@ -18,7 +18,7 @@ software for all its users.  We, the Free Software Foundation, use the
 GNU General Public License for most of our software; it applies also to
 any other work released this way by its authors.  You can apply it to
 your programs, too.
-F
+
   When we speak of free software, we are referring to freedom, not
 price.  Our General Public Licenses are designed to make sure that you
 have the freedom to distribute copies of free software (and charge for
@@ -631,8 +631,8 @@ to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
-    AutoHDR
-    Copyright (C) 2021  2021
+    AutoHDR - Profile-based setting changed on application events
+    Copyright (C) 2021  Heiko Thome
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

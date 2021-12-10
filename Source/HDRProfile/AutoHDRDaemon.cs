@@ -715,13 +715,13 @@ namespace AutoHDR
         private void ShowLogs()
         {
             if (DialogService != null)
-                DialogService.ShowDialogModal(_logsStorage, new System.Drawing.Size(600, 1000));
+                DialogService.ShowDialogModal(_logsStorage, new System.Drawing.Size(700, 1000));
         }
 
         private void ShowLicense()
         {
             if (DialogService != null)
-                DialogService.ShowDialogModal(new AutoHDRLicense(), new System.Drawing.Size(600, 1000));
+                DialogService.ShowDialogModal(new AutoHDRLicense(), new System.Drawing.Size(700, 1000));
         }
 
 

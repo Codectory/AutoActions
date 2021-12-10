@@ -7,7 +7,7 @@
              xmlns:pres="clr-namespace:AutoHDR.ProjectResources"
              xmlns:info="clr-namespace:AutoHDR.Info"
              xmlns:local="clr-namespace:AutoHDR.Views"
-             mc:Ignorable="d" MinWidth="300" MinHeight="600"  >
+             mc:Ignorable="d" MinWidth="600" MinHeight="600"  >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -42,7 +42,15 @@
         <TextBlock Grid.Row="1" Text="{x:Static pres:Locale_Texts.License}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
         <Border Style="{StaticResource RoundedBorder}"  Grid.Row="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" >
             <ScrollViewer>
-            <TextBlock Text="{x:Static pres:Locale_Texts.LicenseContent}" TextAlignment="Center"/>
+                <Grid Margin="17,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="1" Content="{x:Static pres:Locale_Texts.LicenseContent}"/>
+
+                </Grid>
             </ScrollViewer>
         </Border>
 

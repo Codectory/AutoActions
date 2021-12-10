@@ -295,6 +295,24 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Close ähnelt.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Close program ähnelt.
+        /// </summary>
+        public static string CloseProgram {
+            get {
+                return ResourceManager.GetString("CloseProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Color depth [bit] ähnelt.
         /// </summary>
         public static string ColorDepth {
@@ -453,6 +471,15 @@ namespace AutoHDR.ProjectResources {
         public static string FilePath {
             get {
                 return ResourceManager.GetString("FilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Force closing ähnelt.
+        /// </summary>
+        public static string ForceKill {
+            get {
+                return ResourceManager.GetString("ForceKill", resourceCulture);
             }
         }
         
@@ -701,6 +728,15 @@ namespace AutoHDR.ProjectResources {
         public static string Priority {
             get {
                 return ResourceManager.GetString("Priority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Process name ähnelt.
+        /// </summary>
+        public static string ProcessName {
+            get {
+                return ResourceManager.GetString("ProcessName", resourceCulture);
             }
         }
         

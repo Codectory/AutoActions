@@ -180,9 +180,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Profiles\Actions\CloseProgramAction.cs" />
     <Compile Include="Theming\ThemeResourceDirectory.cs" />
     <Compile Include="Theming\Theme.cs" />
     <Compile Include="UWP\WWAHostHandler.cs" />
+    <Compile Include="Views\CloseProgramActionView.xaml.cs">
+      <DependentUpon>CloseProgramActionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WinAPIFunctions.cs" />
     <Compile Include="Windows\UI.cs" />
     <Page Include="App.xaml">
@@ -280,6 +284,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AutoHDRLogsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CloseProgramActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

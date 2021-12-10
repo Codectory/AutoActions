@@ -189,6 +189,12 @@
   <data name="ChooseUWPApplication" xml:space="preserve">
     <value>UWP App auswählen...</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="CloseProgram" xml:space="preserve">
+    <value>Programm beenden</value>
+  </data>
   <data name="ColorDepth" xml:space="preserve">
     <value>Farbtiefe [bit]</value>
   </data>
@@ -239,6 +245,9 @@
   </data>
   <data name="FilePath" xml:space="preserve">
     <value>Dateipfad</value>
+  </data>
+  <data name="ForceKill" xml:space="preserve">
+    <value>Beenden erzwingen</value>
   </data>
   <data name="GlobalAutoHDR" xml:space="preserve">
     <value>Automatischer HDR-Modus für alle Monitore verwenden</value>
@@ -308,6 +317,9 @@
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorität</value>
+  </data>
+  <data name="ProcessName" xml:space="preserve">
+    <value>Prozessname</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>
