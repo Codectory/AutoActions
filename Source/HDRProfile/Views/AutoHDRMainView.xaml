@@ -12,8 +12,8 @@
         xmlns:root="clr-namespace:AutoHDR"
         mc:Ignorable="d"
         Title="AutoHDR" Name="MainWindow" MinHeight="480" MinWidth="480" Closing="Window_Closing" Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
-        Height="500"
-        Width="593" Loaded="MainWindow_Loaded">
+        Height="600"
+        Width="700" Loaded="MainWindow_Loaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>

@@ -99,7 +99,7 @@ namespace AutoHDR.Profiles.Actions
                 if (SetResolution)
                     returnValue += $" {Locale_Texts.Resolution} {Resolution.Width}x{Resolution.Height}";
                 if (SetRefreshRate)
-                    returnValue += $" {Locale_Texts.RefreshRate} 0Hz";
+                    returnValue += $" {Locale_Texts.RefreshRate} {RefreshRate}Hz";
                 return returnValue;
             }
         }

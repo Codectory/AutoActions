@@ -140,6 +140,7 @@ namespace AutoHDR.Displays
 
                 return dm;
             };
+            ChangeDisplaySetting(deviceID, func);
         }
 
         public void SetColorDepth(uint deviceID, int colorDepth)
@@ -268,6 +269,7 @@ namespace AutoHDR.Displays
                 {
                    Display existingMonitor = Monitors.First(m => m.UID.Equals(monitor.UID));
                     existingMonitor.Name = monitor.Name;
+                    existingMonitor.ColorDepth = monitor.ColorDepth;
                     existingMonitor.RefreshRate = monitor.RefreshRate;
                     existingMonitor.Resolution = monitor.Resolution;
                 }
