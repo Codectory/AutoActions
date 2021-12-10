@@ -21,14 +21,18 @@ namespace AutoHDR
     public class ApplicationItem : BaseViewModel, IEquatable<ApplicationItem>
     {
         private bool _isUWP = false;
+        private bool _isUWPWebApp = false;
+
         private string displayName;
         private string _applicationFilePath;
         private string _applicationName;
         private System.Drawing.Bitmap icon = null;
         //private bool _restartProcess = false;
-        private string _uwpFamilyPackageName;
-        private string _uwpApplicationID;
-        private string _uwpIconPath;
+        private string _uwpFamilyPackageName = string.Empty;
+        private string _uwpApplicationID = string.Empty;
+        private string _uwpIconPath = string.Empty;
+        private string _uwpIdentity = string.Empty;
+
 
         [JsonProperty]
         public string DisplayName { get => displayName; set { displayName = value; OnPropertyChanged(); } }
@@ -39,7 +43,8 @@ namespace AutoHDR
         // public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
         [JsonProperty]
         public bool IsUWP { get => _isUWP; set { _isUWP = value; OnPropertyChanged(); } }
-
+        [JsonProperty]
+        public bool IsUWPWepApp { get => _isUWPWebApp; set { _isUWPWebApp = value; OnPropertyChanged(); } }
         public Bitmap Icon { get => icon; set { icon = value; OnPropertyChanged(); } }
         [JsonProperty]
         public string UWPFamilyPackageName { get => _uwpFamilyPackageName; set { _uwpFamilyPackageName = value; OnPropertyChanged(); } }
@@ -47,7 +52,9 @@ namespace AutoHDR
         public string UWPApplicationID { get => _uwpApplicationID; set { _uwpApplicationID = value; OnPropertyChanged(); } }
         [JsonProperty]
         public string UWPIconPath { get => _uwpIconPath; set { _uwpIconPath = value; try { Icon = new Bitmap(Bitmap.FromFile(value)); } catch { }OnPropertyChanged(); } }
-
+       
+        [JsonProperty]
+        public string UWPIdentity { get => _uwpIdentity; set { _uwpIdentity = value; OnPropertyChanged(); } }
 
         private ApplicationItem()
         {
@@ -60,37 +67,17 @@ namespace AutoHDR
             ApplicationName = new FileInfo(ApplicationFilePath).Name.Replace(".exe", "");
         }
 
-        public ApplicationItem(string displayName, string applicationFilePath, string uwpFamilyPackageName, string uwpApplicationID, string iconPath = "") : this(displayName, applicationFilePath)
+        public ApplicationItem(UWP.UWPApp uwpApp) : this(uwpApp.Name, uwpApp.ExecutablePath)
         {
             IsUWP = true;
-            UWPFamilyPackageName = uwpFamilyPackageName;
-            UWPApplicationID = uwpApplicationID;
-            UWPIconPath = iconPath;
+            IsUWPWepApp = true;
+            UWPFamilyPackageName = uwpApp.FamilyPackageName;
+            UWPApplicationID = uwpApp.ApplicationID;
+            UWPIconPath = uwpApp.IconPath;
+            UWPIdentity = uwpApp.Identity;
         }
 
-
         Dictionary<ApplicationItem, ApplicationState> _lastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
-
-
-        //private void UpdateRestartAppStates(IDictionary<ApplicationItem, ApplicationState> applicationStates, bool restartApps)
-        //{
-        //    Dictionary<ApplicationItem, ApplicationState> newLastAppStates = new Dictionary<ApplicationItem, ApplicationState>();
-        //    Globals.Logs.Add($"Updating application states...", false);
-        //    foreach (var applicationState in applicationStates)
-        //    {
-        //        newLastAppStates.Add(applicationState.Key, applicationState.Value);
-
-        //        if (applicationState.Key.RestartProcess && restartApps)
-        //        {
-        //            if (!_lastAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None)
-        //                RestartProcess(applicationState.Key);
-        //            else if (_lastAppStates.ContainsKey(applicationState.Key) && applicationState.Value != ApplicationState.None && _lastAppStates[applicationState.Key] == ApplicationState.None)
-        //                RestartProcess(applicationState.Key);
-        //        }
-        //    }
-        //    _lastAppStates.Clear();
-        //    _lastAppStates = newLastAppStates;
-        //}
 
         public void Restart()
         {

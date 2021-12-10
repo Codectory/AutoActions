@@ -15,9 +15,27 @@ namespace AutoHDR.UWP
     {
         public string Name { get; private set; } = string.Empty;
         public string Executable { get; private set; } = string.Empty;
+
+
+
+        public string ExecutablePath
+        {
+            get
+            {
+                if (IsWebApp)
+                    return @"C:\Windows\System32\WWAHost.exe";
+                else
+                    return Path.Combine(InstallLocation, Executable);
+
+
+            }
+        }
+
+        public bool IsWebApp  { get; private set; } = false;
         public string InstallLocation { get; private set; } = string.Empty;
         public string FamilyPackageName { get; private set; } = string.Empty;
         public string ApplicationID { get; private set; } = string.Empty;
+        public string Identity { get; private set; } = string.Empty;
 
         public string IconPath { get; private set; } = string.Empty;
 
@@ -60,8 +78,11 @@ namespace AutoHDR.UWP
                     Executable = string.Empty;
                     if (appxManifest.Applications != null && appxManifest.Applications.Application != null)
                         Executable = appxManifest.Applications.Application.Executable;
+                    if (Executable == null)
+                        IsWebApp = true;
                     FamilyPackageName = package.Id.FamilyName;
                     ApplicationID = appxManifest.Applications.Application.Id;
+                    Identity = appxManifest.Identity.Name;
                     IconPath = GetIconPath(Path.Combine(InstallLocation, ((XmlNode[])(appxManifest.Properties.Logo))[0].Value));
                 }
             }
@@ -71,6 +92,7 @@ namespace AutoHDR.UWP
                 if (File.Exists(appxManifestPath))
                     manifestContent = File.ReadAllText(appxManifestPath);
                 Globals.Logs.AddException($"Error while  retrieving UWP app ({appxManifestPath})\r\n\r\nContent: {manifestContent}.", ex);
+                throw ex;
             }
         }
 

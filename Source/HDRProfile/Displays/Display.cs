@@ -91,6 +91,11 @@ namespace AutoHDR.Displays
             DisplayManager.Instance.SetColorDepth(ID, colorDepth);
         }
 
+        public bool IsAllDisplay()
+        {
+            return UID.Equals(AllDisplays.UID);
+        }
+
         public override bool Equals(object obj)
         {
             if (obj.GetType().Equals(typeof(Display)))
@@ -98,7 +103,6 @@ namespace AutoHDR.Displays
                 Display display = (Display)obj;
                 return
                    Managed == display.Managed &&
-                   Name == display.Name &&
                    UID == display.UID &&
                    ID == display.ID &&
                    _hdrState == display._hdrState &&
@@ -113,11 +117,11 @@ namespace AutoHDR.Displays
           
         }
 
+
         public override int GetHashCode()
         {
             int hashCode = -254808592;
             hashCode = hashCode * -1521134295 + Managed.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + UID.GetHashCode();
             hashCode = hashCode * -1521134295 + ID.GetHashCode();
             hashCode = hashCode * -1521134295 + _hdrState.GetHashCode();

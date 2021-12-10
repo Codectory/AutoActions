@@ -53,10 +53,8 @@ namespace AutoHDR.UWP
 
                     try
                     {
-                        UWPApp uwpApp = new UWPApp(package);
-                        if (!string.IsNullOrEmpty(uwpApp.Executable) /*&& !uwpApp.Name.Contains("ms-resource:")*/)
-                            uwpApps.Add(new ApplicationItem(uwpApp.Name, Path.Combine(uwpApp.InstallLocation, uwpApp.Executable), uwpApp.FamilyPackageName, uwpApp.ApplicationID, uwpApp.IconPath));
-                    }
+                        uwpApps.Add(new ApplicationItem(new UWPApp(package)));
+                  }
                     catch
                     {
                         continue;

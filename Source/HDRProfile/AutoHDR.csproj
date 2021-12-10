@@ -182,6 +182,8 @@
   <ItemGroup>
     <Compile Include="Theming\ThemeResourceDirectory.cs" />
     <Compile Include="Theming\Theme.cs" />
+    <Compile Include="UWP\WWAHostHandler.cs" />
+    <Compile Include="WinAPIFunctions.cs" />
     <Compile Include="Windows\UI.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

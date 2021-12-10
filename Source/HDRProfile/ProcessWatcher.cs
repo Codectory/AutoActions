@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoHDR.UWP;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -143,15 +144,23 @@ namespace AutoHDR
                     bool callClosed = false;
                     ApplicationState state = ApplicationState.None;
                     ApplicationState oldState = _applications[application];
-                    foreach (var process in processes.Select(p => p.ProcessName))
+                    foreach (var process in processes)
                     {
-                        if (process.ToUpperInvariant().Equals(application.ApplicationName.ToUpperInvariant()))
+                        string processName;
+                        if (process.ProcessName == "WWAHost")
                         {
+                            processName = UWP.WWAHostHandler.GetProcessName(process.Id);
+                        }
+                        else
+                            processName = process.ProcessName;
+                        if (application.ApplicationName.ToUpperInvariant().Equals(processName.ToUpperInvariant())
+                            || (application.IsUWP && !string.IsNullOrEmpty(application.UWPIdentity) && processName.Contains(application.UWPIdentity)))
+                        {
+
                             state = ApplicationState.Running;
 
                             if (oldState == ApplicationState.None)
                                 callNewRunning = true;
-
                             if (IsFocusedApplication(process))
                             {
                                 state = ApplicationState.Focused;
@@ -182,45 +191,38 @@ namespace AutoHDR
             }
         }
 
-        private bool IsFocusedApplication(string processName)
+        private bool IsFocusedApplication(Process process)
         {
-            string currentProcessName = GetForegroundProcessName().ToUpperInvariant();
-            return processName.ToUpperInvariant().Equals(currentProcessName);
+            Process currentProcess = GetForegroundProcess();
+            return process.Id.Equals(currentProcess.Id);
         }
 
 
-
-        // The GetForegroundWindow function returns a handle to the foreground window
-        // (the window  with which the user is currently working).
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
-        // The GetWindowThreadProcessId function retrieves the identifier of the thread
-        // that created the specified window and, optionally, the identifier of the
-        // process that created the window.
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern Int32 GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-
-        // Returns the name of the process owning the foreground window.
-        private string GetForegroundProcessName()
+        private Process GetForegroundProcess()
         {
-            IntPtr hwnd = GetForegroundWindow();
-
-            // The foreground window can be NULL in certain circumstances, 
-            // such as when a window is losing activation.
-            if (hwnd == null)
-                return "Unknown";
-
-            uint pid;
-            GetWindowThreadProcessId(hwnd, out pid);
-
-            foreach (System.Diagnostics.Process p in System.Diagnostics.Process.GetProcesses())
+            var foregroundProcess = Process.GetProcessById(WinAPIFunctions.GetWindowProcessId(WinAPIFunctions.GetforegroundWindow()));
+            if (foregroundProcess.ProcessName == "ApplicationFrameHost")
             {
-                if (p.Id == pid)
-                    return p.ProcessName.ToUpperInvariant();
+                foregroundProcess = GetRealProcess(foregroundProcess);
             }
+            return foregroundProcess;
+        }
 
-            return "Unknown";
+        private Process GetRealProcess(Process foregroundProcess)
+        {
+            Process realActiveProcess = null;
+
+            WinAPIFunctions.WindowEnumProc callback = (hwnd, lparam) =>
+            {
+                var process = Process.GetProcessById(WinAPIFunctions.GetWindowProcessId(hwnd));
+                if (process.ProcessName != "ApplicationFrameHost")
+                {
+                    realActiveProcess = process;
+                }
+                return true;
+            };
+            WinAPIFunctions.EnumChildWindows(foregroundProcess.MainWindowHandle, callback, IntPtr.Zero);
+            return realActiveProcess;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace AutoHDR.Profiles.Actions
             { 
                 _display = value; 
                 OnPropertyChanged();
-                if (value.Equals(Displays.Display.AllDisplays))
+                if (value.IsAllDisplay())
                 {
                     Resolution = AllDisplays[1].Resolution;
                     RefreshRate = AllDisplays[1].RefreshRate;
@@ -114,7 +114,7 @@ namespace AutoHDR.Profiles.Actions
             try
             {
                 if (SetHDR)
-                    if (Display.Equals(Displays.Display.AllDisplays))
+                    if (Display.IsAllDisplay())
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"{(EnableHDR ? "Activating" : "Deactivating")} HDR for all displays."));
                         if (EnableHDR)
@@ -129,7 +129,7 @@ namespace AutoHDR.Profiles.Actions
                     }
                 System.Threading.Thread.Sleep(100);
                 if (SetResolution)
-                    if (Display.Equals(Displays.Display.AllDisplays))
+                    if (Display.IsAllDisplay())
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting resolution {Resolution} for all displays."));
                         foreach (Displays.Display display in AutoHDR.Displays.DisplayManager.GetActiveMonitors())
@@ -142,7 +142,7 @@ namespace AutoHDR.Profiles.Actions
                     }
                 System.Threading.Thread.Sleep(100);
                 if (SetRefreshRate)
-                    if (Display.Equals(Displays.Display.AllDisplays))
+                    if (Display.IsAllDisplay())
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting refresh rate {RefreshRate} for all displays."));
 
@@ -156,7 +156,7 @@ namespace AutoHDR.Profiles.Actions
                     }
                 System.Threading.Thread.Sleep(100);
                 if (SetColorDepth)
-                    if (Display.Equals(Displays.Display.AllDisplays))
+                    if (Display.IsAllDisplay())
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting color depth {ColorDepth} for all displays."));
 
