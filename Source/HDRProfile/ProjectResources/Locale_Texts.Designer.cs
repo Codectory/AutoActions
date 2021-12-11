@@ -306,9 +306,9 @@ namespace AutoHDR.ProjectResources {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Close program ähnelt.
         /// </summary>
-        public static string CloseProgram {
+        public static string CloseProgramAction {
             get {
-                return ResourceManager.GetString("CloseProgram", resourceCulture);
+                return ResourceManager.GetString("CloseProgramAction", resourceCulture);
             }
         }
         

@@ -192,7 +192,7 @@
   <data name="Close" xml:space="preserve">
     <value>Beenden</value>
   </data>
-  <data name="CloseProgram" xml:space="preserve">
+  <data name="CloseProgramAction" xml:space="preserve">
     <value>Programm beenden</value>
   </data>
   <data name="ColorDepth" xml:space="preserve">

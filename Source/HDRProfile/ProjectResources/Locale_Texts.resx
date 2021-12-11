@@ -198,7 +198,7 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="CloseProgram" xml:space="preserve">
+  <data name="CloseProgramAction" xml:space="preserve">
     <value>Close program</value>
   </data>
   <data name="ColorDepth" xml:space="preserve">

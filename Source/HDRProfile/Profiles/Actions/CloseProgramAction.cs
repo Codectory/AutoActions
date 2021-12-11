@@ -18,7 +18,7 @@ namespace AutoHDR.Profiles.Actions
     [JsonObject(MemberSerialization.OptIn)]
     public class CloseProgramAction : ProfileActionBase
     {
-        public override string ActionTypeName => ProjectResources.Locale_Texts.CloseProgram;
+        public override string ActionTypeName => ProjectResources.Locale_Texts.CloseProgramAction;
 
 
         private string _processName = "";
