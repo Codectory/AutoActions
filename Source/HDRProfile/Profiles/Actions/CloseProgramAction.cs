@@ -47,47 +47,56 @@ namespace AutoHDR.Profiles.Actions
         {
             try
             {
-
+                bool result = false;
                 Process[] runningProcesses = Process.GetProcesses();
+                bool processFound = false;
+                CallNewLog(new LogEntry($"Searching for{ProcessName}..."));
+                string searchName = ProcessName;
+                if (searchName.ToUpperInvariant().EndsWith(".EXE"))
+                    searchName.Substring(0, searchName.Length - 4);
                 foreach (Process process in runningProcesses)
                 {
-                    if (process.ProcessName == ProcessName)
+                    if (process.ProcessName == searchName)
+                    {
                         try
                         {
                             CallNewLog(new LogEntry($"Closing {ProcessName}..."));
 
-                            bool result = process.CloseMainWindow();
-                            if (!result)
-
-                                process.Close();
+                            result = process.CloseMainWindow();
+                            process.WaitForExit(3000);
                         }
                         catch (Exception ex)
                         {
                             throw new Exception($"Closing {ProcessName} failed", ex);
                         }
-                    if (!process.HasExited)
-                    {
-                        if (Force)
+                        if (!process.HasExited)
                         {
-                            CallNewLog(new LogEntry($"Killing {ProcessName}..."));
-                            try
+                            if (Force)
                             {
-                                process.Kill();
-                                CallNewLog(new LogEntry($"Process  {ProcessName} killed.."));
+                                CallNewLog(new LogEntry($"Killing {ProcessName}..."));
+                                try
+                                {
+                                    process.Kill();
+                                    CallNewLog(new LogEntry($"Process  {ProcessName} killed.."));
+                                    result = true;
 
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw new Exception($"Killing {ProcessName} failed", ex);
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                throw new Exception($"Killing {ProcessName} failed", ex);
-                            }
+                            else
+                                result = false;
                         }
+                        else
+                            CallNewLog(new LogEntry($"Process  {ProcessName} closed."));
                     }
-                    else
-                        CallNewLog(new LogEntry($"Process  {ProcessName} closed."));
-
-
                 }
-                return new ActionEndResult(true);
+                if (!processFound)
+                    CallNewLog(new LogEntry($"Process {ProcessName} not found."));
+
+                return new ActionEndResult(result);
             }
             catch (Exception ex)
             {

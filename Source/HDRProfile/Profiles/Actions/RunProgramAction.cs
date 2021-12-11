@@ -88,7 +88,7 @@ namespace AutoHDR.Profiles.Actions
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.DefaultExt = ".exe";
-            fileDialog.Filter = "Executables (.exe)|*.exe";
+            fileDialog.Filter = "Executables (.exe)|*.exe| All Files| *.*";
             Nullable<bool> result = fileDialog.ShowDialog();
             string filePath = string.Empty;
             if (result == true)
