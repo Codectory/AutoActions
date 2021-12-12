@@ -225,6 +225,9 @@
   <data name="DeviceID" xml:space="preserve">
     <value>Device ID</value>
   </data>
+  <data name="DeviceUID" xml:space="preserve">
+    <value>UID</value>
+  </data>
   <data name="Display" xml:space="preserve">
     <value>Display</value>
   </data>
@@ -264,6 +267,9 @@
   <data name="GlobalAutoHDR" xml:space="preserve">
     <value>Use automated HDR Mode for all monitors</value>
   </data>
+  <data name="GraphicsCard" xml:space="preserve">
+    <value>Graphics card</value>
+  </data>
   <data name="HDR" xml:space="preserve">
     <value>HDR</value>
   </data>
@@ -278,6 +284,9 @@
   </data>
   <data name="InputDevice" xml:space="preserve">
     <value>Input device</value>
+  </data>
+  <data name="IsPrimaryMonitor" xml:space="preserve">
+    <value>Primary</value>
   </data>
   <data name="LastAction" xml:space="preserve">
     <value>Last action</value>

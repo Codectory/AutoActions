@@ -29,7 +29,7 @@ namespace AutoHDR.Displays
     }
 
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
-    internal struct DEVMODE
+    public struct DEVMODE
     {
         public const int CCHDEVICENAME = 32;
         public const int CCHFORMNAME = 32;
@@ -102,7 +102,7 @@ namespace AutoHDR.Displays
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    internal struct DISPLAY_DEVICE
+    public struct DISPLAY_DEVICE
     {
         [MarshalAs(UnmanagedType.U4)]
         public int cb;
@@ -119,7 +119,7 @@ namespace AutoHDR.Displays
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct POINTL
+    public struct POINTL
     {
         long x;
         long y;
@@ -138,7 +138,7 @@ namespace AutoHDR.Displays
     }
 
     [Flags()]
-    enum DisplayDeviceStateFlags : int
+    public enum DisplayDeviceStateFlags : int
     {
         AttachedToDesktop = 0x1,
         MultiDriver = 0x2,
@@ -169,7 +169,7 @@ namespace AutoHDR.Displays
     }
 
     [Flags()]
-    enum DM : int
+    public enum DM : int
     {
         Orientation = 0x1,
         PaperSize = 0x2,

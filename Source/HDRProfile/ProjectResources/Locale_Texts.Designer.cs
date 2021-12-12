@@ -385,6 +385,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die UID ähnelt.
+        /// </summary>
+        public static string DeviceUID {
+            get {
+                return ResourceManager.GetString("DeviceUID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Display ähnelt.
         /// </summary>
         public static string Display {
@@ -502,6 +511,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Graphics card ähnelt.
+        /// </summary>
+        public static string GraphicsCard {
+            get {
+                return ResourceManager.GetString("GraphicsCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die HDR ähnelt.
         /// </summary>
         public static string HDR {
@@ -543,6 +561,15 @@ namespace AutoHDR.ProjectResources {
         public static string InputDevice {
             get {
                 return ResourceManager.GetString("InputDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Primary ähnelt.
+        /// </summary>
+        public static string IsPrimaryMonitor {
+            get {
+                return ResourceManager.GetString("IsPrimaryMonitor", resourceCulture);
             }
         }
         

@@ -14,18 +14,30 @@ namespace AutoHDR.Displays
     [JsonObject(MemberSerialization.OptIn)]
     public class Display : BaseViewModel
     {
-        public static readonly Display AllDisplays = new Display(ProjectResources.Locale_Texts.AllDisplays, UInt32.MaxValue, UInt32.MaxValue, new Size(0, 0),0,0);
+        public static readonly Display AllDisplays = new Display(ProjectResources.Locale_Texts.AllDisplays, UInt32.MaxValue);
         private bool _managed = true;
 
         [JsonProperty]
         public bool Managed { get => _managed; set { _managed = value; OnPropertyChanged(); } }
 
 
+        private bool _isPrimary;
+
+        [JsonProperty]
+        public bool IsPrimary { get => _isPrimary; set { _isPrimary = value; OnPropertyChanged(); } }
+
         private string _name;
 
         [JsonProperty]
         public string Name { get => _name;  set { _name = value; OnPropertyChanged(); } }
 
+        private string _graphicsCard;
+
+        public string GraphicsCard { get => _graphicsCard; set { _graphicsCard = value; OnPropertyChanged(); } }
+
+        private string _deviceKey;
+
+        public string DeviceKey { get => _deviceKey; set { _deviceKey = value; OnPropertyChanged(); } }
 
         private UInt32 _uid;
 
@@ -35,7 +47,7 @@ namespace AutoHDR.Displays
         private uint _id;
 
         [JsonProperty]
-        public uint ID { get => _id; private set { _id = value; OnPropertyChanged(); } }
+        public uint ID { get => _id;  set { _id = value; OnPropertyChanged(); } }
 
         private bool _hdrState;
 
@@ -61,14 +73,22 @@ namespace AutoHDR.Displays
 
         }
 
-        public Display(string name, uint uID, uint id, Size resolution,  int refreshRate, int colorDepth)
+        public Display(DisplayInformation displayInformation, uint uid)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            UID = uID;
-            ID = id;
-            Resolution = resolution;
-            RefreshRate = refreshRate;
-            ColorDepth = colorDepth;
+            Name = displayInformation.DisplayDevice.DeviceName;
+            UID = uid;
+            ID = displayInformation.Id;
+            IsPrimary = displayInformation.IsPrimary;
+            DeviceKey = displayInformation.DisplayDevice.DeviceKey;
+            Resolution = new Size(displayInformation.Devmode.dmPelsWidth, displayInformation.Devmode.dmPelsHeight);
+            RefreshRate = displayInformation.Devmode.dmDisplayFrequency;
+            GraphicsCard = displayInformation.DisplayDevice.DeviceString;
+        }
+
+        public Display(string name, uint uid)
+        {
+            Name = name;
+            UID = uid;
         }
 
         public void UpdateHDRState()

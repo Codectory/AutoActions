@@ -26,8 +26,8 @@ namespace AutoHDR
         private Guid _defaultProfileGuid = Guid.Empty;
 
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
-        private ObservableCollection<Profile> _applicationProfiles;
-        private ObservableCollection<Display> _monitors;
+        private DispatchingObservableCollection<Profile> _applicationProfiles;
+        private DispatchingObservableCollection<Display> _monitors;
 
 
         [JsonProperty]
@@ -59,18 +59,18 @@ namespace AutoHDR
         public SortableObservableCollection<ApplicationProfileAssignment> ApplicationProfileAssignments { get => _applicationProfileAssignments; set { _applicationProfileAssignments = value; OnPropertyChanged(); } }
 
         [JsonProperty(Order = 1)]
-        public ObservableCollection<Profile> ApplicationProfiles { get => _applicationProfiles; set { _applicationProfiles = value; OnPropertyChanged(); } }
+        public DispatchingObservableCollection<Profile> ApplicationProfiles { get => _applicationProfiles; set { _applicationProfiles = value; OnPropertyChanged(); } }
 
 
         [JsonProperty]
-        public ObservableCollection<Display> Monitors { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
+        public DispatchingObservableCollection<Display> Monitors { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
 
 
         public UserAppSettings()
         {
             ApplicationProfileAssignments = new SortableObservableCollection<ApplicationProfileAssignment>(new ObservableCollection<ApplicationProfileAssignment>());
-            ApplicationProfiles = new ObservableCollection<Profile>();
-            Monitors = new ObservableCollection<Display>();
+            ApplicationProfiles = new DispatchingObservableCollection<Profile>();
+            Monitors = new DispatchingObservableCollection<Display>();
         }
 
         public static UserAppSettings ReadSettings(string path)

@@ -202,47 +202,77 @@ static void  SetHDR(UINT32 uid, bool enabled)
 
 static SIZE _GetResolution(UINT32 uid)
 {
+
+
+	uint8_t set[] = { 0x0A, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x14, 0x81, 0x00, 0x00,
+					 0x00, 0x00, 0x00, 0x00, 0x04, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00 };
+
+	uint8_t request[] = { 0x09, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x7C, 0x6F, 0x00,
+						 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x01, 0x00, 0x00, 0xDB, 0x00,
+						 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00 };
+
 	SIZE resolution = SIZE();
+	bool returnValue = false;
+
 	uint32_t pathCount, modeCount;
-	UINT32 numPathArrayElements = 0, numModeInfoArrayElements = 0;
-	UINT32 filter = QDC_ALL_PATHS;
+
 	if (ERROR_SUCCESS == GetDisplayConfigBufferSizes(QDC_ONLY_ACTIVE_PATHS, &pathCount, &modeCount))
 	{
+		DISPLAYCONFIG_PATH_INFO* pathsArray = nullptr;
+		DISPLAYCONFIG_MODE_INFO* modesArray = nullptr;
 
 		const size_t sizePathsArray = pathCount * sizeof(DISPLAYCONFIG_PATH_INFO);
 		const size_t sizeModesArray = modeCount * sizeof(DISPLAYCONFIG_MODE_INFO);
 
+		pathsArray = static_cast<DISPLAYCONFIG_PATH_INFO*>(std::malloc(sizePathsArray));
+		modesArray = static_cast<DISPLAYCONFIG_MODE_INFO*>(std::malloc(sizeModesArray));
 
-		DISPLAYCONFIG_PATH_INFO* pathsArray = new DISPLAYCONFIG_PATH_INFO[pathCount];
-		DISPLAYCONFIG_MODE_INFO* modesArray = new DISPLAYCONFIG_MODE_INFO[modeCount];
-
-
-		ZeroMemory(pathsArray, sizeof(DISPLAYCONFIG_PATH_INFO) * pathCount);
-		ZeroMemory(modesArray, sizeof(DISPLAYCONFIG_MODE_INFO) * modeCount);
-		QueryDisplayConfig(filter, &pathCount, pathsArray, &modeCount, modesArray, NULL);
-
-
-		for (short i = 0; i < pathCount; i++)
+		if (pathsArray != nullptr && modesArray != nullptr)
 		{
-			try
+			std::memset(pathsArray, 0, sizePathsArray);
+			std::memset(modesArray, 0, sizeModesArray);
+
+			if (ERROR_SUCCESS == QueryDisplayConfig(QDC_ONLY_ACTIVE_PATHS, &pathCount, pathsArray,
+				&modeCount, modesArray, 0))
 			{
-				int ix = pathsArray[i].sourceInfo.modeInfoIdx; //assuming path[0] is primary
+				DISPLAYCONFIG_DEVICE_INFO_HEADER* setPacket =
+					reinterpret_cast<DISPLAYCONFIG_DEVICE_INFO_HEADER*>(set);
+				DISPLAYCONFIG_DEVICE_INFO_HEADER* requestPacket =
+					reinterpret_cast<DISPLAYCONFIG_DEVICE_INFO_HEADER*>(request);
 
-				if (modesArray[ix].id != uid)
-
+				//HDR is off
+				returnValue = false;
+				for (int i = 0; i < modeCount; i++)
 				{
-					resolution.cx =  modesArray[ix].sourceMode.width;
-					resolution.cy = modesArray[ix].sourceMode.height;
-					SetDisplayConfig(pathCount, pathsArray, modeCount, modesArray, SDC_APPLY | SDC_USE_SUPPLIED_DISPLAY_CONFIG | SDC_ALLOW_CHANGES | SDC_SAVE_TO_DATABASE);
+					try
+					{
+						if (modesArray[i].id == uid)
+						{
+							setPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
+							setPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
+							setPacket->id = modesArray[i].id;
+
+							requestPacket->adapterId.HighPart = modesArray[i].adapterId.HighPart;
+							requestPacket->adapterId.LowPart = modesArray[i].adapterId.LowPart;
+							requestPacket->id = modesArray[i].id;
+							DISPLAYCONFIG_MODE_INFO mode = modesArray[i];
+							resolution.cx = mode.sourceMode.width;
+							resolution.cy = mode.sourceMode.height;
+						}
+					}
+					catch (const std::exception&)
+					{
+
+					}
+
 				}
 			}
-			catch (const std::exception&)
-			{
-
-			}
+			std::free(pathsArray);
+			std::free(modesArray);
+			return resolution;
 		}
 	}
-	return resolution;
+
 }
 
 static bool HDRIsOn(UINT32 uid)

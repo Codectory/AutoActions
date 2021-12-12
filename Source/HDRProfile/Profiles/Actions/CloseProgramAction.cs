@@ -32,7 +32,6 @@ namespace AutoHDR.Profiles.Actions
         public bool Force { get => _force; set { _force = value; OnPropertyChanged(); } }
 
 
-
         public override string ActionDescription => $"{Locale_Texts.Close} {ProcessName}";
 
         public RelayCommand GetFileCommand { get; private set; }
@@ -53,7 +52,7 @@ namespace AutoHDR.Profiles.Actions
                 CallNewLog(new LogEntry($"Searching for{ProcessName}..."));
                 string searchName = ProcessName;
                 if (searchName.ToUpperInvariant().EndsWith(".EXE"))
-                    searchName.Substring(0, searchName.Length - 4);
+                    searchName = searchName.Substring(0, searchName.Length - 4);
                 foreach (Process process in runningProcesses)
                 {
                     if (process.ProcessName == searchName)

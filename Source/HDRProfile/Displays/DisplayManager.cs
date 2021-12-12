@@ -12,12 +12,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 using System.Threading;
+using System.Windows.Threading;
 
 namespace AutoHDR.Displays
 {
     public class DisplayManager : BaseViewModel
     {
-
         Thread _updateThread = null;
         readonly object _threadControlLock = new object();
         bool _monitorCancelRequested = false;
@@ -36,7 +36,7 @@ namespace AutoHDR.Displays
         public bool Monitoring { get; private set; } = false;
 
 
-        public  UserAppSettings Settings { get; private set; }
+        public UserAppSettings Settings { get; private set; }
 
 
         public ObservableCollection<Display> Monitors => Settings.Monitors;
@@ -54,6 +54,7 @@ namespace AutoHDR.Displays
                 if (Monitoring)
                     return;
                 _updateThread = new Thread(UpdateMonitorLoop);
+                _updateThread.SetApartmentState(ApartmentState.STA);
                 _updateThread.IsBackground = true;
                 Monitoring = true;
                 _monitorCancelRequested = false;
@@ -78,24 +79,35 @@ namespace AutoHDR.Displays
         {
             while (!_monitorCancelRequested)
             {
-                bool currentValue = false;
-                MergeMonitors(GetActiveMonitors());
-                foreach (Display monitor in Monitors)
+                try
                 {
-                    monitor.UpdateHDRState();
-                    if (monitor.Managed)
-                        currentValue = currentValue || monitor.HDRState;
-                    monitor.Resolution = GetResolution(monitor.ID);
-                    monitor.RefreshRate = GetRefreshRate(monitor.ID);
+                    bool currentValue = false;
+                    Dispatcher.CurrentDispatcher.Invoke(() =>
+                    {
+                        MergeMonitors(GetActiveMonitors());
+                    });
+                    foreach (Display monitor in Monitors)
+                    {
+                        monitor.UpdateHDRState();
+                        if (monitor.Managed)
+                            currentValue = currentValue || monitor.HDRState;
+                        monitor.Resolution = GetResolution(monitor.UID);
+                        monitor.RefreshRate = GetRefreshRate(monitor.ID);
 
+                    }
+                    bool changed = GlobalHDRIsActive != currentValue;
+                    GlobalHDRIsActive = currentValue;
+                    if (changed)
+                    {
+                        try { HDRIsActiveChanged?.Invoke(null, EventArgs.Empty); } catch { }
+                    }
+                    System.Threading.Thread.Sleep(100);
                 }
-                bool changed = GlobalHDRIsActive != currentValue;
-                GlobalHDRIsActive = currentValue;
-                if (changed)
+                catch (Exception ex)
                 {
-                    try { HDRIsActiveChanged?.Invoke(null, EventArgs.Empty); } catch { }
+                    Globals.Logs.AddException(ex);
+                    throw;
                 }
-                System.Threading.Thread.Sleep(100);
             }
         }
 
@@ -112,8 +124,8 @@ namespace AutoHDR.Displays
                 d.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
             {
 
-                dm= func.Invoke(dm);
-    
+                dm = func.Invoke(dm);
+
                 DISP_CHANGE iRet = NativeMethods.ChangeDisplaySettingsEx(
                     d.DeviceName, ref dm, IntPtr.Zero,
                     DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
@@ -198,7 +210,6 @@ namespace AutoHDR.Displays
             DEVMODE dm = new DEVMODE();
             d.cb = Marshal.SizeOf(d);
 
-
             NativeMethods.EnumDisplayDevices(null, deviceID, ref d, 0);
 
             if (0 != NativeMethods.EnumDisplaySettings(
@@ -210,42 +221,37 @@ namespace AutoHDR.Displays
             else return 0;
         }
 
-
-        public static  List<Display> GetActiveMonitors()
+        public static List<Display> GetActiveMonitors()
         {
             List<Display> monitors = new List<Display>();
-
             DisplayConfigTopologyId topologyId;
             var pathWraps = GetPathWraps(QueryDisplayFlags.OnlyActivePaths, out topologyId);
+
+            List<DisplayInformation> _interopDisplays = new List<DisplayInformation>();
+            DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+            DEVMODE dm = new DEVMODE();
+            d.cb = Marshal.SizeOf(d);
+
+            uint deviceID = 0;
+            while (NativeMethods.EnumDisplayDevices(null, deviceID, ref d, 0))
+            {
+                if (0 != NativeMethods.EnumDisplaySettings(d.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
+                    _interopDisplays.Add(new DisplayInformation(deviceID, d, dm));
+                else
+                    _interopDisplays.Add(new DisplayInformation(deviceID, d));
+                deviceID++;
+            }
 
             foreach (var pathWrap in pathWraps)
             {
                 var path = pathWrap.Path;
-                var sourceModeInfo = pathWrap.Modes.First(x => x.infoType == DisplayConfigModeInfoType.Source);
+               DisplayInformation displayInformation = _interopDisplays.FirstOrDefault(di => di.Id.Equals(path.sourceInfo.id));
 
-                var resolution = new Size
-                {
-                    Width = sourceModeInfo.sourceMode.width,
-                    Height = sourceModeInfo.sourceMode.height
-                };
-                int colorDepth = 0;
-                var refreshRate =
-                    (int)Math.Round((double)path.targetInfo.refreshRate.numerator / path.targetInfo.refreshRate.denominator);
-                var rotationOriginal = path.targetInfo.rotation;
-
-
-                DisplayConfigSourceDeviceName displayConfigSourceDeviceName;
-
-                var displayName = "<Unknown>"; 
-                var nameStatus = GetDisplayConfigSourceDeviceName(sourceModeInfo,
-                    out displayConfigSourceDeviceName);
-
-                if (nameStatus == StatusCode.Success)
-                    displayName = displayConfigSourceDeviceName.viewGdiDeviceName;
-
-                Display monitor = new Display(displayName, path.targetInfo.id, sourceModeInfo.id, resolution,  refreshRate, colorDepth);
-                monitors.Add(monitor);
+                Display display = new Display(displayInformation, path.targetInfo.id);
+                if (!monitors.Any(m => m.ID.Equals(display.ID)))
+                    monitors.Add(display);
             }
+
             return monitors;
         }
 
@@ -253,30 +259,42 @@ namespace AutoHDR.Displays
         private void MergeMonitors(List<Display> activeMonitors)
         {
 
-            List<Display> toRemove = new List<Display>();
-            foreach (Display monitor in Monitors)
+            try
             {
-                if (!activeMonitors.Any(m => m.UID.Equals(monitor.UID)))
-                    toRemove.Add(monitor);
-            }
-            foreach (Display monitor in toRemove)
-                Monitors.Remove(monitor);
-            foreach (Display monitor in activeMonitors)
-            {
-                if (!Settings.Monitors.Any(m => m.UID.Equals(monitor.UID)))
-                    Settings.Monitors.Add(monitor);
-                else
+                List<Display> toRemove = new List<Display>();
+                foreach (Display monitor in Monitors)
                 {
-                   Display existingMonitor = Monitors.First(m => m.UID.Equals(monitor.UID));
-                    existingMonitor.Name = monitor.Name;
-                    existingMonitor.ColorDepth = monitor.ColorDepth;
-                    existingMonitor.RefreshRate = monitor.RefreshRate;
-                    existingMonitor.Resolution = monitor.Resolution;
+                    if (!activeMonitors.Any(m => m.UID.Equals(monitor.UID)))
+                        toRemove.Add(monitor);
                 }
+                foreach (Display monitor in toRemove)
+                    Monitors.Remove(monitor);
+                foreach (Display monitor in activeMonitors)
+                {
+                    if (!Settings.Monitors.Any(m => m.UID.Equals(monitor.UID)))
+                        Settings.Monitors.Add(monitor);
+                    else
+                    {
+                        Display existingMonitor = Monitors.First(m => m.UID.Equals(monitor.UID));
+                        existingMonitor.Name = monitor.Name;
+                        existingMonitor.ColorDepth = monitor.ColorDepth;
+                        existingMonitor.RefreshRate = monitor.RefreshRate;
+                        existingMonitor.Resolution = monitor.Resolution;
+                        existingMonitor.DeviceKey = monitor.DeviceKey;
+                        existingMonitor.GraphicsCard = monitor.GraphicsCard;
+                        existingMonitor.ID = monitor.ID;
+                        existingMonitor.IsPrimary = monitor.IsPrimary;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Globals.Logs.AddException(ex);
             }
         }
 
-  
+
 
 
         public void ActivateHDR()
@@ -401,8 +419,5 @@ namespace AutoHDR.Displays
             };
             return Wrapper.DisplayConfigGetDeviceInfo(ref displayConfigSourceDeviceName);
         }
-
     }
 }
-    
-

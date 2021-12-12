@@ -175,11 +175,14 @@
     </Reference>
     <Reference Include="Windows">
       <HintPath>Externals\Windows.winmd</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DispatchingObservableCollection.cs" />
+    <Compile Include="Displays\DisplayInformation.cs" />
     <Compile Include="Profiles\Actions\CloseProgramAction.cs" />
     <Compile Include="Theming\ThemeResourceDirectory.cs" />
     <Compile Include="Theming\Theme.cs" />

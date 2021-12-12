@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Runtime.InteropServices;
+using System.Drawing;
 
 namespace AutoHDR.Displays
 {
@@ -27,7 +28,7 @@ namespace AutoHDR.Displays
 
 
         [DllImport("HDRController.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool GetResolution(UInt32 uid);
+        public static extern Size GetResolution(UInt32 uid);
 
     }
 }
