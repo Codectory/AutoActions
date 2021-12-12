@@ -91,9 +91,6 @@ namespace AutoHDR.Displays
                         monitor.UpdateHDRState();
                         if (monitor.Managed)
                             currentValue = currentValue || monitor.HDRState;
-                        monitor.Resolution = GetResolution(monitor.UID);
-                        monitor.RefreshRate = GetRefreshRate(monitor.ID);
-
                     }
                     bool changed = GlobalHDRIsActive != currentValue;
                     GlobalHDRIsActive = currentValue;

@@ -54,7 +54,7 @@
 
                     <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding UID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Resolution}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Resolution, Converter={StaticResource SizeTextConverter}}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RefreshRate}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding GraphicsCard}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" MaxWidth="250"  TextTrimming="CharacterEllipsis" ToolTip="{Binding GraphicsCard}"/>
 
