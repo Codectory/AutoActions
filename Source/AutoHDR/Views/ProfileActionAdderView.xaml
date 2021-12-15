@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="AutoHDR.Views.ProfileActionAdderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"                     
+             xmlns:root="clr-namespace:AutoHDR"
+             xmlns:pres="clr-namespace:AutoHDR.ProjectResources;assembly=AutoHDR.ProjectResources"
+             xmlns:local="clr-namespace:AutoHDR.Views"
+             xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=prflActns:ProfileActionAdder, IsDesignTimeCreatable=False}"
+              MinWidth="414"  >
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type prflActns:DisplayAction}">
+            <local:DisplayActionView/>
+        </DataTemplate>
+        <!--<DataTemplate DataType="{x:Type prflActns:ApplicationAction}">
+            <local:ApplicationActionView/>
+        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type prflActns:RunProgramAction}">
+            <local:RunProgramActionView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type prflActns:CloseProgramAction}">
+            <local:CloseProgramActionView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type prflActns:AudioDeviceAction}">
+            <local:AudioActionView/>
+        </DataTemplate>
+        <DataTemplate x:Key="ActionTypeTemplate" DataType="ActionTypeDescription">
+            <TextBlock Text="{Binding TypeDescription }"/>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Content="{x:Static pres:ProjectLocales.ActionType}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" FontWeight="DemiBold" FontSize="18" Width="111" Visibility="{Binding EditMode, Converter={StaticResource InvertVisibilityBooleanConverter}}"/>
+        <ComboBox x:Name="ActionType" ItemsSource="{Binding ProfileActions}" SelectedItem="{Binding ActionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding EditMode, Converter={StaticResource InvertVisibilityBooleanConverter}}" ItemTemplate="{StaticResource ActionTypeTemplate}" Margin="126,14,10,0" Height="22" VerticalAlignment="Top"/>
+
+        <ContentPresenter Grid.Row="1" Content="{Binding ContentControlViewModel}" Margin="10,0"/>
+        <Grid Grid.Row="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width=" Auto"/>
+                <ColumnDefinition/>
+
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="2" Content="{x:Static pres:ProjectLocales.OK}" IsEnabled="{Binding CanCreate}"  Command="{Binding OKClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"  VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Height="Auto"  Margin="5"/>
+        </Grid>
+    </Grid>
+</UserControl>

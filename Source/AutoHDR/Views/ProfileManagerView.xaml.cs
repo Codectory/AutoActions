@@ -1,0 +1,16 @@
+﻿using CodectoryCore.UI.Wpf;
+using System.Windows.Controls;
+
+namespace AutoHDR.Views
+{
+    /// <summary>
+    /// Interaktionslogik für MonitorManagerView.xaml
+    /// </summary>
+    public partial class ProfileManagerView : UserControlBase
+    {
+        public ProfileManagerView()
+        {
+            InitializeComponent();
+        }
+    }
+}
