@@ -231,7 +231,6 @@ namespace AutoHDR.Displays
             DisplayConfigTopologyId topologyId;
             var pathWraps = GetPathWraps(QueryDisplayFlags.OnlyActivePaths, out topologyId);
 
-            List<DisplayInformation> _interopDisplays = new List<DisplayInformation>();
             DISPLAY_DEVICE d = new DISPLAY_DEVICE();
             DEVMODE dm = new DEVMODE();
             d.cb = Marshal.SizeOf(d);
@@ -246,7 +245,7 @@ namespace AutoHDR.Displays
                     displayInfo = new DisplayInformation(deviceID, d);
                 Display display = new Display(displayInfo, GetUID(displayInfo.Id));
                 display.ColorDepth = Convert.ToInt32(HDRController.GetColorDepth(display.UID));
-                if (!displays.Any(m => m.ID.Equals(display.ID)))
+                if (!displays.Any(m => m.ID.Equals(display.ID)) && pathWraps.Any(p => p.Path.sourceInfo.id.Equals(display.ID)))
                     displays.Add(display);
                 deviceID++;
             }
