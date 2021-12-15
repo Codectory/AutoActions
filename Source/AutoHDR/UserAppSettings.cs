@@ -28,7 +28,7 @@ namespace AutoHDR
 
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
         private DispatchingObservableCollection<Profile> _applicationProfiles;
-        private DispatchingObservableCollection<Display> _monitors;
+        private DispatchingObservableCollection<Display> _displays;
 
 
         [JsonProperty]
@@ -64,7 +64,7 @@ namespace AutoHDR
 
 
         [JsonProperty]
-        public DispatchingObservableCollection<Display> Displays { get => _monitors; set { _monitors = value; OnPropertyChanged(); } }
+        public DispatchingObservableCollection<Display> Displays { get => _displays; set { _displays = value; OnPropertyChanged(); } }
 
 
         public UserAppSettings()
@@ -84,6 +84,7 @@ namespace AutoHDR
                 try
                 {
                     string serializedJson = File.ReadAllText(path);
+                    serializedJson = UpgradeJson(serializedJson);
                     settings = (UserAppSettings)JsonConvert.DeserializeObject<UserAppSettings>(serializedJson, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Objects,
@@ -106,6 +107,13 @@ namespace AutoHDR
                 }
             }
             return settings;
+        }
+
+        private static string UpgradeJson(string serializedJson)
+        {
+            serializedJson = serializedJson.Replace("\"$type\": \"AutoHDR.Displays.Display, AutoHDR\"", "\"$type\": \"AutoHDR.Displays.Display, AutoHDR.Displays\"");
+            serializedJson = serializedJson.Replace("\"Monitors\": [", "\"Displays\": [");
+            return serializedJson;
         }
 
         private static UserAppSettings TryReadXML(string path)
