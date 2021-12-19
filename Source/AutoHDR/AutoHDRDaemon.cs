@@ -69,7 +69,7 @@ namespace AutoHDR
         public RelayCommand ShutdownCommand { get; private set; }
         public RelayCommand BuyBeerCommand { get; private set; }
 
-        public RelayCommand<ApplicationItem> StartApplicationCommand { get; private set; }
+        public RelayCommand<ApplicationProfileAssignment> StartApplicationCommand { get; private set; }
 
         #endregion RelayCommands
 
@@ -118,6 +118,7 @@ namespace AutoHDR
                 if (Initialized)
                     return;
                 _threadManager = new ThreadManager();
+                _threadManager.NewLog += (o, e) => Globals.Logs.Add(e, false);
                 _logsStorage = new LogsStorage();
                 _lastActions = new ObservableCollection<IProfileAction>();
                 InitializeApplicationWatcher();
@@ -128,8 +129,8 @@ namespace AutoHDR
                     CheckForNewVersion();
                 InitializeDisplayManager();
                 InitializeAudioManager();
-                Globals.Instance.SaveSettings();
                 InitializeTrayMenuHelper();
+                Globals.Instance.SaveSettings();
                 CreateRelayCommands();
                 ShowView = !Settings.StartMinimizedToTray;
                 Initialized = true;
@@ -245,8 +246,9 @@ namespace AutoHDR
         }
         private void InitializeTrayMenuHelper()
         {
+            Globals.Logs.Add("Initializing TrayMenu...", false);
             TrayMenuHelper = new TrayMenuHelper();
-            TrayMenuHelper.Initialize(DisplayManager.Instance);
+            TrayMenuHelper.Initialize(DisplayManagerHandler.Instance);
             TrayMenuHelper.OpenViewRequested += TrayMenuHelper_OpenViewRequested;
             TrayMenuHelper.CloseApplicationRequested += TrayMenuHelper_CloseApplicationRequested;
             //TrayMenuHelper.SwitchTrayIcon(Settings.StartMinimizedToTray);
@@ -254,23 +256,26 @@ namespace AutoHDR
 
         private void InitializeDisplayManager()
         {
-            DisplayManager.Instance.LoadKnownDisplays(Settings.Displays);
-            DisplayManager.Instance.HDRIsActiveChanged += MonitorManager_HDRIsActiveChanged;
-            DisplayManager.Instance.ExceptionThrown += (o,ex) => Globals.Logs.AddException(ex);     
-            HDRIsActive = DisplayManager.Instance.GlobalHDRIsActive;
-            _threadManager.Add(DisplayManager.Instance);
-
+            Globals.Logs.Add("Initializing DisplayManager...", false);
+            DisplayManagerHandler.Instance.LoadKnownDisplays(Settings.Displays);
+            DisplayManagerHandler.Instance.HDRIsActiveChanged += MonitorManager_HDRIsActiveChanged;
+            DisplayManagerHandler.Instance.ExceptionThrown += (o,ex) => Globals.Logs.AddException(ex);
+            DisplayManagerHandler.Instance.SelectedHDR =!Settings.GlobalAutoHDR;
+           HDRIsActive = DisplayManagerHandler.Instance.GlobalHDRIsActive;
+            _threadManager.Add((IManagedThread)DisplayManagerHandler.Instance);
         }
+
 
         private void InitializeAudioManager()
         {
-            AudioManager.Initialize();
+            Globals.Logs.Add("Initializing AudioManager...", false);
+            //AudioManager.Initialize();
         }
 
         private void CreateRelayCommands()
         {
-            ActivateHDRCommand = new RelayCommand(DisplayManager.Instance.ActivateHDR);
-            DeactivateHDRCommand = new RelayCommand(DisplayManager.Instance.DeactivateHDR);
+            ActivateHDRCommand = new RelayCommand(DisplayManagerHandler.Instance.ActivateHDR);
+            DeactivateHDRCommand = new RelayCommand(DisplayManagerHandler.Instance.DeactivateHDR);
             AddAssignmentCommand = new RelayCommand(AddAssignment);
             EditApplicationCommand = new RelayCommand<ApplicationProfileAssignment>(EditApplication);
             RemoveAssignmentCommand = new RelayCommand<ApplicationProfileAssignment>(RemoveAssignment);
@@ -283,7 +288,7 @@ namespace AutoHDR
 
             ClosingCommand = new RelayCommand(Closing);
             ShutdownCommand = new RelayCommand(Shutdown);
-            StartApplicationCommand = new RelayCommand<ApplicationItem>(StartApplication);
+            StartApplicationCommand = new RelayCommand<ApplicationProfileAssignment>(LaunchApplication);
             ShowLicenseCommand = new RelayCommand(ShowLicense);
             ShowInfoCommand = new RelayCommand(ShowInfo);
             ShowLogsCommand = new RelayCommand(ShowLogs);
@@ -299,7 +304,7 @@ namespace AutoHDR
 
         private void MonitorManager_HDRIsActiveChanged(object sender, EventArgs e)
         {
-            HDRIsActive = DisplayManager.Instance.GlobalHDRIsActive;
+            HDRIsActive = DisplayManagerHandler.Instance.GlobalHDRIsActive;
         }
 
 
@@ -334,7 +339,7 @@ namespace AutoHDR
 
 
             Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
-            Globals.Logs.Add("Settings loaded", false);
+            Globals.Logs.Add("Iniialized settings", false);
         }
 
         private void FixAssignments()
@@ -377,14 +382,12 @@ namespace AutoHDR
         }
 
 
-        private void StartApplication(ApplicationItem application)
+        private void LaunchApplication(ApplicationProfileAssignment assingment)
         {
-            Globals.Logs.Add($"Start application {application.ApplicationName}", false);
+            Globals.Logs.Add($"Start application {assingment.Application.ApplicationName}", false);
             try
             {
-                DisplayManager.Instance.ActivateHDR();
-                System.Threading.Thread.Sleep(2500);
-                application.StartApplication();
+                assingment.Application.StartApplication();
 
             }
             catch (Exception ex)
@@ -398,7 +401,6 @@ namespace AutoHDR
             if (Settings.CloseToTray)
             {
                 Globals.Logs.Add($"Minimizing to tray...", false);
-                //  TrayMenuHelper.SwitchTrayIcon(true);
             }
             else
             {
@@ -411,7 +413,7 @@ namespace AutoHDR
 
         private void Shutdown()
         {
-            Settings.Displays = DisplayManager.Instance.Monitors;
+            Settings.Displays = DisplayManagerHandler.Instance.Monitors;
 
             Globals.Logs.Add($"Stopping application watcher...", false);
             ApplicationWatcher.NewLog -= ApplicationWatcher_NewLog;
@@ -543,10 +545,18 @@ namespace AutoHDR
             {
                 try
                 {
-                    if (Settings.AutoStart)
-                        AutoStart.Activate(ProjectLocales.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location);
-                    else
-                        AutoStart.Deactivate(ProjectLocales.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location);
+                    if (e.PropertyName.Equals(nameof(Settings.AutoStart)))
+                    {
+                        if (Settings.AutoStart)
+                            AutoStart.Activate(ProjectLocales.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location);
+                        else
+                            AutoStart.Deactivate(ProjectLocales.AutoHDR, System.Reflection.Assembly.GetEntryAssembly().Location);
+                    }
+                    else if (Settings.GlobalAutoHDR)
+                        DisplayManagerHandler.Instance.SelectedHDR = !Settings.GlobalAutoHDR;
+
+
+
                 }
                 catch (Exception ex)
                 {

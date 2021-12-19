@@ -208,6 +208,24 @@
   <data name="ColorDepth" xml:space="preserve">
     <value>Color depth [bit]</value>
   </data>
+  <data name="ColorDepth.BPC10" xml:space="preserve">
+    <value>10-Bit</value>
+  </data>
+  <data name="ColorDepth.BPC12" xml:space="preserve">
+    <value>12-Bit</value>
+  </data>
+  <data name="ColorDepth.BPC16" xml:space="preserve">
+    <value>16-Bit</value>
+  </data>
+  <data name="ColorDepth.BPC6" xml:space="preserve">
+    <value>6-Bit</value>
+  </data>
+  <data name="ColorDepth.BPC8" xml:space="preserve">
+    <value>8-Bit</value>
+  </data>
+  <data name="ColorDepth.BPCUnkown" xml:space="preserve">
+    <value>-</value>
+  </data>
   <data name="CompatibilityModeToolTip" xml:space="preserve">
     <value>Restarts the application on first occurence, as the application may need HDR to be activated before launching it.</value>
   </data>
@@ -294,6 +312,9 @@
   </data>
   <data name="LastAction" xml:space="preserve">
     <value>Last action</value>
+  </data>
+  <data name="LaunchApplication" xml:space="preserve">
+    <value>Launch application</value>
   </data>
   <data name="License" xml:space="preserve">
     <value>License</value>
@@ -1078,9 +1099,6 @@ Public License instead of this License.  But first, please read
   </data>
   <data name="Shutdown" xml:space="preserve">
     <value>Exit application</value>
-  </data>
-  <data name="StartInHDR" xml:space="preserve">
-    <value>Start in HDR-Mode</value>
   </data>
   <data name="StartToTray" xml:space="preserve">
     <value>Start to tray</value>

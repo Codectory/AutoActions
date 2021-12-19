@@ -35,9 +35,6 @@ namespace AutoHDR.Displays
 
         public string GraphicsCard { get => _graphicsCard; set { _graphicsCard = value; OnPropertyChanged(); } }
 
-        private string _deviceKey;
-
-        public string DeviceKey { get => _deviceKey; set { _deviceKey = value; OnPropertyChanged(); } }
 
         private UInt32 _uid;
 
@@ -63,9 +60,11 @@ namespace AutoHDR.Displays
 
         public int RefreshRate { get => _refreshRate; set { _refreshRate = value; OnPropertyChanged(); } }
 
-        private int _colorDepth;
+        private ColorDepth _colorDepth;
 
-        public int ColorDepth { get => _colorDepth; set { _colorDepth = value; OnPropertyChanged(); } }
+        public ColorDepth ColorDepth { get => _colorDepth; set { _colorDepth = value; OnPropertyChanged(); } }
+
+        public object Tag;
 
         private Display()
         {
@@ -79,7 +78,6 @@ namespace AutoHDR.Displays
             UID = uid;
             ID = monitorInformation.Id;
             IsPrimary = monitorInformation.IsPrimary;
-            DeviceKey = monitorInformation.DisplayDevice.DeviceKey;
             Resolution = new Size(monitorInformation.Devmode.dmPelsWidth, monitorInformation.Devmode.dmPelsHeight);
             RefreshRate = monitorInformation.Devmode.dmDisplayFrequency;
             GraphicsCard = monitorInformation.DisplayDevice.DeviceString;
@@ -91,6 +89,15 @@ namespace AutoHDR.Displays
             UID = uid;
         }
 
+        public Display(uint iD, uint uID, bool isPrimary, string name, string graphicsCard)
+        {
+            IsPrimary = isPrimary;
+            Name = name;
+            GraphicsCard = graphicsCard;
+            UID = uID;
+            ID = iD;
+        }
+
         public void UpdateHDRState()
         {
             HDRState= HDRController.GetHDRState(UID);
@@ -98,17 +105,17 @@ namespace AutoHDR.Displays
 
         public void SetResolution(Size resolution)
         {
-            DisplayManager.Instance.SetResolution(ID, resolution);
+            DisplayManagerHandler.Instance.SetResolution(this, resolution);
         }
 
         public void SetRefreshRate(int refreshRate)
         {
-            DisplayManager.Instance.SetRefreshRate(ID, refreshRate);
+            DisplayManagerHandler.Instance.SetRefreshRate(this, refreshRate);
         }
 
-        public void SetColorDepth(int colorDepth)
+        public void SetColorDepth(ColorDepth colorDepth)
         {
-            DisplayManager.Instance.SetColorDepth(ID, colorDepth);
+            DisplayManagerHandler.Instance.SetColorDepth(this, colorDepth);
         }
 
         public bool IsAllDisplay()

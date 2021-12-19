@@ -50,9 +50,9 @@
             </Grid.RowDefinitions>
             <Image Grid.Row="0"  Grid.ColumnSpan="3" Source="{x:Static pres:ProjectLocales.Logo}" />
         </Grid>
-        <Border Style="{StaticResource RoundedBorder}"  Grid.Row="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" >
-            <ListBox Grid.Row="1" ItemsSource="{Binding Entries}" ItemTemplate="{StaticResource LogEntryTemplate }" Margin="5" FontSize="15"/>
-        </Border>
+        <Border Style="{StaticResource DefaultBorder}"  Grid.Row="2" Margin="5" />
+        <ListBox Grid.Row="2" ItemsSource="{Binding Entries}" ItemTemplate="{StaticResource LogEntryTemplate }" Margin="15" FontSize="15" BorderBrush="{x:Null}" BorderThickness="0"/>
+
 
 
     </Grid>

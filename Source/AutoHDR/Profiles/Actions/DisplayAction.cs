@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
@@ -22,7 +23,7 @@ namespace AutoHDR.Profiles.Actions
             {
                 List<Display> displays = new List<Display>();
                 displays.Add(Display.AllDisplays);
-                displays.AddRange(DisplayManager.GetActiveMonitors());
+                displays.AddRange(DisplayManagerHandler.Instance.GetActiveMonitors());
                 return displays;
             }
         }
@@ -84,11 +85,13 @@ namespace AutoHDR.Profiles.Actions
 
         [JsonProperty]
         public int RefreshRate { get => _refreshRate; set { _refreshRate = value; OnPropertyChanged(); } }
-        
-        int _colorDepth;
+
+        ColorDepth _colorDepth;
 
         [JsonProperty]
-        public int ColorDepth { get => _colorDepth; set { _colorDepth = value; OnPropertyChanged(); } }
+        public ColorDepth ColorDepth { get => _colorDepth; set { _colorDepth = value; OnPropertyChanged(); } }
+
+        public IEnumerable<ColorDepth> ColorDepthValues { get => Enum.GetValues(typeof(ColorDepth)).Cast<ColorDepth>(); }
 
         public override string ActionDescription
         {
@@ -105,6 +108,8 @@ namespace AutoHDR.Profiles.Actions
             }
         }
 
+        public bool ColorDepthIsSupported => DisplayManagerHandler.Instance.GraphicsCardType == GraphicsCardType.NVIDIA;
+
 
         public DisplayAction()
         {
@@ -119,9 +124,9 @@ namespace AutoHDR.Profiles.Actions
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"{(EnableHDR ? "Activating" : "Deactivating")} HDR for all displays."));
                         if (EnableHDR)
-                            DisplayManager.Instance.ActivateHDR();
+                            DisplayManagerHandler.Instance.ActivateHDR();
                         else
-                            DisplayManager.Instance.DeactivateHDR();
+                            DisplayManagerHandler.Instance.DeactivateHDR();
                     }
                     else
                     {
@@ -133,7 +138,7 @@ namespace AutoHDR.Profiles.Actions
                     if (Display.IsAllDisplay())
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting resolution {Resolution} for all displays."));
-                        foreach (Display display in DisplayManager.GetActiveMonitors())
+                        foreach (Display display in DisplayManagerHandler.Instance.GetActiveMonitors())
                             display.SetResolution(Resolution);
                     }
                     else
@@ -147,7 +152,7 @@ namespace AutoHDR.Profiles.Actions
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting refresh rate {RefreshRate} for all displays."));
 
-                        foreach (Display display in DisplayManager.GetActiveMonitors())
+                        foreach (Display display in DisplayManagerHandler.Instance.GetActiveMonitors())
                             display.SetRefreshRate(RefreshRate);
                     }
                     else
@@ -161,13 +166,13 @@ namespace AutoHDR.Profiles.Actions
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting color depth {ColorDepth} for all displays."));
 
-                        foreach (Display display in DisplayManager.GetActiveMonitors())
+                        foreach (Display display in DisplayManagerHandler.Instance.GetActiveMonitors())
                             display.SetColorDepth(ColorDepth);
                     }
                     else
                     {
                         CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting color depth {ColorDepth} for display {Display.Name}"));
-                        Display.SetColorDepth(RefreshRate);
+                        Display.SetColorDepth(ColorDepth);
                     }
                 System.Threading.Thread.Sleep(100);
                 return new ActionEndResult(true);

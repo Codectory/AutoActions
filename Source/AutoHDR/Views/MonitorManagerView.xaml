@@ -8,7 +8,7 @@
              xmlns:dsp="clr-namespace:AutoHDR.Displays;assembly=AutoHDR.Displays"
              xmlns:local="clr-namespace:AutoHDR.Views"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance dsp:DisplayManager, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance dsp:DisplayManagerBase, IsDesignTimeCreatable=True}"
 
              d:DesignHeight="450" d:DesignWidth="800" >
     <UserControl.Resources>
@@ -17,8 +17,9 @@
         </ItemsPanelTemplate>
 
         <DataTemplate x:Key="MonitorItemTemplate" DataType="Display">
-            <Border Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0">
             <Grid>
+                <Border Style="{StaticResource DefaultBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0"/>
+                <Grid Margin="15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -95,7 +96,7 @@
                     <CheckBox IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}" Grid.Column="1" Grid.Row="9"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsChecked="{Binding Managed, Mode=TwoWay}" Margin="5" HorizontalAlignment="Left"  />
 
                 </Grid>
-            </Border>
+            </Grid>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -123,8 +124,9 @@
                 </Style>
             </Ellipse.Style>
         </Ellipse>
-        <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource RoundedBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10">
-            <ListBox   x:Name="DisplayList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource WrapListViewTemplate}"  ItemTemplate="{StaticResource MonitorItemTemplate}" ItemsSource="{Binding Monitors}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}"  BorderThickness="0"/>
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource DefaultBorder}" Margin="10,10,10,10">
         </Border>
+        <ListBox  Grid.Row="1" Grid.ColumnSpan="2" Margin="15"  x:Name="DisplayList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource WrapListViewTemplate}"  ItemTemplate="{StaticResource MonitorItemTemplate}" ItemsSource="{Binding Monitors}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}"  BorderThickness="0"/>
+
     </Grid>
 </UserControl>

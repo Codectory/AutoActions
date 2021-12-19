@@ -279,6 +279,9 @@
   <data name="LastAction" xml:space="preserve">
     <value>Letzte Aktion</value>
   </data>
+  <data name="LaunchApplication" xml:space="preserve">
+    <value>Starte Anwendung</value>
+  </data>
   <data name="License" xml:space="preserve">
     <value>License</value>
   </data>
@@ -384,17 +387,11 @@
   <data name="Shutdown" xml:space="preserve">
     <value>Beenden</value>
   </data>
-  <data name="StartInHDR" xml:space="preserve">
-    <value>Start in HDR-Modus</value>
-  </data>
   <data name="StartToTray" xml:space="preserve">
     <value>In Symbolleiste minimiert starten</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>

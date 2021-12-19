@@ -29,15 +29,15 @@ namespace AutoHDR.Audio
 
         public static void Initialize()
         {
-            lock (_lockInitialize)
-            {
-                if (Initialized)
-                    return;
-                Controller = new CoreAudioController();
-                OutputAudioDevices  = Controller.GetPlaybackDevices().ToList().AsReadOnly();
-                InputAudioDevices = Controller.GetCaptureDevices().ToList().AsReadOnly();
-                Initialized = true;
-            }
+            //lock (_lockInitialize)
+            //{
+            //    if (Initialized)
+            //        return;
+            //    Controller = new CoreAudioController();
+            //    OutputAudioDevices  = Controller.GetPlaybackDevices().ToList().AsReadOnly();
+            //    InputAudioDevices = Controller.GetCaptureDevices().ToList().AsReadOnly();
+            //    Initialized = true;
+            //}
         }
 
         

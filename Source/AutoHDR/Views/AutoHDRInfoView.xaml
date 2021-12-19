@@ -45,25 +45,25 @@
             <Image Grid.Row="0"  Grid.ColumnSpan="3" Source="{Binding Converter={StaticResource  BitmapToBitmapImageConverter}, Source={x:Static pres:ProjectLocales.Logo}}"/>
         </Grid>
         <TextBlock Grid.Row="1" Text="{x:Static pres:ProjectLocales.Local}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
-        <Border Style="{StaticResource RoundedBorder}"  Grid.Row="2"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" >
-            <Grid Height="Auto" Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.Version}"  Style="{StaticResource InfoText}" VerticalAlignment="Center"></TextBlock>
+        <Border Style="{StaticResource DefaultBorder}"  Grid.Row="2" Margin="5" />
+        <Grid Height="Auto" Margin="10,5" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.Version}"  Style="{StaticResource InfoText}" VerticalAlignment="Center"></TextBlock>
 
-                <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Version}"  Style="{StaticResource InfoText}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-            </Grid>
-        </Border>
+            <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Version}"  Style="{StaticResource InfoText}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+        </Grid>
+
         <TextBlock Grid.Row="3" Text="{x:Static pres:ProjectLocales.Online}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
-        <Border Grid.Row="4"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" >
+        <Border Grid.Row="4"  Margin="5" >
             <Border.Style>
-                <Style  BasedOn="{StaticResource RoundedBorder}" TargetType="{x:Type Border}">
+                <Style  BasedOn="{StaticResource DefaultBorder}" TargetType="{x:Type Border}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding NewUpdateAvailabe}" Value="True">
                             <Setter Property="Background" Value="#FF5DC77A"/>
@@ -73,9 +73,9 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-
             </Border.Style>
-            <Grid Height="Auto" Margin="5">
+        </Border>
+        <Grid Height="Auto" Margin="10,5"  Grid.Row="4">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -104,13 +104,12 @@
                     </TextBlock>
                 </Button>
             </Grid>
-        </Border>
         <TextBlock Grid.Row="5" Text="{x:Static pres:ProjectLocales.Changelog}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
-        <Border Style="{StaticResource RoundedBorder}"  Grid.Row="6"  BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="5" Height="Auto" >
-            <ScrollViewer Grid.Row="3" Margin="5" >
-                <TextBlock Text="{Binding ChangeLog}" TextWrapping="Wrap" FontSize="16"/>
-            </ScrollViewer>
-        </Border>
+        <Border Style="{StaticResource DefaultBorder}"  Grid.Row="6" Margin="5"  />
+        <ScrollViewer Grid.Row="6" Margin="10,10" >
+            <TextBlock Text="{Binding ChangeLog}" TextWrapping="Wrap" FontSize="16"/>
+        </ScrollViewer>
+
 
     </Grid>
 </UserControl>

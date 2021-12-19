@@ -66,16 +66,16 @@ namespace AutoHDR.Profiles.Actions
         {
             try
             {
-                if (SetOutput)
-                {
-                    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting output audio device to {OutputDevice.FullName}"));
-                    OutputDevice.SetAsDefault();
-                }
-                if (SetInput)
-                {
-                    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting input audio device to {InputDevice.FullName}"));
-                    InputDevice.SetAsDefault();
-                }
+                //if (SetOutput)
+                //{
+                //    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting output audio device to {OutputDevice.FullName}"));
+                //    OutputDevice.SetAsDefault();
+                //}
+                //if (SetInput)
+                //{
+                //    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting input audio device to {InputDevice.FullName}"));
+                //    InputDevice.SetAsDefault();
+                //}
                 return new ActionEndResult(true);
             }
             catch (Exception ex)

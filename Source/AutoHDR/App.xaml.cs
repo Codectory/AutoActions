@@ -25,7 +25,7 @@ namespace AutoHDR
         [STAThread]
         public static void Main()
          {
-            bool createNew = false;
+         bool createNew = false;
             mutex = new Mutex(true, "{2846416C-610B-4A6B-A31C-A4AA6826E9BE}", out createNew);
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {

@@ -332,6 +332,60 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 10-Bit ähnelt.
+        /// </summary>
+        public static string ColorDepth_BPC10 {
+            get {
+                return ResourceManager.GetString("ColorDepth.BPC10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 12-Bit ähnelt.
+        /// </summary>
+        public static string ColorDepth_BPC12 {
+            get {
+                return ResourceManager.GetString("ColorDepth.BPC12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 16-Bit ähnelt.
+        /// </summary>
+        public static string ColorDepth_BPC16 {
+            get {
+                return ResourceManager.GetString("ColorDepth.BPC16", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 6-Bit ähnelt.
+        /// </summary>
+        public static string ColorDepth_BPC6 {
+            get {
+                return ResourceManager.GetString("ColorDepth.BPC6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 8-Bit ähnelt.
+        /// </summary>
+        public static string ColorDepth_BPC8 {
+            get {
+                return ResourceManager.GetString("ColorDepth.BPC8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die - ähnelt.
+        /// </summary>
+        public static string ColorDepth_BPCUnkown {
+            get {
+                return ResourceManager.GetString("ColorDepth.BPCUnkown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Restarts the application on first occurence, as the application may need HDR to be activated before launching it. ähnelt.
         /// </summary>
         public static string CompatibilityModeToolTip {
@@ -589,6 +643,15 @@ namespace AutoHDR.ProjectResources {
         public static string LastAction {
             get {
                 return ResourceManager.GetString("LastAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Launch application ähnelt.
+        /// </summary>
+        public static string LaunchApplication {
+            get {
+                return ResourceManager.GetString("LaunchApplication", resourceCulture);
             }
         }
         
@@ -937,15 +1000,6 @@ namespace AutoHDR.ProjectResources {
         public static string Shutdown {
             get {
                 return ResourceManager.GetString("Shutdown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Start in HDR-Mode ähnelt.
-        /// </summary>
-        public static string StartInHDR {
-            get {
-                return ResourceManager.GetString("StartInHDR", resourceCulture);
             }
         }
         

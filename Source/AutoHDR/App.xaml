@@ -54,10 +54,11 @@
         <SolidColorBrush x:Key="ScrollBrush">#969696</SolidColorBrush>
         <SolidColorBrush x:Key="MouseOverScrollBrush">#a1a1a1</SolidColorBrush>
 
-        <SolidColorBrush x:Key="DisabledAccentBrush">#949ea6</SolidColorBrush>
+        <SolidColorBrush x:Key="DisabledAccentBrush">#c6cbcf</SolidColorBrush>
         <SolidColorBrush x:Key="HighlightedInactiveAccentBrush" Color="#95bfdb"/>
         <StaticResource x:Key="ButtonBackgroundBrush"  ResourceKey="AccentBrush"/>
-        <CornerRadius x:Key="CornerRadius">3</CornerRadius>
+        <system:Double x:Key="DefaultRadius">5</system:Double>
+        <CornerRadius x:Key="CornerRadius">5</CornerRadius>
 
         <Style x:Key="DefaultLabel" TargetType="Label">
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
@@ -83,8 +84,19 @@
         <Style TargetType="UserControl" BasedOn="{StaticResource DefaultUserControl}"/>
 
 
-        <Style x:Key="RoundedBorder" TargetType="Border">
+        <Style x:Key="DefaultBorder" TargetType="Border">
             <Setter Property="CornerRadius" Value="{StaticResource CornerRadius}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                       <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0.0" Direction="260" />
+                </Setter.Value>
+            </Setter>
+
+
         </Style>
 
         <Style x:Key="HDRCircle" TargetType="Ellipse">
@@ -107,9 +119,14 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBoxBase">
-                        <Border  Height="Auto" Width="Auto" BorderBrush="{StaticResource AccentBrush}" Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="{StaticResource CornerRadius}">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        <Grid>
+                        <Border Style="{StaticResource DefaultBorder}" Background="{TemplateBinding Background}" >
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0.3" Direction="260" />
+                            </Border.Effect>
                         </Border>
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -243,21 +260,23 @@
                     <ControlTemplate TargetType="{x:Type CheckBox}">
                         <BulletDecorator Background="Transparent">
                             <BulletDecorator.Bullet>
-                                <Border x:Name="Border" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" CornerRadius="{StaticResource CornerRadius}" BorderThickness="1" BorderBrush="{DynamicResource AccentBrush}">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="Transparent"/>
-                                    </Border.Background>
-                                    <Grid>
-                                        <Path Visibility="Collapsed" Width="10" Height="10" x:Name="CheckMark" SnapsToDevicePixels="False"
+                                <Grid>
+                                    <Border x:Name="Border" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Style="{StaticResource DefaultBorder}">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="Transparent"/>
+                                        </Border.Background>
+                                        <Border.Effect>
+                                            <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0.3" Direction="260" />
+                                        </Border.Effect>
+                                    </Border>
+                                    <Path Visibility="Collapsed" Width="10" Height="10" x:Name="CheckMark" SnapsToDevicePixels="False"
                                             StrokeThickness="2"
                                             Data="M 1 4 L 4 9 M 4 9 L 9 0">
-                                            <Path.Stroke>
-                                                <SolidColorBrush Color="{DynamicResource GlyphColor}" />
-                                            </Path.Stroke>
-                                        </Path>
-
-                                    </Grid>
-                                </Border>
+                                        <Path.Stroke>
+                                            <SolidColorBrush Color="{DynamicResource GlyphColor}" />
+                                        </Path.Stroke>
+                                    </Path>
+                                </Grid>
                             </BulletDecorator.Bullet>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
@@ -500,11 +519,7 @@
                   SnapsToDevicePixels="True"
                   MinWidth="{TemplateBinding ActualWidth}"
                   MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                    <Border x:Name="DropDownBorder"
-                      BorderThickness="1">
-                                        <Border.BorderBrush>
-                                            <SolidColorBrush Color="{StaticResource AccentColor}" />
-                                        </Border.BorderBrush>
+                                    <Border x:Name="DropDownBorder" Style="{StaticResource DefaultBorder}">
                                         <Border.Background>
                                             <SolidColorBrush Color="{DynamicResource ControlLightColor}" />
                                         </Border.Background>
@@ -554,48 +569,56 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                        <Border x:Name="Border" CornerRadius="{StaticResource CornerRadius}"
+                        <Grid>
+                            <Border x:Name="Border" CornerRadius="{StaticResource CornerRadius}"
                 Padding="2"
                 SnapsToDevicePixels="true">
-                            <Border.Background>
-                                <SolidColorBrush Color="Transparent"/>
-                            </Border.Background>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="SelectionStates">
-                                    <VisualState x:Name="Pressed">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
+                                <Border.Background>
+                                    <SolidColorBrush Color="Transparent"/>
+                                </Border.Background>
 
-                                    </VisualState>
-                                    <VisualState x:Name="Unselected" />
-                                    <VisualState x:Name="Selected">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                            </Border>
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="SelectionStates">
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                                    <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
+                                                </ColorAnimationUsingKeyFrames>
+                                            </Storyboard>
+
+                                        </VisualState>
+                                        <VisualState x:Name="Unselected" />
+                                        <VisualState x:Name="Selected">
+                                            <Storyboard>
+                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                 Storyboard.TargetProperty="(Panel.Background).
                     (SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0"
+                                                    <EasingColorKeyFrame KeyTime="0"
                                          Value="{StaticResource SelectedBackgroundColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="SelectedUnfocused">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                </ColorAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="SelectedUnfocused">
+                                            <Storyboard>
+                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                 Storyboard.TargetProperty="(Panel.Background).
                     (SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0"
+                                                    <EasingColorKeyFrame KeyTime="0"
                                          Value="{StaticResource SelectedUnfocusedColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <ContentPresenter />
-                        </Border>
+                                                </ColorAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <ContentPresenter />
+                            </Grid>
+                        </Grid>
+
+                        
+
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -609,9 +632,12 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
+                        <Grid>
                         <Border x:Name="HeaderBorder" Background="Transparent" Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}"  CornerRadius="3 3 0 0">
-                            <TextBlock x:Name="HeaderContent" FontSize="{TemplateBinding  FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
+                            <TextBlock x:Name="HeaderContent" FontSize="{TemplateBinding  FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" >
                                 <Setter TargetName="HeaderContent"  Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
@@ -816,6 +842,68 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Viewbox HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                            <Border x:Name="Border" Style="{StaticResource DefaultBorder}"
+                            Background="#FFFFFFFF"
+                            Width="40" Height="20">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0.5" Direction="0" Opacity="0.2" />
+                                </Border.Effect>
+                                <Ellipse x:Name="Ellipse" Fill="#FFFFFFFF" Stretch="Uniform"
+                                 Margin="2 1 2 1"
+                                 Stroke="Gray" StrokeThickness="0.2"
+                                 HorizontalAlignment="Stretch">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0.2" Direction="260" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Border>
+                        </Viewbox>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="{StaticResource ActiveColor}"
+                                                    Duration="0:0:0.1" />
+                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        To="20 1 2 1"
+                                                        Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="White"
+                                                    Duration="0:0:0.1" />
+                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        To="2 1 2 1"
+                                                        Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+
+                    <Trigger Property="IsEnabled"  Value="False">
+                        <Setter Property="Border.Background" Value="{StaticResource DisabledAccentBrush}"/>
+                    </Trigger>
+            </Style.Triggers>
         </Style>
 
 

@@ -4,13 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AutoHDR.Views"
+             xmlns:dsp="clr-namespace:AutoHDR.Displays;assembly=AutoHDR.Displays"
+             xmlns:core="clr-namespace:CodectoryCore.UI.Wpf;assembly=CodectoryCore.UI.Wpf"
              xmlns:root="clr-namespace:AutoHDR"
              xmlns:pres="clr-namespace:AutoHDR.ProjectResources;assembly=AutoHDR.ProjectResources"
              xmlns:prflActns="clr-namespace:AutoHDR.Profiles.Actions"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=prflActns:DisplayAction, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
-        <DataTemplate x:Key="DisplayItemTemplate" DataType="Display">
+        <DataTemplate x:Key="DisplayItemTemplate" DataType="dsp:Display">
             <TextBlock Text="{Binding Name}"></TextBlock>
         </DataTemplate>
     </UserControl.Resources>
@@ -36,7 +38,7 @@
         <Label Grid.Column="0"  Grid.Row="1" Content="{x:Static pres:ProjectLocales.SetHDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
         <CheckBox  Grid.Column="1" Grid.Row="1"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"/>
         <Label Grid.Column="0"  Grid.Row="2" Content="{x:Static pres:ProjectLocales.ActivateHDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
-        <CheckBox  Grid.Column="1" Grid.Row="2"  IsEnabled="{Binding SetHDR}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding EnableHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"/>
+        <ToggleButton Grid.Column="1" Grid.Row="2"  IsEnabled="{Binding SetHDR}" IsChecked="{Binding EnableHDR, Mode=TwoWay}"  Margin="5" HorizontalAlignment="Left" Height="25"/>
 
         <Label Grid.Column="0"  Grid.Row="3" Content="{x:Static pres:ProjectLocales.SetResolution}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
             <CheckBox  Grid.Column="1" Grid.Row="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetResolution, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" />
@@ -51,13 +53,11 @@
         <TextBox  Grid.Column="1" Grid.Row="6"  IsEnabled="{Binding SetRefreshRate}" Text="{Binding RefreshRate, Mode=TwoWay}" VerticalAlignment="Center"  Margin="5" />
 
 
-        <Label Visibility="Hidden" Grid.Column="0"  Grid.Row="7" Content="{x:Static pres:ProjectLocales.SetColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
-        <CheckBox Visibility="Hidden" Grid.Column="1" Grid.Row="7"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetColorDepth, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" />
+        <Label Grid.Column="0"  Grid.Row="7" Content="{x:Static pres:ProjectLocales.SetColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
 
-        <Label Visibility="Hidden" Grid.Column="0"  Grid.Row="8" Content="{x:Static pres:ProjectLocales.ColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
-        <TextBox  Visibility="Hidden" Grid.Column="1" Grid.Row="8"  IsEnabled="{Binding SetColorDepth}" Text="{Binding ColorDepth, Mode=TwoWay}" VerticalAlignment="Center"  Margin="5" />
+        <CheckBox Grid.Column="1" Grid.Row="7"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetColorDepth, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" IsEnabled="{Binding ColorDepthIsSupported}"/>
 
-
-
+        <Label Grid.Column="0"  Grid.Row="8" Content="{x:Static pres:ProjectLocales.ColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
+        <ComboBox   Grid.Column="1" Grid.Row="8"  ItemsSource="{Binding ColorDepthValues}" DisplayMemberPath="{Binding ColorDepth, Converter={StaticResource EnumLocaleConverter}, ConverterParameter={x:Static pres:ProjectLocales.ResourceManager}}"  SelectedItem="{Binding ColorDepth}"   VerticalAlignment="Center"  Margin="5" />
     </Grid>
 </UserControl>

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using AutoHDR.ProjectResources;
 using AutoHDR.Displays;
+using Microsoft.Win32;
 
 namespace AutoHDR
 {
@@ -28,7 +29,7 @@ namespace AutoHDR
         public event EventHandler<string> NewLog;
 
 
-        public void Initialize(DisplayManager monitorManager)
+        public void Initialize(IDisplayManagerBase displayManager)
         {
             if (Initialized)
                 return;
@@ -55,20 +56,35 @@ namespace AutoHDR
                 };
                 _openButton.Click += (o, e) => OpenViewRequested?.Invoke(this, EventArgs.Empty);
                 _closeButton.Click += (o, e) => CloseApplicationRequested?.Invoke(this, EventArgs.Empty);
-                _hdrSwitchButton.Click += (o, e) => { if (DisplayManager.Instance.GlobalHDRIsActive) monitorManager.DeactivateHDR(); else monitorManager.ActivateHDR(); };
+                _hdrSwitchButton.Click += (o, e) => { if (DisplayManagerHandler.Instance.GlobalHDRIsActive) displayManager.DeactivateHDR(); else displayManager.ActivateHDR(); };
                 contextMenu.Items.Add(_openButton);
                 contextMenu.Items.Add(_hdrSwitchButton);
                 contextMenu.Items.Add(_closeButton);
                 _trayMenu.ContextMenu = contextMenu;
                 _trayMenu.TrayLeftMouseDown += TrayMenu_TrayLeftMouseDown;
-                DisplayManager.Instance.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
+                DisplayManagerHandler.Instance.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
                 UpdateMenuButtons();
                 CallNewLog("Tray menu initialized");
+                SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+
 
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == PowerModes.Suspend)
+            {
+                SwitchTrayIcon(false);
+            }
+            else if (e.Mode == PowerModes.Resume)
+            {
+                System.Threading.Thread.Sleep(5000);
+                SwitchTrayIcon(true);
             }
         }
 
@@ -82,7 +98,7 @@ namespace AutoHDR
             Application.Current.Dispatcher.Invoke(
             (Action)(() =>
             {
-                _hdrSwitchButton.Header = DisplayManager.Instance.GlobalHDRIsActive ? ProjectLocales.DeactivateHDR : ProjectLocales.ActivateHDR;
+                _hdrSwitchButton.Header = DisplayManagerHandler.Instance.GlobalHDRIsActive ? ProjectLocales.DeactivateHDR : ProjectLocales.ActivateHDR;
             }));
         }
 

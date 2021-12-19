@@ -11,6 +11,8 @@ namespace AutoHDR.Threading
 {
     public class ThreadManager
     {
+
+        public event EventHandler<string> NewLog;
         public DateTime _lastWakeup = DateTime.MinValue;
         public bool IsActive { get; private set; } = false;
 
@@ -37,7 +39,8 @@ namespace AutoHDR.Threading
         {
             lock (_lockThreadAcces)
             {
-                _lastWakeup = DateTime.Now;
+                   _lastWakeup = DateTime.Now;
+                NewLog?.BeginInvoke(this, "Waking up...", null, null);
                 if (IsActive)
                     InternalStartThreads();
             }
@@ -47,6 +50,8 @@ namespace AutoHDR.Threading
         {
             lock (_lockThreadAcces)
             {
+                NewLog?.BeginInvoke(this, "Going to sleep...", null, null);
+
                 InternalStopThreads();
             }
         }
@@ -72,13 +77,17 @@ namespace AutoHDR.Threading
 
         public void StartThreads()
         {
-            while ((DateTime.Now - _lastWakeup).TotalSeconds <= 5)
+            while ((DateTime.Now - _lastWakeup).TotalSeconds <= 10)
                 System.Threading.Thread.Sleep(100);
             lock (_lockThreadAcces)
             {
                 if (IsActive)
                     return;
+                NewLog?.BeginInvoke(this, "Starting threads...", null, null);
+
                 InternalStartThreads();
+                NewLog?.BeginInvoke(this, "Threads started.", null, null);
+
                 IsActive = true;
             }
         }
@@ -102,10 +111,12 @@ namespace AutoHDR.Threading
         }
         private void InternalStopThreads()
         {
+            NewLog?.BeginInvoke(this, "Stopping threads...", null, null);
+
             foreach (IManagedThread thread in ManagedThreds)
                 if (thread.ManagedThreadIsActive)
                     thread.StopManagedThread();
-
+            NewLog?.BeginInvoke(this, "Threads stopped.", null, null);
         }
     }
 }
