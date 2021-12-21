@@ -638,11 +638,11 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Last action ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Last actions ähnelt.
         /// </summary>
-        public static string LastAction {
+        public static string LastActions {
             get {
-                return ResourceManager.GetString("LastAction", resourceCulture);
+                return ResourceManager.GetString("LastActions", resourceCulture);
             }
         }
         

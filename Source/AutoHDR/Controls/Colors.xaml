@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="ActiveColor">#2ac987</Color>
+    <Color x:Key="AccentColor">#ff6666</Color>
+    <Color x:Key="ControlMouseOverColor">#fa8e8e</Color>
+    <Color x:Key="ControlPressedColor">#e36b6b</Color>
+
+    <Color x:Key="WindowColor">White</Color>
+    <Color x:Key="SelectedBackgroundColor">#fca9a9</Color>
+    <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
+    <Color x:Key="ControlLightColor">White</Color>
+    <Color x:Key="ControlMediumColor">#FFCCCCCC</Color>
+    <Color x:Key="GlyphColor">#FF444444</Color>
+    <Color x:Key="DisabledForegroundColor">#cfcfcf</Color>
+    <Color x:Key="DisabledControlDarkColor">#8a8a8a</Color>
+
+    <Color x:Key="DisabledBorderColor">#adadad</Color>
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowColor}"/>
+    <SolidColorBrush x:Key="ButtonForegroundBrush"  Color="{StaticResource WindowColor}"/>
+    <SolidColorBrush x:Key="ActiveBrush"  Color="{StaticResource ActiveColor}"/>
+    <SolidColorBrush x:Key="AccentBrush"  Color="{StaticResource AccentColor}"/>
+    <SolidColorBrush x:Key="HighlightedBrush"  Color="{StaticResource SelectedBackgroundColor}"/>
+    <SolidColorBrush x:Key="MouseOverBrush"  Color="{StaticResource ControlMouseOverColor}"/>
+    <SolidColorBrush x:Key="ControlLightBrush"  Color="{StaticResource ControlLightColor}"/>
+    <SolidColorBrush x:Key="GlyphBrush"  Color="{StaticResource GlyphColor}"/>
+
+    <SolidColorBrush x:Key="InactiveAccentBrush">#ad7b7b</SolidColorBrush>
+    <SolidColorBrush x:Key="DragScrollBrush">#757575</SolidColorBrush>
+    <SolidColorBrush x:Key="ScrollBrush">#969696</SolidColorBrush>
+    <SolidColorBrush x:Key="MouseOverScrollBrush">#a1a1a1</SolidColorBrush>
+
+    <SolidColorBrush x:Key="DisabledAccentBrush" Color="{StaticResource DisabledControlDarkColor}"/>
+    <SolidColorBrush x:Key="HighlightedInactiveAccentBrush" Color="#95bfdb"/>
+    <StaticResource x:Key="ButtonBackgroundBrush"  ResourceKey="AccentBrush"/>
+
+
+</ResourceDictionary>

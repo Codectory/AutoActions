@@ -197,6 +197,8 @@ namespace AutoHDR
         private bool IsFocusedApplication(Process process)
         {
             Process currentProcess = GetForegroundProcess();
+            if (currentProcess == null)
+                return false;
             return process.Id.Equals(currentProcess.Id);
         }
 

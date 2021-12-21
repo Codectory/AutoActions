@@ -50,8 +50,8 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="1" Content="..."   VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,5,0" Width="20"  FontSize="20" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.EditProfileActionCommand}" CommandParameter="{Binding}" />
-                    <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="1"   Content="-"  VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,5,0" Width="20" FontSize="20" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
+                    <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="1" Content="..."   VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,5,0" Width="25"  FontSize="20" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.EditProfileActionCommand}" CommandParameter="{Binding}" />
+                    <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="1"   Content="-"  VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,5,0" Width="25" FontSize="20" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.ActionType}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="DemiBold" />
                     <TextBlock Grid.Column="0" Grid.ColumnSpan="3"  Grid.Row="1" Text="{Binding ActionTypeName}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="{x:Static pres:ProjectLocales.Actions}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="DemiBold" />
@@ -149,7 +149,7 @@
 
                     </Grid>
                 <Border Grid.Column="1"  Grid.Row="6" Style="{StaticResource DefaultBorder}" Margin="10,2" Height="120" />
-                <Grid Grid.Column="1"  Grid.Row="6">
+                <Grid Grid.Column="1"  Grid.Row="6" Margin="10,2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>

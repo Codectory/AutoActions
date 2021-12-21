@@ -104,6 +104,8 @@ namespace AutoHDR.Profiles.Actions
                     returnValue += $" {ProjectLocales.Resolution} {Resolution.Width}x{Resolution.Height}";
                 if (SetRefreshRate)
                     returnValue += $" {ProjectLocales.RefreshRate} {RefreshRate}Hz";
+                if (SetColorDepth)
+                    returnValue += $" {ProjectLocales.ColorDepth} {ColorDepth}";
                 return returnValue;
             }
         }

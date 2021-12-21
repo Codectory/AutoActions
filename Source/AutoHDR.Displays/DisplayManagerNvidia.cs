@@ -105,7 +105,7 @@ namespace AutoHDR.Displays
         {
             DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag);
             NvAPIWrapper.Native.Display.ColorDataDepth nvColorDepth = colorDepth.ConvertNvidiaColorDepth();
-            ColorData colorData = new ColorData(nvidiaDisplay.CurrentColorData.ColorFormat, nvidiaDisplay.CurrentColorData.Colorimetry, nvidiaDisplay.CurrentColorData.DynamicRange, NvAPIWrapper.Native.Display.ColorDataDepth.BPC8, nvidiaDisplay.CurrentColorData.SelectionPolicy, nvidiaDisplay.CurrentColorData.DesktopColorDepth);
+            ColorData colorData = new ColorData(nvidiaDisplay.CurrentColorData.ColorFormat, nvidiaDisplay.CurrentColorData.Colorimetry, nvidiaDisplay.CurrentColorData.DynamicRange, nvColorDepth, nvidiaDisplay.CurrentColorData.SelectionPolicy, nvidiaDisplay.CurrentColorData.DesktopColorDepth);
             nvidiaDisplay.SetColorData(colorData);
         }
 

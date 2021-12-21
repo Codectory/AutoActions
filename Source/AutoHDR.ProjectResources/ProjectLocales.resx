@@ -310,8 +310,8 @@
   <data name="IsPrimaryMonitor" xml:space="preserve">
     <value>Primary</value>
   </data>
-  <data name="LastAction" xml:space="preserve">
-    <value>Last action</value>
+  <data name="LastActions" xml:space="preserve">
+    <value>Last actions</value>
   </data>
   <data name="LaunchApplication" xml:space="preserve">
     <value>Launch application</value>

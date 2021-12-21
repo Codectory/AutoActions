@@ -276,8 +276,8 @@
   <data name="IsPrimaryMonitor" xml:space="preserve">
     <value>Hauptmonitor</value>
   </data>
-  <data name="LastAction" xml:space="preserve">
-    <value>Letzte Aktion</value>
+  <data name="LastActions" xml:space="preserve">
+    <value>Letzte Aktionen</value>
   </data>
   <data name="LaunchApplication" xml:space="preserve">
     <value>Starte Anwendung</value>

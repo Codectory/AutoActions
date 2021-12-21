@@ -14,51 +14,18 @@
              StartupUri="Views\AutoHDRMainView.xaml">
 
     <Application.Resources>
-        <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Controls\Colors.xaml"/>
+                <ResourceDictionary Source="Controls\ControlProperties.xaml"/>
+                <ResourceDictionary Source="Controls\DefaultBorder.xaml"/>
+                <ResourceDictionary Source="Controls\CustomComboBox.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
         <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
  
         
-        <Color x:Key="ActiveColor">#2ac987</Color>
-        <Color x:Key="AccentColor">#ff6666</Color>
 
-        <Color x:Key="ControlMouseOverColor">#fa8e8e</Color>
-        <Color x:Key="ControlPressedColor">#e36b6b</Color>
-
-        <Color x:Key="WindowColor">White</Color>
-        <Color x:Key="SelectedBackgroundColor">#fca9a9</Color>
-        <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
-        <Color x:Key="ControlLightColor">White</Color>
-        <Color x:Key="ControlMediumColor">#FFCCCCCC</Color>
-        <Color x:Key="GlyphColor">#FF444444</Color>
-        <Color x:Key="DisabledForegroundColor">#cfcfcf</Color>
-        <Color x:Key="DisabledControlDarkColor">#8a8a8a</Color>
-
-        <Color x:Key="DisabledBorderDarkColor">#FF888888</Color>
-
-        
-        
-        <system:Double x:Key="DefaultFontSize">15</system:Double>
-        
-
-
-
-
-        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowColor}"/>
-        <SolidColorBrush x:Key="ButtonForegroundBrush"  Color="{StaticResource WindowColor}"/>
-        <SolidColorBrush x:Key="ActiveBrush"  Color="{StaticResource ActiveColor}"/>
-        <SolidColorBrush x:Key="AccentBrush"  Color="{StaticResource AccentColor}"/>
-        <SolidColorBrush x:Key="HighlightedBrush"  Color="{StaticResource SelectedBackgroundColor}"/>
-        <SolidColorBrush x:Key="MouseOverBrush"  Color="{StaticResource ControlMouseOverColor}"/>
-        <SolidColorBrush x:Key="InactiveAccentBrush">#ad7b7b</SolidColorBrush>
-        <SolidColorBrush x:Key="DragScrollBrush">#757575</SolidColorBrush>
-        <SolidColorBrush x:Key="ScrollBrush">#969696</SolidColorBrush>
-        <SolidColorBrush x:Key="MouseOverScrollBrush">#a1a1a1</SolidColorBrush>
-
-        <SolidColorBrush x:Key="DisabledAccentBrush">#c6cbcf</SolidColorBrush>
-        <SolidColorBrush x:Key="HighlightedInactiveAccentBrush" Color="#95bfdb"/>
-        <StaticResource x:Key="ButtonBackgroundBrush"  ResourceKey="AccentBrush"/>
-        <system:Double x:Key="DefaultRadius">5</system:Double>
-        <CornerRadius x:Key="CornerRadius">5</CornerRadius>
 
         <Style x:Key="DefaultLabel" TargetType="Label">
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
@@ -84,20 +51,6 @@
         <Style TargetType="UserControl" BasedOn="{StaticResource DefaultUserControl}"/>
 
 
-        <Style x:Key="DefaultBorder" TargetType="Border">
-            <Setter Property="CornerRadius" Value="{StaticResource CornerRadius}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="Auto"/>
-            <Setter Property="Width" Value="Auto"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                       <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0.0" Direction="260" />
-                </Setter.Value>
-            </Setter>
-
-
-        </Style>
 
         <Style x:Key="HDRCircle" TargetType="Ellipse">
             <Setter Property="HorizontalAlignment"  Value="Center" />
@@ -261,14 +214,8 @@
                         <BulletDecorator Background="Transparent">
                             <BulletDecorator.Bullet>
                                 <Grid>
-                                    <Border x:Name="Border" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Style="{StaticResource DefaultBorder}">
-                                        <Border.Background>
-                                            <SolidColorBrush Color="Transparent"/>
-                                        </Border.Background>
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0.3" Direction="260" />
-                                        </Border.Effect>
-                                    </Border>
+                                    <Border x:Name="Border" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Style="{StaticResource DefaultBorder}"/>
+
                                     <Path Visibility="Collapsed" Width="10" Height="10" x:Name="CheckMark" SnapsToDevicePixels="False"
                                             StrokeThickness="2"
                                             Data="M 1 4 L 4 9 M 4 9 L 9 0">
@@ -297,15 +244,6 @@
                                             </ColorAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
-                                    <VisualState x:Name="Disabled">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledBorderDarkColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-
                                 </VisualStateGroup>
                                 <VisualStateGroup x:Name="CheckStates">
                                     <VisualState x:Name="Checked">
@@ -339,291 +277,7 @@
             </Setter>
         </Style>
 
-        <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBox}"/>
-
-
-
-        <ControlTemplate x:Key="ComboBoxToggleButton"
-                 TargetType="{x:Type ToggleButton}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="20" />
-                </Grid.ColumnDefinitions>
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="MouseOver">
-                            <Storyboard>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                    <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlMouseOverColor}" />
-                                </ColorAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                        <VisualState x:Name="Pressed" />
-                        <VisualState x:Name="Disabled">
-                            <Storyboard>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).
-                (GradientBrush.GradientStops)[1].(GradientStop.Color)"
-                                          Storyboard.TargetName="Border">
-                                    <EasingColorKeyFrame KeyTime="0"
-                                   Value="{StaticResource DisabledControlDarkColor}" />
-                                </ColorAnimationUsingKeyFrames>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).
-                (SolidColorBrush.Color)"
-                                          Storyboard.TargetName="Arrow">
-                                    <EasingColorKeyFrame KeyTime="0"
-                                   Value="{StaticResource DisabledForegroundColor}" />
-                                </ColorAnimationUsingKeyFrames>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).
-                (GradientBrush.GradientStops)[1].(GradientStop.Color)"
-                                          Storyboard.TargetName="Border">
-                                    <EasingColorKeyFrame KeyTime="0"
-                                   Value="{StaticResource DisabledBorderDarkColor}" />
-                                </ColorAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                    </VisualStateGroup>
-                    <VisualStateGroup x:Name="CheckStates">
-                        <VisualState x:Name="Checked">
-                            <Storyboard>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                    <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
-                                </ColorAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                        <VisualState x:Name="Unchecked" />
-                        <VisualState x:Name="Indeterminate" />
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-                <Border x:Name="Border"
-            Grid.ColumnSpan="2"
-            CornerRadius="{StaticResource CornerRadius}"
-            BorderThickness="1">
-                    <Border.BorderBrush>
-                        <SolidColorBrush Color="{StaticResource AccentColor}"/>
-                    </Border.BorderBrush>
-                    <Border.Background>
-                        <SolidColorBrush Color="Transparent"/>
-                    </Border.Background>
-                </Border>
-                <Path x:Name="Arrow"
-          Grid.Column="1"
-          HorizontalAlignment="Center"
-          VerticalAlignment="Center"
-          Data="M 0 0 L 4 4 L 8 0 Z" >
-                    <Path.Fill>
-                        <SolidColorBrush Color="{DynamicResource GlyphColor}"/>
-                    </Path.Fill>
-                </Path>
-            </Grid>
-        </ControlTemplate>
-
-        <ControlTemplate x:Key="ComboBoxTextBox"
-                 TargetType="{x:Type TextBox}">
-            <Border x:Name="PART_ContentHost"
-          Focusable="False"
-          Background="{TemplateBinding Background}"  />
-        </ControlTemplate>
-
-        <Style x:Key="DefaultComboBox"
-       TargetType="{x:Type ComboBox}">
-            
-            <Setter Property="SnapsToDevicePixels"
-          Value="true" />
-            <Setter Property="OverridesDefaultStyle"
-          Value="true" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
-          Value="Auto" />
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
-          Value="Auto" />
-            <Setter Property="ScrollViewer.CanContentScroll"
-          Value="true" />
-            <Setter Property="MinWidth"
-          Value="120" />
-            <Setter Property="MinHeight"
-          Value="20" />
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ComboBox}">
-                        <Grid>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal" />
-                                    <VisualState x:Name="MouseOver" />
-                                    <VisualState x:Name="Disabled">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="PART_EditableTextBox"
-                                                Storyboard.TargetProperty="(TextElement.Foreground).
-                      (SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0"
-                                         Value="{StaticResource DisabledForegroundColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="EditStates">
-                                    <VisualState x:Name="Editable">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                                 Storyboard.TargetName="PART_EditableTextBox">
-                                                <DiscreteObjectKeyFrame KeyTime="0"
-                                            Value="{x:Static Visibility.Visible}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames
-                      Storyboard.TargetProperty="(UIElement.Visibility)"
-                                                 Storyboard.TargetName="ContentSite">
-                                                <DiscreteObjectKeyFrame KeyTime="0"
-                                            Value="{x:Static Visibility.Hidden}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Uneditable" />
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <ToggleButton x:Name="ToggleButton"
-                        Template="{StaticResource ComboBoxToggleButton}"
-                        Grid.Column="2"
-                        Focusable="false"
-                        ClickMode="Press"
-                        IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, 
-              RelativeSource={RelativeSource TemplatedParent}}"/>
-                            <ContentPresenter x:Name="ContentSite"
-                            IsHitTestVisible="False"
-                            Content="{TemplateBinding SelectionBoxItem}"
-                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                            Margin="3,3,23,3"
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Left">
-                            </ContentPresenter>
-                            <TextBox x:Name="PART_EditableTextBox"
-                   Style="{x:Null}"
-                   Template="{StaticResource ComboBoxTextBox}"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Bottom"
-                   Margin="3,3,23,3"
-                   Focusable="True"
-                   Background="Transparent"
-                   IsReadOnly="{TemplateBinding IsReadOnly}" />
-                            <Popup x:Name="Popup"
-                 Placement="Bottom"
-                 IsOpen="{TemplateBinding IsDropDownOpen}"
-                 AllowsTransparency="True"
-                 Focusable="False"
-                 PopupAnimation="Slide">
-                                <Grid x:Name="DropDown"
-                  SnapsToDevicePixels="True"
-                  MinWidth="{TemplateBinding ActualWidth}"
-                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                    <Border x:Name="DropDownBorder" Style="{StaticResource DefaultBorder}">
-                                        <Border.Background>
-                                            <SolidColorBrush Color="{DynamicResource ControlLightColor}" />
-                                        </Border.Background>
-                                    </Border>
-                                    <ScrollViewer Margin="4,6,4,6"
-                            SnapsToDevicePixels="True">
-                                        <StackPanel IsItemsHost="True"
-                            KeyboardNavigation.DirectionalNavigation="Contained" />
-                                    </ScrollViewer>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="HasItems"  Value="false">
-                                <Setter TargetName="DropDownBorder"
-                    Property="MinHeight"
-                    Value="95" />
-                            </Trigger>
-                            <Trigger Property="IsGrouping"
-                   Value="true">
-                                <Setter Property="ScrollViewer.CanContentScroll"
-                    Value="false" />
-                            </Trigger>
-                            <Trigger SourceName="Popup"
-                   Property="AllowsTransparency"
-                   Value="true">
-                                <Setter TargetName="DropDownBorder"
-                    Property="CornerRadius"
-                    Value="{StaticResource CornerRadius}" />
-                                <Setter TargetName="DropDownBorder"
-                    Property="Margin"
-                    Value="0,2,0,0" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-
-        <Style x:Key="{x:Type ComboBoxItem}"
-       TargetType="{x:Type ComboBoxItem}">
-            <Setter Property="SnapsToDevicePixels"
-          Value="true" />
-            <Setter Property="OverridesDefaultStyle"
-          Value="true" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                        <Grid>
-                            <Border x:Name="Border" CornerRadius="{StaticResource CornerRadius}"
-                Padding="2"
-                SnapsToDevicePixels="true">
-                                <Border.Background>
-                                    <SolidColorBrush Color="Transparent"/>
-                                </Border.Background>
-
-                            </Border>
-                            <Grid>
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="SelectionStates">
-                                        <VisualState x:Name="Pressed">
-                                            <Storyboard>
-                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                                    <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
-                                                </ColorAnimationUsingKeyFrames>
-                                            </Storyboard>
-
-                                        </VisualState>
-                                        <VisualState x:Name="Unselected" />
-                                        <VisualState x:Name="Selected">
-                                            <Storyboard>
-                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).
-                    (SolidColorBrush.Color)">
-                                                    <EasingColorKeyFrame KeyTime="0"
-                                         Value="{StaticResource SelectedBackgroundColor}" />
-                                                </ColorAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="SelectedUnfocused">
-                                            <Storyboard>
-                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).
-                    (SolidColorBrush.Color)">
-                                                    <EasingColorKeyFrame KeyTime="0"
-                                         Value="{StaticResource SelectedUnfocusedColor}" />
-                                                </ColorAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                                <ContentPresenter />
-                            </Grid>
-                        </Grid>
-
-                        
-
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}"/>
+            <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBox}"/>
 
         <Style x:Key="DefaultTabHeader" TargetType="TabItem">
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
@@ -821,16 +475,6 @@
                                 <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
                             </Trigger>
                             <Trigger Property="Orientation" Value="Vertical">
-                                <!--<Setter TargetName="GridRoot" Property="LayoutTransform">
-                                    <Setter.Value>
-                                        <RotateTransform Angle="-90" />
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="PART_Track" Property="LayoutTransform">
-                                    <Setter.Value>
-                                        <RotateTransform Angle="-90" />
-                                    </Setter.Value>
-                                </Setter>-->
                                 <Setter Property="Width" Value="10" />
                                 <Setter Property="Height" Value="Auto" />
                                 <Setter TargetName="Thumb" Property="Tag" Value="Vertical" />
@@ -849,22 +493,35 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <Viewbox HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                            <Border x:Name="Border" Style="{StaticResource DefaultBorder}"
-                            Background="#FFFFFFFF"
+                            <Grid>
+                                <Border x:Name="Border" Style="{StaticResource DefaultBorder}"
                             Width="40" Height="20">
-                                <Border.Effect>
-                                    <DropShadowEffect ShadowDepth="0.5" Direction="0" Opacity="0.2" />
-                                </Border.Effect>
-                                <Ellipse x:Name="Ellipse" Fill="#FFFFFFFF" Stretch="Uniform"
-                                 Margin="2 1 2 1"
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal"></VisualState>
+                                            <VisualState x:Name="Disabled">
+                                                <Storyboard>
+                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)">
+                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledBorderColor}" />
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="MouseOver"></VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Border>
+                            <Ellipse x:Name="Ellipse" Fill="#FFFFFFFF" Stretch="Uniform"
+                                 Margin="3 2 3 2"
                                  Stroke="Gray" StrokeThickness="0.2"
                                  HorizontalAlignment="Stretch">
-                                    <Ellipse.Effect>
-                                        <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0.2" Direction="260" />
-                                    </Ellipse.Effect>
-                                </Ellipse>
-                            </Border>
+                                <Ellipse.Effect>
+                                    <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0." Direction="260" />
+                                </Ellipse.Effect>
+                            </Ellipse>
+                            </Grid>
                         </Viewbox>
+
                         <ControlTemplate.Triggers>
                             <EventTrigger RoutedEvent="Checked">
                                 <BeginStoryboard>
@@ -905,7 +562,6 @@
                     </Trigger>
             </Style.Triggers>
         </Style>
-
 
 
 
@@ -963,9 +619,11 @@
         <DataTemplate DataType="{x:Type info:LogsStorage}">
             <views:AutoHDRLogsView></views:AutoHDRLogsView>
         </DataTemplate>
-        <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile">
-            <TextBlock Text="{Binding Name }"/>
-        </DataTemplate>
+            <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile">
+                <TextBlock Text="{Binding Name }"/>
+            </DataTemplate>
+        </ResourceDictionary>
+
     </Application.Resources>
 
 </Application>
