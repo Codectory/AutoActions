@@ -2,6 +2,9 @@
 using NvAPIWrapper;
 using NvAPIWrapper.Display;
 using NvAPIWrapper.GPU;
+using NvAPIWrapper.Native;
+using NvAPIWrapper.Native.Display.Structures;
+using NvAPIWrapper.Native.Interfaces.Display;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,7 +20,6 @@ namespace AutoHDR.Displays
         internal DisplayManagerNvidia() :base()
         {
             NVIDIA.Initialize();
-
         }
 
         public HDRColorData GetHDRColorData(bool enableHDR)
@@ -26,37 +28,42 @@ namespace AutoHDR.Displays
             return  new HDRColorData(hdrMode, default, NvAPIWrapper.Native.Display.ColorDataFormat.Auto, NvAPIWrapper.Native.Display.ColorDataDynamicRange.Auto);
 
         }
-
-        protected override void ActivateHDR(Display display)
-        {
-            DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag);
-            nvidiaDisplay.SetHDRColorData(GetHDRColorData(true));
-        }
-
-        protected override void DeactivateHDR(Display display)
-        {
-            DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag );
-            nvidiaDisplay.SetHDRColorData(GetHDRColorData(false));
-        }
-
         public override List<Display> GetActiveMonitors()
+        { 
+            var displays = base.GetActiveMonitors();
+            foreach (var display in displays)
+            {
+                display.Tag = NvAPIWrapper.Native.DisplayApi.GetDisplayIdByDisplayName(display.Name);
+            }
+            return displays;
+        }
+
+        public  List<Display> GetActiveMonitors2()
         {
             List<Display> displays = new List<Display>();
-            NvAPIWrapper.Display.Display[] nvidiaDisplays = NvAPIWrapper.Display.Display.GetDisplays();
-            DisplayDevice primaryDevice = DisplayDevice.GetGDIPrimaryDisplayDevice();
-            for (int i = 0; i < nvidiaDisplays.Length; i++)
+            DisplayHandle[] handles = DisplayApi.EnumNvidiaDisplayHandle();
+            IPathInfo[] config = DisplayApi.GetDisplayConfig();
+            for (int i = 0; i < handles.Length; i++)
             {
-                DisplayDevice displayDevice = nvidiaDisplays[i].DisplayDevice;
+                string displayName = DisplayApi.GetAssociatedNvidiaDisplayName(handles[i]);
+                uint displayID = DisplayApi.GetDisplayIdByDisplayName(displayName);
+                IPathInfo pathInfo = config.First(p => p.TargetsInfo.ToList().First().DisplayId == displayID);
+
+                DisplayDevice displayDevice = new DisplayDevice(displayID);
                 if (displayDevice.IsActive)
                 {
-                    uint id = (uint)i;
-                    uint uid = GetUID(id);
-                    bool isPrimary = displayDevice.DisplayId == primaryDevice.DisplayId;
-                    string name = nvidiaDisplays[i].Name;
+                    uint id = pathInfo.SourceId;
+                    uint uid = 0;
+                    if (Displays.Any(m => m.Tag != null && displayDevice.DisplayId.Equals(((DisplayDevice)m.Tag).DisplayId)))
+                        uid = Displays.First(m => displayDevice.DisplayId.Equals(((DisplayDevice)m.Tag).DisplayId)).UID;
+                    else
+                        uid = GetUID(id);
+                    bool isPrimary = pathInfo.SourceModeInfo.IsGDIPrimary;
+                    string name = displayName;
                     string graphicsCard = displayDevice.Output.PhysicalGPU.FullName;
                     Display display = new Display(id, uid, isPrimary, name, graphicsCard);
-                    display.Tag = displayDevice.DisplayId;
-                    display.Resolution = GetResolution(display);
+                    display.Tag = displayDevice;
+                    display.Resolution =  new Size(displayDevice.CurrentTiming.HorizontalActive, displayDevice.CurrentTiming.VerticalActive);
                     display.RefreshRate = GetRefreshRate(display);
                     display.ColorDepth = GetColorDepth(display);
                     displays.Add(display);
@@ -66,41 +73,6 @@ namespace AutoHDR.Displays
             return displays;
         }
 
-        public override bool GetHDRState(Display display)
-        {
-            DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag);
-            return nvidiaDisplay.HDRColorData.HDRMode != NvAPIWrapper.Native.Display.ColorDataHDRMode.Off;
-        }
-
-        public override int GetRefreshRate(Display display)
-        {
-            DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag);
-            return nvidiaDisplay.CurrentTiming.Extra.RefreshRate;
-        }
-
-        public override void SetRefreshRate(Display display, int refreshRate)
-        {
-            DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag);
-            nvidiaDisplay.Output.OverrideRefreshRate(refreshRate);
-        }
-
-        public override Size GetResolution(Display display)
-        {
-            DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag);
-            return new Size((int)nvidiaDisplay.ScanOutInformation.TargetDisplayWidth, (int)nvidiaDisplay.ScanOutInformation.TargetDisplayHeight);
-        }
-
-        public override uint GetUID(uint displayID)
-        {
-            return HDRController.GetUID(displayID);
-        }
-
-        public override ColorDepth GetColorDepth(Display display)
-        {
-            DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag);
-            return nvidiaDisplay.CurrentColorData.ColorDepth.ConvertToColorDepth();
-
-        }
         public override void SetColorDepth(Display display, ColorDepth colorDepth)
         {
             DisplayDevice nvidiaDisplay = new DisplayDevice((uint)display.Tag);
@@ -108,15 +80,6 @@ namespace AutoHDR.Displays
             ColorData colorData = new ColorData(nvidiaDisplay.CurrentColorData.ColorFormat, nvidiaDisplay.CurrentColorData.Colorimetry, nvidiaDisplay.CurrentColorData.DynamicRange, nvColorDepth, nvidiaDisplay.CurrentColorData.SelectionPolicy, nvidiaDisplay.CurrentColorData.DesktopColorDepth);
             nvidiaDisplay.SetColorData(colorData);
         }
-
-
-
-        public override void SetResolution(Display display, Size resolution)
-        {
-
-        }
-
-
     }
 
 }

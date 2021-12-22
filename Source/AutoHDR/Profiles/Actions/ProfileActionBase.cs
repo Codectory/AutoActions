@@ -21,6 +21,17 @@ namespace AutoHDR.Profiles.Actions
         public abstract string ActionTypeName { get; }
         public abstract ActionEndResult RunAction(params object[] parameter);
 
+        public ProfileActionBase()
+        {
+            PropertyChanged += ProfileActionBase_PropertyChanged;
+        }
+
+        private void ProfileActionBase_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(ActionDescription))
+                OnPropertyChanged(nameof(ActionDescription));
+        }
+
         protected void CallNewLog(LogEntry entry)
         {
             if (NewLog != null)

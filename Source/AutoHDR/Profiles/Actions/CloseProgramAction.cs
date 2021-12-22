@@ -37,7 +37,7 @@ namespace AutoHDR.Profiles.Actions
         public RelayCommand GetFileCommand { get; private set; }
 
 
-        public CloseProgramAction()
+        public CloseProgramAction() : base()
         {
 
         }

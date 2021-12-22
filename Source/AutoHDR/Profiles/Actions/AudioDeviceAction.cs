@@ -1,18 +1,8 @@
-﻿using AudioSwitcher.AudioApi.CoreAudio;
-using AutoHDR.Audio;
+﻿using AutoHDR.Audio;
 using AutoHDR.ProjectResources;
-using CodectoryCore.UI.Wpf;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoHDR.Profiles.Actions
 {
@@ -23,15 +13,13 @@ namespace AutoHDR.Profiles.Actions
 
 
 
-        private Guid _outputDeviceGuid = Guid.Empty;
+        private Guid _outputDeviceID = Guid.Empty;
 
         [JsonProperty]
-        public Guid OutputDeviceGuid { get => _outputDeviceGuid; set { _outputDeviceGuid = value; OnPropertyChanged(); OnPropertyChanged(nameof(OutputDevice)); } }
+        public Guid OutputDeviceID { get => _outputDeviceID; set { _outputDeviceID = value; OnPropertyChanged(); OnPropertyChanged(nameof(OutputDevice)); } }
 
 
-        private CoreAudioDevice _outputDevice = null;
-
-        public CoreAudioDevice OutputDevice { get => AudioManager.OutputAudioDevices.FirstOrDefault(d => d.Id.Equals(OutputDeviceGuid)); set { OutputDeviceGuid = value.Id; } }
+        public AudioDevice OutputDevice { get => AudioController.Instance.OutputAudioDevices.FirstOrDefault(d => d.ID.Equals(OutputDeviceID)); set { OutputDeviceID = value.ID; } }
 
 
         private bool _setOutput = false;
@@ -40,14 +28,14 @@ namespace AutoHDR.Profiles.Actions
         public bool SetOutput { get => _setOutput; set { _setOutput = value; OnPropertyChanged(); } }
 
 
-        private Guid _inputDeviceGuid = Guid.Empty;
+        private Guid _inputDeviceID =Guid.Empty;
 
         [JsonProperty]
-        public Guid InputDeviceGuid { get => _inputDeviceGuid; set { _inputDeviceGuid = value; OnPropertyChanged(); OnPropertyChanged(nameof(InputDevice)); } }
+        public Guid InputDeviceID { get => _inputDeviceID; set { _inputDeviceID = value; OnPropertyChanged(); OnPropertyChanged(nameof(InputDevice)); } }
 
 
 
-        public CoreAudioDevice InputDevice { get => AudioManager.InputAudioDevices.FirstOrDefault(d => d.Id.Equals(InputDeviceGuid)); set { InputDeviceGuid = value.Id; } }
+        public AudioDevice InputDevice { get => AudioController.Instance.InputAudioDevices.FirstOrDefault(d => d.ID.Equals(InputDeviceID)); set { InputDeviceID = value.ID; } }
 
         private bool _setInput = false;
 
@@ -55,10 +43,10 @@ namespace AutoHDR.Profiles.Actions
         public bool SetInput { get => _setInput; set { _setInput = value; OnPropertyChanged(); } }
 
 
-        public override string ActionDescription => $"[{(OutputDevice != null && SetOutput ?  OutputDevice.FullName : string.Empty)} {(InputDevice != null && SetInput ? InputDevice.FullName : string.Empty)}]";
+        public override string ActionDescription => $"[{(OutputDevice != null && SetOutput ?  OutputDevice.Name : string.Empty)} {(InputDevice != null && SetInput ? InputDevice.Name : string.Empty)}]";
 
 
-        public AudioDeviceAction()
+        public AudioDeviceAction() : base()
         {
         }
 
@@ -66,16 +54,16 @@ namespace AutoHDR.Profiles.Actions
         {
             try
             {
-                //if (SetOutput)
-                //{
-                //    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting output audio device to {OutputDevice.FullName}"));
-                //    OutputDevice.SetAsDefault();
-                //}
-                //if (SetInput)
-                //{
-                //    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting input audio device to {InputDevice.FullName}"));
-                //    InputDevice.SetAsDefault();
-                //}
+                if (SetOutput)
+                {
+                    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting output audio device to {OutputDevice.Name}"));
+                    OutputDevice.SetAsDefault();
+                }
+                if (SetInput)
+                {
+                    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting input audio device to {InputDevice.Name}"));
+                    InputDevice.SetAsDefault();
+                }
                 return new ActionEndResult(true);
             }
             catch (Exception ex)

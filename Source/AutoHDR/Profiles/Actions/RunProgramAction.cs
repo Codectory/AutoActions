@@ -42,7 +42,7 @@ namespace AutoHDR.Profiles.Actions
         public RelayCommand GetFileCommand { get; private set; }
 
 
-        public RunProgramAction()
+        public RunProgramAction() : base()
         {
             GetFileCommand = new RelayCommand(GetFile);
 

@@ -162,26 +162,6 @@ namespace AutoHDR.Profiles
             ProfileActionAdder adder = new ProfileActionAdder(profileAction);
 
             adder.DialogService = DialogService;
-            adder.OKClicked += (o, e) =>
-            {
-                RemoveProfileAction(listType, profileAction);
-                switch (listType)
-                {
-                    case ProfileActionListType.Started:
-                        ApplicationStarted.Add(adder.ProfileAction);
-                        break;
-                    case ProfileActionListType.Closed:
-                        ApplicationClosed.Add(adder.ProfileAction);
-                        break;
-                    case ProfileActionListType.GotFocus:
-                        ApplicationGotFocus.Add(adder.ProfileAction);
-                        break;
-                    case ProfileActionListType.LostFocus:
-                        ApplicationLostFocus.Add(adder.ProfileAction);
-                        break;
-
-                }
-            };
             if (DialogService != null)
                 DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
         }

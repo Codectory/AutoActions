@@ -99,16 +99,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AudioSwitcher.AudioApi, Version=4.0.0.308, Culture=neutral, PublicKeyToken=fda5729e2db3a64f, processorArchitecture=MSIL">
-      <HintPath>..\packages\AudioSwitcher.AudioApi.4.0.0-alpha5\lib\net45\AudioSwitcher.AudioApi.dll</HintPath>
-    </Reference>
-    <Reference Include="AudioSwitcher.AudioApi.CoreAudio, Version=4.0.0.308, Culture=neutral, PublicKeyToken=fda5729e2db3a64f, processorArchitecture=MSIL">
-      <HintPath>..\packages\AudioSwitcher.AudioApi.CoreAudio.4.0.0-alpha5\lib\net45\AudioSwitcher.AudioApi.CoreAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="CCDWrapper, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CCDWrapper.1.0.1\lib\net35\CCDWrapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="CodectoryCore">
       <HintPath>..\Externals\CodectoryCore.dll</HintPath>
     </Reference>
@@ -199,9 +189,6 @@
     </Page>
     <Compile Include="Applications\ApplicationChangedEventArgs.cs" />
     <Compile Include="Applications\ApplicationProfileAssignment.cs" />
-    <Compile Include="Audio\AudioManager.cs" />
-    <Compile Include="Audio\AudioMasterChangedProvider.cs" />
-    <Compile Include="Audio\VolumeProvider.cs" />
     <Compile Include="Info\AutoHDRLicense.cs" />
     <Compile Include="Info\LogsStorage.cs" />
     <Compile Include="Profiles\Actions\ActionEndResult.cs" />
@@ -404,6 +391,10 @@
     <Folder Include="Plugins\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutoHDR.Audio\AutoHDR.Audio.csproj">
+      <Project>{FC3B898C-2F23-43BE-A924-8A74D800E942}</Project>
+      <Name>AutoHDR.Audio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AutoHDR.Core\AutoHDR.Core.csproj">
       <Project>{5b5fed18-5725-4daf-b5aa-b0fe328c0f16}</Project>
       <Name>AutoHDR.Core</Name>

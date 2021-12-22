@@ -97,7 +97,7 @@ namespace AutoHDR
         public AutoHDRDaemon()
         {
             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
-            Initialize();
+                Initialize();
         }
 
         private void ChangeLanguage(CultureInfo culture)
@@ -259,17 +259,16 @@ namespace AutoHDR
             Globals.Logs.Add("Initializing DisplayManager...", false);
             DisplayManagerHandler.Instance.LoadKnownDisplays(Settings.Displays);
             DisplayManagerHandler.Instance.HDRIsActiveChanged += MonitorManager_HDRIsActiveChanged;
-            DisplayManagerHandler.Instance.ExceptionThrown += (o,ex) => Globals.Logs.AddException(ex);
-            DisplayManagerHandler.Instance.SelectedHDR =!Settings.GlobalAutoHDR;
-           HDRIsActive = DisplayManagerHandler.Instance.GlobalHDRIsActive;
-            _threadManager.Add((IManagedThread)DisplayManagerHandler.Instance);
+            DisplayManagerHandler.Instance.ExceptionThrown += (o, ex) => Globals.Logs.AddException(ex);
+            DisplayManagerHandler.Instance.SelectedHDR = !Settings.GlobalAutoHDR;
+            HDRIsActive = DisplayManagerHandler.Instance.GlobalHDRIsActive;
         }
 
 
         private void InitializeAudioManager()
         {
             Globals.Logs.Add("Initializing AudioManager...", false);
-            //AudioManager.Initialize();
+            AudioController.Instance.UpdateDevices();
         }
 
         private void CreateRelayCommands()
@@ -413,7 +412,7 @@ namespace AutoHDR
 
         private void Shutdown()
         {
-            Settings.Displays = DisplayManagerHandler.Instance.Monitors;
+            Settings.Displays = DisplayManagerHandler.Instance.Displays;
 
             Globals.Logs.Add($"Stopping application watcher...", false);
             ApplicationWatcher.NewLog -= ApplicationWatcher_NewLog;

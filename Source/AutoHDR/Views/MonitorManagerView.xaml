@@ -16,7 +16,7 @@
             <WrapPanel/>
         </ItemsPanelTemplate>
 
-        <DataTemplate x:Key="MonitorItemTemplate" DataType="Display">
+        <DataTemplate x:Key="DisplayTemplate" DataType="Display">
             <Grid>
                 <Border Style="{StaticResource DefaultBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0"/>
                 <Grid Margin="15">
@@ -126,7 +126,7 @@
         </Ellipse>
         <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource DefaultBorder}" Margin="10,10,10,10">
         </Border>
-        <ListBox  Grid.Row="1" Grid.ColumnSpan="2" Margin="15"  x:Name="DisplayList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource WrapListViewTemplate}"  ItemTemplate="{StaticResource MonitorItemTemplate}" ItemsSource="{Binding Monitors}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}"  BorderThickness="0"/>
+        <ListBox  Grid.Row="1" Grid.ColumnSpan="2" Margin="15"  x:Name="DisplayList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource WrapListViewTemplate}"  ItemTemplate="{StaticResource DisplayTemplate}" ItemsSource="{Binding Displays}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}"  BorderThickness="0"/>
 
     </Grid>
 </UserControl>

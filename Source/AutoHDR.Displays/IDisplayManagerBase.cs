@@ -9,8 +9,7 @@ namespace AutoHDR.Displays
     {
         bool GlobalHDRIsActive { get; }
         GraphicsCardType GraphicsCardType { get; }
-        bool ManagedThreadIsActive { get; }
-        DispatchingObservableCollection<Display> Monitors { get; set; }
+        DispatchingObservableCollection<Display> Displays { get; set; }
         bool SelectedHDR { get; set; }
 
         event EventHandler HDRIsActiveChanged;
@@ -29,7 +28,5 @@ namespace AutoHDR.Displays
         void SetColorDepth(Display display, ColorDepth colorDepth);
         void SetRefreshRate(Display display, int refreshRate);
         void SetResolution(Display display, Size resolution);
-        void StartManagedThread();
-        void StopManagedThread();
     }
 }

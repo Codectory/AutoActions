@@ -113,7 +113,7 @@ namespace AutoHDR.Profiles.Actions
         public bool ColorDepthIsSupported => DisplayManagerHandler.Instance.GraphicsCardType == GraphicsCardType.NVIDIA;
 
 
-        public DisplayAction()
+        public DisplayAction() : base()
         {
         }
 
