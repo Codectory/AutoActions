@@ -257,7 +257,7 @@ namespace AutoHDR
         private void InitializeDisplayManager()
         {
             Globals.Logs.Add("Initializing DisplayManager...", false);
-            DisplayManagerHandler.Instance.LoadKnownDisplays(Settings.Displays);
+            DisplayManagerHandler.Instance.LoadKnownDisplays(Settings.Displays.ToList());
             DisplayManagerHandler.Instance.HDRIsActiveChanged += MonitorManager_HDRIsActiveChanged;
             DisplayManagerHandler.Instance.ExceptionThrown += (o, ex) => Globals.Logs.AddException(ex);
             DisplayManagerHandler.Instance.SelectedHDR = !Settings.GlobalAutoHDR;

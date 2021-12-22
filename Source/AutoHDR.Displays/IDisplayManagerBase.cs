@@ -24,7 +24,7 @@ namespace AutoHDR.Displays
         int GetRefreshRate(Display display);
         Size GetResolution(Display display);
         uint GetUID(uint displayUD);
-        void LoadKnownDisplays(IList<Display> knownMonitors);
+        void LoadKnownDisplays(List<Display> knownMonitors);
         void SetColorDepth(Display display, ColorDepth colorDepth);
         void SetRefreshRate(Display display, int refreshRate);
         void SetResolution(Display display, Size resolution);

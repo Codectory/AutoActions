@@ -68,10 +68,12 @@ namespace AutoHDR.Displays
             UpdateDisplays();
         }
 
-        public void LoadKnownDisplays(IList<Display> knownMonitors)
+        public void LoadKnownDisplays(List<Display> knownMonitors)
         {
-            foreach (var monitor in knownMonitors)
-                Displays.Add(monitor);
+            //foreach (var monitor in knownMonitors)
+            //    Displays.Add(monitor);
+            MergeMonitors(knownMonitors);
+
             MergeMonitors(GetActiveMonitors());
         }
 
