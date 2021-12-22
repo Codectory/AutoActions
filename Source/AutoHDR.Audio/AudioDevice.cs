@@ -51,7 +51,7 @@ namespace AutoHDR.Audio
 
         public bool IsDefaultCommunicationsDevice => BaseDevice.IsDefaultCommunicationsDevice;
         public bool IsDefaultDevice => BaseDevice.IsDefaultDevice;
-        public string Name  => BaseDevice.Name;
+        public string Name  => BaseDevice.FullName;
         public Guid ID  => BaseDevice.Id;
 
         public bool IsMuted => BaseDevice.IsMuted;
