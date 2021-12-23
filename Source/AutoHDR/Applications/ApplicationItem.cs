@@ -1,4 +1,5 @@
-﻿using CodectoryCore.UI.Wpf;
+﻿using AutoHDR.UWP;
+using CodectoryCore.UI.Wpf;
 using CodectoryCore.Windows;
 using CodectoryCore.Windows.FileSystem;
 using CodectoryCore.Windows.Icons;
@@ -28,6 +29,7 @@ namespace AutoHDR
         private string _applicationName;
         private System.Drawing.Bitmap icon = null;
         //private bool _restartProcess = false;
+        private string _uwpFullPackageName = string.Empty;
         private string _uwpFamilyPackageName = string.Empty;
         private string _uwpApplicationID = string.Empty;
         private string _uwpIconPath = string.Empty;
@@ -38,22 +40,37 @@ namespace AutoHDR
         public string DisplayName { get => displayName; set { displayName = value; OnPropertyChanged(); } }
         [JsonProperty]
         public string ApplicationName { get => _applicationName; set { _applicationName = value; OnPropertyChanged(); } }
-        [JsonProperty]
-        public string ApplicationFilePath { get => _applicationFilePath; set { _applicationFilePath = value;  try { Icon = IconHelper.GetFileIcon(value); } catch { } OnPropertyChanged(); } }
+        [JsonProperty(Order = 1)]
+        public string ApplicationFilePath {
+            get => _applicationFilePath; 
+            set { _applicationFilePath = value;  try {  if (!IsUWP && !IsUWPWepApp)  Icon = IconHelper.GetFileIcon(value); } catch { } OnPropertyChanged(); } }
         // public bool RestartProcess { get => _restartProcess; set { _restartProcess = value; OnPropertyChanged(); } }
-        [JsonProperty]
+        [JsonProperty(Order =0)]
         public bool IsUWP { get => _isUWP; set { _isUWP = value; OnPropertyChanged(); } }
-        [JsonProperty]
+        [JsonProperty(Order = 0)]
         public bool IsUWPWepApp { get => _isUWPWebApp; set { _isUWPWebApp = value; OnPropertyChanged(); } }
         public Bitmap Icon { get => icon; set { icon = value; OnPropertyChanged(); } }
-        [JsonProperty]
-        public string UWPFamilyPackageName { get => _uwpFamilyPackageName; set { _uwpFamilyPackageName = value; OnPropertyChanged(); } }
-        [JsonProperty]
-        public string UWPApplicationID { get => _uwpApplicationID; set { _uwpApplicationID = value; OnPropertyChanged(); } }
-        [JsonProperty]
-        public string UWPIconPath { get => _uwpIconPath; set { _uwpIconPath = value; try { Icon = new Bitmap(Bitmap.FromFile(value)); } catch { }OnPropertyChanged(); } }
+        [JsonProperty(Order = 1)]
+        public string UWPFullPackageName { 
+            get => _uwpFullPackageName; 
+            set { _uwpFullPackageName = value;  OnPropertyChanged(); LoadUWPData(); } 
+        }
+
+        [JsonProperty(Order = 0)]
+        public string UWPFamilyPackageName
+        {
+            get => _uwpFamilyPackageName;
+            set { _uwpFamilyPackageName = value; OnPropertyChanged(); }
+        }
+
+        [JsonProperty(Order = 2)]
+        public string UWPApplicationID { 
+            get => _uwpApplicationID; 
+            set { _uwpApplicationID = value; OnPropertyChanged(); if (string.IsNullOrEmpty(UWPFullPackageName)) LoadUWPData(); } }
+        public string UWPIconPath { 
+            get => _uwpIconPath; 
+            set { _uwpIconPath = value; try { if (IsUWP ||IsUWPWepApp) Icon = new Bitmap(Bitmap.FromFile(value)); } catch { }OnPropertyChanged(); } }
        
-        [JsonProperty]
         public string UWPIdentity { get => _uwpIdentity; set { _uwpIdentity = value; OnPropertyChanged(); } }
 
         private ApplicationItem()
@@ -67,12 +84,31 @@ namespace AutoHDR
             ApplicationName = new FileInfo(ApplicationFilePath).Name.Replace(".exe", "");
         }
 
-        public ApplicationItem(UWP.UWPApp uwpApp) : this(uwpApp.Name, uwpApp.ExecutablePath)
+        public ApplicationItem(UWPApp uwpApp) : this(uwpApp.Name, uwpApp.ExecutablePath)
         {
             IsUWP = true;
             IsUWPWepApp = true;
             UWPFamilyPackageName = uwpApp.FamilyPackageName;
-            UWPApplicationID = uwpApp.ApplicationID;
+            _uwpFullPackageName = uwpApp.FullPackageName;
+            _uwpApplicationID = uwpApp.ApplicationID;
+            UWPIconPath = uwpApp.IconPath;
+            UWPIdentity = uwpApp.Identity;
+        }
+
+       private void LoadUWPData()
+        {
+            if (!IsUWP && !IsUWPWepApp)
+                return;
+            UWPApp uwpApp;
+            //Compatibility for old UWP handling
+            if (string.IsNullOrEmpty(UWPFullPackageName))
+                uwpApp = UWPAppsManager.GetUWPApp(UWPFamilyPackageName, UWPApplicationID);
+            else
+                uwpApp = UWPAppsManager.GetUWPApp(UWPFullPackageName);
+
+            UWPFamilyPackageName = uwpApp.FamilyPackageName;
+            _uwpFullPackageName = uwpApp.FullPackageName;
+            _uwpApplicationID = uwpApp.ApplicationID;
             UWPIconPath = uwpApp.IconPath;
             UWPIdentity = uwpApp.Identity;
         }

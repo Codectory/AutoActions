@@ -34,9 +34,10 @@ namespace AutoHDR.UWP
         public bool IsWebApp  { get; private set; } = false;
         public string InstallLocation { get; private set; } = string.Empty;
         public string FamilyPackageName { get; private set; } = string.Empty;
+        public string FullPackageName { get; private set; } = string.Empty;
+
         public string ApplicationID { get; private set; } = string.Empty;
         public string Identity { get; private set; } = string.Empty;
-
         public string IconPath { get; private set; } = string.Empty;
 
 
@@ -70,6 +71,7 @@ namespace AutoHDR.UWP
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(AppxManifest));
                     AppxManifest appxManifest = (AppxManifest)serializer.Deserialize(reader);
+                    if (appxManifest.Applications==null)
                     Name = ((XmlNode[])appxManifest.Properties.DisplayName)[0].Value;
                     if (Name.Contains("ms-resource:"))
                     {
@@ -81,7 +83,8 @@ namespace AutoHDR.UWP
                     if (Executable == null)
                         IsWebApp = true;
                     FamilyPackageName = package.Id.FamilyName;
-                    ApplicationID = appxManifest.Applications.Application.Id;
+                    FullPackageName = package.Id.FullName;
+                    ApplicationID = appxManifest.Applications?.Application.Id;
                     Identity = appxManifest.Identity.Name;
                     IconPath = GetIconPath(Path.Combine(InstallLocation, ((XmlNode[])(appxManifest.Properties.Logo))[0].Value));
                 }

@@ -15,8 +15,34 @@ namespace AutoHDR.UWP
 {
     public static class UWPAppsManager
     {
+        static PackageManager manager = new PackageManager();
+
 
         private const string xboxPassAppFN = "Microsoft.GamingApp_8wekyb3d8bbwe";
+
+
+        public static UWPApp GetUWPApp(string packageNameOrFamilyPackageName, string applicationID = "")
+        {
+            var package = manager.FindPackageForUser(WindowsIdentity.GetCurrent().User.Value, packageNameOrFamilyPackageName);
+            if (package == null)
+                return GetUWPAppCompatible(packageNameOrFamilyPackageName, applicationID);
+            return new UWPApp(package);
+        }
+
+        private static UWPApp GetUWPAppCompatible(string familyPackageName, string applicationID)
+        {
+            foreach (var package in manager.FindPackagesForUser(WindowsIdentity.GetCurrent().User.Value))
+            {
+                try
+                {
+                    UWPApp uwpApp = new UWPApp(package);
+                    if (uwpApp.FamilyPackageName.Equals(familyPackageName) && uwpApp.ApplicationID.Equals(applicationID))
+                        return uwpApp;
+                }
+                catch {}
+            }
+            return null;
+        }
 
 
         public static List<ApplicationItem> GetUWPApps()
@@ -25,7 +51,6 @@ namespace AutoHDR.UWP
             Globals.Logs.Add($"Retrieving UWP apps...", false);
 
             List<ApplicationItem> uwpApps = new List<ApplicationItem>();
-            var manager = new PackageManager();
             IEnumerable<Package> packages = manager.FindPackagesForUser(WindowsIdentity.GetCurrent().User.Value);
             try
             {
@@ -51,8 +76,10 @@ namespace AutoHDR.UWP
 
                     try
                     {
-                        uwpApps.Add(new ApplicationItem(new UWPApp(package)));
-                  }
+                        UWPApp uwpApp = new UWPApp(package);
+                        if (!string.IsNullOrEmpty(uwpApp.ApplicationID))
+                            uwpApps.Add(new ApplicationItem(uwpApp));
+                    }
                     catch
                     {
                         continue;
