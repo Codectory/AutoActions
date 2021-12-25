@@ -158,7 +158,7 @@
                         <TextBlock Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:ProjectLocales.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
                         <Border  Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"  Style="{StaticResource DefaultBorder}"  >
                         </Border>
-                        <ListBox  Margin="5" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2" BorderThickness="0"  ItemsSource="{Binding LastActions}" ItemTemplate="{StaticResource ProfileActionTemplate}"   ItemsPanel="{StaticResource StackListViewTemplate}"  />
+                        <ItemsControl  Margin="8" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2" BorderThickness="0"   ItemsSource="{Binding LastActions}" ItemTemplate="{StaticResource ProfileActionTemplate}"   ItemsPanel="{StaticResource StackListViewTemplate}"  />
 
                     </Grid>
 
@@ -208,47 +208,58 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"  />
                     </Grid.RowDefinitions>
-                    <Border Style="{StaticResource DefaultBorder}" Margin="10,10,10,10" Grid.Row="0" Grid.ColumnSpan="3"/>
 
                     <Grid Grid.IsSharedSizeScope="True" Grid.ColumnSpan="3" Margin="10,10,10,10" >
-                        <ListBox Name="ApplicationList"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}" HorizontalContentAlignment="Stretch" >
+                        <ListBox Name="ApplicationList" ItemContainerStyle="{StaticResource ListBoxItemStyle }"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}" HorizontalContentAlignment="Stretch" >
                             <ListBox.Template>
                                 <ControlTemplate>
-                                    <ScrollViewer>
                                         <DockPanel LastChildFill="True">
-                                            <Grid DockPanel.Dock="Top" Height="30" Margin="0,0,0,5" >
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition SharedSizeGroup="PriorityColumn" />
-                                                    <ColumnDefinition SharedSizeGroup="IconColumn"/>
-                                                    <ColumnDefinition SharedSizeGroup="ApplicationColumn"/>
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <Label Grid.Column="0" FontWeight="Bold"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Priority}"/>
-                                                <Label Grid.Column="1" FontWeight="Bold"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Icon}"/>
-                                                <Label Grid.Column="2" FontWeight="Bold"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Application}"/>
-                                                <Label Grid.Column="3" FontWeight="Bold"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Profile}"/>
-                                            </Grid>
-                                            <ItemsPresenter></ItemsPresenter>
-                                        </DockPanel>
-                                    </ScrollViewer>
+
+                                        <Grid DockPanel.Dock="Top" Height="Auto" Margin="0,0,0,5" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition SharedSizeGroup="PriorityColumn" />
+                                                <ColumnDefinition SharedSizeGroup="IconColumn"/>
+                                                <ColumnDefinition SharedSizeGroup="ApplicationColumn"/>
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" FontWeight="Bold" FontSize="25"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Priority}"/>
+                                            <Label Grid.Column="1" FontWeight="Bold" FontSize="25"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Icon}"/>
+                                            <Label Grid.Column="2" FontWeight="Bold" FontSize="25"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Application}"/>
+                                            <Label Grid.Column="3" FontWeight="Bold" FontSize="25"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Profile}"/>
+                                        </Grid>
+                                        <Grid>
+                                                <Border Style="{StaticResource DefaultBorder}"  />
+                                            <ScrollViewer>
+                                                <ItemsPresenter Margin="5"></ItemsPresenter>
+                                            </ScrollViewer>
+                                        </Grid>
+
+                                    </DockPanel>
+
                                 </ControlTemplate>
                             </ListBox.Template>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Margin="0,2"  >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition SharedSizeGroup="PriorityColumn" Width="Auto"/>
-                                            <ColumnDefinition SharedSizeGroup="IconColumn" Width="Auto"/>
-                                            <ColumnDefinition SharedSizeGroup="ApplicationColumn" Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Margin="5,0" Width="Auto"  FontSize="15" Text="{Binding Position}"  VerticalAlignment="Center" HorizontalAlignment="Left" />
-                                        <Border Grid.Column="1"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474">
-                                            <Image  Margin="5,0"  Source="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="50" Height="50"  Stretch="Fill"></Image>
-                                        </Border>
-                                        <TextBlock Grid.Column="2" Width="Auto" Margin="5,0"  FontSize="15"   Text="{Binding Application.DisplayName}" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                                        <ComboBox Grid.Column="3" Width="Auto"  Margin="5,0" FontSize="15" FontWeight="Bold" SelectedItem="{Binding Profile}" ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
-                                    </Grid>
+                                    <Border>
+                                        <Grid Margin="0,2"  >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition SharedSizeGroup="PriorityColumn" Width="Auto"/>
+                                                <ColumnDefinition SharedSizeGroup="IconColumn" Width="Auto"/>
+                                                <ColumnDefinition SharedSizeGroup="ApplicationColumn" Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Padding="15,0" Width="Auto"  FontSize="15" Content="{Binding Position}"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" />
+                                            <Border Width="70" Grid.Column="1"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474">
+                                                <Border  Height="70" Width="70" CornerRadius="{StaticResource CornerRadius}">
+                                                    <Border.Background>
+                                                        <ImageBrush Stretch="Fill" ImageSource="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
+                                                    </Border.Background>
+                                                </Border>
+                                            </Border>
+                                            <Label Grid.Column="2" Width="Auto"  Padding="5,0" FontSize="15"   Content="{Binding Application.DisplayName}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  VerticalContentAlignment="Center"  />
+                                            <ComboBox VerticalContentAlignment="Stretch" Grid.Column="3" Width="Auto"  Margin="5,0,10,0" FontSize="15" FontWeight="Bold" SelectedItem="{Binding Profile}" ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

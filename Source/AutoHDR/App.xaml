@@ -23,11 +23,34 @@
             </ResourceDictionary.MergedDictionaries>
             <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
         <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
- 
-        
 
 
-        <Style x:Key="DefaultLabel" TargetType="Label">
+            <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Grid>
+                            <Border Name="_Border"
+                                Padding="2"
+                                SnapsToDevicePixels="true" Margin="5">
+                            </Border>
+                              <ContentPresenter />
+
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter TargetName="_Border" Property="Background" Value="{StaticResource HighlightedBrush}"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+
+            <Style x:Key="DefaultLabel" TargetType="Label">
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
         </Style>
         <Style TargetType="Label" BasedOn="{StaticResource DefaultLabel}"/>

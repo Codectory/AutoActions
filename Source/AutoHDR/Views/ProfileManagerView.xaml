@@ -22,9 +22,8 @@
 
         <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile" >
             <Grid>
-                <Border Style="{StaticResource DefaultBorder}" Margin="5,5">
-                </Border>
-                <TextBlock  Text="{Binding Name, Mode=OneWay}" Margin="10,10" VerticalAlignment="Center" HorizontalAlignment="Left"  FontWeight="DemiBold"/>
+
+                <TextBlock  Text="{Binding Name, Mode=OneWay}" Margin="15,10" VerticalAlignment="Center" HorizontalAlignment="Stretch"  FontWeight="DemiBold" TextTrimming="CharacterEllipsis"/>
 
             </Grid>
         </DataTemplate>
@@ -77,8 +76,8 @@
         <TextBlock  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Profiles}" Margin="5" FontWeight="Bold" FontSize="25"></TextBlock>
         <TextBlock  Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.CurrentProfile}" Margin="5" FontWeight="Bold" FontSize="25"></TextBlock>
         <Border Grid.Column="0"   Grid.Row="1"  Style="{StaticResource DefaultBorder}" Margin="10,10,10,10"/>
-        <ListBox  Grid.Column="0"   Grid.Row="1" Margin="5,10"  x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
-
+        <ListBox  Grid.Column="0"   Grid.Row="1" Margin="5,10"  x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}"  ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
+        <GridSplitter/>
         <Border Grid.Column="1" Grid.Row="1"  Style="{StaticResource DefaultBorder}"  Margin="10,10,10,10"/>
         <ScrollViewer   Grid.Column="1" Grid.Row="1" Margin="15"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <!--<Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}">-->
@@ -111,7 +110,7 @@
                 <CheckBox  Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartApplication, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"  />
 
                 <Border Grid.Column="1"  Grid.Row="3"  Style="{StaticResource DefaultBorder}" Margin="10,2" Height="120"/>
-                <Grid Grid.Column="1"  Grid.Row="3" Margin="10,5">
+                    <Grid Grid.Column="1"  Grid.Row="3" Margin="10,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
@@ -122,7 +121,6 @@
                     </ScrollViewer>
 
                 </Grid>
-
                 <Border  Grid.Column="1"  Grid.Row="4"  Style="{StaticResource DefaultBorder}" Margin="10,2" Height="120"/>
                 <Grid Grid.Column="1"  Grid.Row="4"  Margin="10,2">
                         <Grid.ColumnDefinitions>
