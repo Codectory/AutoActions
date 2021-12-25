@@ -24,12 +24,16 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static pres:ProjectLocales.DisplayName}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" FontSize="15"/>
         <Label Grid.Column="0" Grid.Row="1" Content="{x:Static pres:ProjectLocales.FilePath}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" />
-        <Label Grid.Column="0" Grid.Row="2" Content="{x:Static pres:ProjectLocales.Icon}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" />
+        <Label Grid.Column="0" Grid.Row="2" Content="{x:Static pres:ProjectLocales.Icon}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" />
 
         <TextBox Grid.Column="1" Grid.Row="0" Height="Auto" Margin="5" TextWrapping="Wrap" Text="{Binding DisplayName, Mode=TwoWay }" VerticalAlignment="Top"/>
         <Label  Grid.Column="1" Grid.Row="1" Content="{Binding FilePath}" Margin="5" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-        <Image Grid.Column="1" Grid.Row="2" Margin="5"  Height="40" Width="40" Source="{Binding ApplicationItem.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
-
+        <Border Grid.Column="1" Grid.Row="2" Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
+        <Border Grid.Column="1" Grid.Row="2" Margin="5" Height="70" Width="70" CornerRadius="{StaticResource CornerRadius}" HorizontalAlignment="Left">
+            <Border.Background>
+                <ImageBrush Stretch="Fill" ImageSource="{Binding ApplicationItem.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
+            </Border.Background>
+        </Border>
         <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

@@ -147,13 +147,14 @@
                         <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentProfile}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="25" VerticalAlignment="Center" Margin="5"  />
                         <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.LastActions}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="25" VerticalAlignment="Top" Margin="5"  />
 
-                        <Border Grid.Row="2" Grid.Column="3" BorderThickness="1" BorderBrush="LightGray" Style="{StaticResource DefaultBorder}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Padding="0">
-                            <Rectangle RadiusX="3" RadiusY="3" Width="40" Height="40" Margin="2  ">
-                                <Rectangle.Fill>
-                                    <ImageBrush ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Stretch="Fill" />
-                                </Rectangle.Fill>
-                            </Rectangle>
+
+                        <Border Grid.Row="2" Grid.Column="3"  Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
+                        <Border Grid.Row="2" Grid.Column="3"  Margin="5" Height="70" Width="70" CornerRadius="{StaticResource CornerRadius}" HorizontalAlignment="Left">
+                            <Border.Background>
+                                <ImageBrush Stretch="Fill" ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
+                            </Border.Background>
                         </Border>
+
                         <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static pres:ProjectLocales.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
                         <TextBlock Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:ProjectLocales.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
                         <Border  Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"  Style="{StaticResource DefaultBorder}"  >

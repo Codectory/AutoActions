@@ -14,14 +14,18 @@
             <StackPanel/>
         </ItemsPanelTemplate>
         <DataTemplate x:Key="ApplicationItemTemplate" DataType="ApplicationItem">
-            <Grid >
+            <Grid  Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474">
-                    <Image Grid.Column="0" Source="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="40" Height="40" Margin="5" Stretch="Fill"></Image>
+                <Border Grid.Column="0"  Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
+                <Border Grid.Column="0"  Margin="5" Height="70" Width="70" CornerRadius="{StaticResource CornerRadius}" HorizontalAlignment="Left">
+                    <Border.Background>
+                        <ImageBrush Stretch="Fill" ImageSource="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
+                    </Border.Background>
                 </Border>
+
                 <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="5" FontSize="15"  VerticalAlignment="Center" HorizontalAlignment="Left" />
             </Grid>
         </DataTemplate>
@@ -33,7 +37,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListBox  Grid.Row="0" x:Name="ApplicationList" SelectedItem="{Binding ApplicationItem}" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding UWPApplications}" ScrollViewer.VerticalScrollBarVisibility="Auto"   BorderThickness="0" Margin="0,0,0,5"/>
+        <ListBox  Grid.Row="0" x:Name="ApplicationList" SelectedItem="{Binding ApplicationItem}" ItemContainerStyle="{StaticResource ListBoxItemStyle}" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding UWPApplications}" ScrollViewer.VerticalScrollBarVisibility="Auto"   BorderThickness="0" Margin="0,0,0,5"/>
 
         <Grid Grid.Row="1" Height="Auto">
             <Grid.ColumnDefinitions>

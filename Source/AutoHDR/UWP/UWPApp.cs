@@ -71,7 +71,6 @@ namespace AutoHDR.UWP
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(AppxManifest));
                     AppxManifest appxManifest = (AppxManifest)serializer.Deserialize(reader);
-                    if (appxManifest.Applications==null)
                     Name = ((XmlNode[])appxManifest.Properties.DisplayName)[0].Value;
                     if (Name.Contains("ms-resource:"))
                     {
