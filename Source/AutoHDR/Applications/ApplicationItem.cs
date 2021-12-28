@@ -21,6 +21,8 @@ namespace AutoHDR
     [JsonObject(MemberSerialization.OptIn)]
     public class ApplicationItem : BaseViewModel, IEquatable<ApplicationItem>
     {
+        [JsonProperty]
+        public bool PackageError { get; set; } = false;
         private bool _isUWP = false;
         private bool _isUWPWebApp = false;
 
@@ -97,6 +99,8 @@ namespace AutoHDR
 
        private void LoadUWPData()
         {
+            string packageNotFound = "[PackageNotFound]_";
+
             if (!IsUWP && !IsUWPWepApp)
                 return;
             UWPApp uwpApp;
@@ -105,7 +109,19 @@ namespace AutoHDR
                 uwpApp = UWPAppsManager.GetUWPApp(UWPFamilyPackageName, UWPApplicationID);
             else
                 uwpApp = UWPAppsManager.GetUWPApp(UWPFullPackageName);
-
+            if (uwpApp == null)
+            {
+                if (PackageError)
+                    return;
+                DisplayName = $"{packageNotFound}{DisplayName}";
+                UWPIconPath = "";
+                UWPIdentity = "";
+                PackageError = true;
+                return;
+            }
+            PackageError = false;
+            if (DisplayName.StartsWith(packageNotFound))
+                DisplayName = DisplayName.Substring(packageNotFound.Length, DisplayName.Length - packageNotFound.Length);
             UWPFamilyPackageName = uwpApp.FamilyPackageName;
             _uwpFullPackageName = uwpApp.FullPackageName;
             _uwpApplicationID = uwpApp.ApplicationID;

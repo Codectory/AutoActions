@@ -54,7 +54,7 @@ namespace AutoHDR.Audio
         {
             lock (_lockDevices)
             {
-                List<CoreAudioDevice> devices = Controller.GetDevices(AudioSwitcher.AudioApi.DeviceState.Active).ToList();
+                List<CoreAudioDevice> devices = Controller.GetDevices(AudioSwitcher.AudioApi.DeviceState.All).ToList();
 
                 List<AudioDevice> outputAudioDevices = new List<AudioDevice>();
                 List<AudioDevice> inputAudioDevices = new List<AudioDevice>();
