@@ -60,26 +60,26 @@ namespace AutoHDR.Profiles.Actions
 
         public static void SaveSettings(UserAppSettings settings, string path)
         {
-                 try
+            try
+            {
+                DataContractSerializer serializer = new DataContractSerializer(typeof(UserAppSettings));
+
+                var writeSettings = new XmlWriterSettings()
                 {
-                    DataContractSerializer serializer = new DataContractSerializer(typeof(UserAppSettings));
+                    Indent = true
 
-                    var writeSettings = new XmlWriterSettings()
-                    {
-                        Indent = true
-
-                    };
+                };
 
 
-                    using (var xmlWriter = XmlWriter.Create(path, writeSettings))
-                        serializer.WriteObject(xmlWriter, settings);
-                }
-                catch (Exception ex)
-                {
-                    Globals.Logs.AddException(ex);
-                    throw;
-                }
+                using (var xmlWriter = XmlWriter.Create(path, writeSettings))
+                    serializer.WriteObject(xmlWriter, settings);
             }
-        
+            catch (Exception ex)
+            {
+                Globals.Logs.AddException(ex);
+                throw;
+            }
+        }
     }
+    
 }

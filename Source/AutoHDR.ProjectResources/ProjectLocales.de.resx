@@ -297,6 +297,21 @@
   <data name="ManagedHDR" xml:space="preserve">
     <value>Automatischer HDR-Modus</value>
   </data>
+  <data name="MessageMissingAudioDevice" xml:space="preserve">
+    <value>Audiogerät fehlt.</value>
+  </data>
+  <data name="MessageMissingFile" xml:space="preserve">
+    <value>Datei fehlt.</value>
+  </data>
+  <data name="MessageMissingProcessName" xml:space="preserve">
+    <value>Prozessname fehlt</value>
+  </data>
+  <data name="MessageReferenceLoop" xml:space="preserve">
+    <value>Der Verweis auf das Profil erzeugt eine Schleife.</value>
+  </data>
+  <data name="MessageReferenceProfileNotFound" xml:space="preserve">
+    <value>Das verwiesene Profil mit der Guid {0} wurde nicht gefunden.</value>
+  </data>
   <data name="MinimizeToTray" xml:space="preserve">
     <value>Zu Symbolleiste minimieren, beim Schließen</value>
   </data>
@@ -338,6 +353,9 @@
   </data>
   <data name="Profiles" xml:space="preserve">
     <value>Profile</value>
+  </data>
+  <data name="ReferenceProfileAction" xml:space="preserve">
+    <value>Profilverweis</value>
   </data>
   <data name="RefreshRate" xml:space="preserve">
     <value>Bildwiederholrate [Hz]</value>

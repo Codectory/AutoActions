@@ -26,7 +26,7 @@
                     </Border.Background>
                 </Border>
 
-                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" Margin="5" FontSize="15"  VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" HorizontalAlignment="Left" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

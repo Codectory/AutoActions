@@ -16,11 +16,6 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <UserControl.Resources>
-        <Style x:Key="InfoText" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16" />
-        </Style>
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -44,7 +39,7 @@
             </Grid.RowDefinitions>
             <Image Grid.Row="0"  Grid.ColumnSpan="3" Source="{Binding Converter={StaticResource  BitmapToBitmapImageConverter}, Source={x:Static pres:ProjectLocales.Logo}}"/>
         </Grid>
-        <TextBlock Grid.Row="1" Text="{x:Static pres:ProjectLocales.Local}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource TitleTextBlock}" Grid.Row="1" Text="{x:Static pres:ProjectLocales.Local}" HorizontalAlignment="Left" Margin="5,15,0,0" VerticalAlignment="Top"/>
         <Border Style="{StaticResource DefaultBorder}"  Grid.Row="2" Margin="5" />
         <Grid Height="Auto" Margin="10,5" Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -55,12 +50,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.Version}"  Style="{StaticResource InfoText}" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.Version}"  VerticalAlignment="Center"/>
 
-            <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Version}"  Style="{StaticResource InfoText}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="2" Grid.Row="0" Text="{Binding Version}"   VerticalAlignment="Center" HorizontalAlignment="Right"/>
         </Grid>
 
-        <TextBlock Grid.Row="3" Text="{x:Static pres:ProjectLocales.Online}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="3" Text="{x:Static pres:ProjectLocales.Online}" HorizontalAlignment="Left" Margin="5,15,0,0" VerticalAlignment="Top"/>
         <Border Grid.Row="4"  Margin="5" >
             <Border.Style>
                 <Style  BasedOn="{StaticResource DefaultBorder}" TargetType="{x:Type Border}">
@@ -87,29 +82,27 @@
                     <RowDefinition Height="35"/>
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0"  Text="{x:Static pres:ProjectLocales.Version}"  Style="{StaticResource InfoText}" VerticalAlignment="Center"></TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static pres:ProjectLocales.ReleaseDate}"  Style="{StaticResource InfoText}" VerticalAlignment="Center"></TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static pres:ProjectLocales.DownloadNewestVersion}" Style="{StaticResource InfoText}" VerticalAlignment="Center"></TextBlock>
-
-                <TextBlock Grid.Column="2" Grid.Row="0"  Text="{Binding NewestVersion}"  Style="{StaticResource InfoText}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding LastReleaseDate, StringFormat=d}"  Style="{StaticResource InfoText}" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
-                <Button  Grid.Column="2" Grid.Row="2" Padding="0"  Command="{Binding DownloadCommand}"  Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" HorizontalAlignment="Right"  >
+            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0" Grid.Row="0"  Text="{x:Static pres:ProjectLocales.Version}"  VerticalAlignment="Center"/>
+            <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="1" Text="{x:Static pres:ProjectLocales.ReleaseDate}"  VerticalAlignment="Center"/>
+            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0" Grid.Row="2" Text="{x:Static pres:ProjectLocales.DownloadNewestVersion}" VerticalAlignment="Center"/>
+            <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="2" Grid.Row="0"  Text="{Binding NewestVersion}"  VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="2" Grid.Row="1" Text="{Binding LastReleaseDate, StringFormat=d}"  VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Button  Grid.Column="2" Grid.Row="2" Padding="0"  Command="{Binding DownloadCommand}"  Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" HorizontalAlignment="Right"  >
                     <Button.Resources>
                         <Style TargetType="Button"/>
                     </Button.Resources>
-                    <TextBlock  Text="{x:Static pres:ProjectLocales.Download}" Width="Auto" Margin="0"   Style="{StaticResource InfoText}"  Height="Auto" TextDecorations="Underline" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                       <TextBlock Style="{StaticResource DefaultTextBlock}"   Text="{x:Static pres:ProjectLocales.Download}" Width="Auto" Margin="0"    Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Right" >
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                        </TextBlock.Foreground>
+                    </TextBlock.Foreground>
                     </TextBlock>
                 </Button>
             </Grid>
-        <TextBlock Grid.Row="5" Text="{x:Static pres:ProjectLocales.Changelog}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="5"  Text="{x:Static pres:ProjectLocales.Changelog}" HorizontalAlignment="Left" Margin="5,15,0,0" VerticalAlignment="Top"/>
         <Border Style="{StaticResource DefaultBorder}"  Grid.Row="6" Margin="5"  />
         <ScrollViewer Grid.Row="6" Margin="10,10" >
-            <TextBlock Text="{Binding ChangeLog}" TextWrapping="Wrap" FontSize="16"/>
+            <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ChangeLog}" TextWrapping="Wrap"/>
         </ScrollViewer>
-
 
     </Grid>
 </UserControl>

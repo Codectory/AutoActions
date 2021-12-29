@@ -205,7 +205,7 @@ namespace AutoHDR
                 {
                     App.Current.Dispatcher.Invoke(() => LastActions.Add(action));
                     action.NewLog += ActionLog;
-                    action.RunAction();
+                    action.RunAction(changedType);
                     action.NewLog -= ActionLog;
                     System.Threading.Thread.Sleep(100);
                 }
@@ -248,7 +248,7 @@ namespace AutoHDR
         {
             Globals.Logs.Add("Initializing TrayMenu...", false);
             TrayMenuHelper = new TrayMenuHelper();
-            TrayMenuHelper.Initialize(DisplayManagerHandler.Instance);
+            TrayMenuHelper.Initialize();
             TrayMenuHelper.OpenViewRequested += TrayMenuHelper_OpenViewRequested;
             TrayMenuHelper.CloseApplicationRequested += TrayMenuHelper_CloseApplicationRequested;
             //TrayMenuHelper.SwitchTrayIcon(Settings.StartMinimizedToTray);

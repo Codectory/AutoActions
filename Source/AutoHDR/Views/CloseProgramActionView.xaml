@@ -22,8 +22,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Margin="5" Content="{x:Static pres:ProjectLocales.ProcessName}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label Grid.Row="1" Grid.Column="0" Margin="5" Content="{x:Static pres:ProjectLocales.ForceKill}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="0" Grid.Column="0" Margin="5" Text="{x:Static pres:ProjectLocales.ProcessName}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Row="1" Grid.Column="0" Margin="5" Text="{x:Static pres:ProjectLocales.ForceKill}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <TextBox Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="1" Margin="5"  Text="{Binding ProcessName}" />
         <CheckBox Grid.Row="1"  Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding Force, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"  />

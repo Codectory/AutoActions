@@ -16,7 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="0" Text="{x:Static pres:ProjectLocales.RestartProccessOnFirstOccurence}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <CheckBox  Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartOnOccurance, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"  />
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Text="{x:Static pres:ProjectLocales.RestartProccessOnFirstOccurence}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <CheckBox Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartOnOccurance, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"  />
        </Grid>
 </UserControl>

@@ -17,6 +17,9 @@ namespace AutoHDR.Profiles.Actions
     [JsonObject(MemberSerialization.OptIn)]
     public class RunProgramAction : ProfileActionBase
     {
+
+        public override bool CanSave => !string.IsNullOrEmpty(FilePath) && File.Exists(FilePath);
+        public override string CannotSaveMessage => ProjectLocales.MessageMissingFile;
         public override string ActionTypeName => ProjectResources.ProjectLocales.RunAction;
 
 
@@ -48,7 +51,7 @@ namespace AutoHDR.Profiles.Actions
 
         }
 
-        public override ActionEndResult RunAction(params object[] parameter)
+        public override ActionEndResult RunAction(ApplicationChangedType applicationChangedType)
         {
             try
             {

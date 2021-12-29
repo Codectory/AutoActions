@@ -179,6 +179,24 @@ namespace AutoHDR.Profiles
             return ProfileActionListType.None;
         }
 
+        public ListOfProfileActions GetProfileActions(ProfileActionListType listType)
+        {
+            switch (listType)
+            {
+                case ProfileActionListType.Started:
+                    return ApplicationStarted;
+                case ProfileActionListType.Closed:
+                    return ApplicationClosed;
+                case ProfileActionListType.GotFocus:
+                    return ApplicationGotFocus;
+                case ProfileActionListType.LostFocus:
+                    return ApplicationLostFocus;
+                default:
+                    return new ListOfProfileActions();
+
+            }
+        }
+
         public void RemoveProfileAction(ProfileActionBase profileAction)
         {
             if (ApplicationStarted.Contains(profileAction))

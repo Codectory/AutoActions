@@ -9,6 +9,10 @@ namespace AutoHDR.Profiles.Actions
 
         string ActionDescription { get;}
         string ActionTypeName { get; }
-        ActionEndResult RunAction(params object[] parameter);
+        ActionEndResult RunAction(ApplicationChangedType applicationChangedType);
+
+        bool CanSave { get; }
+
+        string CannotSaveMessage { get; }
     }
 }

@@ -8,10 +8,12 @@ namespace AutoHDR
 {
     public enum ApplicationChangedType
     {
+        None,
         Started,
         Closed,
         GotFocus,
         LostFocus
+
     }
     public class ApplicationChangedEventArgs : EventArgs
     {

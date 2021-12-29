@@ -22,9 +22,7 @@
 
         <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile" >
             <Grid>
-
-                <TextBlock  Text="{Binding Name, Mode=OneWay}" Margin="15,10" VerticalAlignment="Center" HorizontalAlignment="Stretch"  FontWeight="DemiBold" TextTrimming="CharacterEllipsis"/>
-
+                <TextBlock Style="{StaticResource DefaultTextBlock}"  Text="{Binding Name, Mode=OneWay}" Margin="15,10" VerticalAlignment="Center" HorizontalAlignment="Stretch"  FontWeight="DemiBold" TextTrimming="CharacterEllipsis"/>
             </Grid>
         </DataTemplate>
 
@@ -51,14 +49,26 @@
                     </Grid.RowDefinitions>
                     <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="1" Content="..."   VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,5,0" Width="25"  FontSize="20" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.EditProfileActionCommand}" CommandParameter="{Binding}" />
                     <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="1"   Content="-"  VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,5,0" Width="25" FontSize="20" Command="{Binding  ElementName=ProfileList, Path=SelectedItem.RemoveProfileActionCommand}" CommandParameter="{Binding}" />
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.ActionType}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="DemiBold" />
-                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3"  Grid.Row="1" Text="{Binding ActionTypeName}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{x:Static pres:ProjectLocales.Actions}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="DemiBold" />
-                    <TextBlock Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="3" Text="{Binding ActionDescription}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ActionDescription}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.ActionType}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.ColumnSpan="3"  Grid.Row="1" Text="{Binding ActionTypeName}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="3" Text="{x:Static pres:ProjectLocales.Actions}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="DemiBold" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="3" Text="{Binding ActionDescription}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ActionDescription}"  Margin="5,1" VerticalAlignment="Top" HorizontalAlignment="Left" />
                 </Grid>
 
             </Grid>
         </DataTemplate>
+        
+        <Style x:Key="AddButton" TargetType="Button" BasedOn="{StaticResource DefaultButton}">
+            <Style.Setters>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Background" Value="{StaticResource ActiveBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Height" Value="Auto"/>
+                <Setter Property="Margin" Value="5"/>
+             <Setter Property="Content" Value="+"/>
+            </Style.Setters>
+        </Style>
     </UserControl.Resources>
 
 
@@ -73,14 +83,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Profiles}" Margin="5" FontWeight="Bold" FontSize="25"></TextBlock>
-        <TextBlock  Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.CurrentProfile}" Margin="5" FontWeight="Bold" FontSize="25"></TextBlock>
+        <TextBlock Style="{StaticResource TitleTextBlock}" Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Profiles}"/>
+        <TextBlock Style="{StaticResource TitleTextBlock}" Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.CurrentProfile}"></TextBlock>
         <Border Grid.Column="0"   Grid.Row="1"  Style="{StaticResource DefaultBorder}" Margin="10,10,10,10"/>
         <ListBox  Grid.Column="0"   Grid.Row="1" Margin="5,10"  x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}"  ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
         <GridSplitter/>
         <Border Grid.Column="1" Grid.Row="1"  Style="{StaticResource DefaultBorder}"  Margin="10,10,10,10"/>
         <ScrollViewer   Grid.Column="1" Grid.Row="1" Margin="15"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <!--<Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem}">-->
             <Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem, Mode=OneWay}" Visibility="{Binding  ElementName=ProfileList, Path=SelectedItem,Mode=OneWay, Converter={StaticResource NotNullVisibilityConverter}}" >
 
                 <Grid.ColumnDefinitions>
@@ -99,13 +108,14 @@
                     <RowDefinition Height="*"/>
 
                 </Grid.RowDefinitions>
-                <TextBlock  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Name}" Margin="5,10,5,5" FontWeight="Bold" FontSize="20"></TextBlock>
-                <TextBlock  Grid.Column="0"  Grid.Row="1"   Text="{x:Static pres:ProjectLocales.RestartProccessOnFirstOccurence}" Margin="5,10,5,5" FontWeight="Bold" FontSize="20"></TextBlock>
-                <TextBlock  Grid.Column="0"  Grid.Row="2"   Text="{x:Static pres:ProjectLocales.Actions}" FontWeight="Bold" FontSize="20" Margin="5,10,5,5"></TextBlock>
-                <TextBlock  Grid.Column="0"  Grid.Row="3"   Text="{x:Static pres:ProjectLocales.AppStartedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
-                <TextBlock  Grid.Column="0"  Grid.Row="4"   Text="{x:Static pres:ProjectLocales.AppClosedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
-                <TextBlock  Grid.Column="0"  Grid.Row="5"   Text="{x:Static pres:ProjectLocales.AppFocusedActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
-                <TextBlock  Grid.Column="0"  Grid.Row="6"   Text="{x:Static pres:ProjectLocales.AppLostFocusActions}" FontWeight="DemiBold" FontSize="15" Margin="5"></TextBlock>
+                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Name}" Margin="5,10,5,5" ></TextBlock>
+                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="1"   Text="{x:Static pres:ProjectLocales.RestartProccessOnFirstOccurence}" Margin="5,10,5,5" ></TextBlock>
+                <TextBlock Style="{StaticResource SubTitleTextBlock}"  Grid.Column="0" Grid.Row="2"   Text="{x:Static pres:ProjectLocales.Actions}" Margin="5,10,5,5"></TextBlock>
+                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="3"   Text="{x:Static pres:ProjectLocales.AppStartedActions}" />
+                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="4"   Text="{x:Static pres:ProjectLocales.AppClosedActions}" />
+                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="5"   Text="{x:Static pres:ProjectLocales.AppFocusedActions}" />
+                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="6"   Text="{x:Static pres:ProjectLocales.AppLostFocusActions}" />
+                
                 <TextBox x:Name="NameTextBox" Grid.Column="1"  Grid.Row="0"   Text="{Binding Name, Mode=TwoWay}" Margin="10,5" FontSize="15" FontWeight="DemiBold"></TextBox>
                 <CheckBox  Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding RestartApplication, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"  />
 
@@ -115,7 +125,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" FontSize="20" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5"  Height="Auto"  Command="{Binding AddStartedActionCommand }" />
+                    <Button Style="{StaticResource AddButton}" Grid.Column="0"  Command="{Binding AddStartedActionCommand }" />
                     <ScrollViewer Grid.Column="1" x:Name="ScrollViewerStart" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Height="Auto">
                         <ItemsControl  MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationStarted}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
                     </ScrollViewer>
@@ -127,7 +137,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" FontSize="20" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5" Height="Auto"  Command="{Binding AddClosedActionCommand}"/>
+                    <Button Grid.Column="0" Style="{StaticResource AddButton}"  Command="{Binding AddClosedActionCommand}"/>
                         <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerStopped" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                             <ItemsControl Grid.Column="1" MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationClosed}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
                         </ScrollViewer>
@@ -139,7 +149,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" FontSize="20" Content="+" VerticalAlignment="Stretch" Background="{StaticResource ActiveBrush}" HorizontalAlignment="Left" Margin="5" Height="Auto" Command="{Binding AddGotFocusActionCommand}"/>
+                    <Button Grid.Column="0"  Style="{StaticResource AddButton}" Command="{Binding AddGotFocusActionCommand}"/>
                         <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerFocused" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
                             <ItemsControl Grid.Column="1" MinHeight="50"   ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationGotFocus}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
@@ -152,7 +162,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" FontSize="20" Content="+" Background="{StaticResource ActiveBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="5" Height="Auto" Command="{Binding AddLostFocusActionCommand}" />
+                    <Button Grid.Column="0"  Style="{StaticResource AddButton}" Command="{Binding AddLostFocusActionCommand}" />
                     <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerLost" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
                         <ItemsControl Grid.Column="1" MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationLostFocus}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
@@ -173,7 +183,7 @@
                 <ColumnDefinition/>
 
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1"  Width="30" FontSize="20" Command="{Binding AddProfileCommand}" Content="+"    Margin="10,5,5,10" Height="Auto"  />
+            <Button Grid.Column="1"  Width="30" FontSize="20" Command="{Binding AddProfileCommand}" Content="+" Margin="10,5,5,10" Height="Auto"  />
             <Button Grid.Column="2" Width="30" FontSize="20" Command="{Binding RemoveProfileCommand}" CommandParameter="{Binding ElementName=ProfileList, Path=SelectedItem}"  Height="Auto" Content="-" IsEnabled="{Binding ElementName=ProfileList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10" />
         </Grid>
 

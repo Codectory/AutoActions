@@ -174,12 +174,16 @@
     <Compile Include="Globals.cs" />
     <Compile Include="LoopManager.cs" />
     <Compile Include="Profiles\Actions\CloseProgramAction.cs" />
+    <Compile Include="Profiles\Actions\ReferenceProfileAction.cs" />
     <Compile Include="Theming\ThemeResourceDirectory.cs" />
     <Compile Include="Theming\Theme.cs" />
     <Compile Include="UserAppSettings.cs" />
     <Compile Include="UWP\WWAHostHandler.cs" />
     <Compile Include="Views\CloseProgramActionView.xaml.cs">
       <DependentUpon>CloseProgramActionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReferenceProfileActionView.xaml.cs">
+      <DependentUpon>ReferenceProfileActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WinAPIFunctions.cs" />
     <Compile Include="Windows\UI.cs" />
@@ -280,6 +284,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CloseProgramActionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ReferenceProfileActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

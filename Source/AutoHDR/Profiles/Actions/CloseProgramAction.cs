@@ -18,8 +18,9 @@ namespace AutoHDR.Profiles.Actions
     [JsonObject(MemberSerialization.OptIn)]
     public class CloseProgramAction : ProfileActionBase
     {
+        public override bool CanSave => !string.IsNullOrEmpty(ProcessName);
+        public override string CannotSaveMessage => ProjectLocales.MessageMissingProcessName;
         public override string ActionTypeName => ProjectResources.ProjectLocales.CloseProgramAction;
-
 
         private string _processName = "";
 
@@ -42,7 +43,7 @@ namespace AutoHDR.Profiles.Actions
 
         }
 
-        public override ActionEndResult RunAction(params object[] parameter)
+        public override ActionEndResult RunAction(ApplicationChangedType applicationChangedType)
         {
             try
             {

@@ -20,7 +20,8 @@ namespace AutoHDR
 
         private MenuItem _openButton;
         private MenuItem _closeButton;
-        private MenuItem _hdrSwitchButton;
+        private MenuItem _actions;
+
 
         public event EventHandler OpenViewRequested;
         public event EventHandler CloseApplicationRequested;
@@ -29,7 +30,7 @@ namespace AutoHDR
         public event EventHandler<string> NewLog;
 
 
-        public void Initialize(IDisplayManagerBase displayManager)
+        public void Initialize()
         {
             if (Initialized)
                 return;
@@ -50,20 +51,13 @@ namespace AutoHDR
                 {
                     Header = ProjectLocales.Shutdown
                 };
-                _hdrSwitchButton = new MenuItem()
-                {
-                    Header = ProjectLocales.ActivateHDR
-                };
                 _openButton.Click += (o, e) => OpenViewRequested?.Invoke(this, EventArgs.Empty);
                 _closeButton.Click += (o, e) => CloseApplicationRequested?.Invoke(this, EventArgs.Empty);
-                _hdrSwitchButton.Click += (o, e) => { if (DisplayManagerHandler.Instance.GlobalHDRIsActive) displayManager.DeactivateHDR(); else displayManager.ActivateHDR(); };
                 contextMenu.Items.Add(_openButton);
-                contextMenu.Items.Add(_hdrSwitchButton);
                 contextMenu.Items.Add(_closeButton);
+                InitializeActionsMenuItem(contextMenu);
                 _trayMenu.ContextMenu = contextMenu;
                 _trayMenu.TrayLeftMouseDown += TrayMenu_TrayLeftMouseDown;
-                DisplayManagerHandler.Instance.HDRIsActiveChanged += HDRController_HDRIsActiveChanged;
-                UpdateMenuButtons();
                 CallNewLog("Tray menu initialized");
                 SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
@@ -72,6 +66,38 @@ namespace AutoHDR
             catch (Exception ex)
             {
                 throw ex;
+            }
+
+        }
+
+        readonly object _lockActions = new object();
+
+        private void InitializeActionsMenuItem(ContextMenu contextMenu)
+        {
+            _actions = new MenuItem()
+            {
+                Header = ProjectLocales.Actions
+            };
+            contextMenu.Items.Add(_actions);
+            Globals.Instance.Settings.ActionShortcuts.CollectionChanged += (o, e) =>
+                {
+                    UpdateActionItems();
+                };
+            UpdateActionItems();
+        }
+
+        private void UpdateActionItems()
+        {
+            lock (_lockActions)
+            {
+                _actions.Items.Clear();
+                foreach (var action in Globals.Instance.Settings.ActionShortcuts)
+                {
+                    MenuItem item = new MenuItem();
+                    item.Header = $"[{action.ActionTypeName}]{action.ActionDescription}";
+                    item.Click += (o, e) => action.RunAction(ApplicationChangedType.None);
+                    _actions.Items.Add(item);
+                }
             }
         }
 
@@ -86,20 +112,6 @@ namespace AutoHDR
                 System.Threading.Thread.Sleep(5000);
                 SwitchTrayIcon(true);
             }
-        }
-
-        private void HDRController_HDRIsActiveChanged(object sender, EventArgs e)
-        {
-            UpdateMenuButtons();
-        }
-
-        private void UpdateMenuButtons()
-        {
-            Application.Current.Dispatcher.Invoke(
-            (Action)(() =>
-            {
-                _hdrSwitchButton.Header = DisplayManagerHandler.Instance.GlobalHDRIsActive ? ProjectLocales.DeactivateHDR : ProjectLocales.ActivateHDR;
-            }));
         }
 
         private void TrayMenu_TrayLeftMouseDown(object sender, RoutedEventArgs e)

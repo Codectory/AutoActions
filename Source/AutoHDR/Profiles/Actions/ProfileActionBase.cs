@@ -19,7 +19,9 @@ namespace AutoHDR.Profiles.Actions
         public EventHandler<LogEntry> NewLog { get; set; }
         public abstract string ActionDescription { get; }
         public abstract string ActionTypeName { get; }
-        public abstract ActionEndResult RunAction(params object[] parameter);
+        public abstract bool CanSave { get; }
+        public abstract string CannotSaveMessage { get; }
+        public abstract ActionEndResult RunAction(ApplicationChangedType applicationChangedType);
 
         public ProfileActionBase()
         {

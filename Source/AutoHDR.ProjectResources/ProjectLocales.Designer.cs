@@ -743,6 +743,51 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Mssing audio device. ähnelt.
+        /// </summary>
+        public static string MessageMissingAudioDevice {
+            get {
+                return ResourceManager.GetString("MessageMissingAudioDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Missing file. ähnelt.
+        /// </summary>
+        public static string MessageMissingFile {
+            get {
+                return ResourceManager.GetString("MessageMissingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Missing process name. ähnelt.
+        /// </summary>
+        public static string MessageMissingProcessName {
+            get {
+                return ResourceManager.GetString("MessageMissingProcessName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Refrenced profile is creating a loop. ähnelt.
+        /// </summary>
+        public static string MessageReferenceLoop {
+            get {
+                return ResourceManager.GetString("MessageReferenceLoop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Referenced profile with Guid {0} hasn&apos;t been found. ähnelt.
+        /// </summary>
+        public static string MessageReferenceProfileNotFound {
+            get {
+                return ResourceManager.GetString("MessageReferenceProfileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Close to tray ähnelt.
         /// </summary>
         public static string MinimizeToTray {
@@ -865,6 +910,15 @@ namespace AutoHDR.ProjectResources {
         public static string Profiles {
             get {
                 return ResourceManager.GetString("Profiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Reference profile ähnelt.
+        /// </summary>
+        public static string ReferenceProfileAction {
+            get {
+                return ResourceManager.GetString("ReferenceProfileAction", resourceCulture);
             }
         }
         

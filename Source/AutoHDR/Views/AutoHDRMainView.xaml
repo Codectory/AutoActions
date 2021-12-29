@@ -39,8 +39,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="5,0,5,0"  Text="{Binding ActionTypeName}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
-                    <TextBlock Grid.Row="1" Margin="5,0,5,0"   Text="{Binding ActionDescription}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="0" Margin="5,0,5,0" Text="{Binding ActionTypeName}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="1" Margin="5,0,5,0"  Text="{Binding ActionDescription}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"  />
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -61,12 +61,10 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="{Binding Position}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0" Text="{Binding Position}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <Image Grid.Column="1" Source="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="50" Height="50"  Stretch="Fill"></Image>
-                    <TextBlock Grid.Column="2" Text="{Binding Application.DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left">
-
-                    </TextBlock>
-                    <ComboBox Grid.Column="3" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedValue="{Binding Profile, Mode=TwoWay}" SelectedItem="{Binding Profile, Mode=TwoWay}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="2" Text="{Binding Application.DisplayName}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <ComboBox Grid.Column="3" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedValue="{Binding Profile, Mode=TwoWay}" SelectedItem="{Binding Profile, Mode=TwoWay}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
                 </Grid>
             </Border>
 
@@ -109,8 +107,8 @@
                             <RowDefinition Height="*"/>
 
                         </Grid.RowDefinitions>
-                        <TextBlock  Grid.Row="0" Grid.Column="0" Text="{x:Static pres:ProjectLocales.HDR}"  Width="Auto" VerticalAlignment="Center" FontWeight="Bold" FontSize="25" HorizontalAlignment="Left"  Margin="5" />
-                        <Button Grid.Row="0" Grid.Column="1" Margin="5"  Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <TextBlock Style="{StaticResource TitleTextBlock}"   Grid.Row="0" Grid.Column="0" Text="{x:Static pres:ProjectLocales.HDR}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <Button Grid.Row="0" Grid.Column="4" Margin="5"  Width="Auto" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Center" >
                             <Button.Style>
                                 <Style  BasedOn="{StaticResource DefaultButton}" TargetType="{x:Type Button}">
                                     <Style.Triggers>
@@ -126,11 +124,11 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-
-                        <Ellipse Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="10" >
+                        <CheckBox Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Margin="10" Style="{StaticResource ToggleStatus}" IsChecked="{Binding HDRIsActive}"/>
+                        <!--<Ellipse Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="10" >
 
                             <Ellipse.Style>
-                                <Style TargetType="{x:Type Ellipse}">
+                                <Style x:Name="ToggleStatus"  TargetType="{x:Type Ellipse}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding HDRIsActive}" Value="True">
                                             <Setter Property="Fill" Value="{StaticResource ActiveBrush}"/>
@@ -142,10 +140,10 @@
                                 </Style>
                             </Ellipse.Style>
 
-                        </Ellipse>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentApplication}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="25" VerticalAlignment="Center" Margin="5"  />
-                        <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentProfile}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="25" VerticalAlignment="Center" Margin="5"  />
-                        <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.LastActions}"  Width="Auto" FontWeight="Bold"  Height="Auto" FontSize="25" VerticalAlignment="Top" Margin="5"  />
+                        </Ellipse>-->
+                        <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentApplication}"   VerticalAlignment="Center"/>
+                        <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentProfile}"   VerticalAlignment="Center" />
+                        <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.LastActions}" VerticalAlignment="Top"   />
 
 
                         <Border Grid.Row="2" Grid.Column="3"  Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
@@ -155,8 +153,8 @@
                             </Border.Background>
                         </Border>
 
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static pres:ProjectLocales.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
-                        <TextBlock Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:ProjectLocales.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" FontSize="15" />
+                        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="2" Grid.Column="4" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static pres:ProjectLocales.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"/>
+                        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:ProjectLocales.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"/>
                         <Border  Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"  Style="{StaticResource DefaultBorder}"  >
                         </Border>
                         <ItemsControl  Margin="8" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2" BorderThickness="0"   ItemsSource="{Binding LastActions}" ItemTemplate="{StaticResource ProfileActionTemplate}"   ItemsPanel="{StaticResource StackListViewTemplate}"  />
@@ -223,10 +221,10 @@
                                                 <ColumnDefinition SharedSizeGroup="ApplicationColumn"/>
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" FontWeight="Bold" FontSize="25"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Priority}"/>
-                                            <Label Grid.Column="1" FontWeight="Bold" FontSize="25"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Icon}"/>
-                                            <Label Grid.Column="2" FontWeight="Bold" FontSize="25"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Application}"/>
-                                            <Label Grid.Column="3" FontWeight="Bold" FontSize="25"  Margin="5,0" Content="{x:Static pres:ProjectLocales.Profile}"/>
+                                            <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="0" FontWeight="Bold" Margin="5,0" Text="{x:Static pres:ProjectLocales.Priority}"/>
+                                            <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="1" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Icon}"/>
+                                            <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="2" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Application}"/>
+                                            <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="3" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Profile}"/>
                                         </Grid>
                                         <Grid>
                                                 <Border Style="{StaticResource DefaultBorder}"  />
@@ -249,7 +247,7 @@
                                                 <ColumnDefinition SharedSizeGroup="ApplicationColumn" Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Padding="15,0" Width="Auto"  FontSize="15" Content="{Binding Position}"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" />
+                                            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0" Padding="15,0" Width="Auto"   Text="{Binding Position}"  VerticalAlignment="Center" HorizontalAlignment="Stretch"  />
                                             <Border Width="70" Grid.Column="1"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474">
                                                 <Border  Height="70" Width="70" CornerRadius="{StaticResource CornerRadius}">
                                                     <Border.Background>
@@ -257,8 +255,8 @@
                                                     </Border.Background>
                                                 </Border>
                                             </Border>
-                                            <Label Grid.Column="2" Width="Auto"  Padding="5,0" FontSize="15"   Content="{Binding Application.DisplayName}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  VerticalContentAlignment="Center"  />
-                                            <ComboBox VerticalContentAlignment="Stretch" Grid.Column="3" Width="Auto"  Margin="5,0,10,0" FontSize="15" FontWeight="Bold" SelectedItem="{Binding Profile}" ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
+                                            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="2" Width="Auto"  Padding="5,0" Text="{Binding Application.DisplayName}" VerticalAlignment="Center" HorizontalAlignment="Stretch"  />
+                                            <ComboBox VerticalContentAlignment="Stretch" Grid.Column="3" Width="Auto"  Margin="5,0,10,0"  SelectedItem="{Binding Profile}" ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

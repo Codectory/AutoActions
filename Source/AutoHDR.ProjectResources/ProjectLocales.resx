@@ -1013,6 +1013,21 @@ Public License instead of this License.  But first, please read
   <data name="ManagedHDR" xml:space="preserve">
     <value>Automated HDR mode</value>
   </data>
+  <data name="MessageMissingAudioDevice" xml:space="preserve">
+    <value>Mssing audio device.</value>
+  </data>
+  <data name="MessageMissingFile" xml:space="preserve">
+    <value>Missing file.</value>
+  </data>
+  <data name="MessageMissingProcessName" xml:space="preserve">
+    <value>Missing process name.</value>
+  </data>
+  <data name="MessageReferenceLoop" xml:space="preserve">
+    <value>Refrenced profile is creating a loop.</value>
+  </data>
+  <data name="MessageReferenceProfileNotFound" xml:space="preserve">
+    <value>Referenced profile with Guid {0} hasn't been found.</value>
+  </data>
   <data name="MinimizeToTray" xml:space="preserve">
     <value>Close to tray</value>
   </data>
@@ -1054,6 +1069,9 @@ Public License instead of this License.  But first, please read
   </data>
   <data name="Profiles" xml:space="preserve">
     <value>Profiles</value>
+  </data>
+  <data name="ReferenceProfileAction" xml:space="preserve">
+    <value>Reference profile</value>
   </data>
   <data name="RefreshRate" xml:space="preserve">
     <value>Refresh rate [Hz]</value>

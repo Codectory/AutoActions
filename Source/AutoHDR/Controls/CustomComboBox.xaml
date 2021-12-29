@@ -11,9 +11,7 @@
             <Border Style="{StaticResource DefaultBorder}"
                   x:Name="Border" 
                   Grid.ColumnSpan="2"
-                  Background="{StaticResource ControlLightBrush}" 
-                  BorderBrush="{StaticResource AccentBrush}"
-                  BorderThickness="1" />
+                  Background="{StaticResource ControlLightBrush}"  />
             <Border 
                   Grid.Column="0"
                   CornerRadius="0" 
@@ -100,8 +98,8 @@
                               MinWidth="{TemplateBinding ActualWidth}"
                               MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border 
-                                x:Name="DropDownBorder" Style="{StaticResource DefaultBorder}" CornerRadius="5"
-                                Background="{StaticResource ControlLightBrush}" BorderThickness="1,1,1,1"/>
+                                x:Name="DropDownBorder" Style="{StaticResource DefaultBorder}" 
+                                Background="{StaticResource ControlLightBrush}"/>
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                 </ScrollViewer>

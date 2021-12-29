@@ -35,12 +35,17 @@ namespace AutoHDR.Profiles.Actions
                 _actionType = value;
                 UpdateCanCreate();
                 ContentControlViewModel = (BaseViewModel)Activator.CreateInstance(_actionType.ActionType);
-
+                ContentControlViewModel.PropertyChanged += ContentControlViewModel_PropertyChanged;
                 OnPropertyChanged(); 
             }
         }
 
-            private BaseViewModel _contentControlViewModel;
+        private void ContentControlViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            UpdateCanCreate();
+        }
+
+        private BaseViewModel _contentControlViewModel;
         public BaseViewModel ContentControlViewModel
         {
             get { return _contentControlViewModel; }
@@ -66,6 +71,7 @@ namespace AutoHDR.Profiles.Actions
                     new ActionTypeDescription(typeof(DisplayAction), ProjectLocales.DisplayAction), 
                     new ActionTypeDescription(typeof(RunProgramAction), ProjectLocales.RunProgramAction),
                     new ActionTypeDescription(typeof(CloseProgramAction), ProjectLocales.CloseProgramAction),
+                    new ActionTypeDescription(typeof(ReferenceProfileAction), ProjectLocales.ReferenceProfileAction),
                     new ActionTypeDescription(typeof(AudioDeviceAction), ProjectLocales.AudioAction) };
             }
         }
@@ -102,7 +108,7 @@ namespace AutoHDR.Profiles.Actions
 
         private void UpdateCanCreate()
         {
-            CanCreate = ActionType != null;
+            CanCreate = ActionType != null && ProfileAction!= null && ProfileAction.CanSave;
         }
 
 

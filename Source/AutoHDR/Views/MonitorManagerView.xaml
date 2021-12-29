@@ -17,8 +17,8 @@
         </ItemsPanelTemplate>
 
         <DataTemplate x:Key="DisplayTemplate" DataType="Display">
-            <Grid>
-                <Border Style="{StaticResource DefaultBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10" Grid.Row="0"/>
+            <Grid VerticalAlignment="Top">
+                <Border Style="{StaticResource DefaultBorder}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Margin="10,10,10,10"/>
                 <Grid Margin="15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -26,72 +26,47 @@
       
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                     <RowDefinition/>
-                        <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.Name}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15" />
-                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static pres:ProjectLocales.DeviceID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15" />
-                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static pres:ProjectLocales.DeviceUID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="0" Text="{x:Static pres:ProjectLocales.Name}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"  />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="1" Text="{x:Static pres:ProjectLocales.DeviceID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"  />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="2" Text="{x:Static pres:ProjectLocales.DeviceUID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
 
-                    <TextBlock Grid.Column="0" Grid.Row="3" Text="{x:Static pres:ProjectLocales.Resolution}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15"/>
-                    <TextBlock Grid.Column="0" Grid.Row="4" Text="{x:Static pres:ProjectLocales.RefreshRate}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15"/>
-                    <TextBlock Grid.Column="0" Grid.Row="5" Text="{x:Static pres:ProjectLocales.ColorDepth}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15"/>
-                    <TextBlock Grid.Column="0" Grid.Row="6" Text="{x:Static pres:ProjectLocales.GraphicsCard}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15"/>
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="3" Text="{x:Static pres:ProjectLocales.Resolution}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="4" Text="{x:Static pres:ProjectLocales.RefreshRate}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="5" Text="{x:Static pres:ProjectLocales.ColorDepth}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="6" Text="{x:Static pres:ProjectLocales.GraphicsCard}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="7" Text="{x:Static pres:ProjectLocales.HDR}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15"/>
-                    <TextBlock Grid.Column="0" Grid.Row="8" Text="{x:Static pres:ProjectLocales.IsPrimaryMonitor}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15"/>
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="7" Text="{x:Static pres:ProjectLocales.HDR}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="8" Text="{x:Static pres:ProjectLocales.IsPrimaryMonitor}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="9" Text="{x:Static pres:ProjectLocales.ManagedHDR}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15"/>
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="9" Text="{x:Static pres:ProjectLocales.ManagedHDR}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
 
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="1" Grid.Row="0" Text="{Binding Name}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="1" Grid.Row="1" Text="{Binding ID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding UID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="1" Grid.Row="2" Text="{Binding UID}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Resolution, Converter={StaticResource SizeTextConverter}}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding RefreshRate}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding ColorDepth}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="1" Grid.Row="3" Text="{Binding Resolution, Converter={StaticResource SizeTextConverter}}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="1" Grid.Row="4" Text="{Binding RefreshRate}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="1" Grid.Row="5" Text="{Binding ColorDepth}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding GraphicsCard}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" MaxWidth="250"  TextTrimming="CharacterEllipsis" ToolTip="{Binding GraphicsCard}"/>
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" TextTrimming="CharacterEllipsis" Grid.Column="1" Grid.Row="6" Text="{Binding GraphicsCard}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" MaxWidth="250" ToolTip="{Binding GraphicsCard}"/>
+                    <CheckBox Style="{StaticResource ToggleStatus}" IsChecked="{Binding HDRState}" Grid.Column="1"  Grid.Row="7"  VerticalAlignment="Center" Margin="7,5,10,5" HorizontalAlignment="Left"/>
 
-                    <Ellipse   Grid.Column="1"  Grid.Row="7" HorizontalAlignment="Left" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="7,5,10,5" >
-                        <Ellipse.Style>
-                            <Style TargetType="{x:Type Ellipse}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HDRState}" Value="True">
-                                        <Setter Property="Fill" Value="{StaticResource ActiveBrush}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding HDRState}" Value="False">
-                                        <Setter Property="Fill" Value="Transparent"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Ellipse.Style>
-                    </Ellipse>
-                    <Ellipse   Grid.Column="1"  Grid.Row="8" HorizontalAlignment="Left" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="7,5,10,5" >
-                        <Ellipse.Style>
-                            <Style TargetType="{x:Type Ellipse}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsPrimary}" Value="True">
-                                        <Setter Property="Fill" Value="{StaticResource ActiveBrush}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsPrimary}" Value="False">
-                                        <Setter Property="Fill" Value="Transparent"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Ellipse.Style>
-                    </Ellipse>
+                    <CheckBox Style="{StaticResource ToggleStatus}" IsChecked="{Binding IsPrimary}" Grid.Column="1"  Grid.Row="8"  VerticalAlignment="Center"  Margin="7,5,10,5" HorizontalAlignment="Left"/>
+
 
                     <CheckBox IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}" Grid.Column="1" Grid.Row="9"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsChecked="{Binding Managed, Mode=TwoWay}" Margin="5" HorizontalAlignment="Left"  />
 
@@ -109,24 +84,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="{x:Static pres:ProjectLocales.GlobalAutoHDR}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="15"/>
-        <Ellipse  Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="10" >
-            <Ellipse.Style>
-                <Style TargetType="{x:Type Ellipse}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding GlobalAutoHDR}" Value="True">
-                            <Setter Property="Fill" Value="{StaticResource ActiveBrush}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding GlobalAutoHDR}" Value="False">
-                            <Setter Property="Fill" Value="Transparent"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Ellipse.Style>
-        </Ellipse>
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{x:Static pres:ProjectLocales.GlobalAutoHDR}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
+        <CheckBox Style="{StaticResource ToggleStatus}" IsChecked="{Binding GlobalAutoHDR}" Grid.Column="1"  Grid.Row="0"   VerticalAlignment="Center" Margin="7,5,10,5" HorizontalAlignment="Left"/>
         <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource DefaultBorder}" Margin="10,10,10,10">
         </Border>
-        <ListBox  Grid.Row="1" Grid.ColumnSpan="2" Margin="15"  x:Name="DisplayList"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource WrapListViewTemplate}"  ItemTemplate="{StaticResource DisplayTemplate}" ItemsSource="{Binding Displays}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}"  BorderThickness="0"/>
-
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" Margin="15" >
+        <ItemsControl   x:Name="DisplayList" VerticalContentAlignment="Top"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource WrapListViewTemplate}"  ItemTemplate="{StaticResource DisplayTemplate}" ItemsSource="{Binding Displays}"  Background="{x:Null}"  BorderThickness="0"/>
+        </ScrollViewer>
     </Grid>
 </UserControl>

@@ -24,7 +24,6 @@
             <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
         <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
 
-
             <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -50,23 +49,61 @@
 
 
 
-            <Style x:Key="DefaultLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-        </Style>
-        <Style TargetType="Label" BasedOn="{StaticResource DefaultLabel}"/>
+            <Style x:Key="DefaultTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Margin" Value="5"/>
+
+            </Style>
 
 
 
-        <Style x:Key="DefaultTextBlock" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Style x:Key="TitleTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}">
+                <Setter Property="FontSize" Value="25"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
 
-        </Style>
-        
-        <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}"/>
+            <Style x:Key="SubTitleTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+            </Style>
 
 
-        <Style x:Key="DefaultUserControl" TargetType="UserControl">
+            <Style x:Key="ToggleStatus"  TargetType="{x:Type CheckBox}">
+
+                <Setter Property="SnapsToDevicePixels"
+          Value="true" />
+                <Setter Property="IsEnabled"
+          Value="false" />
+
+                <Setter Property="Height"
+          Value="20" />
+                <Setter Property="Width"
+          Value="20" />
+                <Setter Property="OverridesDefaultStyle"
+          Value="true" />
+                <Setter Property="FocusVisualStyle"
+          Value="{DynamicResource CheckBoxFocusVisual}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <Ellipse Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"   Stroke="Black" VerticalAlignment="Stretch" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsChecked" Value="true">
+                        <Setter Property="Background"  Value="{StaticResource ActiveBrush}"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="false">
+                        <Setter Property="Background"  Value="Transparent"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+
+            </Style>
+            <Style x:Key="DefaultUserControl" TargetType="UserControl">
             <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}"/>
             <Setter Property="Foreground" Value="Black"/>
 
@@ -75,7 +112,7 @@
 
 
 
-        <Style x:Key="HDRCircle" TargetType="Ellipse">
+        <!--<Style x:Key="HDRCircle" TargetType="Ellipse">
             <Setter Property="HorizontalAlignment"  Value="Center" />
             <Setter Property="VerticalAlignment"  Value="Center" />
             <Style.Triggers>
@@ -86,7 +123,7 @@
                     <Setter Property="Fill" Value="Transparent"/>
                 </Trigger>
             </Style.Triggers>
-        </Style>
+        </Style>-->
 
         <Style x:Key="DefaultTextBox" TargetType="TextBox" >
             <Setter Property="BorderThickness" Value="0"/>
@@ -149,7 +186,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="{StaticResource CornerRadius}">
-                            <TextBlock  FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5,2" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <TextBlock Style="{StaticResource DefaultTextBlock}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="8,5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -312,7 +349,7 @@
                         <Grid>
                         <Border x:Name="HeaderBorder" Background="Transparent" Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}"  CornerRadius="3 3 0 0">
                         </Border>
-                            <TextBlock x:Name="HeaderContent" FontSize="{TemplateBinding  FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                           <TextBlock Style="{StaticResource DefaultTextBlock}" x:Name="HeaderContent" FontSize="{TemplateBinding  FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -643,7 +680,7 @@
             <views:AutoHDRLogsView></views:AutoHDRLogsView>
         </DataTemplate>
             <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile">
-                <TextBlock Text="{Binding Name }"/>
+                <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding Name }"/>
             </DataTemplate>
         </ResourceDictionary>
 

@@ -39,7 +39,7 @@
             </Grid.RowDefinitions>
             <Image Grid.Row="0"  Grid.ColumnSpan="3" Source="{Binding Converter={StaticResource  BitmapToBitmapImageConverter}, Source={x:Static pres:ProjectLocales.Logo}}" />
         </Grid>
-        <TextBlock Grid.Row="1" Text="{x:Static pres:ProjectLocales.License}" HorizontalAlignment="Left" Margin="5,15,0,0" FontSize="20" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="1" Text="{x:Static pres:ProjectLocales.License}" HorizontalAlignment="Left" Margin="5,15,0,0" VerticalAlignment="Top"/>
         <Border Style="{StaticResource DefaultBorder}"  Grid.Row="2"   Margin="5" />
         <ScrollViewer Grid.Row="2"  Margin="5">
             <Grid Margin="17,0,0,0">
@@ -48,7 +48,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="1" Content="{x:Static pres:ProjectLocales.LicenseContent}"/>
+                <TextBlock Style="{StaticResource DefaultTextBlock}"   Grid.Column="1" Text="{x:Static pres:ProjectLocales.LicenseContent}"/>
 
             </Grid>
         </ScrollViewer>

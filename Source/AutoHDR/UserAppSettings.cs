@@ -1,5 +1,6 @@
 ﻿using AutoHDR.Displays;
 using AutoHDR.Profiles;
+using AutoHDR.Profiles.Actions;
 using CodectoryCore;
 using CodectoryCore.UI.Wpf;
 using Newtonsoft.Json;
@@ -29,6 +30,7 @@ namespace AutoHDR
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
         private DispatchingObservableCollection<Profile> _applicationProfiles;
         private DispatchingObservableCollection<Display> _displays;
+        private DispatchingObservableCollection<IProfileAction> _actionShortcuts;
 
 
         [JsonProperty]
@@ -66,11 +68,14 @@ namespace AutoHDR
         [JsonProperty]
         public DispatchingObservableCollection<Display> Displays { get => _displays; set { _displays = value; OnPropertyChanged(); } }
 
+        [JsonProperty]
+        public DispatchingObservableCollection<IProfileAction> ActionShortcuts { get => _actionShortcuts; set { _actionShortcuts = value; OnPropertyChanged(); } }
 
         public UserAppSettings()
         {
             ApplicationProfileAssignments = new SortableObservableCollection<ApplicationProfileAssignment>(new ObservableCollection<ApplicationProfileAssignment>());
             ApplicationProfiles = new DispatchingObservableCollection<Profile>();
+            ActionShortcuts = new DispatchingObservableCollection<IProfileAction>();
             Displays = new DispatchingObservableCollection<Display>();
         }
 

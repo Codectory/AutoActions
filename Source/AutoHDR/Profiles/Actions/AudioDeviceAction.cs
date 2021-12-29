@@ -9,8 +9,11 @@ namespace AutoHDR.Profiles.Actions
     [JsonObject(MemberSerialization.OptIn)]
     public class AudioDeviceAction : ProfileActionBase
     {
-        public override string ActionTypeName => ProjectLocales.AudioAction;
 
+        public override bool CanSave => (SetOutput && OutputDevice==null) || (SetInput && InputDevice == null);
+        public override string CannotSaveMessage => ProjectLocales.MessageMissingAudioDevice;
+
+        public override string ActionTypeName => ProjectLocales.AudioAction;
 
 
         private Guid _outputDeviceID = Guid.Empty;
@@ -50,7 +53,7 @@ namespace AutoHDR.Profiles.Actions
         {
         }
 
-        public override ActionEndResult RunAction(params object[] parameter)
+        public override ActionEndResult RunAction(ApplicationChangedType applicationChangedType)
         {
             try
             {

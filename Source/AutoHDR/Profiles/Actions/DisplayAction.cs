@@ -17,6 +17,8 @@ namespace AutoHDR.Profiles.Actions
     [JsonObject(MemberSerialization.OptIn)]
     public class DisplayAction : ProfileActionBase
     {
+        public override bool CanSave => Resolution != null;
+        public override string CannotSaveMessage => ProjectLocales.MessageMissingAudioDevice;
         public List<Display> AllDisplays
         {
             get
@@ -115,9 +117,10 @@ namespace AutoHDR.Profiles.Actions
 
         public DisplayAction() : base()
         {
+            Display = Display.AllDisplays;
         }
 
-        public override ActionEndResult RunAction(params object[] parameters)
+        public override ActionEndResult RunAction(ApplicationChangedType applicationChangedType)
         {
             try
             {
