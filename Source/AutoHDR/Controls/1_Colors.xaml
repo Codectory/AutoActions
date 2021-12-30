@@ -12,7 +12,7 @@
     <Color x:Key="ControlMediumColor">#FFCCCCCC</Color>
     <Color x:Key="GlyphColor">#FF444444</Color>
     <Color x:Key="DisabledForegroundColor">#cfcfcf</Color>
-    <Color x:Key="DisabledControlDarkColor">#8a8a8a</Color>
+    <Color x:Key="DisabledControlDarkColor">#8A8A8A</Color>
 
     <Color x:Key="DisabledBorderColor">#adadad</Color>
     <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowColor}"/>

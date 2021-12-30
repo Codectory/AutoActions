@@ -15,370 +15,52 @@
 
     <Application.Resources>
         <ResourceDictionary>
+
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Controls\Colors.xaml"/>
-                <ResourceDictionary Source="Controls\ControlProperties.xaml"/>
-                <ResourceDictionary Source="Controls\DefaultBorder.xaml"/>
-                <ResourceDictionary Source="Controls\CustomComboBox.xaml"/>
+                <ResourceDictionary Source="Controls\AppResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
             <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
         <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoHDR</system:String>
 
-            <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
+
+            <Style x:Key="DefaultTabHeader" TargetType="TabItem">
+                <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+                <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="ListBoxItem">
+                        <ControlTemplate TargetType="TabItem">
                             <Grid>
-                            <Border Name="_Border"
-                                Padding="2"
-                                SnapsToDevicePixels="true" Margin="5">
-                            </Border>
-                              <ContentPresenter />
+                                <Border x:Name="HeaderBorder" Background="Transparent" Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}"  CornerRadius="3 3 0 0">
+                                </Border>
+                                <TextBlock Style="{StaticResource DefaultTextBlock}" x:Name="HeaderContent" FontSize="{TemplateBinding  FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                             </Grid>
                             <ControlTemplate.Triggers>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter TargetName="_Border" Property="Background" Value="{StaticResource HighlightedBrush}"/>
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Trigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" >
+                                    <Setter TargetName="HeaderContent"  Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
+                                    <Setter TargetName="HeaderBorder" Property="Background" Value="{StaticResource AccentBrush}"/>
+                                    <Setter TargetName="HeaderContent" Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                                    <Setter TargetName="HeaderContent" Property="FontWeight" Value="DemiBold"/>
+
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" >
+                                    <Setter  TargetName="HeaderContent" Property="Foreground" Value="Black"/>
+                                    <Setter TargetName="HeaderContent" Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+
+                                </DataTrigger>
+
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-            </Style>
 
-
-
-            <Style x:Key="DefaultTextBlock" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
-                <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="Margin" Value="5"/>
 
             </Style>
-
-
-
-            <Style x:Key="TitleTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}">
-                <Setter Property="FontSize" Value="25"/>
-                <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="FontWeight" Value="Bold"/>
-            </Style>
-
-            <Style x:Key="SubTitleTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}">
-                <Setter Property="FontSize" Value="20"/>
-                <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="FontWeight" Value="DemiBold"/>
-            </Style>
-
-
-            <Style x:Key="ToggleStatus"  TargetType="{x:Type CheckBox}">
-
-                <Setter Property="SnapsToDevicePixels"
-          Value="true" />
-                <Setter Property="IsEnabled"
-          Value="false" />
-
-                <Setter Property="Height"
-          Value="20" />
-                <Setter Property="Width"
-          Value="20" />
-                <Setter Property="OverridesDefaultStyle"
-          Value="true" />
-                <Setter Property="FocusVisualStyle"
-          Value="{DynamicResource CheckBoxFocusVisual}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type CheckBox}">
-                            <Ellipse Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"   Stroke="Black" VerticalAlignment="Stretch" />
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsChecked" Value="true">
-                        <Setter Property="Background"  Value="{StaticResource ActiveBrush}"></Setter>
-                    </Trigger>
-                    <Trigger Property="IsChecked" Value="false">
-                        <Setter Property="Background"  Value="Transparent"></Setter>
-                    </Trigger>
-                </Style.Triggers>
-
-            </Style>
-            <Style x:Key="DefaultUserControl" TargetType="UserControl">
-            <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}"/>
-            <Setter Property="Foreground" Value="Black"/>
-
-        </Style>
-        <Style TargetType="UserControl" BasedOn="{StaticResource DefaultUserControl}"/>
-
-
-
-        <!--<Style x:Key="HDRCircle" TargetType="Ellipse">
-            <Setter Property="HorizontalAlignment"  Value="Center" />
-            <Setter Property="VerticalAlignment"  Value="Center" />
-            <Style.Triggers>
-                <Trigger Property="Tag"  Value="True">
-                    <Setter Property="Fill" Value="{StaticResource ActiveBrush}"/>
-                </Trigger>
-                <Trigger Property="Tag"  Value="False">
-                    <Setter Property="Fill" Value="Transparent"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>-->
-
-        <Style x:Key="DefaultTextBox" TargetType="TextBox" >
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBoxBase">
-                        <Grid>
-                        <Border Style="{StaticResource DefaultBorder}" Background="{TemplateBinding Background}" >
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0.3" Direction="260" />
-                            </Border.Effect>
-                        </Border>
-                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Padding" Value="5,5"/>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="false">
-                    <Setter Property="Background" Value="{StaticResource DisabledAccentBrush}"/>
-                    <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <ColorAnimation To="{StaticResource ControlMouseOverColor}"
-                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
-                                        FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-
-                    <Trigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <ColorAnimation
-                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
-                                            FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.ExitActions>
-
-                </Trigger>
-
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}"/>
-
-        <Style x:Key="DefaultButton" TargetType="Button" >
-            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
-            <Setter Property="Height" Value="25"/>
-            <Setter Property="FontSize" Value="20"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="{StaticResource CornerRadius}">
-                                <TextBlock Style="{StaticResource DefaultTextBlock}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="8,5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Padding" Value="5,5"/>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="false">
-                    <Setter Property="Background" Value="{StaticResource DisabledAccentBrush}"/>
-                    <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <ColorAnimation To="{StaticResource ControlMouseOverColor}"
-                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
-                                        FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-
-                    <Trigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <ColorAnimation
-                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
-                                            FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.ExitActions>
-
-                </Trigger>
-
-                <Trigger Property="IsPressed" Value="true">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <ColorAnimation To="{StaticResource ControlPressedColor}"
-                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
-                                        FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-
-                    <Trigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <ColorAnimation
-                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
-                                            FillBehavior="HoldEnd" Duration="0:0:0.10" AutoReverse="False" RepeatBehavior="1x"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.ExitActions>
-
-                </Trigger>
-
-
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}"/>
-
-
-
-        <Style x:Key="DefaultCheckBox"  TargetType="{x:Type CheckBox}">
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="BorderBrush"  Value="{StaticResource DisabledAccentBrush}"></Setter>
-                </Trigger>
-            </Style.Triggers>
-
-            <Setter Property="SnapsToDevicePixels"
-          Value="true" />
-
-            <Setter Property="Height"
-          Value="25" />
-            <Setter Property="Width"
-          Value="25" />
-            <Setter Property="OverridesDefaultStyle"
-          Value="true" />
-            <Setter Property="FocusVisualStyle"
-          Value="{DynamicResource CheckBoxFocusVisual}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type CheckBox}">
-                        <BulletDecorator Background="Transparent">
-                            <BulletDecorator.Bullet>
-                                <Grid>
-                                    <Border x:Name="Border" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Style="{StaticResource DefaultBorder}"/>
-
-                                    <Path Visibility="Collapsed" Width="10" Height="10" x:Name="CheckMark" SnapsToDevicePixels="False"
-                                            StrokeThickness="2"
-                                            Data="M 1 4 L 4 9 M 4 9 L 9 0">
-                                        <Path.Stroke>
-                                            <SolidColorBrush Color="{DynamicResource GlyphColor}" />
-                                        </Path.Stroke>
-                                    </Path>
-                                </Grid>
-                            </BulletDecorator.Bullet>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal" />
-                                    <VisualState x:Name="MouseOver">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlMouseOverColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Pressed">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="CheckStates">
-                                    <VisualState x:Name="Checked">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                                 Storyboard.TargetName="CheckMark">
-                                                <DiscreteObjectKeyFrame KeyTime="0"
-                                            Value="{x:Static Visibility.Visible}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Unchecked" />
-                                    <VisualState x:Name="Indeterminate">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                                 Storyboard.TargetName="InderminateMark">
-                                                <DiscreteObjectKeyFrame KeyTime="0"
-                                            Value="{x:Static Visibility.Visible}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <ContentPresenter Margin="4,0,0,0"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left"
-                            RecognizesAccessKey="True" />
-                        </BulletDecorator>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-            <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBox}"/>
-
-        <Style x:Key="DefaultTabHeader" TargetType="TabItem">
-            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TabItem">
-                        <Grid>
-                        <Border x:Name="HeaderBorder" Background="Transparent" Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}"  CornerRadius="3 3 0 0">
-                        </Border>
-                           <TextBlock Style="{StaticResource DefaultTextBlock}" x:Name="HeaderContent" FontSize="{TemplateBinding  FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True" >
-                                <Setter TargetName="HeaderContent"  Property="Foreground" Value="{StaticResource ButtonForegroundBrush}"/>
-                                <Setter TargetName="HeaderBorder" Property="Background" Value="{StaticResource AccentBrush}"/>
-                                <Setter TargetName="HeaderContent" Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-                                <Setter TargetName="HeaderContent" Property="FontWeight" Value="DemiBold"/>
-
-                            </DataTrigger>
-
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" >
-                                <Setter  TargetName="HeaderContent" Property="Foreground" Value="Black"/>
-                                <Setter TargetName="HeaderContent" Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-
-                            </DataTrigger>
-
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-
-        </Style>
-
-        <Style TargetType="TabItem" BasedOn="{StaticResource DefaultTabHeader}"/>
-
-
-        <Style x:Key="GridHeaderRight" TargetType="{x:Type GridViewColumnHeader}">
+            <Style TargetType="TabItem" BasedOn="{StaticResource DefaultTabHeader}"/>
+            <Style x:Key="GridHeaderRight" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">

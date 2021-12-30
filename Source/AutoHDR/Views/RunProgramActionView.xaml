@@ -24,11 +24,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Margin="5" Content="{x:Static pres:ProjectLocales.FilePath}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label Grid.Row="1" Grid.Column="0" Margin="5" Content="{x:Static pres:ProjectLocales.Arguments}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label Grid.Row="2" Grid.Column="0" Margin="5" Content="{x:Static pres:ProjectLocales.WaitForProgramEnd}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Row="0" Grid.Column="0" Text="{x:Static pres:ProjectLocales.FilePath}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Row="1" Grid.Column="0" Text="{x:Static pres:ProjectLocales.Arguments}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Row="2" Grid.Column="0" Text="{x:Static pres:ProjectLocales.WaitForProgramEnd}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding FilePath}" />
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}" />
         <Button Grid.Row="0" Grid.Column="2" Content="..."  Command="{Binding GetFileCommand}"  HorizontalAlignment="Left" Width="Auto" Height="26" Margin="5" VerticalAlignment="Center"/>
 
         <TextBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="1" Margin="5"  Text="{Binding Arguments}" />

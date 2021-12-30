@@ -38,7 +38,6 @@
         <TextBlock Style="{StaticResource DefaultTextBlock}"   Text="{x:Static pres:ProjectLocales.CheckForNewVersion}"  Grid.Column="0" Grid.Row="4" Margin="10,3,3,3"  VerticalAlignment="Center"/>
         <TextBlock Style="{StaticResource DefaultTextBlock}"   Text="{x:Static pres:ProjectLocales.GlobalAutoHDR}"  Grid.Column="0" Grid.Row="5" Margin="10,3,3,3" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
         <TextBlock  Style="{StaticResource DefaultTextBlock}"  Text="{x:Static pres:ProjectLocales.DefaultProfile}"  Grid.Column="0" Grid.Row="6" Margin="10,3,3,3" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
-
         <CheckBox  IsChecked="{Binding AutoStart}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
         <CheckBox  IsChecked="{Binding StartMinimizedToTray}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
         <CheckBox  IsChecked="{Binding CloseToTray}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>

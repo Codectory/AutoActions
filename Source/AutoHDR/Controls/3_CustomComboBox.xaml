@@ -57,6 +57,8 @@
         <Setter Property="MinWidth" Value="120"/>
         <Setter Property="MinHeight" Value="20"/>
         <Setter Property="Foreground" Value="Black"/>
+		<Setter Property="FontWeight" Value="DemiBold"/>
+		<Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -75,8 +77,7 @@
                             Margin="5,3,23,3"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left" />
-                        <TextBox x:Name="PART_EditableTextBox"
-                            Style="{x:Null}" 
+                        <TextBox x:Name="PART_EditableTextBox" Style="{StaticResource DefaultTextBox}"
                             Template="{StaticResource ComboBoxTextBox}" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Center" 
@@ -111,14 +112,14 @@
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource DisabledControlDarkColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource DisabledAccentBrush}"/>
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
                         </Trigger>
                         <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
-                            <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0"/>
                             <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
+
                         </Trigger>
                         <Trigger Property="IsEditable"  Value="true">
                             <Setter Property="IsTabStop" Value="false"/>
@@ -140,11 +141,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                    <Border Name="Border"
-                              Padding="2"
+                    <Grid>
+                    <Border Name="Border" Style="{StaticResource DefaultBorder}" BorderThickness="0"                              
                               SnapsToDevicePixels="true">
-                        <ContentPresenter />
                     </Border>
+                        <ContentPresenter />
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="true">
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource MouseOverBrush}"/>

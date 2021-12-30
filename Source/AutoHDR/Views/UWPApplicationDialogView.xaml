@@ -19,8 +19,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0"  Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
-                <Border Grid.Column="0"  Margin="5" Height="70" Width="70" CornerRadius="{StaticResource CornerRadius}" HorizontalAlignment="Left">
+                <Border Grid.Column="0"  Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
+                <Border Grid.Column="0"  Margin="5" Height="70" Width="70" CornerRadius="{StaticResource DefaultCornerRadius}" HorizontalAlignment="Left">
                     <Border.Background>
                         <ImageBrush Stretch="Fill" ImageSource="{Binding Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
                     </Border.Background>

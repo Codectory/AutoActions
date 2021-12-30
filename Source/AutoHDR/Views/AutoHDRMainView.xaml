@@ -146,8 +146,8 @@
                         <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.LastActions}" VerticalAlignment="Top"   />
 
 
-                        <Border Grid.Row="2" Grid.Column="3"  Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
-                        <Border Grid.Row="2" Grid.Column="3"  Margin="5" Height="70" Width="70" CornerRadius="{StaticResource CornerRadius}" HorizontalAlignment="Left">
+                        <Border Grid.Row="2" Grid.Column="3"  Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
+                        <Border Grid.Row="2" Grid.Column="3"  Margin="5" Height="70" Width="70" CornerRadius="{StaticResource DefaultCornerRadius}" HorizontalAlignment="Left">
                             <Border.Background>
                                 <ImageBrush Stretch="Fill" ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
                             </Border.Background>
@@ -172,7 +172,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
-                                            <Border x:Name="BeerButton"  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="{StaticResource CornerRadius}">
+                                            <Border x:Name="BeerButton"  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="{StaticResource DefaultCornerRadius}">
                                                 <Grid >
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto"/>
@@ -248,8 +248,8 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0" Padding="15,0" Width="Auto"   Text="{Binding Position}"  VerticalAlignment="Center" HorizontalAlignment="Stretch"  />
-                                            <Border Width="70" Grid.Column="1"  CornerRadius="{StaticResource CornerRadius}" Background="#FF747474">
-                                                <Border  Height="70" Width="70" CornerRadius="{StaticResource CornerRadius}">
+                                            <Border Width="70" Grid.Column="1"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474">
+                                                <Border  Height="70" Width="70" CornerRadius="{StaticResource DefaultCornerRadius}">
                                                     <Border.Background>
                                                         <ImageBrush Stretch="Fill" ImageSource="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
                                                     </Border.Background>

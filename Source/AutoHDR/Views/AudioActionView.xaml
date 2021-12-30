@@ -12,7 +12,15 @@
              d:DataContext="{d:DesignInstance Type=prflActns:AudioDeviceAction, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <DataTemplate x:Key="AudioDeviceTemplate" DataType="AudioDevice">
-            <TextBlock Style="{StaticResource DefaultTextBlock}"   Text="{Binding Name}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0"  Text="{Binding Name}"/>
+                <TextBlock Style="{StaticResource DefaultTextBlock}" Foreground="LightGray" Grid.Column="1"    Text="{Binding ID}"/>
+            </Grid>
+
         </DataTemplate>
 
     </UserControl.Resources>

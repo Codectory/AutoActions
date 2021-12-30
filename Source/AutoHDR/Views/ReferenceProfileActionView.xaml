@@ -22,6 +22,6 @@
 
         <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="0" Grid.Column="0" Margin="5" Text="{x:Static pres:ProjectLocales.Profile}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <ComboBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ItemsSource="{Binding AllProfiles}" DisplayMemberPath="Name"  SelectedItem="{Binding ReferenceProfile, Mode=TwoWay}" VerticalAlignment="Center" Margin="5"  />
+        <ComboBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ItemsSource="{Binding AllProfiles}" DisplayMemberPath="Name"  SelectedItem="{Binding ReferenceProfile, Mode=TwoWay}" VerticalAlignment="Center"  />
     </Grid>
 </UserControl>

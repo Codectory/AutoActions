@@ -251,21 +251,21 @@
     <Compile Include="UWP\AppxManifest.cs" />
     <Compile Include="UWP\UWPAppsManager.cs" />
     <Compile Include="UWP\UWPApp.cs" />
-    <Page Include="Controls\Colors.xaml">
+    <Page Include="Controls\1_Colors.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="Controls\ControlProperties.xaml">
+    <Page Include="Controls\AppResources.xaml">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\CustomComboBox.xaml">
+    <Page Include="Controls\2_DefaultControls.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="Controls\DefaultBorder.xaml">
+    <Page Include="Controls\3_CustomComboBox.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Theming\LightColors.xaml">
       <SubType>Designer</SubType>
@@ -435,5 +435,9 @@
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>$(SolutionDir)\BuildTools\XamlDictionaryMergeTool\XamlDictionaryMergeTool.exe "$(ProjectDir)Controls" "$(ProjectDir)Controls\AppResources.xaml"
+</PreBuildEvent>
   </PropertyGroup>
 </Project>
