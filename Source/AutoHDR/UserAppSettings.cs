@@ -30,7 +30,7 @@ namespace AutoHDR
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
         private DispatchingObservableCollection<Profile> _applicationProfiles;
         private DispatchingObservableCollection<Display> _displays;
-        private DispatchingObservableCollection<IProfileAction> _actionShortcuts;
+        private DispatchingObservableCollection<ProfileActionShortcut> _actionShortcuts;
 
 
         [JsonProperty]
@@ -69,13 +69,13 @@ namespace AutoHDR
         public DispatchingObservableCollection<Display> Displays { get => _displays; set { _displays = value; OnPropertyChanged(); } }
 
         [JsonProperty]
-        public DispatchingObservableCollection<IProfileAction> ActionShortcuts { get => _actionShortcuts; set { _actionShortcuts = value; OnPropertyChanged(); } }
+        public DispatchingObservableCollection<ProfileActionShortcut> ActionShortcuts { get => _actionShortcuts; set { _actionShortcuts = value; OnPropertyChanged(); } }
 
         public UserAppSettings()
         {
             ApplicationProfileAssignments = new SortableObservableCollection<ApplicationProfileAssignment>(new ObservableCollection<ApplicationProfileAssignment>());
             ApplicationProfiles = new DispatchingObservableCollection<Profile>();
-            ActionShortcuts = new DispatchingObservableCollection<IProfileAction>();
+            ActionShortcuts = new DispatchingObservableCollection<ProfileActionShortcut>();
             Displays = new DispatchingObservableCollection<Display>();
         }
 

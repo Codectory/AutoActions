@@ -63,7 +63,6 @@ namespace AutoHDR
         public RelayCommand ShowLogsCommand { get; private set; }
         public RelayCommand ShowLicenseCommand { get; private set; }
 
-
         public RelayCommand LoadingCommand { get; private set; }
         public RelayCommand ClosingCommand { get; private set; }
         public RelayCommand ShutdownCommand { get; private set; }
@@ -285,6 +284,7 @@ namespace AutoHDR
             AddProfileCommand = new RelayCommand(AddProfile);
             RemoveProfileCommand = new RelayCommand<Profile>(RemoveProfile);
 
+
             ClosingCommand = new RelayCommand(Closing);
             ShutdownCommand = new RelayCommand(Shutdown);
             StartApplicationCommand = new RelayCommand<ApplicationProfileAssignment>(LaunchApplication);
@@ -294,6 +294,9 @@ namespace AutoHDR
 
             BuyBeerCommand = new RelayCommand(BuyBeer);
         }
+
+
+    
 
 
 
@@ -325,6 +328,7 @@ namespace AutoHDR
             Settings.ApplicationProfileAssignments.Sort(a => a.Position, ListSortDirection.Ascending);
             Settings.ApplicationProfileAssignments.CollectionChanged += ApplicationProfileAssigments_CollectionChanged;
             Settings.ApplicationProfiles.CollectionChanged += ApplicationProfiles_CollectionChanged;
+            Settings.ActionShortcuts.CollectionChanged += ActionShortcuts_CollectionChanged;
             Settings.Displays.CollectionChanged += Monitors_CollectionChanged;
 
             Settings.PropertyChanged += Settings_PropertyChanged;
@@ -340,6 +344,7 @@ namespace AutoHDR
             Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
             Globals.Logs.Add("Iniialized settings", false);
         }
+
 
         private void FixAssignments()
         {
@@ -630,6 +635,31 @@ namespace AutoHDR
 
         }
 
+        private void ActionShortcuts_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+
+                case NotifyCollectionChangedAction.Add:
+                    foreach (ProfileActionShortcut shortcut in e.NewItems)
+                    {
+                        Globals.Logs.Add($"Action shortcut added: {shortcut.ShortcutName}", false);
+                        shortcut.PropertyChanged += SaveSettingsOnPropertyChanged;
+                        ((BaseViewModel)shortcut.Action).PropertyChanged += SaveSettingsOnPropertyChanged;
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (ProfileActionShortcut shortcut in e.OldItems)
+                    {
+                        Globals.Logs.Add($"Action shortcut removefd: {shortcut.ShortcutName}", false);
+                        shortcut.PropertyChanged -= SaveSettingsOnPropertyChanged;
+                        ((BaseViewModel)shortcut.Action).PropertyChanged -= SaveSettingsOnPropertyChanged;
+                    }
+                    break;
+            }
+            Globals.Instance.SaveSettings();
+        }
+
 
         private void ProfileActions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -722,8 +752,6 @@ namespace AutoHDR
         {
             Globals.Instance.SaveSettings();
         }
-
-
 
         private void ShowInfo()
         {

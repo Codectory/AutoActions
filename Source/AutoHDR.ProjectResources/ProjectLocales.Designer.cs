@@ -88,6 +88,15 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Action shortcuts ähnelt.
+        /// </summary>
+        public static string ActionShortcuts {
+            get {
+                return ResourceManager.GetString("ActionShortcuts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Type ähnelt.
         /// </summary>
         public static string ActionType {

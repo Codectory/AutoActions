@@ -312,5 +312,4 @@
         </Setter>
     </Style>
     <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBox}"/>
-
 </ResourceDictionary>

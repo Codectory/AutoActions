@@ -31,26 +31,6 @@
     </corewpf:MainWindowBase.DialogService>
     <Window.Resources>
 
-        <DataTemplate x:Key="ProfileActionTemplate" DataType="IProfileAction">
-            <Grid>
-                <Border Style="{StaticResource DefaultBorder}" Margin="5,5,5,5" Grid.Row="0"/>
-                <Grid  Margin="10,10,10,10" >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="0" Margin="5,0,5,0" Text="{Binding ActionTypeName}" TextAlignment="left" Width="Auto" VerticalAlignment="Center" />
-                    <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="1" Margin="5,0,5,0"  Text="{Binding ActionDescription}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"  />
-                </Grid>
-            </Grid>
-        </DataTemplate>
-
-        <ItemsPanelTemplate x:Key="WrapListViewTemplate">
-            <WrapPanel/>
-        </ItemsPanelTemplate>
-        <ItemsPanelTemplate x:Key="StackListViewTemplate">
-            <StackPanel/>
-        </ItemsPanelTemplate>
         <DataTemplate x:Key="AssignmentTemplate" DataType="ApplicationProfileAssignment">
             <Border>
                 <Grid>
@@ -73,268 +53,191 @@
 
     </Window.Resources>
     <Grid x:Name="MainGrid">
-        <TabControl  BorderBrush="{StaticResource AccentBrush}" Margin="0,0,0,20" BorderThickness="0 5 0 1">
-            <TabItem Header="{x:Static pres:ProjectLocales.Status}" HorizontalAlignment="Left" Width="58"  >
-                <Grid >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-
-                    </Grid.RowDefinitions>
-                    <Border Style="{StaticResource DefaultBorder}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Margin="5"/>
-                    <Grid Height="Auto" Margin="15"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="5"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="25"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="25"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="25"/>
-                            <RowDefinition Height="*"/>
-
-                        </Grid.RowDefinitions>
-                        <TextBlock Style="{StaticResource TitleTextBlock}"   Grid.Row="0" Grid.Column="0" Text="{x:Static pres:ProjectLocales.HDR}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <Button Grid.Row="0" Grid.Column="4" Margin="5"  Width="Auto" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Center" >
-                            <Button.Style>
-                                <Style  BasedOn="{StaticResource DefaultButton}" TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding HDRIsActive}" Value="True">
-                                            <Setter Property="Content" Value="{x:Static pres:ProjectLocales.DeactivateHDR }"/>
-                                            <Setter Property="Command" Value="{Binding DeactivateHDRCommand}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding HDRIsActive}" Value="False">
-                                            <Setter Property="Content" Value="{x:Static pres:ProjectLocales.ActivateHDR }"/>
-                                            <Setter Property="Command" Value="{Binding ActivateHDRCommand}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <CheckBox Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Margin="10" Style="{StaticResource ToggleStatus}" IsChecked="{Binding HDRIsActive}"/>
-                        <!--<Ellipse Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Height="20"  Stroke="Black" VerticalAlignment="Center" Width="20" Margin="10" >
-
-                            <Ellipse.Style>
-                                <Style x:Name="ToggleStatus"  TargetType="{x:Type Ellipse}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding HDRIsActive}" Value="True">
-                                            <Setter Property="Fill" Value="{StaticResource ActiveBrush}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding HDRIsActive}" Value="False">
-                                            <Setter Property="Fill" Value="Transparent"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Ellipse.Style>
-
-                        </Ellipse>-->
-                        <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentApplication}"   VerticalAlignment="Center"/>
-                        <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentProfile}"   VerticalAlignment="Center" />
-                        <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.LastActions}" VerticalAlignment="Top"   />
-
-
-                        <Border Grid.Row="2" Grid.Column="3"  Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
-                        <Border Grid.Row="2" Grid.Column="3"  Margin="5" Height="70" Width="70" CornerRadius="{StaticResource DefaultCornerRadius}" HorizontalAlignment="Left">
-                            <Border.Background>
-                                <ImageBrush Stretch="Fill" ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
-                            </Border.Background>
-                        </Border>
-
-                        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="2" Grid.Column="4" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static pres:ProjectLocales.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"/>
-                        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:ProjectLocales.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"/>
-                        <Border  Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"  Style="{StaticResource DefaultBorder}"  >
-                        </Border>
-                        <ItemsControl  Margin="8" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2" BorderThickness="0"   ItemsSource="{Binding LastActions}" ItemTemplate="{StaticResource ProfileActionTemplate}"   ItemsPanel="{StaticResource StackListViewTemplate}"  />
-
-                    </Grid>
-
-
-                    <Button Grid.Row="1" Grid.Column="0" Content="{x:Static pres:ProjectLocales.Info}"  Command="{Binding ShowInfoCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />
-                    <Button Grid.Row="1" Grid.Column="1" Content="{x:Static pres:ProjectLocales.Logs}"  Command="{Binding ShowLogsCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />
-                    <!--<Button Grid.Row="1" Grid.Column="2" Content="{x:Static pres:ProjectLocales.BuyBeer}"  Command="{Binding BuyBeerCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />-->
-
-                    <Button   Grid.Row="1" Grid.Column="3"  Command="{Binding BuyBeerCommand}" Content="{x:Static pres:ProjectLocales.BuyBeer}" Margin="5" Height="Auto"  >
-                        <Button.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border x:Name="BeerButton"  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="{StaticResource DefaultCornerRadius}">
-                                                <Grid >
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Image Grid.Column="0" Source="{Binding Converter={StaticResource  BitmapToBitmapImageConverter}, Source={x:Static pres:ProjectLocales.beer}}" Stretch="Fill"  Margin="5"   Height="{TemplateBinding FontSize}" />
-                                                    <TextBlock Grid.Column="1"   FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5,0" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Grid>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-
-                    </Button>
-
-                    <Button Grid.Row="1" Grid.Column="5" Content="{x:Static pres:ProjectLocales.Shutdown}"  Command="{Binding ShutdownCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" Margin="5" VerticalAlignment="Top" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="{x:Static pres:ProjectLocales.Profiles}"   >
-                <local:ProfileManagerView   DataContext="{Binding ElementName=MainWindow , Path=DataContext}"/>
-            </TabItem>
-            <TabItem Header="{x:Static pres:ProjectLocales.Applications}" >
-                <Grid x:Name="AssignmentsGrid" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="Auto"/>
-                        <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"  />
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.IsSharedSizeScope="True" Grid.ColumnSpan="3" Margin="10,10,10,10" >
-                        <ListBox Name="ApplicationList" ItemContainerStyle="{StaticResource ListBoxItemStyle }"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}" HorizontalContentAlignment="Stretch" >
-                            <ListBox.Template>
-                                <ControlTemplate>
-                                        <DockPanel LastChildFill="True">
-
-                                        <Grid DockPanel.Dock="Top" Height="Auto" Margin="0,0,0,5" >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition SharedSizeGroup="PriorityColumn" />
-                                                <ColumnDefinition SharedSizeGroup="IconColumn"/>
-                                                <ColumnDefinition SharedSizeGroup="ApplicationColumn"/>
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="0" FontWeight="Bold" Margin="5,0" Text="{x:Static pres:ProjectLocales.Priority}"/>
-                                            <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="1" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Icon}"/>
-                                            <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="2" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Application}"/>
-                                            <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="3" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Profile}"/>
-                                        </Grid>
-                                        <Grid>
-                                                <Border Style="{StaticResource DefaultBorder}"  />
-                                            <ScrollViewer>
-                                                <ItemsPresenter Margin="5"></ItemsPresenter>
-                                            </ScrollViewer>
-                                        </Grid>
-
-                                    </DockPanel>
-
-                                </ControlTemplate>
-                            </ListBox.Template>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Border>
-                                        <Grid Margin="0,2"  >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition SharedSizeGroup="PriorityColumn" Width="Auto"/>
-                                                <ColumnDefinition SharedSizeGroup="IconColumn" Width="Auto"/>
-                                                <ColumnDefinition SharedSizeGroup="ApplicationColumn" Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0" Padding="15,0" Width="Auto"   Text="{Binding Position}"  VerticalAlignment="Center" HorizontalAlignment="Stretch"  />
-                                            <Border Width="70" Grid.Column="1"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474">
-                                                <Border  Height="70" Width="70" CornerRadius="{StaticResource DefaultCornerRadius}">
-                                                    <Border.Background>
-                                                        <ImageBrush Stretch="Fill" ImageSource="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
-                                                    </Border.Background>
-                                                </Border>
-                                            </Border>
-                                            <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="2" Width="Auto"  Padding="5,0" Text="{Binding Application.DisplayName}" VerticalAlignment="Center" HorizontalAlignment="Stretch"  />
-                                            <ComboBox VerticalContentAlignment="Stretch" Grid.Column="3" Width="Auto"  Margin="5,0,10,0"  SelectedItem="{Binding Profile}" ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
-
-                    <Grid Grid.Row="1" Grid.ColumnSpan="3" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="5"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="Auto"/>
-
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="6" Width="Auto" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Height="Auto" Content="{x:Static pres:ProjectLocales.LaunchApplication}" Command="{Binding StartApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Margin="5,5,10,10"/>
-                        <Button Grid.Column="1"  Width="30" FontSize="20" Command="{Binding AddAssignmentCommand}" Content="+"    Margin="10,5,5,10" Height="Auto" />
-                        <Button Grid.Column="2" Width="30" FontSize="20" Command="{Binding RemoveAssignmentCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Height="Auto" Content="-" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10"   />
-
-                        <Button Grid.Column="3"  Width="30" FontSize="20" Command="{Binding EditApplicationCommand}" Content="..."  CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="10,5,5,10" Height="Auto" />
-
-                        <Button Grid.Column="4"  Width="30"  Command="{Binding MoveAssignmentUpCommand}" Content="⏶" FontSize="20"  CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Margin="10,5,5,10" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}" Height="Auto"/>
-                        <Button Grid.Column="5" Width="30"  Command="{Binding MoveAssignmentDownCommand}" Content="⏷" FontSize="20" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"   IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10"  Height="Auto"  />
-
-
-                    </Grid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="{x:Static pres:ProjectLocales.Monitors}" >
-                <local:MonitorManagerView   DataContext="{x:Static dsp:DisplayManagerHandler.Instance}"  IsEnabled="{Binding Settings.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}"/>
-            </TabItem>
-
-            <TabItem Header="{x:Static pres:ProjectLocales.Settings}">
-                <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                    <Grid.ColumnDefinitions>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="154*"  />
-                    </Grid.RowDefinitions>
-                    <Border Style="{StaticResource DefaultBorder}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"  Margin="10" />
-                    <local:UserAppSettingsView   Grid.Row="1" Grid.Column="0" Margin="15"     DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" />
-
-
-                </Grid>
-
-            </TabItem>
-        </TabControl>
-        <Grid  Height="20" VerticalAlignment="Bottom" >
+        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
             </Grid.RowDefinitions>
+            <TabControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" BorderBrush="{StaticResource AccentBrush}"  BorderThickness="0 5 0 0">
+                <TabItem Header="{x:Static pres:ProjectLocales.Status}" HorizontalAlignment="Left" Width="58"  >
+                    <local:StatusView DataContext="{Binding}"/>
+                </TabItem>
+                <TabItem Header="{x:Static pres:ProjectLocales.Profiles}"   >
+                    <local:ProfileManagerView   DataContext="{Binding ElementName=MainWindow , Path=DataContext}"/>
+                </TabItem>
+                <TabItem Header="{x:Static pres:ProjectLocales.Applications}" >
+                    <Grid x:Name="AssignmentsGrid" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="Auto"/>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"  />
+                        </Grid.RowDefinitions>
 
-            <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Width="Auto" Margin="5,0"  Grid.Row="1"  Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"  />
+                        <Grid Grid.IsSharedSizeScope="True" Grid.ColumnSpan="3" Margin="10,10,10,10" >
+                            <ListBox Name="ApplicationList" ItemContainerStyle="{StaticResource ListBoxItemStyle }"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}" HorizontalContentAlignment="Stretch" >
+                                <ListBox.Template>
+                                    <ControlTemplate>
+                                        <DockPanel LastChildFill="True">
 
-            <Button  Grid.Column="1" Padding="0"  Command="{Binding ShowLicenseCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" >
+                                            <Grid DockPanel.Dock="Top" Height="Auto" Margin="0,0,0,5" >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition SharedSizeGroup="IconColumn"/>
+                                                    <ColumnDefinition SharedSizeGroup="ApplicationColumn"/>
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="0" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Icon}"/>
+                                                <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="1" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Application}"/>
+                                                <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="2" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Profile}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Border Style="{StaticResource DefaultBorder}"  />
+                                                <ScrollViewer>
+                                                    <ItemsPresenter Margin="5"></ItemsPresenter>
+                                                </ScrollViewer>
+                                            </Grid>
+
+                                        </DockPanel>
+
+                                    </ControlTemplate>
+                                </ListBox.Template>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock/>
+                                            <Border>
+                                            <Grid Margin="0,2"  >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition SharedSizeGroup="IconColumn" Width="Auto"/>
+                                                    <ColumnDefinition SharedSizeGroup="ApplicationColumn" Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="50" Grid.Column="0"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474">
+                                                    <Border  Height="50" Width="50" CornerRadius="{StaticResource DefaultCornerRadius}">
+                                                        <Border.Background>
+                                                            <ImageBrush Stretch="Fill" ImageSource="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
+                                                        </Border.Background>
+                                                    </Border>
+                                                </Border>
+                                                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="1" Width="Auto"  Padding="5,0" Text="{Binding Application.DisplayName}" VerticalAlignment="Center" HorizontalAlignment="Stretch"  />
+                                                <ComboBox VerticalContentAlignment="Stretch" Grid.Column="2" Width="Auto"  Margin="5,0,10,0"  SelectedItem="{Binding Profile}" ItemTemplate="{StaticResource ProfileItemTemplate}" ItemsSource="{Binding ElementName=MainWindow , Path=DataContext.Settings.ApplicationProfiles}" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+
+                        <Grid Grid.Row="1" Grid.ColumnSpan="3" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="6" Width="Auto" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"  Height="Auto" Content="{x:Static pres:ProjectLocales.LaunchApplication}" Command="{Binding StartApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Margin="5,5,10,10"/>
+                            <Button Grid.Column="1"  Width="30" FontSize="20" Command="{Binding AddAssignmentCommand}" Content="+"    Margin="10,5,5,10" Height="Auto" />
+                            <Button Grid.Column="2" Width="30" FontSize="20" Command="{Binding RemoveAssignmentCommand}" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Height="Auto" Content="-" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10"   />
+
+                            <Button Grid.Column="3"  Width="30" FontSize="20" Command="{Binding EditApplicationCommand}" Content="..."  CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="10,5,5,10" Height="Auto" />
+
+                            <Button Grid.Column="4"  Width="30"  Command="{Binding MoveAssignmentUpCommand}" Content="⏶" FontSize="20"  CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"  Margin="10,5,5,10" IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}" Height="Auto"/>
+                            <Button Grid.Column="5" Width="30"  Command="{Binding MoveAssignmentDownCommand}" Content="⏷" FontSize="20" CommandParameter="{Binding ElementName=ApplicationList, Path=SelectedItem}"   IsEnabled="{Binding ElementName=ApplicationList, Path=SelectedItem, Converter={StaticResource IsNotNullConverter}}"   Margin="5,5,5,10"  Height="Auto"  />
+
+
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{x:Static pres:ProjectLocales.Monitors}" >
+                    <local:MonitorManagerView   DataContext="{x:Static dsp:DisplayManagerHandler.Instance}"  IsEnabled="{Binding Settings.GlobalAutoHDR, Converter={StaticResource InvertBooleanConverter}}"/>
+                </TabItem>
+
+                <TabItem Header="{x:Static pres:ProjectLocales.Settings}">
+                    <Grid>
+                        <Border Style="{StaticResource DefaultBorder}"  Margin="10" />
+
+                        <Grid Margin="15" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <local:UserAppSettingsView   Margin="15"   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" />
+                            </ScrollViewer>
+
+                        </Grid>
+                    </Grid>
+
+                </TabItem>
+            </TabControl>
+            <Button Grid.Row="1" Grid.Column="0" Content="{x:Static pres:ProjectLocales.Info}"  Command="{Binding ShowInfoCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />
+            <Button Grid.Row="1" Grid.Column="1" Content="{x:Static pres:ProjectLocales.Logs}"  Command="{Binding ShowLogsCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />
+            <Button   Grid.Row="1" Grid.Column="3"  Command="{Binding BuyBeerCommand}" Content="{x:Static pres:ProjectLocales.BuyBeer}" Margin="5" Height="Auto"  >
                 <Button.Resources>
-                    <Style TargetType="Button"/>
+                    <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="BeerButton"  Height="Auto" Width="Auto" BorderBrush="{TemplateBinding Background}" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="{StaticResource DefaultCornerRadius}">
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Source="{Binding Converter={StaticResource  BitmapToBitmapImageConverter}, Source={x:Static pres:ProjectLocales.beer}}" Stretch="Fill"  Margin="5"   Height="{TemplateBinding FontSize}" />
+                                            <TextBlock Grid.Column="1"   FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Background="Transparent" Margin="5,0" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
                 </Button.Resources>
-                <TextBlock  Text="{x:Static pres:ProjectLocales.License}" Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
-                    <TextBlock.Foreground>
-                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
-                    </TextBlock.Foreground>
-                </TextBlock>
+
             </Button>
+            <Button Grid.Row="1" Grid.Column="5" Content="{x:Static pres:ProjectLocales.Shutdown}"  Command="{Binding ShutdownCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" Margin="5" VerticalAlignment="Top" />
+            <Grid  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Height="20" VerticalAlignment="Bottom" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Width="Auto" Margin="5,0"  Grid.Row="1"  Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"  />
+
+                <Button  Grid.Column="1" Padding="0"  Command="{Binding ShowLicenseCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" HorizontalAlignment="Left" >
+                    <Button.Resources>
+                        <Style TargetType="Button"/>
+                    </Button.Resources>
+                    <TextBlock  Text="{x:Static pres:ProjectLocales.License}" Width="Auto" Margin="0"  Grid.Row="1"  Grid.Column="1"  Height="Auto" HorizontalAlignment="Right" TextDecorations="{x:Null}" VerticalAlignment="Center" >
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                </Button>
+            </Grid>
+
         </Grid>
+
     </Grid>
 
 </corewpf:MainWindowBase>

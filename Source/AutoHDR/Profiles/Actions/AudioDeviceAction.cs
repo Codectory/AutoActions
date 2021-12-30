@@ -10,7 +10,7 @@ namespace AutoHDR.Profiles.Actions
     public class AudioDeviceAction : ProfileActionBase
     {
 
-        public override bool CanSave => (SetOutput && OutputDevice==null) || (SetInput && InputDevice == null);
+        public override bool CanSave => (SetOutput && OutputDevice!=null) || (SetInput && InputDevice != null);
         public override string CannotSaveMessage => ProjectLocales.MessageMissingAudioDevice;
 
         public override string ActionTypeName => ProjectLocales.AudioAction;

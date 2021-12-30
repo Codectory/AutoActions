@@ -10,6 +10,9 @@ using System.Windows.Controls;
 using AutoHDR.ProjectResources;
 using AutoHDR.Displays;
 using Microsoft.Win32;
+using CodectoryCore.UI.Wpf;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AutoHDR
 {
@@ -20,6 +23,7 @@ namespace AutoHDR
 
         private MenuItem _openButton;
         private MenuItem _closeButton;
+        private MenuItem _appplications;
         private MenuItem _actions;
 
 
@@ -54,8 +58,9 @@ namespace AutoHDR
                 _openButton.Click += (o, e) => OpenViewRequested?.Invoke(this, EventArgs.Empty);
                 _closeButton.Click += (o, e) => CloseApplicationRequested?.Invoke(this, EventArgs.Empty);
                 contextMenu.Items.Add(_openButton);
-                contextMenu.Items.Add(_closeButton);
+                InitializeApplicationsMenuItem(contextMenu);
                 InitializeActionsMenuItem(contextMenu);
+                contextMenu.Items.Add(_closeButton);
                 _trayMenu.ContextMenu = contextMenu;
                 _trayMenu.TrayLeftMouseDown += TrayMenu_TrayLeftMouseDown;
                 CallNewLog("Tray menu initialized");
@@ -81,8 +86,24 @@ namespace AutoHDR
             contextMenu.Items.Add(_actions);
             Globals.Instance.Settings.ActionShortcuts.CollectionChanged += (o, e) =>
                 {
+                    switch (e.Action)
+                    {
+                        case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                            foreach (var item in e.NewItems)
+                                ((BaseViewModel)item).PropertyChanged += Actions_PropertyChanged;
+                            break;
+                        case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                            foreach (var item in e.OldItems)
+                                ((BaseViewModel)item).PropertyChanged -= Actions_PropertyChanged;
+                            break;
+                    }
                     UpdateActionItems();
                 };
+            UpdateActionItems();
+        }
+
+        private void Actions_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
             UpdateActionItems();
         }
 
@@ -94,12 +115,64 @@ namespace AutoHDR
                 foreach (var action in Globals.Instance.Settings.ActionShortcuts)
                 {
                     MenuItem item = new MenuItem();
-                    item.Header = $"[{action.ActionTypeName}]{action.ActionDescription}";
-                    item.Click += (o, e) => action.RunAction(ApplicationChangedType.None);
+                    item.Header = action.ShortcutName;
+                    item.Click += (o, e) => action.RunAction();
                     _actions.Items.Add(item);
                 }
             }
         }
+
+        private void InitializeApplicationsMenuItem(ContextMenu contextMenu)
+        {
+            _appplications= new MenuItem()
+            {
+                Header = ProjectLocales.Applications
+            };
+            contextMenu.Items.Add(_appplications);
+            Globals.Instance.Settings.ApplicationProfileAssignments.CollectionChanged += (o, e) =>
+            {
+                switch (e.Action)
+                {
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                        foreach (var item in e.NewItems)
+                            ((BaseViewModel)item).PropertyChanged += TrayMenuHelper_PropertyChanged;
+                        break;
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                        foreach (var item in e.OldItems)
+                            ((BaseViewModel)item).PropertyChanged -= TrayMenuHelper_PropertyChanged;
+                        break;
+                }
+                UpdatApplicationItems();
+            };
+            UpdatApplicationItems();
+        }
+
+        private void TrayMenuHelper_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            UpdatApplicationItems();
+        }
+
+        private void UpdatApplicationItems()
+        {
+            lock (_lockActions)
+            {
+                var converter = new CodectoryCore.UI.Wpf.BitmapToBitmapImageConverter();
+                _appplications.Items.Clear();
+                foreach (var assignment in Globals.Instance.Settings.ApplicationProfileAssignments)
+                {
+                    MenuItem item = new MenuItem();
+                    BitmapImage bitmapIamge = (BitmapImage)converter.Convert(assignment.Application.Icon, typeof(BitmapImage), null, System.Globalization.CultureInfo.CurrentUICulture);
+                    item.Icon = new System.Windows.Controls.Image
+                    {
+                        Source = bitmapIamge
+                    };
+                    item.Header = assignment.Application.DisplayName;
+                    item.Click += (o, e) => assignment.Application.StartApplication();
+                    _appplications.Items.Add(item);
+                }
+            }
+        }
+
 
         private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {

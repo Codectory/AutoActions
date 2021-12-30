@@ -10,6 +10,8 @@
              xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:pres="clr-namespace:AutoHDR.ProjectResources;assembly=AutoHDR.ProjectResources"
+
              xmlns:corewpf="clr-namespace:CodectoryCore.UI.Wpf;assembly=CodectoryCore.UI.Wpf"
              StartupUri="Views\AutoHDRMainView.xaml">
 
@@ -230,80 +232,36 @@
             </Setter>
         </Style>
 
-        <Style TargetType="{x:Type ToggleButton}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Viewbox HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                            <Grid>
-                                <Border x:Name="Border" Style="{StaticResource DefaultBorder}"
-                            Width="40" Height="20">
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal"></VisualState>
-                                            <VisualState x:Name="Disabled">
-                                                <Storyboard>
-                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)">
-                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledBorderColor}" />
-                                                    </ColorAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="MouseOver"></VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                </Border>
-                            <Ellipse x:Name="Ellipse" Fill="#FFFFFFFF" Stretch="Uniform"
-                                 Margin="3 2 3 2"
-                                 Stroke="Gray" StrokeThickness="0.2"
-                                 HorizontalAlignment="Stretch">
-                                <Ellipse.Effect>
-                                    <DropShadowEffect BlurRadius="{StaticResource DefaultRadius}" ShadowDepth="1" Opacity="0." Direction="260" />
-                                </Ellipse.Effect>
-                            </Ellipse>
-                            </Grid>
-                        </Viewbox>
 
-                        <ControlTemplate.Triggers>
-                            <EventTrigger RoutedEvent="Checked">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Border"
-                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                    To="{StaticResource ActiveColor}"
-                                                    Duration="0:0:0.1" />
-                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
-                                                        Storyboard.TargetProperty="Margin"
-                                                        To="20 1 2 1"
-                                                        Duration="0:0:0.1" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Unchecked">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Border"
-                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                    To="White"
-                                                    Duration="0:0:0.1" />
-                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
-                                                        Storyboard.TargetProperty="Margin"
-                                                        To="2 1 2 1"
-                                                        Duration="0:0:0.1" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
 
-                    <Trigger Property="IsEnabled"  Value="False">
-                        <Setter Property="Border.Background" Value="{StaticResource DisabledAccentBrush}"/>
-                    </Trigger>
-            </Style.Triggers>
-        </Style>
+
+
+            <ItemsPanelTemplate x:Key="StackPanelTemplate">
+                <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+            <ItemsPanelTemplate x:Key="WrapPanelTemplate">
+                <WrapPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+            <ItemsPanelTemplate x:Key="StackVerticalPanelTemplate">
+                <StackPanel  Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+            <ItemsPanelTemplate x:Key="WrapVerticalPanelTemplate">
+                <WrapPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+
+
+
+            <Style x:Key="AddActionButton" TargetType="Button" BasedOn="{StaticResource DefaultButton}">
+                <Style.Setters>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Background" Value="{StaticResource ActiveBrush}"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="Height" Value="Auto"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Content" Value="+"/>
+                </Style.Setters>
+            </Style>
 
 
 
@@ -316,9 +274,7 @@
 
 
 
-
-
-        <corewpf:EnumLocaleConverter x:Key="EnumLocaleConverter"/>
+            <corewpf:EnumLocaleConverter x:Key="EnumLocaleConverter"/>
         <corewpf:DialogService x:Key="DialogService" />
         <corewpf:DialogService x:Key="ProfileDialogService" />
         <corewpf:BitmapToBitmapImageConverter x:Key="BitmapToBitmapImageConverter"/>
@@ -343,6 +299,7 @@
             <corewpf:VisibilityBooleanConverter />
         </corewpf:ConverterChain>
         <corewpf:TupleConverter x:Key="TupleConverter"/>
+            
         <DataTemplate DataType="{x:Type local:ApplicationAdder}">
             <views:ApplicationAdderView></views:ApplicationAdderView>
         </DataTemplate>

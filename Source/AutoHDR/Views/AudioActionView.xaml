@@ -44,12 +44,12 @@
         <TextBlock Style="{StaticResource DefaultTextBlock}"   Grid.Row="0" Grid.Column="0" Margin="5" Text="{x:Static pres:ProjectLocales.OutputDevice}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="1" Grid.Column="0" Margin="5" Text="{x:Static pres:ProjectLocales.InputDevice}" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
-        <CheckBox   Grid.Row="0"  Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetOutput, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" />
+        <CheckBox x:Name="OutputCheckBox"  Grid.Row="0"  Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetOutput, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" />
 
-        <ComboBox Grid.Row="0" Grid.Column="2" Margin="5" ItemTemplate="{StaticResource AudioDeviceTemplate}" ItemsSource="{Binding Source={x:Static audio:AudioController.Instance}, Path=OutputAudioDevices}" SelectedItem="{Binding OutputDevice}"  Visibility="{Binding SetOutput, Converter={StaticResource VisibilityBooleanConverter}}" />
+        <ComboBox Grid.Row="0" Grid.Column="2" Margin="5" IsEnabled="{Binding ElementName=OutputCheckBox, Path=IsChecked}" ItemTemplate="{StaticResource AudioDeviceTemplate}" ItemsSource="{Binding Source={x:Static audio:AudioController.Instance}, Path=OutputAudioDevices}" SelectedItem="{Binding OutputDevice}"  Visibility="{Binding SetOutput, Converter={StaticResource VisibilityBooleanConverter}}" />
 
-        <CheckBox Grid.Row="1"  Grid.Column="1"  Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetInput, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  />
+        <CheckBox x:Name="InputCheckBox"  Grid.Row="1"  Grid.Column="1"  Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetInput, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  />
 
-        <ComboBox Grid.Row="1" Grid.Column="2" Margin="5" ItemTemplate="{StaticResource AudioDeviceTemplate}" ItemsSource="{Binding Source={x:Static audio:AudioController.Instance}, Path=InputAudioDevices}" SelectedItem="{Binding InputDevice}" Visibility="{Binding SetInput, Converter={StaticResource VisibilityBooleanConverter}}"  />
+        <ComboBox Grid.Row="1" Grid.Column="2" Margin="5"  IsEnabled="{Binding ElementName=InputCheckBox, Path=IsChecked}" ItemTemplate="{StaticResource AudioDeviceTemplate}" ItemsSource="{Binding Source={x:Static audio:AudioController.Instance}, Path=InputAudioDevices}" SelectedItem="{Binding InputDevice}" Visibility="{Binding SetInput, Converter={StaticResource VisibilityBooleanConverter}}"  />
     </Grid>
 </UserControl>

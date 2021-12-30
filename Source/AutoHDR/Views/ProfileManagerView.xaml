@@ -19,17 +19,6 @@
         </Binding>
     </corewpf:UserControlBase.DialogService>
     <UserControl.Resources>
-
-        <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile" >
-            <Grid>
-                <TextBlock Style="{StaticResource DefaultTextBlock}"  Text="{Binding Name, Mode=OneWay}" Margin="15,10" VerticalAlignment="Center" HorizontalAlignment="Stretch"  FontWeight="DemiBold" TextTrimming="CharacterEllipsis"/>
-            </Grid>
-        </DataTemplate>
-
-        <ItemsPanelTemplate x:Key="ProfileActionPanelTemplate">
-            <StackPanel Orientation="Horizontal"/>
-        </ItemsPanelTemplate>
-
         <DataTemplate x:Key="ProfileActionItemTemplate" DataType="IProfileAction">
             <Grid>
                 <Border Style="{StaticResource DefaultBorder}" Margin="5,5"/>
@@ -57,18 +46,14 @@
 
             </Grid>
         </DataTemplate>
-        
-        <Style x:Key="AddButton" TargetType="Button" BasedOn="{StaticResource DefaultButton}">
-            <Style.Setters>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Background" Value="{StaticResource ActiveBrush}"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <Setter Property="Height" Value="Auto"/>
-                <Setter Property="Margin" Value="5"/>
-             <Setter Property="Content" Value="+"/>
-            </Style.Setters>
-        </Style>
+
+        <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile" >
+            <Grid>
+                <TextBlock  Margin="0"></TextBlock>
+                <TextBlock Style="{StaticResource DefaultTextBlock}"  Text="{Binding Name, Mode=OneWay}" Margin="5,10" VerticalAlignment="Center" HorizontalAlignment="Stretch"  FontWeight="DemiBold" TextTrimming="CharacterEllipsis"/>
+            </Grid>
+        </DataTemplate>
+
     </UserControl.Resources>
 
 
@@ -86,7 +71,7 @@
         <TextBlock Style="{StaticResource TitleTextBlock}" Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Profiles}"/>
         <TextBlock Style="{StaticResource TitleTextBlock}" Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.CurrentProfile}"></TextBlock>
         <Border Grid.Column="0"   Grid.Row="1"  Style="{StaticResource DefaultBorder}" Margin="10,10,10,10"/>
-        <ListBox  Grid.Column="0"   Grid.Row="1" Margin="5,10"  x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}"  ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
+        <ListBox  Grid.Column="0"   Grid.Row="1" Margin="15,15"  x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}"  ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
         <GridSplitter/>
         <Border Grid.Column="1" Grid.Row="1"  Style="{StaticResource DefaultBorder}"  Margin="10,10,10,10"/>
         <ScrollViewer   Grid.Column="1" Grid.Row="1" Margin="15"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -125,9 +110,9 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Style="{StaticResource AddButton}" Grid.Column="0"  Command="{Binding AddStartedActionCommand }" />
+                    <Button Style="{StaticResource AddActionButton}" Grid.Column="0"  Command="{Binding AddStartedActionCommand }" />
                     <ScrollViewer Grid.Column="1" x:Name="ScrollViewerStart" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Height="Auto">
-                        <ItemsControl  MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationStarted}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
+                        <ItemsControl  MinHeight="50"  ItemsPanel="{StaticResource StackPanelTemplate}" ItemsSource="{Binding ApplicationStarted}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
                     </ScrollViewer>
 
                 </Grid>
@@ -137,9 +122,9 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Style="{StaticResource AddButton}"  Command="{Binding AddClosedActionCommand}"/>
+                    <Button Grid.Column="0" Style="{StaticResource AddActionButton}"  Command="{Binding AddClosedActionCommand}"/>
                         <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerStopped" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                            <ItemsControl Grid.Column="1" MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationClosed}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
+                        <ItemsControl Grid.Column="1" MinHeight="50"  ItemsPanel="{StaticResource StackPanelTemplate}" ItemsSource="{Binding ApplicationClosed}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
                         </ScrollViewer>
 
                 </Grid>
@@ -149,10 +134,10 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0"  Style="{StaticResource AddButton}" Command="{Binding AddGotFocusActionCommand}"/>
+                    <Button Grid.Column="0"  Style="{StaticResource AddActionButton}" Command="{Binding AddGotFocusActionCommand}"/>
                         <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerFocused" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
-                            <ItemsControl Grid.Column="1" MinHeight="50"   ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationGotFocus}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
+                        <ItemsControl Grid.Column="1" MinHeight="50"   ItemsPanel="{StaticResource StackPanelTemplate}" ItemsSource="{Binding ApplicationGotFocus}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
                         </ScrollViewer>
 
                     </Grid>
@@ -162,10 +147,10 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0"  Style="{StaticResource AddButton}" Command="{Binding AddLostFocusActionCommand}" />
+                    <Button Grid.Column="0"  Style="{StaticResource AddActionButton}" Command="{Binding AddLostFocusActionCommand}" />
                     <ScrollViewer Grid.Column="1"  x:Name="ScrollViewerLost" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
-                        <ItemsControl Grid.Column="1" MinHeight="50"  ItemsPanel="{StaticResource ProfileActionPanelTemplate}" ItemsSource="{Binding ApplicationLostFocus}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
+                        <ItemsControl Grid.Column="1" MinHeight="50"  ItemsPanel="{StaticResource StackPanelTemplate}" ItemsSource="{Binding ApplicationLostFocus}"  ItemTemplate="{StaticResource ProfileActionItemTemplate}"/>
                     </ScrollViewer>
 
                 </Grid>

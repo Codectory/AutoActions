@@ -114,12 +114,18 @@
     <Reference Include="CodectoryCore.Windows.FileSystem">
       <HintPath>..\Externals\CodectoryCore.Windows.FileSystem.dll</HintPath>
     </Reference>
+    <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.4.4.0\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
     </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -130,6 +136,8 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -151,6 +159,7 @@
     </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\Externals\System.Windows.Interactivity.dll</HintPath>
@@ -173,17 +182,24 @@
   <ItemGroup>
     <Compile Include="Globals.cs" />
     <Compile Include="LoopManager.cs" />
+    <Compile Include="ProfileActionShortcut.cs" />
     <Compile Include="Profiles\Actions\CloseProgramAction.cs" />
     <Compile Include="Profiles\Actions\ReferenceProfileAction.cs" />
     <Compile Include="Theming\ThemeResourceDirectory.cs" />
     <Compile Include="Theming\Theme.cs" />
     <Compile Include="UserAppSettings.cs" />
     <Compile Include="UWP\WWAHostHandler.cs" />
+    <Compile Include="Views\StatusView.xaml.cs">
+      <DependentUpon>StatusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CloseProgramActionView.xaml.cs">
       <DependentUpon>CloseProgramActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReferenceProfileActionView.xaml.cs">
       <DependentUpon>ReferenceProfileActionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ActionShortcutManagerView.xaml.cs">
+      <DependentUpon>ActionShortcutManagerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WinAPIFunctions.cs" />
     <Compile Include="Windows\UI.cs" />
@@ -271,6 +287,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\StatusView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\AudioActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -312,6 +332,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ProfileManagerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ActionShortcutManagerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

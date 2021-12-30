@@ -14,9 +14,7 @@
         <DataTemplate DataType="{x:Type prflActns:DisplayAction}">
             <local:DisplayActionView/>
         </DataTemplate>
-        <!--<DataTemplate DataType="{x:Type prflActns:ApplicationAction}">
-            <local:ApplicationActionView/>
-        </DataTemplate>-->
+
         <DataTemplate DataType="{x:Type prflActns:RunProgramAction}">
             <local:RunProgramActionView/>
         </DataTemplate>
@@ -48,8 +46,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Row="0" Grid.Column="0" Text="{x:Static pres:ProjectLocales.ActionType}" Margin="5" FontWeight="DemiBold"  Visibility="{Binding EditMode, Converter={StaticResource InvertVisibilityBooleanConverter}}" VerticalAlignment="Center"/>
-        <ComboBox  Margin="5" Grid.Row="0" Grid.Column="1" x:Name="ActionType" ItemsSource="{Binding ProfileActions}" SelectedItem="{Binding ActionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding EditMode, Converter={StaticResource InvertVisibilityBooleanConverter}}" ItemTemplate="{StaticResource ActionTypeTemplate}"  VerticalAlignment="Center"/>
-
+        <ComboBox  Margin="5" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" x:Name="ActionType" ItemsSource="{Binding ProfileActions}" SelectedItem="{Binding ActionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding EditMode, Converter={StaticResource InvertVisibilityBooleanConverter}}" ItemTemplate="{StaticResource ActionTypeTemplate}"  VerticalAlignment="Center"/>
         <ContentPresenter Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding ContentControlViewModel}" Margin="10,0"/>
         <Grid Grid.Row="3" Grid.ColumnSpan="2" >
             <Grid.ColumnDefinitions>

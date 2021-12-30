@@ -123,6 +123,9 @@
   <data name="Actions" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="ActionShortcuts" xml:space="preserve">
+    <value>Action shortcuts</value>
+  </data>
   <data name="ActionType" xml:space="preserve">
     <value>Type</value>
   </data>
