@@ -83,7 +83,7 @@
         <ScrollViewer Margin="10"   Grid.Row="1" Grid.RowSpan="3" Grid.Column="0">
             <ItemsControl     BorderThickness="0" ItemsSource="{Binding Settings.ApplicationProfileAssignments}" ItemTemplate="{StaticResource ApplicationTemplate}" HorizontalAlignment="Left"/>
         </ScrollViewer>
-        <TextBlock Style="{StaticResource SubTitleTextBlock}"   Grid.Row="2" Grid.Column="1" Text="{x:Static pres:ProjectLocales.Actions}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <TextBlock Style="{StaticResource SubTitleTextBlock}"   Grid.Row="2" Grid.Column="1" Text="{x:Static pres:ProjectLocales.ActionShortcuts}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <Border Style="{StaticResource DefaultBorder}" Grid.Row="3" Grid.Column="1"  Margin="5"/>
         <ScrollViewer Grid.Row="3" Grid.Column="1"  Margin="10" >
             <ItemsControl   BorderThickness="0" ItemsSource="{Binding Settings.ActionShortcuts}" ItemTemplate="{StaticResource ActionShortcutItemTemplate}" ItemsPanel="{StaticResource WrapPanelTemplate}"/>
