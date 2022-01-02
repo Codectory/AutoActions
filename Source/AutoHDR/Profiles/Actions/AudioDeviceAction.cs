@@ -10,43 +10,43 @@ namespace AutoHDR.Profiles.Actions
     public class AudioDeviceAction : ProfileActionBase
     {
 
-        public override bool CanSave => (SetOutput && OutputDevice!=null) || (SetInput && InputDevice != null);
+        public override bool CanSave => (ChangePlaybackDevice && PlaybackDevice!=null) || (ChangeRecordDevice && RecordDevice != null);
         public override string CannotSaveMessage => ProjectLocales.MessageMissingAudioDevice;
 
         public override string ActionTypeName => ProjectLocales.AudioAction;
 
 
-        private Guid _outputDeviceID = Guid.Empty;
+        private Guid _playbackDeviceID = Guid.Empty;
 
         [JsonProperty]
-        public Guid OutputDeviceID { get => _outputDeviceID; set { _outputDeviceID = value; OnPropertyChanged(); OnPropertyChanged(nameof(OutputDevice)); } }
+        public Guid PlaybackDeviceID { get => _playbackDeviceID; set { _playbackDeviceID = value; OnPropertyChanged(); OnPropertyChanged(nameof(PlaybackDevice)); } }
 
 
-        public AudioDevice OutputDevice { get => AudioController.Instance.OutputAudioDevices.FirstOrDefault(d => d.ID.Equals(OutputDeviceID)); set { OutputDeviceID = value.ID; } }
+        public AudioDevice PlaybackDevice { get => AudioController.Instance.OutputAudioDevices.FirstOrDefault(d => d.ID.Equals(PlaybackDeviceID)); set { PlaybackDeviceID = value.ID; } }
 
 
         private bool _setOutput = false;
 
         [JsonProperty]
-        public bool SetOutput { get => _setOutput; set { _setOutput = value; OnPropertyChanged(); } }
+        public bool ChangePlaybackDevice { get => _setOutput; set { _setOutput = value; OnPropertyChanged(); } }
 
 
-        private Guid _inputDeviceID =Guid.Empty;
+        private Guid _recodDeviceID =Guid.Empty;
 
         [JsonProperty]
-        public Guid InputDeviceID { get => _inputDeviceID; set { _inputDeviceID = value; OnPropertyChanged(); OnPropertyChanged(nameof(InputDevice)); } }
+        public Guid RecordDeviceID { get => _recodDeviceID; set { _recodDeviceID = value; OnPropertyChanged(); OnPropertyChanged(nameof(RecordDevice)); } }
 
 
 
-        public AudioDevice InputDevice { get => AudioController.Instance.InputAudioDevices.FirstOrDefault(d => d.ID.Equals(InputDeviceID)); set { InputDeviceID = value.ID; } }
+        public AudioDevice RecordDevice { get => AudioController.Instance.InputAudioDevices.FirstOrDefault(d => d.ID.Equals(RecordDeviceID)); set { RecordDeviceID = value.ID; } }
 
         private bool _setInput = false;
 
         [JsonProperty]
-        public bool SetInput { get => _setInput; set { _setInput = value; OnPropertyChanged(); } }
+        public bool ChangeRecordDevice { get => _setInput; set { _setInput = value; OnPropertyChanged(); } }
 
 
-        public override string ActionDescription => $"[{(OutputDevice != null && SetOutput ?  OutputDevice.Name : string.Empty)} {(InputDevice != null && SetInput ? InputDevice.Name : string.Empty)}]";
+        public override string ActionDescription => $"[{(PlaybackDevice != null && ChangePlaybackDevice ?  PlaybackDevice.Name : string.Empty)} {(RecordDevice != null && ChangeRecordDevice ? RecordDevice.Name : string.Empty)}]";
 
 
         public AudioDeviceAction() : base()
@@ -57,15 +57,15 @@ namespace AutoHDR.Profiles.Actions
         {
             try
             {
-                if (SetOutput)
+                if (ChangePlaybackDevice)
                 {
-                    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting output audio device to {OutputDevice.Name}"));
-                    OutputDevice.SetAsDefault();
+                    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting playback device to {PlaybackDevice.Name}"));
+                    PlaybackDevice.SetAsDefault();
                 }
-                if (SetInput)
+                if (ChangeRecordDevice)
                 {
-                    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting input audio device to {InputDevice.Name}"));
-                    InputDevice.SetAsDefault();
+                    CallNewLog(new CodectoryCore.Logging.LogEntry($"Setting record audio device to {RecordDevice.Name}"));
+                    RecordDevice.SetAsDefault();
                 }
                 return new ActionEndResult(true);
             }

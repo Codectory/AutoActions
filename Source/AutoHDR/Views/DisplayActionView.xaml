@@ -35,30 +35,36 @@
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="0" Text="{x:Static pres:ProjectLocales.Display}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
         <ComboBox  Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AllDisplays}" SelectedItem="{Binding Display}" ItemTemplate="{StaticResource DisplayItemTemplate}" SelectedIndex="0"  Margin="5"/>
-        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="1" Text="{x:Static pres:ProjectLocales.SetHDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
-        <CheckBox  Grid.Column="1" Grid.Row="1"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"/>
-        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="2" Text="{x:Static pres:ProjectLocales.HDRMode}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
-        <CheckBox Grid.Column="1" Grid.Row="2"  IsEnabled="{Binding SetHDR}" IsChecked="{Binding EnableHDR, Mode=TwoWay}"  Margin="5" HorizontalAlignment="Left" />
+        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="1" Text="{x:Static pres:ProjectLocales.ChangeHDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <CheckBox  Grid.Column="1" Grid.Row="1"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding ChangeHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="2" Text="{x:Static pres:ProjectLocales.HDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <!--<CheckBox Grid.Column="1" Grid.Row="2"  IsEnabled="{Binding SetHDR}" IsChecked="{Binding EnableHDR, Mode=TwoWay}"  Margin="5" HorizontalAlignment="Left" />-->
+        <ComboBox IsEnabled="{Binding ChangeHDR}"   Grid.Column="1" Grid.Row="2"  Margin="5" >
+            <ComboBox.Items>
+                <ComboBoxItem Content="{x:Static pres:ProjectLocales.ActivateHDR}" IsSelected="{Binding EnableHDR}"/>
+                <ComboBoxItem Content="{x:Static pres:ProjectLocales.DeactivateHDR}"  IsSelected="{Binding EnableHDR, Converter={StaticResource InvertBooleanConverter}}"/>
+            </ComboBox.Items>
+        </ComboBox>
 
-        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="3" Text="{x:Static pres:ProjectLocales.SetResolution}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
-        <CheckBox  Grid.Column="1" Grid.Row="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetResolution, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" />
+        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="3" Text="{x:Static pres:ProjectLocales.ChangeResolution}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <CheckBox  Grid.Column="1" Grid.Row="3"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding ChangeResolution, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" />
 
         <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="4" Text="{x:Static pres:ProjectLocales.Resolution}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
-        <TextBox  Grid.Column="1" Grid.Row="4"  IsEnabled="{Binding SetResolution}" Text="{Binding Resolution, Mode=TwoWay,Converter={StaticResource SizeTextConverter}}" VerticalAlignment="Center"  Margin="5"  />
+        <TextBox  Grid.Column="1" Grid.Row="4"  IsEnabled="{Binding ChangeResolution}" Text="{Binding Resolution, Mode=TwoWay,Converter={StaticResource SizeTextConverter}}" VerticalAlignment="Center"  Margin="5"  />
 
-        <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0"  Grid.Row="5" Text="{x:Static pres:ProjectLocales.SetRefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
-        <CheckBox  Grid.Column="1" Grid.Row="5"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetRefreshRate, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"  />
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0"  Grid.Row="5" Text="{x:Static pres:ProjectLocales.ChangeRefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
+        <CheckBox  Grid.Column="1" Grid.Row="5"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding ChangeRefreshRate, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"  />
 
         <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0"  Grid.Row="6" Text="{x:Static pres:ProjectLocales.RefreshRate}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
-        <TextBox  Grid.Column="1" Grid.Row="6"  IsEnabled="{Binding SetRefreshRate}" Text="{Binding RefreshRate, Mode=TwoWay}" VerticalAlignment="Center"  Margin="5" />
+        <TextBox  Grid.Column="1" Grid.Row="6"  IsEnabled="{Binding ChangeRefreshRate}" Text="{Binding RefreshRate, Mode=TwoWay}" VerticalAlignment="Center"  Margin="5" />
 
 
-        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="7" Text="{x:Static pres:ProjectLocales.SetColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="7" Text="{x:Static pres:ProjectLocales.ChangeColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
 
-        <CheckBox Grid.Column="1" Grid.Row="7"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding SetColorDepth, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" IsEnabled="{Binding ColorDepthIsSupported}"/>
+        <CheckBox Grid.Column="1" Grid.Row="7"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding ChangeColorDepth, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5" IsEnabled="{Binding ColorDepthIsSupported}"/>
 
         <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="8" Text="{x:Static pres:ProjectLocales.ColorDepth}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="5"/>
-        <ComboBox IsEnabled="{Binding SetHDR}"   Grid.Column="1" Grid.Row="8"  ItemsSource="{Binding ColorDepthValues}" SelectedItem="{Binding ColorDepth}"  Margin="5" >
+        <ComboBox IsEnabled="{Binding ChangeColorDepth}"   Grid.Column="1" Grid.Row="8"  ItemsSource="{Binding ColorDepthValues}" SelectedItem="{Binding ColorDepth}"  Margin="5" >
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <ContentPresenter
@@ -66,5 +72,6 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
+
     </Grid>
 </UserControl>

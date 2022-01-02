@@ -190,8 +190,26 @@
   <data name="BuyBeer" xml:space="preserve">
     <value>Buy me a beer!</value>
   </data>
+  <data name="ChangeColorDepth" xml:space="preserve">
+    <value>Change color depth</value>
+  </data>
+  <data name="ChangeHDR" xml:space="preserve">
+    <value>Change HDR</value>
+  </data>
   <data name="Changelog" xml:space="preserve">
     <value>Changelog</value>
+  </data>
+  <data name="ChangePlaybackDevice" xml:space="preserve">
+    <value>Change playback device</value>
+  </data>
+  <data name="ChangeRecordDevice" xml:space="preserve">
+    <value>Change record device</value>
+  </data>
+  <data name="ChangeRefreshRate" xml:space="preserve">
+    <value>Change refresh rate</value>
+  </data>
+  <data name="ChangeResolution" xml:space="preserve">
+    <value>Change resolution</value>
   </data>
   <data name="CheckForNewVersion" xml:space="preserve">
     <value>Check for new version on startup</value>
@@ -306,9 +324,6 @@
   </data>
   <data name="Info" xml:space="preserve">
     <value>Info</value>
-  </data>
-  <data name="InputDevice" xml:space="preserve">
-    <value>Input device</value>
   </data>
   <data name="IsPrimaryMonitor" xml:space="preserve">
     <value>Primary</value>
@@ -1016,6 +1031,9 @@ Public License instead of this License.  But first, please read
   <data name="ManagedHDR" xml:space="preserve">
     <value>Automated HDR mode</value>
   </data>
+  <data name="MessageInvalidSettings" xml:space="preserve">
+    <value>Invalid settings.</value>
+  </data>
   <data name="MessageMissingAudioDevice" xml:space="preserve">
     <value>Mssing audio device.</value>
   </data>
@@ -1058,9 +1076,6 @@ Public License instead of this License.  But first, please read
   <data name="Open" xml:space="preserve">
     <value>Open</value>
   </data>
-  <data name="OutputDevice" xml:space="preserve">
-    <value>Output device</value>
-  </data>
   <data name="Priority" xml:space="preserve">
     <value>Priority</value>
   </data>
@@ -1102,18 +1117,6 @@ Public License instead of this License.  But first, please read
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
-  </data>
-  <data name="SetColorDepth" xml:space="preserve">
-    <value>Set color depth</value>
-  </data>
-  <data name="SetHDR" xml:space="preserve">
-    <value>Set HDR</value>
-  </data>
-  <data name="SetRefreshRate" xml:space="preserve">
-    <value>Set refresh rate</value>
-  </data>
-  <data name="SetResolution" xml:space="preserve">
-    <value>Set resolution</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>

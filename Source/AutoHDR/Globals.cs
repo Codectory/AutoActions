@@ -72,7 +72,7 @@ namespace AutoHDR
             }
             catch (Exception ex)
             {
-                string backupFile = $"{System.AppDomain.CurrentDomain.BaseDirectory}Backup_Settings_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xml.bak";
+                string backupFile = $"{System.AppDomain.CurrentDomain.BaseDirectory}Backup_Settings_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.json";
                 if (File.Exists(SettingsPath))
                 {
                     File.Move(SettingsPath, backupFile);

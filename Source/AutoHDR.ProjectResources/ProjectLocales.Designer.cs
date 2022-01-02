@@ -278,11 +278,65 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change color depth ähnelt.
+        /// </summary>
+        public static string ChangeColorDepth {
+            get {
+                return ResourceManager.GetString("ChangeColorDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change HDR ähnelt.
+        /// </summary>
+        public static string ChangeHDR {
+            get {
+                return ResourceManager.GetString("ChangeHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Changelog ähnelt.
         /// </summary>
         public static string Changelog {
             get {
                 return ResourceManager.GetString("Changelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change playback device ähnelt.
+        /// </summary>
+        public static string ChangePlaybackDevice {
+            get {
+                return ResourceManager.GetString("ChangePlaybackDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change record device ähnelt.
+        /// </summary>
+        public static string ChangeRecordDevice {
+            get {
+                return ResourceManager.GetString("ChangeRecordDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change refresh rate ähnelt.
+        /// </summary>
+        public static string ChangeRefreshRate {
+            get {
+                return ResourceManager.GetString("ChangeRefreshRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Change resolution ähnelt.
+        /// </summary>
+        public static string ChangeResolution {
+            get {
+                return ResourceManager.GetString("ChangeResolution", resourceCulture);
             }
         }
         
@@ -629,15 +683,6 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Input device ähnelt.
-        /// </summary>
-        public static string InputDevice {
-            get {
-                return ResourceManager.GetString("InputDevice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Primary ähnelt.
         /// </summary>
         public static string IsPrimaryMonitor {
@@ -748,6 +793,15 @@ namespace AutoHDR.ProjectResources {
         public static string ManagedHDR {
             get {
                 return ResourceManager.GetString("ManagedHDR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Invalid settings. ähnelt.
+        /// </summary>
+        public static string MessageInvalidSettings {
+            get {
+                return ResourceManager.GetString("MessageInvalidSettings", resourceCulture);
             }
         }
         
@@ -878,15 +932,6 @@ namespace AutoHDR.ProjectResources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Output device ähnelt.
-        /// </summary>
-        public static string OutputDevice {
-            get {
-                return ResourceManager.GetString("OutputDevice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Priority ähnelt.
         /// </summary>
         public static string Priority {
@@ -1009,42 +1054,6 @@ namespace AutoHDR.ProjectResources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Set color depth ähnelt.
-        /// </summary>
-        public static string SetColorDepth {
-            get {
-                return ResourceManager.GetString("SetColorDepth", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Set HDR ähnelt.
-        /// </summary>
-        public static string SetHDR {
-            get {
-                return ResourceManager.GetString("SetHDR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Set refresh rate ähnelt.
-        /// </summary>
-        public static string SetRefreshRate {
-            get {
-                return ResourceManager.GetString("SetRefreshRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Set resolution ähnelt.
-        /// </summary>
-        public static string SetResolution {
-            get {
-                return ResourceManager.GetString("SetResolution", resourceCulture);
             }
         }
         

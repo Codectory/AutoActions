@@ -32,11 +32,11 @@ namespace AutoHDR.Profiles
             defaultProfile.Name = "HDR";
             Profiles.Actions.DisplayAction startAction = new Profiles.Actions.DisplayAction();
             startAction.Display = Display.AllDisplays;
-            startAction.SetHDR = true;
+            startAction.ChangeHDR = true;
             startAction.EnableHDR = true;
             Profiles.Actions.DisplayAction endAction = new Profiles.Actions.DisplayAction();
             endAction.Display = Display.AllDisplays;
-            endAction.SetHDR = true;
+            endAction.ChangeHDR = true;
             endAction.EnableHDR = false;
             defaultProfile.ApplicationStarted.Add(startAction);
             defaultProfile.ApplicationClosed.Add(endAction);

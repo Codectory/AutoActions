@@ -118,6 +118,15 @@ namespace AutoHDR
         {
             serializedJson = serializedJson.Replace("\"$type\": \"AutoHDR.Displays.Display, AutoHDR\"", "\"$type\": \"AutoHDR.Displays.Display, AutoHDR.Displays\"");
             serializedJson = serializedJson.Replace("\"Monitors\": [", "\"Displays\": [");
+            serializedJson = serializedJson.Replace("\"SetHDR\":", "\"ChangeHDR\":");
+            serializedJson = serializedJson.Replace("\"SetResolution\":", "\"ChangeResolution\":");
+            serializedJson = serializedJson.Replace("\"SetRefreshRate\":", "\"ChangeRefreshRate\":");
+            serializedJson = serializedJson.Replace("\"SetColorDepth\":", "\"ChangeColorDepth\":");
+            serializedJson = serializedJson.Replace("\"SetOutput\":", "\"ChangePlaybackDevice\":");
+            serializedJson = serializedJson.Replace("\"SetInput\":", "\"ChangeRecordDevice\":");
+            serializedJson = serializedJson.Replace("\"OutputDeviceID\":", "\"PlaybackDeviceID\":");
+            serializedJson = serializedJson.Replace("\"InputDeviceID\":", "\"RecordDeviceID\":");
+
             return serializedJson;
         }
 

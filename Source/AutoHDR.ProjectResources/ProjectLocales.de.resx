@@ -180,8 +180,26 @@
   <data name="BuyBeer" xml:space="preserve">
     <value>Kauf mir ein Bier!</value>
   </data>
+  <data name="ChangeColorDepth" xml:space="preserve">
+    <value>Farbtiefe ändern</value>
+  </data>
+  <data name="ChangeHDR" xml:space="preserve">
+    <value>HDR ändern</value>
+  </data>
   <data name="Changelog" xml:space="preserve">
     <value>Changelog</value>
+  </data>
+  <data name="ChangePlaybackDevice" xml:space="preserve">
+    <value>Wiedergabegerät ändern</value>
+  </data>
+  <data name="ChangeRecordDevice" xml:space="preserve">
+    <value>Aufnahmegerät ändern</value>
+  </data>
+  <data name="ChangeRefreshRate" xml:space="preserve">
+    <value>Bildwiederholrate ändern</value>
+  </data>
+  <data name="ChangeResolution" xml:space="preserve">
+    <value>Auflösung ändern</value>
   </data>
   <data name="CheckForNewVersion" xml:space="preserve">
     <value>Beim Start auf neuere Version prüfen</value>
@@ -273,9 +291,6 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
-  <data name="InputDevice" xml:space="preserve">
-    <value>Eingangsgerät</value>
-  </data>
   <data name="IsPrimaryMonitor" xml:space="preserve">
     <value>Hauptmonitor</value>
   </data>
@@ -299,6 +314,9 @@
   </data>
   <data name="ManagedHDR" xml:space="preserve">
     <value>Automatischer HDR-Modus</value>
+  </data>
+  <data name="MessageInvalidSettings" xml:space="preserve">
+    <value>Ungültige Einstellungen</value>
   </data>
   <data name="MessageMissingAudioDevice" xml:space="preserve">
     <value>Audiogerät fehlt.</value>
@@ -341,9 +359,6 @@
   </data>
   <data name="Open" xml:space="preserve">
     <value>Öffnen</value>
-  </data>
-  <data name="OutputDevice" xml:space="preserve">
-    <value>Ausgangsgerät</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorität</value>
@@ -389,18 +404,6 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
-  </data>
-  <data name="SetColorDepth" xml:space="preserve">
-    <value>Farbtiefe ändern</value>
-  </data>
-  <data name="SetHDR" xml:space="preserve">
-    <value>HDR ändern</value>
-  </data>
-  <data name="SetRefreshRate" xml:space="preserve">
-    <value>Bildwiederholrate ändern</value>
-  </data>
-  <data name="SetResolution" xml:space="preserve">
-    <value>Auflösung ändern</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>
