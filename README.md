@@ -24,8 +24,8 @@ Run any program or script as you want or kill running proccesses.
 Reference action Reference to another profile.
 ##### Application assignment
 You can assign one profile to different applications. 
-##### Shortcut
-Create shortcut actions and access them in the status view or from the tray icon.
+##### Action shortcuts
+Create action shortcuts and access them in the status view or from the tray icon.
 ##### Compatibility mode (Restart)
 In some games, e.g. Cyberpunk 2077,  you don't see any HDR options in settings, when HDR was not enabled in Windows before the game was launched. Therefore, the application kills the process on the first occurence, activates hdr and restarts the process.  
 ##### Auto HDR per monitor
