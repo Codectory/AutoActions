@@ -13,7 +13,7 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="ActionShortcutItemTemplate" DataType="ProfileActionShortcut">
-            <Grid  Margin="5">
+            <Grid  Margin="5" Width="250">
                 <Border Style="{StaticResource DefaultBorder}"/>
                 <Grid  Margin="5">
                     <Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0"  Text="{Binding ShortcutName}"  Margin="5" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0"  ToolTip="{Binding ShortcutName}" Text="{Binding ShortcutName}"  Margin="5" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
                     <Button Grid.Column="2" FontSize="15" Margin="5,0,0,0" Content="▶" Command="{Binding RunActionCommand}"/>
 
                 </Grid>
@@ -85,9 +85,8 @@
         </ScrollViewer>
         <TextBlock Style="{StaticResource SubTitleTextBlock}"   Grid.Row="2" Grid.Column="1" Text="{x:Static pres:ProjectLocales.ActionShortcuts}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <Border Style="{StaticResource DefaultBorder}" Grid.Row="3" Grid.Column="1"  Margin="5"/>
-        <ScrollViewer Grid.Row="3" Grid.Column="1"  Margin="10" >
-            <ItemsControl   BorderThickness="0" ItemsSource="{Binding Settings.ActionShortcuts}" ItemTemplate="{StaticResource ActionShortcutItemTemplate}" ItemsPanel="{StaticResource WrapPanelTemplate}"/>
-        </ScrollViewer>
+        <ListView Grid.Row="3" Grid.Column="1" BorderThickness="0" Margin="10" ItemContainerStyle="{StaticResource ListBoxItemStyle}" x:Name="ActionsList"   ItemsPanel="{StaticResource WrapPanelTemplate}" ItemsSource="{Binding Settings.ActionShortcuts}"  ItemTemplate="{StaticResource ActionShortcutItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+
         <TextBlock Style="{StaticResource SubTitleTextBlock}"   Grid.Row="0" Grid.Column="1" Text="{x:Static pres:ProjectLocales.Status}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <Border Style="{StaticResource DefaultBorder}" Grid.Row="1" Grid.Column="1"  Margin="5"/>
         <Grid Height="Auto" Margin="15" Grid.Row="1"  Grid.Column="1" >
@@ -113,8 +112,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-            <Border  Margin="5" Height="40" Width="40"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
-            <Border  Grid.Column="1"  Margin="5" Height="40" Width="40" CornerRadius="{StaticResource DefaultCornerRadius}" HorizontalAlignment="Left">
+                <Border Grid.Column="0"   Margin="5" Height="40" Width="40"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
+            <Border  Grid.Column="0"  Margin="5" Height="40" Width="40" CornerRadius="{StaticResource DefaultCornerRadius}" HorizontalAlignment="Left">
                 <Border.Background>
                     <ImageBrush Stretch="Fill" ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
                 </Border.Background>
@@ -125,9 +124,8 @@
             <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:ProjectLocales.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"/>
             <Border  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"  Style="{StaticResource DefaultBorder}"  >
             </Border>
-            <ScrollViewer  Margin="5" Grid.Row="3" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
-                <ItemsControl Grid.ColumnSpan="2" BorderThickness="0"  VerticalAlignment="Top" HorizontalAlignment="Stretch"  ItemsSource="{Binding LastActions}" ItemTemplate="{StaticResource ProfileActionTemplate}" ItemsPanel="{StaticResource WrapPanelTemplate}"  />
-            </ScrollViewer>
+
+            <ListView Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"  BorderThickness="0" Margin="5" ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsPanel="{StaticResource WrapPanelTemplate}" ItemsSource="{Binding LastActions}"  ItemTemplate="{StaticResource ProfileActionTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
         </Grid>
     </Grid>
 </UserControl>

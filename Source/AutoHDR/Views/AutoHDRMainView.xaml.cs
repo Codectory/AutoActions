@@ -1,5 +1,7 @@
 ﻿using AutoHDR.Properties;
 using CodectoryCore.UI.Wpf;
+using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;

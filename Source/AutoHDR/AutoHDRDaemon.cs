@@ -96,7 +96,7 @@ namespace AutoHDR
         public AutoHDRDaemon()
         {
             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
-                Initialize();
+            Initialize();
         }
 
         private void ChangeLanguage(CultureInfo culture)
