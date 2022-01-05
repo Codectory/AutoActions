@@ -325,11 +325,14 @@ namespace AutoHDR
             Globals.Instance.LoadSettings();
             FixAssignments();
             Globals.Instance.SaveSettings();
+
             Settings.ApplicationProfileAssignments.Sort(a => a.Position, ListSortDirection.Ascending);
             Settings.ApplicationProfileAssignments.CollectionChanged += ApplicationProfileAssigments_CollectionChanged;
             Settings.ApplicationProfiles.CollectionChanged += ApplicationProfiles_CollectionChanged;
             Settings.ActionShortcuts.CollectionChanged += ActionShortcuts_CollectionChanged;
             Settings.Displays.CollectionChanged += Monitors_CollectionChanged;
+
+   
 
             Settings.PropertyChanged += Settings_PropertyChanged;
 
@@ -337,6 +340,8 @@ namespace AutoHDR
             Settings.ApplicationProfileAssignments, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ApplicationProfileAssignments.ToList()));
 
             ApplicationProfiles_CollectionChanged(Settings.ApplicationProfiles, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ApplicationProfiles.ToList()));
+
+
 
             Monitors_CollectionChanged(Settings.Displays, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.Displays.ToList()));
 
@@ -616,6 +621,10 @@ namespace AutoHDR
                         profile.ApplicationStarted.CollectionChanged += ProfileActions_CollectionChanged;
                         profile.ApplicationLostFocus.CollectionChanged += ProfileActions_CollectionChanged;
                         profile.ApplicationGotFocus.CollectionChanged += ProfileActions_CollectionChanged;
+                        ProfileActions_CollectionChanged(profile.ApplicationClosed, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, profile.ApplicationClosed.ToList()));
+                        ProfileActions_CollectionChanged(profile.ApplicationStarted, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, profile.ApplicationStarted.ToList()));
+                        ProfileActions_CollectionChanged(profile.ApplicationLostFocus, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, profile.ApplicationLostFocus.ToList()));
+                        ProfileActions_CollectionChanged(profile.ApplicationGotFocus, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, profile.ApplicationGotFocus.ToList()));
                         profile.PropertyChanged += SaveSettingsOnPropertyChanged;
                     }
                     break;
@@ -631,6 +640,8 @@ namespace AutoHDR
                     }
                     break;
             }
+
+
             Globals.Instance.SaveSettings();
 
         }
@@ -663,6 +674,24 @@ namespace AutoHDR
 
         private void ProfileActions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            switch (e.Action)
+            {
+
+                case NotifyCollectionChangedAction.Add:
+                    foreach (IProfileAction action in e.NewItems)
+                    {
+                        Globals.Logs.Add($"Action added: {action.ActionDescription}", false);
+                        ((BaseViewModel)action).PropertyChanged += SaveSettingsOnPropertyChanged;
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (IProfileAction action in e.OldItems)
+                    {
+                        Globals.Logs.Add($"Action removed: {action.ActionDescription}", false);
+                        ((BaseViewModel)action).PropertyChanged -= SaveSettingsOnPropertyChanged;
+                    }
+                    break;
+            }
             Globals.Instance.SaveSettings();
         }
 

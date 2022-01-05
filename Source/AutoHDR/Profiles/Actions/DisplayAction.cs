@@ -34,22 +34,15 @@ namespace AutoHDR.Profiles.Actions
         [JsonProperty]
         public Display Display 
         { 
-            get => _display; 
-            set 
-            { 
-                _display = value; 
+            get => _display;
+            set
+            {
+                _display = value;
                 OnPropertyChanged();
-                if (value.IsAllDisplay())
-                {
-                    Resolution = AllDisplays[1].Resolution;
-                    RefreshRate = AllDisplays[1].RefreshRate;
-                }
-                else
-                {
-                    Resolution = value.Resolution;
-                    RefreshRate = value.RefreshRate;
-                }
-            } 
+
+                Resolution = value.Resolution;
+                RefreshRate = value.RefreshRate;
+            }
         }
         public override string ActionTypeName => ProjectResources.ProjectLocales.DisplayAction;
 
@@ -82,17 +75,54 @@ namespace AutoHDR.Profiles.Actions
         private Size _resolution;
 
         [JsonProperty]
-        public Size Resolution { get => _resolution; set { _resolution = value; OnPropertyChanged(); } }
+        public Size Resolution 
+        {
+            get
+            {
+                try
+                {
+                    if (Display.IsAllDisplay()) 
+                        return AllDisplays[1].Resolution;
+                }
+                catch { }
+               return _resolution;
+            }
+            set { _resolution = value; OnPropertyChanged(); } 
+        }
 
         private int _refreshRate;
 
         [JsonProperty]
-        public int RefreshRate { get => _refreshRate; set { _refreshRate = value; OnPropertyChanged(); } }
+        public int RefreshRate 
+        {
+            get
+            {
+                try
+                {
+                    if (Display.IsAllDisplay())
+                        return AllDisplays[1].RefreshRate;
+                }
+                catch { }
+                return _refreshRate;
+            }
+            set { _refreshRate = value; OnPropertyChanged(); } }
 
         ColorDepth _colorDepth;
 
         [JsonProperty]
-        public ColorDepth ColorDepth { get => _colorDepth; set { _colorDepth = value; OnPropertyChanged(); } }
+        public ColorDepth ColorDepth
+        {
+            get
+            {
+                try
+                {
+                    if (Display.IsAllDisplay())
+                        return AllDisplays[1].ColorDepth;
+                }
+                catch { }
+                return _colorDepth;
+            }
+            set { _colorDepth = value; OnPropertyChanged(); } }
 
         public IEnumerable<ColorDepth> ColorDepthValues { get => Enum.GetValues(typeof(ColorDepth)).Cast<ColorDepth>(); }
 
@@ -118,7 +148,7 @@ namespace AutoHDR.Profiles.Actions
 
         public DisplayAction() : base()
         {
-            Display = Display.AllDisplays;
+            _display = Display.AllDisplays;
         }
 
         public override ActionEndResult RunAction(ApplicationChangedType applicationChangedType)

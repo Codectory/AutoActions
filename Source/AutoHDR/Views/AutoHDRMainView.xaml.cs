@@ -22,10 +22,8 @@ namespace AutoHDR.Views
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
-            Properties.Settings.Default.Width = Width;
-            Properties.Settings.Default.Height = Height;
-            Properties.Settings.Default.Save();
-
+            Size size = new Size(Width, Height);
+            Globals.Instance.Settings.WindowSize = size;
             this.Hide();
         }
 
@@ -36,11 +34,20 @@ namespace AutoHDR.Views
         {
             try
             {
-                Width = Properties.Settings.Default.Width;
-                Height = Properties.Settings.Default.Height;
-
+                Globals.Instance.SettingsLoaded += Instance_SettingsLoaded;
+                if (Globals.Instance.SettingsLoadedOnce)
+                {
+                    Width = Globals.Instance.Settings.WindowSize.Width;
+                    Height = Globals.Instance.Settings.WindowSize.Height;
+                }
             }
             catch  { }       
+        }
+
+        private void Instance_SettingsLoaded(object sender, EventArgs e)
+        {
+            Width = Globals.Instance.Settings.WindowSize.Width;
+            Height = Globals.Instance.Settings.WindowSize.Height;
         }
     }
 }

@@ -27,11 +27,13 @@ namespace AutoHDR
 
         private UserAppSettings _settings;
         public UserAppSettings Settings { get => _settings; set { _settings = value; OnPropertyChanged(); } }
-        private bool _settingsLoadedOnce = false;
+        public bool SettingsLoadedOnce { get; private set; } = false;
+
+        public event EventHandler SettingsLoaded;
 
         public void SaveSettings(bool force = false)
         {
-            if (!force && !_settingsLoadedOnce)
+            if (!force && !SettingsLoadedOnce)
                 return;
             Globals.Logs.Add("Saving settings..", false);
             try
@@ -53,22 +55,22 @@ namespace AutoHDR
                 if (File.Exists(SettingsPath))
                 {
                     Settings = UserAppSettings.ReadSettings(SettingsPath);
-                    _settingsLoadedOnce = true;
+                    SettingsLoadedOnce = true;
                 }
                 else if (File.Exists(SettingsPathCompatible))
                 {
                     Settings = UserAppSettings.ReadSettings(SettingsPathCompatible);
-                    _settingsLoadedOnce = true;
+                    SettingsLoadedOnce = true;
                 }
                 else
                 {
                     Globals.Logs.Add("No settings found. Creating settings file...", false);
                     Settings = new UserAppSettings();
                     Settings.ApplicationProfiles.Add(Profile.DefaultProfile());
-                   _settingsLoadedOnce = true;
+                   SettingsLoadedOnce = true;
                 }
                 SaveSettings();
-
+                SettingsLoaded?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception ex)
             {

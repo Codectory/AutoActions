@@ -34,7 +34,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="0" Text="{x:Static pres:ProjectLocales.Display}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
-        <ComboBox  Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AllDisplays}" SelectedItem="{Binding Display}" ItemTemplate="{StaticResource DisplayItemTemplate}" SelectedIndex="0"  Margin="5"/>
+        <ComboBox  Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AllDisplays}" SelectedItem="{Binding Display, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource DisplayItemTemplate}" SelectedIndex="0"  Margin="5"/>
         <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="1" Text="{x:Static pres:ProjectLocales.ChangeHDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>
         <CheckBox  Grid.Column="1" Grid.Row="1"  VerticalContentAlignment="Center" HorizontalContentAlignment="Left" IsChecked="{Binding ChangeHDR, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5"/>
         <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0"  Grid.Row="2" Text="{x:Static pres:ProjectLocales.HDR}" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="5"/>

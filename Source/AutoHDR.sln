@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHDR.Threading", "AutoHD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHDR.Audio", "AutoHDR.Audio\AutoHDR.Audio.csproj", "{FC3B898C-2F23-43BE-A924-8A74D800E942}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHDR.Updater", "AutoHDR.Updater\AutoHDR.Updater.csproj", "{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,18 @@ Global
 		{FC3B898C-2F23-43BE-A924-8A74D800E942}.Release|x64.Build.0 = Release|Any CPU
 		{FC3B898C-2F23-43BE-A924-8A74D800E942}.Release|x86.ActiveCfg = Release|Any CPU
 		{FC3B898C-2F23-43BE-A924-8A74D800E942}.Release|x86.Build.0 = Release|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Debug|x64.Build.0 = Debug|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Debug|x86.Build.0 = Debug|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|x64.ActiveCfg = Release|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|x64.Build.0 = Release|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

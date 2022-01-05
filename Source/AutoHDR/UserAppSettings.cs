@@ -8,6 +8,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace AutoHDR
@@ -26,6 +27,8 @@ namespace AutoHDR
         private bool _checkForNewVersion = true;
         readonly object _audioDevicesLock = new object();
         private Guid _defaultProfileGuid = Guid.Empty;
+        private Size _windowSize = new Size(1280, 800);
+
 
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
         private DispatchingObservableCollection<Profile> _applicationProfiles;
@@ -70,6 +73,10 @@ namespace AutoHDR
 
         [JsonProperty]
         public DispatchingObservableCollection<ProfileActionShortcut> ActionShortcuts { get => _actionShortcuts; set { _actionShortcuts = value; OnPropertyChanged(); } }
+
+        [JsonProperty]
+        public Size WindowSize { get => _windowSize; set { _windowSize = value; OnPropertyChanged(); } }
+
 
         public UserAppSettings()
         {
