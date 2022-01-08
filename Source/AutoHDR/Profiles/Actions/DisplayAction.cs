@@ -79,12 +79,6 @@ namespace AutoHDR.Profiles.Actions
         {
             get
             {
-                try
-                {
-                    if (Display.IsAllDisplay()) 
-                        return AllDisplays[1].Resolution;
-                }
-                catch { }
                return _resolution;
             }
             set { _resolution = value; OnPropertyChanged(); } 
@@ -97,12 +91,6 @@ namespace AutoHDR.Profiles.Actions
         {
             get
             {
-                try
-                {
-                    if (Display.IsAllDisplay())
-                        return AllDisplays[1].RefreshRate;
-                }
-                catch { }
                 return _refreshRate;
             }
             set { _refreshRate = value; OnPropertyChanged(); } }
@@ -113,13 +101,7 @@ namespace AutoHDR.Profiles.Actions
         public ColorDepth ColorDepth
         {
             get
-            {
-                try
-                {
-                    if (Display.IsAllDisplay())
-                        return AllDisplays[1].ColorDepth;
-                }
-                catch { }
+            { 
                 return _colorDepth;
             }
             set { _colorDepth = value; OnPropertyChanged(); } }

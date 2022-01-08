@@ -63,11 +63,7 @@ namespace AutoHDR
 
         }
 
-        private void ActionShortcuts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
+     
         private void AddActionShortcut()
         {
             ProfileActionAdder adder = new ProfileActionAdder();

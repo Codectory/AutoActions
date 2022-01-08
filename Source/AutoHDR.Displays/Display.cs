@@ -23,12 +23,10 @@ namespace AutoHDR.Displays
 
         private bool _isPrimary;
 
-        [JsonProperty]
         public bool IsPrimary { get => _isPrimary; set { _isPrimary = value; OnPropertyChanged(); } }
 
         private string _name;
 
-        [JsonProperty]
         public string Name { get => _name;  set { _name = value; OnPropertyChanged(); } }
 
         private string _graphicsCard;

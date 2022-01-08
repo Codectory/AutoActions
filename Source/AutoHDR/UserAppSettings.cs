@@ -27,7 +27,7 @@ namespace AutoHDR
         private bool _checkForNewVersion = true;
         readonly object _audioDevicesLock = new object();
         private Guid _defaultProfileGuid = Guid.Empty;
-        private Size _windowSize = new Size(1280, 800);
+        private Size _windowSize                                                           = new Size(1280, 800);
 
 
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
@@ -94,7 +94,7 @@ namespace AutoHDR
             {
 
                 try
-                {
+            {
                     string serializedJson = File.ReadAllText(path);
                     serializedJson = UpgradeJson(serializedJson);
                     settings = (UserAppSettings)JsonConvert.DeserializeObject<UserAppSettings>(serializedJson, new JsonSerializerSettings

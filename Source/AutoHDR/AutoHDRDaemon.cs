@@ -114,27 +114,35 @@ namespace AutoHDR
 
             lock (_accessLock)
             {
-                if (Initialized)
-                    return;
-                _threadManager = new ThreadManager();
-                _threadManager.NewLog += (o, e) => Globals.Logs.Add(e, false);
-                _logsStorage = new LogsStorage();
-                _lastActions = new ObservableCollection<IProfileAction>();
-                InitializeApplicationWatcher();
-                LoadSettings();
-                Globals.Logs.Add("Initializing...", false);
+                try
+                {
+                    if (Initialized)
+                        return;
+                    _threadManager = new ThreadManager();
+                    _threadManager.NewLog += (o, e) => Globals.Logs.Add(e, false);
+                    _logsStorage = new LogsStorage();
+                    _lastActions = new ObservableCollection<IProfileAction>();
+                    InitializeApplicationWatcher();
+                    LoadSettings();
+                    Globals.Logs.Add("Initializing...", false);
 
-                if (Settings.CheckForNewVersion)
-                    CheckForNewVersion();
-                InitializeDisplayManager();
-                InitializeAudioManager();
-                InitializeTrayMenuHelper();
-                Globals.Instance.SaveSettings();
-                CreateRelayCommands();
-                ShowView = !Settings.StartMinimizedToTray;
-                Initialized = true;
-                Globals.Logs.Add("Initialized", false);
-                Start();
+                    if (Settings.CheckForNewVersion)
+                        CheckForNewVersion();
+                    InitializeDisplayManager();
+                    InitializeAudioManager();
+                    InitializeTrayMenuHelper();
+                    Globals.Instance.SaveSettings();
+                    CreateRelayCommands();
+                    ShowView = !Settings.StartMinimizedToTray;
+                    Initialized = true;
+                    Globals.Logs.Add("Initialized", false);
+                    Start();
+                }
+                catch (Exception ex)
+                {
+                    Globals.Logs.AddException(ex);
+                    throw ex;
+                }
             }
         }
 
@@ -148,11 +156,18 @@ namespace AutoHDR
 
         private void ApplicationWatcher_ApplicationChanged(object sender, ApplicationChangedEventArgs e)
         {
-            Globals.Logs.Add($"Application {e.Application} changed: {e.ChangedType}", false);
-            CurrentApplication = e.Application;
-            UpdateCurrentProfile(e.Application, e.ChangedType);
-            if (e.ChangedType == ApplicationChangedType.Closed)
-                CurrentApplication = null;
+            try
+            {
+                Globals.Logs.Add($"Application {e.Application} changed: {e.ChangedType}", false);
+                CurrentApplication = e.Application;
+                UpdateCurrentProfile(e.Application, e.ChangedType);
+                if (e.ChangedType == ApplicationChangedType.Closed)
+                    CurrentApplication = null;
+            }
+            catch (Exception ex)
+            {
+                Globals.Logs.AddException(ex);
+            }
         }
 
         private void ApplicationWatcher_NewLog(object sender, string e)
@@ -336,13 +351,9 @@ namespace AutoHDR
 
             Settings.PropertyChanged += Settings_PropertyChanged;
 
-            ApplicationProfileAssigments_CollectionChanged(
-            Settings.ApplicationProfileAssignments, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ApplicationProfileAssignments.ToList()));
-
+            ApplicationProfileAssigments_CollectionChanged(Settings.ApplicationProfileAssignments, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ApplicationProfileAssignments.ToList()));
             ApplicationProfiles_CollectionChanged(Settings.ApplicationProfiles, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ApplicationProfiles.ToList()));
-
-
-
+            ActionShortcuts_CollectionChanged(Settings.ActionShortcuts, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.ActionShortcuts.ToList()));
             Monitors_CollectionChanged(Settings.Displays, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Settings.Displays.ToList()));
 
 
