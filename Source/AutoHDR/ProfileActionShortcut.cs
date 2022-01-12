@@ -16,7 +16,11 @@ namespace AutoHDR
         private IProfileAction _action;
 
         [JsonProperty]
-        public IProfileAction Action { get => _action; set { _action = value; OnPropertyChanged(); } }
+        public IProfileAction Action
+        { 
+            get => _action; 
+            set { _action = value; OnPropertyChanged(); }
+        }
 
         private string _shortcutName;
 

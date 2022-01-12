@@ -439,7 +439,11 @@ namespace AutoHDR
             ApplicationWatcher.NewLog -= ApplicationWatcher_NewLog;
             ApplicationWatcher.ApplicationChanged -= ApplicationWatcher_ApplicationChanged;
             Stop();
-            //  TrayMenuHelper.SwitchTrayIcon(false);
+            try
+            {
+                TrayMenuHelper.SwitchTrayIcon(false);
+            }
+            catch  {}            
             Application.Current.Shutdown();
         }
 
@@ -651,8 +655,6 @@ namespace AutoHDR
                     }
                     break;
             }
-
-
             Globals.Instance.SaveSettings();
 
         }

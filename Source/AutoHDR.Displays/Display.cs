@@ -14,7 +14,7 @@ namespace AutoHDR.Displays
     [JsonObject(MemberSerialization.OptIn)]
     public class Display : BaseViewModel
     {
-        public static readonly Display AllDisplays = new Display(Locale.AllDisplays, UInt32.MaxValue);
+        public static readonly Display AllDisplays = new Display(Locale.AllDisplays, UInt32.MaxValue, UInt32.MaxValue);
         private bool _managed = true;
 
         [JsonProperty]
@@ -37,7 +37,11 @@ namespace AutoHDR.Displays
         private UInt32 _uid;
 
         [JsonProperty]
-        public UInt32 UID { get => _uid;  set { _uid = value; OnPropertyChanged(); } }
+        public UInt32 UID 
+        { 
+            get => _uid;  
+            set { _uid = value; OnPropertyChanged(); }
+        }
 
         private uint _id;
 
@@ -81,20 +85,13 @@ namespace AutoHDR.Displays
             GraphicsCard = monitorInformation.DisplayDevice.DeviceString;
         }
 
-        public Display(string name, uint uid)
+        public Display(string name, uint uid, uint id)
         {
             Name = name;
             UID = uid;
+            ID = id;
         }
 
-        public Display(uint iD, uint uID, bool isPrimary, string name, string graphicsCard)
-        {
-            IsPrimary = isPrimary;
-            Name = name;
-            GraphicsCard = graphicsCard;
-            UID = uID;
-            ID = iD;
-        }
 
         public void UpdateHDRState()
         {

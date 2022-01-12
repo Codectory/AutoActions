@@ -29,24 +29,43 @@ namespace AutoHDR.Profiles.Actions
                 return displays;
             }
         }
-        private Display _display = null;
+
+        private uint _displayUID = uint.MaxValue;
 
         [JsonProperty]
-        public Display Display 
-        { 
-            get => _display;
+        public uint DisplayUID
+        {
+            get => _displayUID;
             set
             {
-                _display = value;
+                _displayUID = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(Display));
+                try
+                {
+                    Resolution = Display.Resolution;
+                    RefreshRate = Display.RefreshRate;
+                }
+                catch (Exception)
+                { }
 
-                Resolution = value.Resolution;
-                RefreshRate = value.RefreshRate;
             }
         }
-        public override string ActionTypeName => ProjectResources.ProjectLocales.DisplayAction;
 
-       
+        private Display _display = null;
+
+        public Display Display 
+        { 
+            get => AllDisplays.FirstOrDefault(d => d.UID.Equals(DisplayUID));
+            set
+            {
+                DisplayUID = value.UID;
+
+            }
+        }
+
+        public override string ActionTypeName => ProjectResources.ProjectLocales.DisplayAction;
+      
 
         private bool _changeHDR = false;
         [JsonProperty]

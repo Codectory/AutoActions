@@ -38,40 +38,6 @@ namespace AutoHDR.Displays
             return displays;
         }
 
-        public  List<Display> GetActiveMonitors2()
-        {
-            List<Display> displays = new List<Display>();
-            DisplayHandle[] handles = DisplayApi.EnumNvidiaDisplayHandle();
-            IPathInfo[] config = DisplayApi.GetDisplayConfig();
-            for (int i = 0; i < handles.Length; i++)
-            {
-                string displayName = DisplayApi.GetAssociatedNvidiaDisplayName(handles[i]);
-                uint displayID = DisplayApi.GetDisplayIdByDisplayName(displayName);
-                IPathInfo pathInfo = config.First(p => p.TargetsInfo.ToList().First().DisplayId == displayID);
-
-                DisplayDevice displayDevice = new DisplayDevice(displayID);
-                if (displayDevice.IsActive)
-                {
-                    uint id = pathInfo.SourceId;
-                    uint uid = 0;
-                    if (Displays.Any(m => m.Tag != null && displayDevice.DisplayId.Equals(((DisplayDevice)m.Tag).DisplayId)))
-                        uid = Displays.First(m => displayDevice.DisplayId.Equals(((DisplayDevice)m.Tag).DisplayId)).UID;
-                    else
-                        uid = GetUID(id);
-                    bool isPrimary = pathInfo.SourceModeInfo.IsGDIPrimary;
-                    string name = displayName;
-                    string graphicsCard = displayDevice.Output.PhysicalGPU.FullName;
-                    Display display = new Display(id, uid, isPrimary, name, graphicsCard);
-                    display.Tag = displayDevice;
-                    display.Resolution =  new Size(displayDevice.CurrentTiming.HorizontalActive, displayDevice.CurrentTiming.VerticalActive);
-                    display.RefreshRate = GetRefreshRate(display);
-                    display.ColorDepth = GetColorDepth(display);
-                    displays.Add(display);
-
-                }
-            }
-            return displays;
-        }
 
         public override void SetColorDepth(Display display, ColorDepth colorDepth)
         {
