@@ -21,8 +21,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Controls\AppResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
-            <system:String x:Key="DonateLink">https://paypal.me/HeikoH89</system:String>
+
+            <system:String x:Key="DonateLink">https://www.paypal.com/donate/?hosted_button_id=JXDUAZC7DX7U2</system:String>
         <system:String x:Key="GitHubRepoLink">https://github.com/Codectory/AutoActions</system:String>
 
 
