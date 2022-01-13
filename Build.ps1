@@ -31,8 +31,8 @@ function buildVS
 		Write-Host "Building x86 $($path)" -foregroundcolor green
         & "$($msBuildExe)" "$($path)" /t:Build /m /property:Configuration=Release /property:Platform=x86
 		
-		$x64zip = ".\Releases\Release_AutoHDR_$($version)_x64.zip"
-		$x86zip = ".\Releases\Release_AutoHDR_$($version)_x86.zip"
+		$x64zip = ".\Releases\Release_AutoActions_$($version)_x64.zip"
+		$x86zip = ".\Releases\Release_AutoActions_$($version)_x86.zip"
 
 
 
@@ -57,4 +57,4 @@ function buildVS
 
 
 
-buildVS .\Source\AutoHDR.sln
+buildVS .\Source\AutoActions.sln
