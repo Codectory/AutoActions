@@ -173,8 +173,7 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="Windows">
-      <HintPath>Externals\Windows.winmd</HintPath>
-      <Private>False</Private>
+      <HintPath>..\Externals\Windows.winmd</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationFramework" />
