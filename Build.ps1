@@ -32,14 +32,14 @@ function buildVS
         {del $x64zip}
 
         Get-ChildItem -Path ".\Source\Release_x64" | 
-        Where-Object {$_.PsIsContainer -eq $true -or $_.Extension -eq ".exe" -or $_.Extension -eq ".config" -or $_.Extension -eq ".dll" } | Compress-Archive -DestinationPath $x64zip
+        Where-Object {$_.PsIsContainer -eq $true -or $_.Extension -eq ".exe" -or $_.Extension -eq ".config" -or $_.Extension -eq ".dll" -or $_.Name -eq "UpdateData.json"   } | Compress-Archive -DestinationPath $x64zip
 
 	    Write-Host "Creating Zip x86 $($x86ip)" -foregroundcolor green
         if (Test-Path $x86zip -PathType leaf)
         {del $x86zip}
 
         Get-ChildItem -Path ".\Source\Release_x86" | 
-        Where-Object {$_.PsIsContainer -eq $true -or $_.Extension -eq ".exe" -or $_.Extension -eq ".config" -or $_.Extension -eq ".dll" } | Compress-Archive -DestinationPath $x86zip
+        Where-Object {$_.PsIsContainer -eq $true -or $_.Extension -eq ".exe" -or $_.Extension -eq ".config" -or $_.Extension -eq ".dll"  -or $_.Name -eq "UpdateData.json"  } | Compress-Archive -DestinationPath $x86zip
         Write-Host "Finished!" -foregroundcolor green
 
     }

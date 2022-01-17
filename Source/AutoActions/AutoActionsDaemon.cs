@@ -95,9 +95,12 @@ namespace AutoActions
 
         public AutoActionsDaemon()
         {
-             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+            SplashScreen splashScreen = new SplashScreen("SplashScreen.png");
+            splashScreen.Show(true);
+            //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
             Application.Current.Exit += Current_Exit;
             Initialize();
+            splashScreen.Close(new TimeSpan(0, 0, 0, 2));
 
         }
 
@@ -126,12 +129,9 @@ namespace AutoActions
                     _lastActions = new ObservableCollection<IProfileAction>();
                     InitializeApplicationWatcher();
                     LoadSettings();
-                    SplashScreen splashScreen = new SplashScreen("SplashScreen.png");
-                    if (!Settings.StartMinimizedToTray)
-                    splashScreen.Show(true);
                     Globals.Logs.Add("Initializing...", false);
                     if (Settings.CheckForNewVersion)
-                        Globals.Instance.CheckForNewVersion();
+                        Task.Run(() => Globals.Instance.CheckForNewVersion());
                     InitializeDisplayManager();
                     InitializeAudioManager();
                     InitializeTrayMenuHelper();
@@ -141,8 +141,7 @@ namespace AutoActions
                     Initialized = true;
                     Globals.Logs.Add("Initialized", false);
                     Start();
-                    if (!Settings.StartMinimizedToTray)
-                        splashScreen.Close(new TimeSpan(0, 0, 0, 2));
+     
                 }
                 catch (Exception ex)
                 {
