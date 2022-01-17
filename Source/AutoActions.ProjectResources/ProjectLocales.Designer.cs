@@ -259,6 +259,15 @@ namespace AutoActions.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Update automatically ähnelt.
+        /// </summary>
+        public static string AutoUpdate {
+            get {
+                return ResourceManager.GetString("AutoUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap beer {

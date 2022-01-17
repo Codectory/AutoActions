@@ -71,7 +71,9 @@ namespace AutoActions.Info.Github
                 changelog += $"[{release.TagName}]\r\n\r\n{releaseChangelog}";
             }
             Globals.Logs.Add($"Creating GitHubData...", false);
-            return new GitHubData(changelog, latestGitHubVersion, latestReleaseDate, $@"https://github.com/Codectory/AutoActions/releases/tag/{latestGitHubVersion}");
+            var assetx64 = releases[0].Assets.FirstOrDefault(a => a.Name.ToUpperInvariant().Contains("_X64"));
+            var assetx86 = releases[0].Assets.FirstOrDefault(a => a.Name.ToUpperInvariant().Contains("_X86"));
+            return new GitHubData(changelog, latestGitHubVersion, latestReleaseDate, $@"https://github.com/Codectory/AutoActions/releases/tag/{latestGitHubVersion}", assetx64 != null ? assetx64.BrowserDownloadUrl : "", assetx86 != null ? assetx86.BrowserDownloadUrl : "");
         }
     }
 }

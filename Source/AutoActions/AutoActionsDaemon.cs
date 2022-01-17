@@ -96,6 +96,7 @@ namespace AutoActions
         public AutoActionsDaemon()
         {
             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+            Application.Current.Exit += Current_Exit;
             Initialize();
         }
 
@@ -127,7 +128,7 @@ namespace AutoActions
                     Globals.Logs.Add("Initializing...", false);
 
                     if (Settings.CheckForNewVersion)
-                        CheckForNewVersion();
+                        Globals.Instance.CheckForNewVersion();
                     InitializeDisplayManager();
                     InitializeAudioManager();
                     InitializeTrayMenuHelper();
@@ -235,29 +236,7 @@ namespace AutoActions
             Globals.Logs.AppendLogEntry(entry);
         }
 
-        private void CheckForNewVersion()
-        {
-            Task.Run(() =>
-            {
-                Globals.Logs.Add($"Checking for new version...", false);
 
-                GitHubData data = GitHubIntegration.GetGitHubData();
-                Version localVersion = VersionExtension.ApplicationVersion(System.Reflection.Assembly.GetExecutingAssembly());
-                int versionComparison = localVersion.CompareTo(data.CurrentVersion);
-                if (versionComparison < 0)
-                {
-                    Globals.Logs.Add($"Newer version availabe.", false);
-
-                    Application.Current.Dispatcher.Invoke(
-                      (Action)(() =>
-                      {
-                          ShowInfo(data);
-                      }));
-                }
-                else
-                    Globals.Logs.Add($"Local version is up to date.", false);
-            });
-        }
         private void InitializeTrayMenuHelper()
         {
             Globals.Logs.Add("Initializing TrayMenu...", false);
@@ -304,7 +283,7 @@ namespace AutoActions
             ShutdownCommand = new RelayCommand(Shutdown);
             StartApplicationCommand = new RelayCommand<ApplicationProfileAssignment>(LaunchApplication);
             ShowLicenseCommand = new RelayCommand(ShowLicense);
-            ShowInfoCommand = new RelayCommand(ShowInfo);
+            ShowInfoCommand = new RelayCommand(Globals.Instance.ShowInfo);
             ShowLogsCommand = new RelayCommand(ShowLogs);
 
             BuyBeerCommand = new RelayCommand(BuyBeer);
@@ -433,6 +412,12 @@ namespace AutoActions
 
         private void Shutdown()
         {
+
+            Application.Current.Shutdown();
+        }
+
+        private void Current_Exit(object sender, ExitEventArgs e)
+        {
             Settings.Displays = DisplayManagerHandler.Instance.Displays;
 
             Globals.Logs.Add($"Stopping application watcher...", false);
@@ -443,8 +428,7 @@ namespace AutoActions
             {
                 TrayMenuHelper.SwitchTrayIcon(false);
             }
-            catch  {}            
-            Application.Current.Shutdown();
+            catch { }
         }
 
         public void Start()
@@ -795,10 +779,6 @@ namespace AutoActions
             Globals.Instance.SaveSettings();
         }
 
-        private void ShowInfo()
-        {
-            ShowInfo(null);
-        }
 
         private void ShowLogs()
         {
@@ -813,16 +793,7 @@ namespace AutoActions
         }
 
 
-        private void ShowInfo(GitHubData data)
-        {
-            AutoActionsInfo info;
-            if (data == null)
-                info = new AutoActionsInfo();
-            else
-                info = new AutoActionsInfo(data);
-            if (DialogService != null)
-                DialogService.ShowDialogModal(info, new System.Drawing.Size(600, 1000));
-        }
+
 
         private void BuyBeer()
         {

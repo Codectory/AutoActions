@@ -9,22 +9,12 @@ function buildVS
         [String] $version,
 
         [parameter(Mandatory=$false)]
-        [bool] $nuget = $true,
+        [bool] $nuget = $true
         
-        [parameter(Mandatory=$false)]
-        [bool] $clean = $true
     )
     process
     {
         $msBuildExe = 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\msbuild.exe'
-
-        if ($clean) {
-            Write-Host "Cleaning x64 $($path)" -foregroundcolor green
-            {Get-ChildItem -Path .\Source\Release_x64 -Include * | remove-Item -recurse -force}
-			Write-Host "Cleaning x86 $($path)" -foregroundcolor green
-            {Get-ChildItem -Path .\Source\Release_x86 -Include * | remove-Item -recurse -force}
-
-        }
 
         Write-Host "Building x64 $($path)" -foregroundcolor green
         & "$($msBuildExe)" "$($path)" /t:Build /m /property:Configuration=Release /property:Platform=x64

@@ -21,7 +21,8 @@ namespace AutoActions
 
         private bool _globalAutoActions = true;
         private bool _createLogFile = false;
-        private bool _autoStart;
+        private bool _autoStart = false;
+        private bool _autoUpdate = true;
         private bool _startMinimizedToTray;
         private bool _closeToTray;
         private bool _checkForNewVersion = true;
@@ -47,6 +48,9 @@ namespace AutoActions
 
         [JsonProperty]
         public bool AutoStart { get => _autoStart; set { _autoStart = value; OnPropertyChanged(); } }
+        [JsonProperty]
+        public bool AutoUpdate { get => _autoUpdate; set { _autoUpdate = value; OnPropertyChanged(); } }
+
 
         [JsonProperty]
         public bool CreateLogFile { get => _createLogFile; set { _createLogFile = value; OnPropertyChanged(); } }

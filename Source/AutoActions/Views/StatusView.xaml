@@ -17,11 +17,11 @@
                 <Border Style="{StaticResource DefaultBorder}"/>
                 <Grid  Margin="5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0"  ToolTip="{Binding ShortcutName}" Text="{Binding ShortcutName}"  Margin="5" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                    <TextBlock Style="{StaticResource DefaultTextBlock}" TextTrimming="CharacterEllipsis" Grid.Column="0"  ToolTip="{Binding ShortcutName}" Text="{Binding ShortcutName}"  Margin="5" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
                     <Button Grid.Column="2" FontSize="15" Margin="5,0,0,0" Content="▶" Command="{Binding RunActionCommand}"/>
 
                 </Grid>

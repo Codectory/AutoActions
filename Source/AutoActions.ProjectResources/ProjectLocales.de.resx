@@ -177,6 +177,9 @@
   <data name="AutoStart" xml:space="preserve">
     <value>Auto-Start</value>
   </data>
+  <data name="AutoUpdate" xml:space="preserve">
+    <value>Automatisch aktualisieren</value>
+  </data>
   <data name="BuyBeer" xml:space="preserve">
     <value>Kauf mir ein Bier!</value>
   </data>
