@@ -143,7 +143,8 @@ namespace AutoActions
             process.StartInfo = new ProcessStartInfo(Path.Combine(updatePath, "AutoActions.Updater.exe"));
             process.StartInfo.Arguments = $"true \"{ (Environment.Is64BitOperatingSystem ? data.DirectDownload64 : data.DirectDownload86)}\" \"{applicationPath.FullName.Substring(0, applicationPath.FullName.Length-1)}\" \"{Process.GetCurrentProcess().ProcessName}\"";
             process.Start();
-            Application.Current.Shutdown();
+
+            App.Current.Dispatcher.Invoke(() => Application.Current.Shutdown());
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)

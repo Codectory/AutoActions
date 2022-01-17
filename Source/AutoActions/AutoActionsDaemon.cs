@@ -98,7 +98,7 @@ namespace AutoActions
             SplashScreen splashScreen = new SplashScreen("SplashScreen.png");
             splashScreen.Show(true);
             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
-            Application.Current.Exit += Current_Exit;
+            App.Current.Exit += Current_Exit;
             Initialize();
             splashScreen.Close(new TimeSpan(0, 0, 0, 2));
 
