@@ -16,10 +16,11 @@ namespace AutoActions.Updater
 
         static void Main(string[] args)
         {
-            System.Threading.Thread.Sleep(20000);
-            UpdateData updateData = new UpdateData();
-            updateData.SaveUpdateData("D:\\UpdateData.json");
             temporaryFolder = GetTemporaryDirectory();
+            Console.WriteLine("AutoActions Updater");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("Updating AutoActions...");
             try
             {
                 bool download = bool.Parse(args[0]);
@@ -27,10 +28,17 @@ namespace AutoActions.Updater
                 string targetFolder = args[2];
                 string callingProcess = args[3];
                 Update(zip, targetFolder, callingProcess);
+                Console.WriteLine($"Starting {callingProcess}...");
+                System.Threading.Thread.Sleep(2000);
                 Process.Start(Path.Combine(targetFolder, $"{callingProcess}.exe"));
 
             }
-
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine("Press any key to close this window.");
+                Console.ReadKey();
+            }
 
             finally
             {
@@ -44,12 +52,14 @@ namespace AutoActions.Updater
             string updateZip = Path.Combine(temporaryFolder, "Update.zip");
             if (download)
             {
-                updateZip = Path.Combine(temporaryFolder, "Update.zip");
+                Console.WriteLine($"Downloading from {path}...");
                 using (WebClient myWebClient = new WebClient())
                 {
                     // Download the Web resource and save it into the current filesystem folder.
                     myWebClient.DownloadFile(path, updateZip);
                 }
+                Console.WriteLine($"Finished download.");
+
             }
             else
                 File.Copy(path, updateZip, true);
@@ -58,8 +68,9 @@ namespace AutoActions.Updater
 
         private static void Update(string zip, string targetFolder, string callingProcess)
         {
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1000);
             ZipFile.ExtractToDirectory(zip, temporaryFolder);
+            Console.WriteLine($"Extrating zip to {temporaryFolder}...");
             File.Delete(zip);
             UpdateData updateData = UpdateData.LoadFromFile(Path.Combine(temporaryFolder, "UpdateData.json"));
             Process[] processes  = Process.GetProcessesByName(callingProcess);
@@ -73,16 +84,24 @@ namespace AutoActions.Updater
                 filesToCopy.Remove(Path.Combine(temporaryFolder, "AutoActions.Updater.exe"));
             if (filesToCopy.Contains(Path.Combine(temporaryFolder, "AutoActions.Updater.pdb")))
             filesToCopy.Remove(Path.Combine(temporaryFolder, "AutoActions.Updater.pdb"));
+            Console.WriteLine($"Updating files...");
+
             foreach (string file in filesToCopy)
             {
+
                 string targetFileName = Path.Combine(targetFolder, Path.GetFileName(file));
+                Console.WriteLine($"Updating {targetFileName}");
                 if (File.Exists(targetFileName))
                     File.Delete(targetFileName);
                 File.Move(file, targetFileName);
             }
+            if (updateData.FilesToDelete.Count > 0)
+            Console.WriteLine($"Removing files files...");
+
             foreach (string file in updateData.FilesToDelete)
             {
                 string targetFileName = Path.Combine(targetFolder, Path.GetFileName(file));
+                Console.WriteLine($"Removing {targetFileName}");
                 if (File.Exists(targetFileName))
                     File.Delete(targetFileName);
             }

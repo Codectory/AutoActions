@@ -100,25 +100,33 @@ namespace AutoActions
         public void CheckForNewVersion()
         {
 
-                Globals.Logs.Add($"Checking for new version...", false);
-
-                GitHubData data = GitHubIntegration.GetGitHubData();
-                Version localVersion = VersionExtension.ApplicationVersion(System.Reflection.Assembly.GetExecutingAssembly());
-                int versionComparison = localVersion.CompareTo(data.CurrentVersion);
-                if (versionComparison < 0)
-                {
-                    Globals.Logs.Add($"Newer version availabe.", false);
-                    if (Settings.AutoUpdate)
-                        AutoUpdate(data);
-                    else
-                        Application.Current.Dispatcher.Invoke(
-                          (Action)(() =>
-                          {
-                              ShowInfo(data);
-                          }));
-                }
+            Globals.Logs.Add($"Checking for new version...", false);
+            GitHubData data = null;
+            try
+            {
+                data = GitHubIntegration.GetGitHubData();
+            }
+            catch (Exception ex)
+            {
+                Globals.Logs.AddException(ex);
+                return;
+            }
+            Version localVersion = VersionExtension.ApplicationVersion(System.Reflection.Assembly.GetExecutingAssembly());
+            int versionComparison = localVersion.CompareTo(data.CurrentVersion);
+            if (versionComparison < 0)
+            {
+                Globals.Logs.Add($"Newer version availabe.", false);
+                if (Settings.AutoUpdate)
+                    AutoUpdate(data);
                 else
-                    Globals.Logs.Add($"Local version is up to date.", false);
+                    Application.Current.Dispatcher.Invoke(
+                      (Action)(() =>
+                      {
+                          ShowInfo(data);
+                      }));
+            }
+            else
+                Globals.Logs.Add($"Local version is up to date.", false);
 
         }
 
