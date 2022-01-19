@@ -161,10 +161,10 @@ namespace AutoActions
                 foreach (var assignment in Globals.Instance.Settings.ApplicationProfileAssignments)
                 {
                     MenuItem item = new MenuItem();
-                    BitmapImage bitmapIamge = (BitmapImage)converter.Convert(assignment.Application.Icon, typeof(BitmapImage), null, System.Globalization.CultureInfo.CurrentUICulture);
+                    ImageSource imageSource = (ImageSource)converter.Convert(assignment.Application.Icon, typeof(ImageSource), null, System.Globalization.CultureInfo.CurrentUICulture);
                     item.Icon = new System.Windows.Controls.Image
                     {
-                        Source = bitmapIamge
+                        Source = imageSource
                     };
                     item.Header = assignment.Application.DisplayName;
                     item.Click += (o, e) => assignment.Application.StartApplication();
