@@ -62,7 +62,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="ListBoxItem">
           <Grid>
-            <Border Name="_Border" Padding="2" CornerRadius="{StaticResource DefaultCornerRadius}" SnapsToDevicePixels="true" Margin="0"></Border>
+            <Border Name="_Border" Padding="2" SnapsToDevicePixels="true" Margin="5"></Border>
             <ContentPresenter />
           </Grid>
           <ControlTemplate.Triggers>
