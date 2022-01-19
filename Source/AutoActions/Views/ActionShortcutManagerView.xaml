@@ -47,17 +47,15 @@
     </UserControl.DataContext>
     <Grid  Grid.Row="1"  Width="Auto" Height="Auto">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock  Style="{StaticResource SubTitleTextBlock}"  Text="{x:Static pres:ProjectLocales.ActionShortcuts}"  Grid.Row="0" Margin="10,3,3,3" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
 
-        <Border Grid.Row="1"  Style="{StaticResource DefaultBorder}" Margin="5" />
-        <Grid  Grid.Row="1" Margin="5">
+        <Border Grid.Row="0"  Style="{StaticResource DefaultBorder}" Margin="5" />
+        <Grid  Grid.Row="0" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>

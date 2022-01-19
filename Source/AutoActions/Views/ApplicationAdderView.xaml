@@ -28,11 +28,12 @@
 
         <TextBox Grid.Column="1" Grid.Row="0" Height="Auto" Margin="5" TextWrapping="Wrap" Text="{Binding DisplayName, Mode=TwoWay }" VerticalAlignment="Top"/>
         <TextBlock Style="{StaticResource DefaultTextBlock}"   Grid.Column="1" Grid.Row="1" Text="{Binding FilePath}" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-        <Border Grid.Column="1" Grid.Row="2" Height="70" Width="70" Margin="5"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
-        <Border Grid.Column="1" Grid.Row="2" Margin="5" Height="70" Width="70" CornerRadius="{StaticResource DefaultCornerRadius}" HorizontalAlignment="Left">
-            <Border.Background>
-                <ImageBrush Stretch="Fill" ImageSource="{Binding ApplicationItem.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
-            </Border.Background>
+        <Border Width="50" Grid.Column="1" Grid.Row="2" Margin="5" CornerRadius="{StaticResource DefaultCornerRadius}" Background="{StaticResource IconBackgroundBrush}">
+            <Border  Height="49" Width="49"  CornerRadius="{StaticResource DefaultCornerRadius}" Margin="1">
+                <Border.Background>
+                    <ImageBrush Stretch="Fill" ImageSource="{Binding ApplicationItem.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
+                </Border.Background>
+            </Border>
         </Border>
         <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  >
             <Grid.ColumnDefinitions>

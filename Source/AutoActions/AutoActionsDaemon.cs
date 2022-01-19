@@ -21,6 +21,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace AutoActions
 {
@@ -95,13 +96,8 @@ namespace AutoActions
 
         public AutoActionsDaemon()
         {
-            SplashScreen splashScreen = new SplashScreen("SplashScreen.png");
-            splashScreen.Show(true);
             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
-            App.Current.Exit += Current_Exit;
             Initialize();
-            splashScreen.Close(new TimeSpan(0, 0, 0, 2));
-
         }
 
         private void ChangeLanguage(CultureInfo culture)
@@ -119,6 +115,7 @@ namespace AutoActions
 
             lock (_accessLock)
             {
+                CodectoryCore.UI.Wpf.SplashScreen splashScreen = new CodectoryCore.UI.Wpf.SplashScreen();
                 try
                 {
                     if (Initialized)
@@ -129,9 +126,28 @@ namespace AutoActions
                     _lastActions = new ObservableCollection<IProfileAction>();
                     InitializeApplicationWatcher();
                     LoadSettings();
+                    splashScreen.SetImageFromBitmap(ProjectLocales.SplashScreen);
+                    if (!Settings.HideSplashScreenOnStartup)
+                    {
+                        splashScreen.Show();
+                        System.Threading.Thread.Sleep(1000);
+                    }
                     Globals.Logs.Add("Initializing...", false);
                     if (Settings.CheckForNewVersion)
-                        Task.Run(() => Globals.Instance.CheckForNewVersion());
+                        Task.Run(() =>
+                        {
+                            CheckUpdateResult result = Globals.Instance.CheckUpdate();
+                            if (result.UpdateAvailable && Settings.AutoUpdate)
+                            {
+                                splashScreen.Text = ProjectLocales.Updating;
+                                if (!Settings.HideSplashScreenOnAutoUpdate)
+                                {
+                                    splashScreen.Show();
+                                    System.Threading.Thread.Sleep(1000);
+                                }
+                                Globals.Instance.AutoUpdate(result.GitHubData);
+                            }
+                        });
                     InitializeDisplayManager();
                     InitializeAudioManager();
                     InitializeTrayMenuHelper();
@@ -141,12 +157,17 @@ namespace AutoActions
                     Initialized = true;
                     Globals.Logs.Add("Initialized", false);
                     Start();
-     
+                    splashScreen.Close();
+
                 }
                 catch (Exception ex)
                 {
                     Globals.Logs.AddException(ex);
                     throw ex;
+                }
+                finally
+                {
+                    splashScreen.Close();
                 }
             }
         }
@@ -294,7 +315,7 @@ namespace AutoActions
         }
 
 
-    
+
 
 
 
@@ -330,7 +351,7 @@ namespace AutoActions
             Settings.ActionShortcuts.CollectionChanged += ActionShortcuts_CollectionChanged;
             Settings.Displays.CollectionChanged += Monitors_CollectionChanged;
 
-   
+
 
             Settings.PropertyChanged += Settings_PropertyChanged;
 
@@ -415,26 +436,19 @@ namespace AutoActions
         }
 
         private void Shutdown()
-        {
-
-            Application.Current.Shutdown();
-        }
-
-        private void Current_Exit(object sender, ExitEventArgs e)
-        {
-            Settings.Displays = DisplayManagerHandler.Instance.Displays;
-
+        { 
+            Settings.Displays = DisplayManagerHandler.Instance?.Displays;
             Globals.Logs.Add($"Stopping application watcher...", false);
-            ApplicationWatcher.NewLog -= ApplicationWatcher_NewLog;
-            ApplicationWatcher.ApplicationChanged -= ApplicationWatcher_ApplicationChanged;
             Stop();
             try
             {
                 TrayMenuHelper.SwitchTrayIcon(false);
             }
             catch { }
+            Application.Current.Shutdown();
         }
 
+ 
         public void Start()
         {
             lock (_accessLock)
@@ -475,7 +489,7 @@ namespace AutoActions
             {
                 if (!Settings.ApplicationProfileAssignments.Any(pi => pi.Application.ApplicationFilePath == adder.ApplicationItem.ApplicationFilePath))
                 {
-                   var assignment = ApplicationProfileAssignment.NewAssigment(adder.ApplicationItem);
+                    var assignment = ApplicationProfileAssignment.NewAssigment(adder.ApplicationItem);
                     if (Settings.DefaultProfile != null)
                         assignment.Profile = Settings.DefaultProfile;
                 }

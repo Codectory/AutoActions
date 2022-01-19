@@ -154,6 +154,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckUpdateResult.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="LoopManager.cs" />
     <Compile Include="ProfileActionShortcut.cs" />
@@ -401,9 +402,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <SplashScreen Include="SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoActions.Audio\AutoActions.Audio.csproj">

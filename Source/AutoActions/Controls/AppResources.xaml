@@ -12,6 +12,7 @@
   <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
   <Color x:Key="ControlLightColor">White</Color>
   <Color x:Key="ControlMediumColor">#FFCCCCCC</Color>
+  <Color x:Key="IconBackgroundColor">#d4d4d4</Color>
   <Color x:Key="GlyphColor">#FF444444</Color>
   <Color x:Key="DisabledForegroundColor">#cfcfcf</Color>
   <Color x:Key="DisabledControlDarkColor">#8A8A8A</Color>
@@ -24,6 +25,7 @@
   <SolidColorBrush x:Key="MouseOverBrush" Color="{StaticResource ControlMouseOverColor}" />
   <SolidColorBrush x:Key="ControlLightBrush" Color="{StaticResource ControlLightColor}" />
   <SolidColorBrush x:Key="GlyphBrush" Color="{StaticResource GlyphColor}" />
+  <SolidColorBrush x:Key="IconBackgroundBrush" Color="{StaticResource IconBackgroundColor}" />
   <SolidColorBrush x:Key="InactiveAccentBrush">#ad7b7b</SolidColorBrush>
   <SolidColorBrush x:Key="DragScrollBrush">#757575</SolidColorBrush>
   <SolidColorBrush x:Key="ScrollBrush">#969696</SolidColorBrush>
@@ -60,7 +62,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="ListBoxItem">
           <Grid>
-            <Border Name="_Border" Padding="2" SnapsToDevicePixels="true" Margin="5"></Border>
+            <Border Name="_Border" Padding="2" CornerRadius="{StaticResource DefaultCornerRadius}" SnapsToDevicePixels="true" Margin="0"></Border>
             <ContentPresenter />
           </Grid>
           <ControlTemplate.Triggers>

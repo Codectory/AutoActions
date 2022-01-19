@@ -640,9 +640,9 @@ namespace AutoActions.ProjectResources {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Use automated HDR Mode for all monitors ähnelt.
         /// </summary>
-        public static string GlobalAutoActions {
+        public static string GlobalAutoHDR {
             get {
-                return ResourceManager.GetString("GlobalAutoActions", resourceCulture);
+                return ResourceManager.GetString("GlobalAutoHDR", resourceCulture);
             }
         }
         
@@ -670,6 +670,24 @@ namespace AutoActions.ProjectResources {
         public static string HDRMode {
             get {
                 return ResourceManager.GetString("HDRMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hide splash screen on startup ähnelt.
+        /// </summary>
+        public static string HideSplashScreenOnStartup {
+            get {
+                return ResourceManager.GetString("HideSplashScreenOnStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hide splash screen on update ähnelt.
+        /// </summary>
+        public static string HideSplashScreenOnUpdate {
+            get {
+                return ResourceManager.GetString("HideSplashScreenOnUpdate", resourceCulture);
             }
         }
         
@@ -1085,6 +1103,16 @@ namespace AutoActions.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SplashScreen {
+            get {
+                object obj = ResourceManager.GetObject("SplashScreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Start to tray ähnelt.
         /// </summary>
         public static string StartToTray {
@@ -1099,6 +1127,15 @@ namespace AutoActions.ProjectResources {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Updating AutoActions... ähnelt.
+        /// </summary>
+        public static string Updating {
+            get {
+                return ResourceManager.GetString("Updating", resourceCulture);
             }
         }
         

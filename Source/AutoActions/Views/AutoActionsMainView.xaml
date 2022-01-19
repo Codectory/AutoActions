@@ -82,11 +82,15 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"  />
+
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"  />
                         </Grid.RowDefinitions>
+                        <TextBlock Style="{StaticResource SubTitleTextBlock}"  Grid.Column="0" Grid.ColumnSpan="3" Grid.Row ="0"   Text="{x:Static pres:ProjectLocales.Applications}"/>
 
-                        <Grid Grid.IsSharedSizeScope="True" Grid.ColumnSpan="3" Margin="10" >
+                        <Border Style="{StaticResource DefaultBorder}" Grid.ColumnSpan="3" Grid.Row ="1"  Margin="5"/>
+                        <Grid Grid.IsSharedSizeScope="True" Grid.ColumnSpan="3" Grid.Row ="1"  Margin="15" >
                             <ListBox Name="ApplicationList" ItemContainerStyle="{StaticResource ListBoxItemStyle }"  ItemsSource="{Binding Settings.ApplicationProfileAssignments}" HorizontalContentAlignment="Stretch" >
                                 <ListBox.Template>
                                     <ControlTemplate>
@@ -98,12 +102,11 @@
                                                     <ColumnDefinition SharedSizeGroup="ApplicationColumn"/>
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="0" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Icon}"/>
-                                                <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="1" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Application}"/>
-                                                <TextBlock Style="{StaticResource TitleTextBlock}"  Grid.Column="2" FontWeight="Bold"  Margin="5,0" Text="{x:Static pres:ProjectLocales.Profile}"/>
+                                                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="0" FontWeight="Bold"  FontSize="20" Margin="5,0" Text="{x:Static pres:ProjectLocales.Icon}"/>
+                                                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="1" FontWeight="Bold" FontSize="20"   Margin="5,0" Text="{x:Static pres:ProjectLocales.Application}"/>
+                                                <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Column="2" FontWeight="Bold" FontSize="20"   Margin="5,0" Text="{x:Static pres:ProjectLocales.Profile}"/>
                                             </Grid>
                                             <Grid>
-                                                <Border Style="{StaticResource DefaultBorder}"  />
                                                 <Grid Margin="0,5">
                                                     <ScrollViewer>
                                                     <ItemsPresenter Margin="5"></ItemsPresenter>
@@ -126,8 +129,8 @@
                                                     <ColumnDefinition SharedSizeGroup="ApplicationColumn" Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Border Width="50" Grid.Column="0"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474">
-                                                    <Border  Height="50" Width="50" CornerRadius="{StaticResource DefaultCornerRadius}">
+                                                    <Border Width="50" Grid.Column="0"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="{StaticResource IconBackgroundBrush}">
+                                                    <Border  Height="49" Width="49" CornerRadius="{StaticResource DefaultCornerRadius}" Margin="1">
                                                         <Border.Background>
                                                             <ImageBrush Stretch="Fill" ImageSource="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
                                                         </Border.Background>
@@ -143,7 +146,7 @@
                             </ListBox>
                         </Grid>
 
-                        <Grid Grid.Row="1" Grid.ColumnSpan="3" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                        <Grid Grid.Row="2" Grid.ColumnSpan="3" Height="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -168,25 +171,21 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{x:Static pres:ProjectLocales.Monitors}" >
+                <TabItem Header="{x:Static pres:ProjectLocales.Displays}" >
                     <local:MonitorManagerView   DataContext="{x:Static dsp:DisplayManagerHandler.Instance}"  IsEnabled="{Binding Settings.GlobalAutoActions, Converter={StaticResource InvertBooleanConverter}}"/>
                 </TabItem>
 
                 <TabItem Header="{x:Static pres:ProjectLocales.Settings}">
-                    <Grid>
-                        <Border Style="{StaticResource DefaultBorder}"  Margin="10" />
 
-                        <Grid Margin="15" >
+                        <Grid  >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <local:UserAppSettingsView   Margin="15"   DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" />
+                                <local:UserAppSettingsView     DataContext="{Binding ElementName=MainWindow , Path=DataContext.Settings}" />
                             </ScrollViewer>
 
                         </Grid>
-                    </Grid>
-
                 </TabItem>
             </TabControl>
             <Button Grid.Row="1" Grid.Column="0" Content="{x:Static pres:ProjectLocales.Info}"  Command="{Binding ShowInfoCommand}" Height="Auto"  HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Top" Margin="5" />

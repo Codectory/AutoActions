@@ -97,7 +97,7 @@ namespace AutoActions
         }
 
 
-        public void CheckForNewVersion()
+        public CheckUpdateResult CheckUpdate()
         {
 
             Globals.Logs.Add($"Checking for new version...", false);
@@ -109,28 +109,29 @@ namespace AutoActions
             catch (Exception ex)
             {
                 Globals.Logs.AddException(ex);
-                return;
+                return new CheckUpdateResult(false, data);
             }
             Version localVersion = VersionExtension.ApplicationVersion(System.Reflection.Assembly.GetExecutingAssembly());
             int versionComparison = localVersion.CompareTo(data.CurrentVersion);
             if (versionComparison < 0)
             {
                 Globals.Logs.Add($"Newer version availabe.", false);
-                if (Settings.AutoUpdate)
-                    AutoUpdate(data);
-                else
+                if (!Settings.AutoUpdate)
+                {
                     Application.Current.Dispatcher.Invoke(
                       (Action)(() =>
                       {
                           ShowInfo(data);
                       }));
+                }
             }
             else
                 Globals.Logs.Add($"Local version is up to date.", false);
+            return new CheckUpdateResult(versionComparison < 0, data);
 
         }
 
-        private void AutoUpdate(GitHubData data)
+        public void AutoUpdate(GitHubData data)
         {
             Globals.Logs.Add($"Updating AutoActions to {data.CurrentVersion}...", false);
 

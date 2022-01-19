@@ -76,20 +76,30 @@
 
     </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{x:Static pres:ProjectLocales.GlobalAutoActions}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
-        <CheckBox Style="{StaticResource ToggleStatus}" IsChecked="{Binding GlobalAutoActions}" Grid.Column="1"  Grid.Row="0"   VerticalAlignment="Center" Margin="7,5,10,5" HorizontalAlignment="Left"/>
-        <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource DefaultBorder}" Margin="10,10,10,10">
+        <TextBlock Style="{StaticResource SubTitleTextBlock}"   Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Displays}"/>
+
+        <Border Grid.Row="1"  Style="{StaticResource DefaultBorder}" Margin="5">
         </Border>
-        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" Margin="15" >
-        <ItemsControl   x:Name="DisplayList" VerticalContentAlignment="Top"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource WrapListViewTemplate}"  ItemTemplate="{StaticResource DisplayTemplate}" ItemsSource="{Binding Displays}"  Background="{x:Null}"  BorderThickness="0"/>
+        <ScrollViewer Grid.Row="1" Margin="10" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{x:Static pres:ProjectLocales.GlobalAutoHDR}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
+
+                <CheckBox Style="{StaticResource ToggleStatus}" IsChecked="{Binding GlobalAutoActions}"  Grid.Row="0"  Grid.Column="1"   VerticalAlignment="Center" Margin="7,5,10,5" HorizontalAlignment="Left"/>
+
+                <ItemsControl  Grid.Row="1" Grid.ColumnSpan="2"  x:Name="DisplayList" VerticalContentAlignment="Top"  HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource WrapListViewTemplate}"  ItemTemplate="{StaticResource DisplayTemplate}" ItemsSource="{Binding Displays}"  Background="{x:Null}"  BorderThickness="0"/>
+            </Grid>
         </ScrollViewer>
     </Grid>
 </UserControl>

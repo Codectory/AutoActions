@@ -50,7 +50,7 @@
         <DataTemplate x:Key="ProfileItemTemplate" DataType="Profile" >
             <Grid>
                 <TextBlock  Margin="0"></TextBlock>
-                <TextBlock Style="{StaticResource DefaultTextBlock}"  Text="{Binding Name, Mode=OneWay}" Margin="5,10" VerticalAlignment="Center" HorizontalAlignment="Stretch"  FontWeight="DemiBold" TextTrimming="CharacterEllipsis"/>
+                <TextBlock  Style="{StaticResource DefaultTextBlock}"  Text="{Binding Name, Mode=OneWay}" Margin="5,5" VerticalAlignment="Center" HorizontalAlignment="Stretch"  FontWeight="DemiBold" TextTrimming="CharacterEllipsis"/>
             </Grid>
         </DataTemplate>
 
@@ -68,13 +68,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource TitleTextBlock}" Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Profiles}"/>
-        <TextBlock Style="{StaticResource TitleTextBlock}" Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.CurrentProfile}"></TextBlock>
-        <Border Grid.Column="0"   Grid.Row="1"  Style="{StaticResource DefaultBorder}" Margin="10,10,10,10"/>
-        <ListBox  Grid.Column="0"   Grid.Row="1" Margin="15,15"  x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}"  ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
+        <TextBlock Style="{StaticResource SubTitleTextBlock}" Grid.Column="0"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.Profiles}"/>
+        <TextBlock Style="{StaticResource SubTitleTextBlock}" Grid.Column="1"  Grid.Row="0"   Text="{x:Static pres:ProjectLocales.CurrentProfile}"></TextBlock>
+        <Border Grid.Column="0"   Grid.Row="1"  Style="{StaticResource DefaultBorder}" Margin="5"/>
+        <ListBox  Grid.Column="0"   Grid.Row="1" Margin="10"  x:Name="ProfileList"  HorizontalContentAlignment="Stretch"  ItemTemplate="{StaticResource ProfileItemTemplate}"  ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsSource="{Binding Settings.ApplicationProfiles}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Background="{x:Null}" BorderThickness="0" SelectionMode="Single"/>
         <GridSplitter/>
-        <Border Grid.Column="1" Grid.Row="1"  Style="{StaticResource DefaultBorder}"  Margin="10,10,10,10"/>
-        <ScrollViewer   Grid.Column="1" Grid.Row="1" Margin="15"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Border Grid.Column="1" Grid.Row="1"  Style="{StaticResource DefaultBorder}"  Margin="5"/>
+        <ScrollViewer   Grid.Column="1" Grid.Row="1" Margin="10"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <Grid  Margin="5" DataContext="{Binding ElementName=ProfileList, Path=SelectedItem, Mode=OneWay}" Visibility="{Binding  ElementName=ProfileList, Path=SelectedItem,Mode=OneWay, Converter={StaticResource NotNullVisibilityConverter}}" >
 
                 <Grid.ColumnDefinitions>

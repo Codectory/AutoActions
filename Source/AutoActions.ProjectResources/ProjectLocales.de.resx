@@ -276,7 +276,7 @@
   <data name="ForceKill" xml:space="preserve">
     <value>Beenden erzwingen</value>
   </data>
-  <data name="GlobalAutoActions" xml:space="preserve">
+  <data name="GlobalAutoHDR" xml:space="preserve">
     <value>Automatischer HDR-Modus für alle Monitore verwenden</value>
   </data>
   <data name="GraphicsCard" xml:space="preserve">
@@ -287,6 +287,12 @@
   </data>
   <data name="HDRMode" xml:space="preserve">
     <value>Auto HDR-Modus</value>
+  </data>
+  <data name="HideSplashScreenOnStartup" xml:space="preserve">
+    <value>Splash Screen beim Start nicht anzeigen</value>
+  </data>
+  <data name="HideSplashScreenOnUpdate" xml:space="preserve">
+    <value>Splash Screen beim Update nicht anzeigen</value>
   </data>
   <data name="Icon" xml:space="preserve">
     <value>Icon</value>
@@ -419,6 +425,9 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="Updating" xml:space="preserve">
+    <value>Aktualisiere AutoActions...</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>

@@ -18,7 +18,6 @@ namespace AutoActions
     {
         public static readonly object _settingsLock = new object();
 
-
         private bool _globalAutoActions = true;
         private bool _createLogFile = false;
         private bool _autoStart = false;
@@ -26,9 +25,12 @@ namespace AutoActions
         private bool _startMinimizedToTray;
         private bool _closeToTray;
         private bool _checkForNewVersion = true;
+        private bool _hideSplashScreenOnStartup = false;
+        private bool _hideSplashScreenOnAutoUpdate = false;
+
         readonly object _audioDevicesLock = new object();
         private Guid _defaultProfileGuid = Guid.Empty;
-        private Size _windowSize                                                           = new Size(1280, 800);
+        private Size _windowSize = new Size(1280, 800);
 
 
         private SortableObservableCollection<ApplicationProfileAssignment> _applicationProfileAssignments;
@@ -50,6 +52,13 @@ namespace AutoActions
         public bool AutoStart { get => _autoStart; set { _autoStart = value; OnPropertyChanged(); } }
         [JsonProperty]
         public bool AutoUpdate { get => _autoUpdate; set { _autoUpdate = value; OnPropertyChanged(); } }
+
+        [JsonProperty]
+        public bool HideSplashScreenOnStartup { get => _hideSplashScreenOnStartup; set { _hideSplashScreenOnStartup = value; OnPropertyChanged(); } }
+
+
+        [JsonProperty]
+        public bool HideSplashScreenOnAutoUpdate { get => _hideSplashScreenOnAutoUpdate; set { _hideSplashScreenOnAutoUpdate = value; OnPropertyChanged(); } }
 
 
         [JsonProperty]

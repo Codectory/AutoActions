@@ -36,7 +36,13 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" Source="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}" Width="35" Height="35"  Stretch="Fill"></Image>
+                    <Border Width="50" Grid.Column="0"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="{StaticResource IconBackgroundBrush}">
+                        <Border  Height="49" Width="49" CornerRadius="{StaticResource DefaultCornerRadius}" Margin="1">
+                            <Border.Background>
+                                <ImageBrush Stretch="Fill" ImageSource="{Binding Application.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
+                            </Border.Background>
+                        </Border>
+                    </Border>
                     <TextBlock Style="{StaticResource DefaultTextBlock}"  ToolTip="{Binding Application.DisplayName}" Grid.Column="1" Text="{Binding Application.DisplayName}" Margin="5" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     <Button Grid.Column="2" FontSize="15" Margin="5,0,0,0" Content="▶" Command="{Binding ElementName=StatusViewControl, Path=DataContext.StartApplicationCommand}" CommandParameter="{Binding}" />
 
@@ -112,14 +118,15 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0"   Margin="5" Height="40" Width="40"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="#FF747474" HorizontalAlignment="Left"/>
-            <Border  Grid.Column="0"  Margin="5" Height="40" Width="40" CornerRadius="{StaticResource DefaultCornerRadius}" HorizontalAlignment="Left">
-                <Border.Background>
-                    <ImageBrush Stretch="Fill" ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
-                </Border.Background>
-            </Border>
 
-            <TextBlock Style="{StaticResource DefaultTextBlock}"   Grid.Column="1" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static pres:ProjectLocales.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"/>
+                <Border Width="50" Grid.Column="0"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="{StaticResource IconBackgroundBrush}">
+                    <Border  Height="49" Width="49" CornerRadius="{StaticResource DefaultCornerRadius}" Margin="1">
+                        <Border.Background>
+                            <ImageBrush Stretch="Fill" ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
+                        </Border.Background>
+                    </Border>
+                </Border>
+                <TextBlock Style="{StaticResource DefaultTextBlock}"   Grid.Column="1" Text="{Binding CurrentApplication.DisplayName , FallbackValue={x:Static pres:ProjectLocales.NoApplication}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"/>
             </Grid>
             <TextBlock Style="{StaticResource DefaultTextBlock}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" Text="{Binding CurrentProfile.Name , FallbackValue={x:Static pres:ProjectLocales.NoProfile}}" TextAlignment="left" Width="Auto" VerticalAlignment="Center"/>
             <Border  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"  Style="{StaticResource DefaultBorder}"  >
