@@ -145,7 +145,7 @@ namespace AutoActions
                                 _splashScreen.Text = ProjectLocales.Updating;
                                 if (!Settings.HideSplashScreenOnAutoUpdate)
                                 {
-                                    _splashScreen.Show();
+                                    App.Current.Dispatcher.Invoke(() => _splashScreen.Show());                           
                                     System.Threading.Thread.Sleep(1000);
                                 }
                                 Globals.Instance.AutoUpdate(result.GitHubData);
