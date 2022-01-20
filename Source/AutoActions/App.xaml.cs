@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +18,6 @@ namespace AutoActions
     ///
     public partial class App : Application
     {
-
         public static Theme Theme { get; set; } = Theme.Light;
 
         static Mutex mutex;
@@ -31,12 +31,21 @@ namespace AutoActions
             {
                 var application = new App();
                 application.InitializeComponent();
+                Globals.Instance.LoadSettings();
                 application.Run();
             }
             else
             {
                 MessageBox.Show(ProjectLocales.AlreadyRunning);
             }
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            Views.AutoActionsMainView mainView = new Views.AutoActionsMainView();
+            if (!Globals.Instance.Settings.StartMinimizedToTray)
+                mainView.Show();
         }
 
         protected override void OnExit(ExitEventArgs e)

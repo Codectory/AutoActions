@@ -12,8 +12,8 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:pres="clr-namespace:AutoActions.ProjectResources;assembly=AutoActions.ProjectResources"
 
-             xmlns:corewpf="clr-namespace:CodectoryCore.UI.Wpf;assembly=CodectoryCore.UI.Wpf"
-             StartupUri="Views\AutoActionsMainView.xaml">
+             xmlns:corewpf="clr-namespace:CodectoryCore.UI.Wpf;assembly=CodectoryCore.UI.Wpf">
+    <!--StartupUri="Views\AutoActionsMainView.xaml">-->
 
     <Application.Resources>
         <ResourceDictionary>

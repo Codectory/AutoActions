@@ -27,6 +27,8 @@ namespace AutoActions
 {
     public class AutoActionsDaemon : BaseViewModel
     {
+        CodectoryCore.UI.Wpf.SplashScreen _splashScreen = new CodectoryCore.UI.Wpf.SplashScreen();
+
         readonly object _accessLock = new object();
         private bool _showView = false;
         private ApplicationItem _currentApplication = null;
@@ -80,7 +82,7 @@ namespace AutoActions
 
 
         public bool Initialized { get; private set; } = false;
-        public bool ShowView { get => _showView; set { _showView = value; OnPropertyChanged(); } }
+        public bool ShowView { get => _showView; set { _showView = value; OnPropertyChanged(); } } 
 
         public ApplicationItem CurrentApplication { get => _currentApplication; set { _currentApplication = value; OnPropertyChanged(); } }
 
@@ -97,6 +99,12 @@ namespace AutoActions
         public AutoActionsDaemon()
         {
             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
+            _splashScreen.SetImageFromBitmap(ProjectLocales.SplashScreen);
+            if (!Settings.HideSplashScreenOnStartup)
+            {
+                _splashScreen.Show();
+                System.Threading.Thread.Sleep(1000);
+            }
             Initialize();
         }
 
@@ -115,7 +123,7 @@ namespace AutoActions
 
             lock (_accessLock)
             {
-                CodectoryCore.UI.Wpf.SplashScreen splashScreen = new CodectoryCore.UI.Wpf.SplashScreen();
+
                 try
                 {
                     if (Initialized)
@@ -125,13 +133,8 @@ namespace AutoActions
                     _logsStorage = new LogsStorage();
                     _lastActions = new ObservableCollection<IProfileAction>();
                     InitializeApplicationWatcher();
-                    LoadSettings();
-                    splashScreen.SetImageFromBitmap(ProjectLocales.SplashScreen);
-                    if (!Settings.HideSplashScreenOnStartup)
-                    {
-                        splashScreen.Show();
-                        System.Threading.Thread.Sleep(1000);
-                    }
+                    InitializeSettings();
+              
                     Globals.Logs.Add("Initializing...", false);
                     if (Settings.CheckForNewVersion)
                         Task.Run(() =>
@@ -139,10 +142,10 @@ namespace AutoActions
                             CheckUpdateResult result = Globals.Instance.CheckUpdate();
                             if (result.UpdateAvailable && Settings.AutoUpdate)
                             {
-                                splashScreen.Text = ProjectLocales.Updating;
+                                _splashScreen.Text = ProjectLocales.Updating;
                                 if (!Settings.HideSplashScreenOnAutoUpdate)
                                 {
-                                    splashScreen.Show();
+                                    _splashScreen.Show();
                                     System.Threading.Thread.Sleep(1000);
                                 }
                                 Globals.Instance.AutoUpdate(result.GitHubData);
@@ -157,7 +160,7 @@ namespace AutoActions
                     Initialized = true;
                     Globals.Logs.Add("Initialized", false);
                     Start();
-                    splashScreen.Close();
+                    _splashScreen.Close();
 
                 }
                 catch (Exception ex)
@@ -167,7 +170,7 @@ namespace AutoActions
                 }
                 finally
                 {
-                    splashScreen.Close();
+                    _splashScreen.Close();
                 }
             }
         }
@@ -339,12 +342,8 @@ namespace AutoActions
             Shutdown();
         }
 
-        private void LoadSettings()
+        private void InitializeSettings()
         {
-            Globals.Instance.LoadSettings();
-            FixAssignments();
-            Globals.Instance.SaveSettings();
-
             Settings.ApplicationProfileAssignments.Sort(a => a.Position, ListSortDirection.Ascending);
             Settings.ApplicationProfileAssignments.CollectionChanged += ApplicationProfileAssigments_CollectionChanged;
             Settings.ApplicationProfiles.CollectionChanged += ApplicationProfiles_CollectionChanged;
@@ -366,36 +365,6 @@ namespace AutoActions
         }
 
 
-        private void FixAssignments()
-        {
-            int count = Settings.ApplicationProfileAssignments.Count;
-            for (int i = 0; i < count; i++)
-            {
-                int positionCount = Settings.ApplicationProfileAssignments.Count(a => a.Position == i);
-                if (positionCount == 0)
-                {
-                    int u = i;
-                    while (Settings.ApplicationProfileAssignments.Count(a => a.Position == i) == 0)
-                    {
-                        var assignemnt = Settings.ApplicationProfileAssignments.FirstOrDefault(a => a.Position == u);
-                        if (assignemnt != null)
-                            assignemnt.Position = i;
-                        u++;
-                    }
-                }
-                if (positionCount > 1)
-                    Settings.ApplicationProfileAssignments.First(a => a.Position == i).Position = i + 1;
-            }
-            while (Settings.ApplicationProfileAssignments.Any(a => a.Position >= count))
-            {
-                foreach (var assignment in Settings.ApplicationProfileAssignments)
-                    if (assignment.Position >= count)
-                        do
-                        {
-                            assignment.Position = assignment.Position - 1;
-                        } while (Settings.ApplicationProfileAssignments.Count(a => a.Position == assignment.Position) > 1);
-            }
-        }
 
 
         private void TrayMenu_TrayLeftMouseDown(object sender, RoutedEventArgs e)
