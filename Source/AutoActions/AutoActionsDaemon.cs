@@ -27,7 +27,6 @@ namespace AutoActions
 {
     public class AutoActionsDaemon : BaseViewModel
     {
-        CodectoryCore.UI.Wpf.SplashScreen _splashScreen = new CodectoryCore.UI.Wpf.SplashScreen();
 
         readonly object _accessLock = new object();
         private bool _showView = false;
@@ -99,13 +98,23 @@ namespace AutoActions
         public AutoActionsDaemon()
         {
             //ChangeLanguage( new System.Globalization.CultureInfo("en-US"));
-            _splashScreen.SetImageFromBitmap(ProjectLocales.SplashScreen);
+            CodectoryCore.UI.Wpf.SplashScreen splashScreen = new CodectoryCore.UI.Wpf.SplashScreen();
+
+            splashScreen.SetImageFromBitmap(ProjectLocales.SplashScreen);
             if (!Settings.HideSplashScreenOnStartup)
             {
-                _splashScreen.Show();
+                splashScreen.Show();
                 System.Threading.Thread.Sleep(1000);
             }
-            Initialize();
+            try
+            {
+                Initialize();
+
+            }
+            finally
+            {
+                splashScreen.Close();
+            }
         }
 
         private void ChangeLanguage(CultureInfo culture)
@@ -136,21 +145,31 @@ namespace AutoActions
                     InitializeSettings();
               
                     Globals.Logs.Add("Initializing...", false);
-                    if (Settings.CheckForNewVersion)
-                        Task.Run(() =>
+                    Task.Run(() =>
+                    {
+                        if (Settings.CheckForNewVersion)
                         {
+
                             CheckUpdateResult result = Globals.Instance.CheckUpdate();
                             if (result.UpdateAvailable && Settings.AutoUpdate)
                             {
-                                _splashScreen.Text = ProjectLocales.Updating;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                CodectoryCore.UI.Wpf.SplashScreen updateScreen = new CodectoryCore.UI.Wpf.SplashScreen();
+                                updateScreen.SetImageFromBitmap(ProjectLocales.SplashScreen);
+                                updateScreen.Text = ProjectLocales.Updating;
                                 if (!Settings.HideSplashScreenOnAutoUpdate)
                                 {
-                                    App.Current.Dispatcher.Invoke(() => _splashScreen.Show());                           
+                                    updateScreen.Show();
                                     System.Threading.Thread.Sleep(1000);
                                 }
+                            });
+
                                 Globals.Instance.AutoUpdate(result.GitHubData);
                             }
-                        });
+                        }
+                    });
+            
                     InitializeDisplayManager();
                     InitializeAudioManager();
                     InitializeTrayMenuHelper();
@@ -160,7 +179,6 @@ namespace AutoActions
                     Initialized = true;
                     Globals.Logs.Add("Initialized", false);
                     Start();
-                    _splashScreen.Close();
 
                 }
                 catch (Exception ex)
@@ -168,10 +186,7 @@ namespace AutoActions
                     Globals.Logs.AddException(ex);
                     throw ex;
                 }
-                finally
-                {
-                    _splashScreen.Close();
-                }
+    
             }
         }
 

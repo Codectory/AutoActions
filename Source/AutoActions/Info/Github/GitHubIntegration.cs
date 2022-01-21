@@ -29,11 +29,11 @@ namespace AutoActions.Info.Github
             Release release;
             try
             {
-                release = _client.Repository.Release.GetLatest("Codectory", "AutoHDR").Result;
+                release = _client.Repository.Release.GetLatest(323106537).Result;
             }
             catch (Exception ex)
             {
-                release = _client.Repository.Release.GetLatest("Codectory", "AutoActions").Result;
+                release = _client.Repository.Release.GetLatest("Codectory", "AutoHDR").Result;
             }
             Version latestGitHubVersion = new Version(release.TagName);
             DateTime latestReleaseDate = release.PublishedAt.HasValue ? release.PublishedAt.Value.DateTime : DateTime.MinValue;
@@ -55,17 +55,17 @@ namespace AutoActions.Info.Github
             string changelog = string.Empty;
 
 
-                if (!string.IsNullOrEmpty(changelog))
-                    changelog += "\r\n\r\n\r\n\r\n";
-                string releaseChangelog = release.Body;
-                foreach (string sourceForgeAddition in sourceForgeAdditions)
-                {
-                    if (releaseChangelog.Contains(sourceForgeAddition))
-                        releaseChangelog = releaseChangelog.Substring(0, releaseChangelog.IndexOf(sourceForgeAddition));
+            if (!string.IsNullOrEmpty(changelog))
+                changelog += "\r\n\r\n\r\n\r\n";
+            string releaseChangelog = release.Body;
+            foreach (string sourceForgeAddition in sourceForgeAdditions)
+            {
+                if (releaseChangelog.Contains(sourceForgeAddition))
+                    releaseChangelog = releaseChangelog.Substring(0, releaseChangelog.IndexOf(sourceForgeAddition));
 
-                }
+            }
 
-                changelog += $"[{release.TagName}]\r\n\r\n{releaseChangelog}";
+            changelog += $"[{release.TagName}]\r\n\r\n{releaseChangelog}";
             Globals.Logs.Add($"Creating GitHubData...", false);
             var assetx64 = release.Assets.FirstOrDefault(a => a.Name.ToUpperInvariant().Contains("_X64"));
             var assetx86 = release.Assets.FirstOrDefault(a => a.Name.ToUpperInvariant().Contains("_X86"));
