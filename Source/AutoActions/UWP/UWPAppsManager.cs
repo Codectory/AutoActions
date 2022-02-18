@@ -21,22 +21,22 @@ namespace AutoActions.UWP
         private const string xboxPassAppFN = "Microsoft.GamingApp_8wekyb3d8bbwe";
 
 
-        public static UWPApp GetUWPApp(string packageNameOrFamilyPackageName, string applicationID = "")
+        public static UWPApp GetUWPApp(string packageNameOrFamilyPackageName, string identity = "")
         {
             var package = manager.FindPackageForUser(WindowsIdentity.GetCurrent().User.Value, packageNameOrFamilyPackageName);
             if (package == null)
-                return GetUWPAppCompatible(packageNameOrFamilyPackageName, applicationID);
+                return GetUWPAppCompatible(packageNameOrFamilyPackageName, identity);
             return new UWPApp(package);
         }
 
-        private static UWPApp GetUWPAppCompatible(string familyPackageName, string applicationID)
+        private static UWPApp GetUWPAppCompatible(string familyPackageName, string identity)
         {
             foreach (var package in manager.FindPackagesForUser(WindowsIdentity.GetCurrent().User.Value))
             {
                 try
                 {
                     UWPApp uwpApp = new UWPApp(package);
-                    if (uwpApp.FamilyPackageName.Equals(familyPackageName) && uwpApp.ApplicationID.Equals(applicationID))
+                    if (uwpApp.FamilyPackageName.Equals(familyPackageName) && (string.IsNullOrEmpty(identity) || uwpApp.Identity.Equals(identity)))
                         return uwpApp;
                 }
                 catch {}
@@ -78,7 +78,7 @@ namespace AutoActions.UWP
                     {
                         UWPApp uwpApp = new UWPApp(package);
                         if (!string.IsNullOrEmpty(uwpApp.ApplicationID))
-                            uwpApps.Add(new ApplicationItem(uwpApp));
+                         uwpApps.Add(new ApplicationItem(uwpApp));
                     }
                     catch
                     {

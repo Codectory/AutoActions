@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoActions.Audio", "AutoAc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoActions.Updater", "AutoActions.Updater\AutoActions.Updater.csproj", "{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "AutoActions.Setup", "AutoActions.Setup\AutoActions.Setup.wixproj", "{30B814F3-B6DD-42C6-BC50-E06A54CB6C51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,12 @@ Global
 		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|x64.Build.0 = Release|x64
 		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|x86.ActiveCfg = Release|x86
 		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Release|x86.Build.0 = Release|x86
+		{30B814F3-B6DD-42C6-BC50-E06A54CB6C51}.Debug|x64.ActiveCfg = Debug|x86
+		{30B814F3-B6DD-42C6-BC50-E06A54CB6C51}.Debug|x86.ActiveCfg = Debug|x86
+		{30B814F3-B6DD-42C6-BC50-E06A54CB6C51}.Debug|x86.Build.0 = Debug|x86
+		{30B814F3-B6DD-42C6-BC50-E06A54CB6C51}.Release|x64.ActiveCfg = Release|x86
+		{30B814F3-B6DD-42C6-BC50-E06A54CB6C51}.Release|x86.ActiveCfg = Release|x86
+		{30B814F3-B6DD-42C6-BC50-E06A54CB6C51}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

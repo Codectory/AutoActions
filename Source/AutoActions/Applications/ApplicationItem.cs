@@ -72,7 +72,8 @@ namespace AutoActions
         public string UWPIconPath { 
             get => _uwpIconPath; 
             set { _uwpIconPath = value; try { if (IsUWP ||IsUWPWepApp) Icon = new Bitmap(Bitmap.FromFile(value)); } catch { }OnPropertyChanged(); } }
-       
+
+        [JsonProperty(Order = 0)]
         public string UWPIdentity { get => _uwpIdentity; set { _uwpIdentity = value; OnPropertyChanged(); } }
 
         private ApplicationItem()
@@ -92,23 +93,19 @@ namespace AutoActions
             IsUWPWepApp = true;
             UWPFamilyPackageName = uwpApp.FamilyPackageName;
             _uwpFullPackageName = uwpApp.FullPackageName;
-            _uwpApplicationID = uwpApp.ApplicationID;
             UWPIconPath = uwpApp.IconPath;
+            UWPApplicationID = uwpApp.ApplicationID;
             UWPIdentity = uwpApp.Identity;
         }
 
-       private void LoadUWPData()
+        private void LoadUWPData()
         {
             string packageNotFound = "[PackageNotFound]_";
 
             if (!IsUWP && !IsUWPWepApp)
                 return;
             UWPApp uwpApp;
-            //Compatibility for old UWP handling
-            if (string.IsNullOrEmpty(UWPFullPackageName))
-                uwpApp = UWPAppsManager.GetUWPApp(UWPFamilyPackageName, UWPApplicationID);
-            else
-                uwpApp = UWPAppsManager.GetUWPApp(UWPFullPackageName);
+            uwpApp = UWPAppsManager.GetUWPApp(UWPFamilyPackageName, UWPIdentity);
             if (uwpApp == null)
             {
                 if (PackageError)
@@ -124,7 +121,6 @@ namespace AutoActions
                 DisplayName = DisplayName.Substring(packageNotFound.Length, DisplayName.Length - packageNotFound.Length);
             UWPFamilyPackageName = uwpApp.FamilyPackageName;
             _uwpFullPackageName = uwpApp.FullPackageName;
-            _uwpApplicationID = uwpApp.ApplicationID;
             UWPIconPath = uwpApp.IconPath;
             UWPIdentity = uwpApp.Identity;
         }

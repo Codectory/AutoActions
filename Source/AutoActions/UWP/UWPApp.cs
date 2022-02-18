@@ -37,6 +37,7 @@ namespace AutoActions.UWP
         public string FullPackageName { get; private set; } = string.Empty;
 
         public string ApplicationID { get; private set; } = string.Empty;
+
         public string Identity { get; private set; } = string.Empty;
         public string IconPath { get; private set; } = string.Empty;
 
@@ -71,7 +72,8 @@ namespace AutoActions.UWP
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(AppxManifest));
                     AppxManifest appxManifest = (AppxManifest)serializer.Deserialize(reader);
-                    Name = ((XmlNode[])appxManifest.Properties.DisplayName)[0].Value;
+                    Name = package.DisplayName;
+                    //Name = ((XmlNode[])appxManifest.Properties.DisplayName)[0].Value;
                     if (Name.Contains("ms-resource:"))
                     {
                         Name = GetNameOfStrangeMicrosoftAppxManifest(appxManifest);
@@ -83,6 +85,7 @@ namespace AutoActions.UWP
                         IsWebApp = true;
                     FamilyPackageName = package.Id.FamilyName;
                     FullPackageName = package.Id.FullName;
+                    var a = package.Id.ResourceId;
                     ApplicationID = appxManifest.Applications?.Application.Id;
                     Identity = appxManifest.Identity.Name;
                     IconPath = GetIconPath(Path.Combine(InstallLocation, ((XmlNode[])(appxManifest.Properties.Logo))[0].Value));

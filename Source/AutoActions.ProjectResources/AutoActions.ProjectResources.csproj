@@ -66,11 +66,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ProjectLocales.de.Designer.cs">
-      <DependentUpon>ProjectLocales.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="ProjectLocales.Designer.cs">
       <DependentUpon>ProjectLocales.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -84,10 +79,7 @@
       <LastGenOutput>Locale_Enums.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectLocales.de.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ProjectLocales.de.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectLocales.de.resx" />
     <EmbeddedResource Include="ProjectLocales.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProjectLocales.Designer.cs</LastGenOutput>
