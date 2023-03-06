@@ -1,6 +1,9 @@
 # AutoActions
  
- 
+##Why are there no updates?
+  -> https://github.com/Codectory/AutoActions/discussions/141
+
+
 With AutoActions, you can created profiles which included several actions. You can change display settings, set default audio devices or launch any other script or program.
 Once you have added an application and assigned a profile to it, AutoActions will monitor this application and will run the actions based on the assigned profile.
 
