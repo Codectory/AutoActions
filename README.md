@@ -1,7 +1,7 @@
 # AutoActions
  
 ## Why are there no updates?
-  -> https://github.com/Codectory/AutoActions/discussions/141
+https://github.com/Codectory/AutoActions/discussions/141
 
 
 With AutoActions, you can created profiles which included several actions. You can change display settings, set default audio devices or launch any other script or program.
