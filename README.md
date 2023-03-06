@@ -1,6 +1,6 @@
 # AutoActions
  
-##Why are there no updates?
+## Why are there no updates?
   -> https://github.com/Codectory/AutoActions/discussions/141
 
 
