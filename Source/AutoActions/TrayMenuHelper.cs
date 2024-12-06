@@ -84,7 +84,7 @@ namespace AutoActions
                 Header = ProjectLocales.Actions
             };
             contextMenu.Items.Add(_actions);
-            Globals.Instance.Settings.ActionShortcuts.CollectionChanged += (o, e) =>
+            ProjectData.Instance.Settings.ActionShortcuts.CollectionChanged += (o, e) =>
                 {
                     switch (e.Action)
                     {
@@ -112,7 +112,7 @@ namespace AutoActions
             lock (_lockActions)
             {
                 _actions.Items.Clear();
-                foreach (var action in Globals.Instance.Settings.ActionShortcuts)
+                foreach (var action in ProjectData.Instance.Settings.ActionShortcuts)
                 {
                     MenuItem item = new MenuItem();
                     item.Header = action.ShortcutName;
@@ -129,7 +129,7 @@ namespace AutoActions
                 Header = ProjectLocales.Applications
             };
             contextMenu.Items.Add(_appplications);
-            Globals.Instance.Settings.ApplicationProfileAssignments.CollectionChanged += (o, e) =>
+            ProjectData.Instance.Settings.ApplicationProfileAssignments.CollectionChanged += (o, e) =>
             {
                 switch (e.Action)
                 {
@@ -158,7 +158,7 @@ namespace AutoActions
             {
                 var converter = new CodectoryCore.UI.Wpf.BitmapToBitmapImageConverter();
                 _appplications.Items.Clear();
-                foreach (var assignment in Globals.Instance.Settings.ApplicationProfileAssignments)
+                foreach (var assignment in ProjectData.Instance.Settings.ApplicationProfileAssignments)
                 {
                     MenuItem item = new MenuItem();
                     ImageSource imageSource = (ImageSource)converter.Convert(assignment.Application.Icon, typeof(ImageSource), null, System.Globalization.CultureInfo.CurrentUICulture);

@@ -1,4 +1,5 @@
-﻿using AutoActions.Displays;
+﻿using AutoActions.Core;
+using AutoActions.Displays;
 using AutoActions.Profiles;
 using AutoActions.Profiles.Actions;
 using CodectoryCore;

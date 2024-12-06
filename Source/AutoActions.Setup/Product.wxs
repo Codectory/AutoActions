@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="AutoActions.Setup" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="c76ecc9c-3eef-40f4-81b2-4ad031bcec23">
+	<Product Id="8688737A-50BD-4BAC-AFD1-DE2E820CBE0B" Name="AutoActions.Setup" Language="1033" Version="1.0.0.0" Manufacturer="Codectory" UpgradeCode="c76ecc9c-3eef-40f4-81b2-4ad031bcec23">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />

@@ -1140,6 +1140,15 @@ namespace AutoActions.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die UWP apps ähnelt.
+        /// </summary>
+        public static string UWPProvider {
+            get {
+                return ResourceManager.GetString("UWPProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Version ähnelt.
         /// </summary>
         public static string Version {

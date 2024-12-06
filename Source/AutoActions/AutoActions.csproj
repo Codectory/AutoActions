@@ -293,8 +293,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Applications\UWPApplicationItem.cs" />
+    <Compile Include="Applications\IApplicationProvider.cs" />
     <Compile Include="CheckUpdateResult.cs" />
-    <Compile Include="Globals.cs" />
+    <Compile Include="CommandLineHandler.cs" />
+    <Compile Include="ProjectData.cs" />
     <Compile Include="LoopManager.cs" />
     <Compile Include="ProfileActionShortcut.cs" />
     <Compile Include="Profiles\Actions\CloseProgramAction.cs" />
@@ -372,7 +375,6 @@
       <DependentUpon>UWPApplicationDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UWP\UWPApplicationDialog.cs" />
-    <Compile Include="Applications\ApplicationState.cs" />
     <Compile Include="Views\MonitorManagerView.xaml.cs">
       <DependentUpon>MonitorManagerView.xaml</DependentUpon>
     </Compile>
@@ -491,7 +493,7 @@
     <Compile Include="Views\ApplicationAdderView.xaml.cs">
       <DependentUpon>ApplicationAdderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Applications\ApplicationItem.cs" />
+    <Compile Include="Applications\FileApplicationItem.cs" />
     <Compile Include="ProcessWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

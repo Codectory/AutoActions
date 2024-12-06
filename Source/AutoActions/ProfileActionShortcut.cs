@@ -57,7 +57,7 @@ namespace AutoActions
         public RelayCommand<ProfileActionShortcut> EditActionShortcutCommand { get; private set; }
         public RelayCommand<ProfileActionShortcut> RemoveActionShortcutCommand { get; private set; }
 
-        public DispatchingObservableCollection<ProfileActionShortcut> ActionShortcuts => Globals.Instance.Settings.ActionShortcuts;
+        public DispatchingObservableCollection<ProfileActionShortcut> ActionShortcuts => ProjectData.Instance.Settings.ActionShortcuts;
 
         public ActionShortcutManager()
         {
@@ -75,7 +75,7 @@ namespace AutoActions
             adder.OKClicked += (o, e) =>
             {
                 ProfileActionShortcut shortcut = new ProfileActionShortcut(adder.ProfileAction, adder.ProfileAction.ActionDescription);
-                Globals.Instance.Settings.ActionShortcuts.Add(shortcut);
+                ProjectData.Instance.Settings.ActionShortcuts.Add(shortcut);
             };
             if (DialogService != null)
                 DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
@@ -83,7 +83,7 @@ namespace AutoActions
 
         private void RemoveActionShortcut(ProfileActionShortcut obj)
         {
-            Globals.Instance.Settings.ActionShortcuts.Remove(obj);
+            ProjectData.Instance.Settings.ActionShortcuts.Remove(obj);
         }
 
         private void EditActionShortcut(ProfileActionShortcut obj)

@@ -1,4 +1,5 @@
-﻿using CodectoryCore;
+﻿using AutoActions.Core;
+using CodectoryCore;
 using CodectoryCore.Logging;
 using CodectoryCore.UI.Wpf;
 using System;

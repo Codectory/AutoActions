@@ -429,6 +429,9 @@
   <data name="Updating" xml:space="preserve">
     <value>Aktualisiere AutoActions...</value>
   </data>
+  <data name="UWPProvider" xml:space="preserve">
+    <value>UWP-Apps</value>
+  </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>

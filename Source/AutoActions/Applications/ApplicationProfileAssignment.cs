@@ -11,13 +11,13 @@ namespace AutoActions
     public class ApplicationProfileAssignment : BaseViewModel
     {
         private int _position = -1;
-        private ApplicationItem _application = null;
+        private ApplicationItemBase _application = null;
 
 
-        private static SortableObservableCollection<ApplicationProfileAssignment> Assignments => Globals.Instance.Settings.ApplicationProfileAssignments;
+        private static SortableObservableCollection<ApplicationProfileAssignment> Assignments => ProjectData.Instance.Settings.ApplicationProfileAssignments;
 
         [JsonProperty]
-        public ApplicationItem Application { get => _application; set { _application = value; OnPropertyChanged(); }
+        public ApplicationItemBase Application { get => _application; set { _application = value; OnPropertyChanged(); }
         }
 
         private Guid _profileGuid = Guid.Empty;
@@ -37,8 +37,8 @@ namespace AutoActions
         public Profile Profile {
             get
             {
-                if (Globals.Instance.Settings.ApplicationProfiles.Any(p => p.GUID.Equals(_profileGuid)))
-                    return Globals.Instance.Settings.ApplicationProfiles.First(p => p.GUID.Equals(_profileGuid));
+                if (ProjectData.Instance.Settings.ApplicationProfiles.Any(p => p.GUID.Equals(_profileGuid)))
+                    return ProjectData.Instance.Settings.ApplicationProfiles.First(p => p.GUID.Equals(_profileGuid));
                 else
                     return null;
             }
@@ -62,13 +62,13 @@ namespace AutoActions
 
         }
 
-        private ApplicationProfileAssignment(ApplicationItem application)
+        private ApplicationProfileAssignment(ApplicationItemBase application)
         {
             Application = application;
         }
 
 
-        public static ApplicationProfileAssignment NewAssigment(ApplicationItem application)
+        public static ApplicationProfileAssignment NewAssigment(ApplicationItemBase application)
         {
             ApplicationProfileAssignment assigment = new ApplicationProfileAssignment(application);
             assigment.Position = GetNextPosition();

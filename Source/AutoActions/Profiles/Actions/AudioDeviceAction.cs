@@ -19,16 +19,16 @@ namespace AutoActions.Profiles.Actions
         private Guid _playbackDeviceID = Guid.Empty;
 
         [JsonProperty]
-        public Guid PlaybackDeviceID { get => _playbackDeviceID; set { _playbackDeviceID = value; OnPropertyChanged(); OnPropertyChanged(nameof(PlaybackDevice)); } }
+        public Guid PlaybackDeviceID { get => _playbackDeviceID; set { _playbackDeviceID = value; OnPropertyChanged(); OnPropertyChanged(nameof(PlaybackDevice)); OnPropertyChanged(nameof(CanSave)); } }
 
 
-        public AudioDevice PlaybackDevice { get => AudioController.Instance.OutputAudioDevices.FirstOrDefault(d => d.ID.Equals(PlaybackDeviceID)); set { PlaybackDeviceID = value.ID; } }
+        public AudioDevice PlaybackDevice { get => AudioController.Instance.OutputAudioDevices.FirstOrDefault(d => d.ID.Equals(PlaybackDeviceID)); set { PlaybackDeviceID = value.ID; OnPropertyChanged(nameof(CanSave)); } }
 
 
         private bool _setOutput = false;
 
         [JsonProperty]
-        public bool ChangePlaybackDevice { get => _setOutput; set { _setOutput = value; OnPropertyChanged(); } }
+        public bool ChangePlaybackDevice { get => _setOutput; set { _setOutput = value; OnPropertyChanged(); OnPropertyChanged(nameof(CanSave)); } }
 
 
         private Guid _recodDeviceID =Guid.Empty;
@@ -38,7 +38,7 @@ namespace AutoActions.Profiles.Actions
 
 
 
-        public AudioDevice RecordDevice { get => AudioController.Instance.InputAudioDevices.FirstOrDefault(d => d.ID.Equals(RecordDeviceID)); set { RecordDeviceID = value.ID; } }
+        public AudioDevice RecordDevice { get => AudioController.Instance.InputAudioDevices.FirstOrDefault(d => d.ID.Equals(RecordDeviceID)); set { RecordDeviceID = value.ID; OnPropertyChanged(nameof(CanSave)); } }
 
         private bool _setInput = false;
 

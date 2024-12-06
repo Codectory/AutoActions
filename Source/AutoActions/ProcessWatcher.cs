@@ -22,13 +22,13 @@ namespace AutoActions
         readonly object _applicationsLock = new object();
         readonly object _accessLock = new object();
 
-        Dictionary<ApplicationItem, ApplicationState> _applications = new Dictionary<ApplicationItem, ApplicationState>();
-        public IReadOnlyDictionary<ApplicationItem, ApplicationState> Applications
+        Dictionary<ApplicationItemBase, ApplicationState> _applications = new Dictionary<ApplicationItemBase, ApplicationState>();
+        public IReadOnlyDictionary<ApplicationItemBase, ApplicationState> Applications
         {
             get
             {
                 lock (_applicationsLock)
-                    return new ReadOnlyDictionary<ApplicationItem, ApplicationState>(_applications.ToDictionary(entry => entry.Key, entry => entry.Value));
+                    return new ReadOnlyDictionary<ApplicationItemBase, ApplicationState>(_applications.ToDictionary(entry => entry.Key, entry => entry.Value));
             }
         }
 
@@ -55,7 +55,7 @@ namespace AutoActions
             NewLog?.Invoke(this, logMessage);
         }
   
-        public void AddProcess(ApplicationItem application)
+        public void AddProcess(ApplicationItemBase application)
         {
             lock (_applicationsLock)
             {
@@ -67,7 +67,7 @@ namespace AutoActions
             }
         }
 
-        public void RemoveProcess(ApplicationItem application)
+        public void RemoveProcess(ApplicationItemBase application)
         {
             lock (_applicationsLock)
             {
@@ -119,11 +119,11 @@ namespace AutoActions
             {
                 lock (_applicationsLock)
                     UpdateApplications();
-                Thread.Sleep(Globals.GlobalRefreshInterval);
+                Thread.Sleep(ProjectData.GlobalRefreshInterval);
             }
         }
 
-        private void CallApplicationChanged(ApplicationItem application, ApplicationChangedType changedType)
+        private void CallApplicationChanged(ApplicationItemBase application, ApplicationChangedType changedType)
         {
             ApplicationChanged?.Invoke(this, new ApplicationChangedEventArgs(application,changedType));
 
@@ -135,11 +135,11 @@ namespace AutoActions
             {
 
 
-                List<ApplicationItem> applications = _applications.Select(a => a.Key).ToList();
+                List<ApplicationItemBase> applications = _applications.Select(a => a.Key).ToList();
 
                 Process[] processes = Process.GetProcesses();
 
-                foreach (ApplicationItem application in applications)
+                foreach (ApplicationItemBase application in applications)
                 {
                     bool callNewRunning = false;
                     bool callGotFocus = false;

@@ -17,10 +17,10 @@ namespace AutoActions
     }
     public class ApplicationChangedEventArgs : EventArgs
     {
-        public ApplicationItem Application { get; }
+        public ApplicationItemBase Application { get; }
         public ApplicationChangedType ChangedType { get; }
 
-        public ApplicationChangedEventArgs(ApplicationItem application, ApplicationChangedType changedType)
+        public ApplicationChangedEventArgs(ApplicationItemBase application, ApplicationChangedType changedType)
         {
             Application = application ?? throw new ArgumentNullException(nameof(application));
             ChangedType = changedType;

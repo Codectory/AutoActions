@@ -10,18 +10,33 @@ using System.Security.Principal;
 
 using Windows.Management.Deployment;
 using Windows.ApplicationModel;
+using AutoActions.Applications;
+using AutoActions.Core;
 
 namespace AutoActions.UWP
 {
-    public static class UWPAppsManager
+    public class UWPAppsManager : IApplicationProvider
     {
-        static PackageManager manager = new PackageManager();
+        static UWPAppsManager _instance = null;
 
+        public static UWPAppsManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UWPAppsManager();
+                return _instance;
+            }
+        }
+        PackageManager manager = new PackageManager();
 
         private const string xboxPassAppFN = "Microsoft.GamingApp_8wekyb3d8bbwe";
 
+        public string ProviderName => "UWPProvider";
 
-        public static UWPApp GetUWPApp(string packageNameOrFamilyPackageName, string identity = "")
+        public string LocalizedCaption => ProjectResources.ProjectLocales.UWPProvider;
+
+        public UWPApp GetUWPApp(string packageNameOrFamilyPackageName, string identity = "")
         {
             var package = manager.FindPackageForUser(WindowsIdentity.GetCurrent().User.Value, packageNameOrFamilyPackageName);
             if (package == null)
@@ -29,7 +44,7 @@ namespace AutoActions.UWP
             return new UWPApp(package);
         }
 
-        private static UWPApp GetUWPAppCompatible(string familyPackageName, string identity)
+        private UWPApp GetUWPAppCompatible(string familyPackageName, string identity)
         {
             foreach (var package in manager.FindPackagesForUser(WindowsIdentity.GetCurrent().User.Value))
             {
@@ -45,12 +60,12 @@ namespace AutoActions.UWP
         }
 
 
-        public static List<ApplicationItem> GetUWPApps()
+        public List<ApplicationItemBase> GetApplications()
         {
 
             Globals.Logs.Add($"Retrieving UWP apps...", false);
 
-            List<ApplicationItem> uwpApps = new List<ApplicationItem>();
+            List<ApplicationItemBase> uwpApps = new List<ApplicationItemBase>();
             IEnumerable<Package> packages = manager.FindPackagesForUser(WindowsIdentity.GetCurrent().User.Value);
             try
             {
@@ -78,7 +93,7 @@ namespace AutoActions.UWP
                     {
                         UWPApp uwpApp = new UWPApp(package);
                         if (!string.IsNullOrEmpty(uwpApp.ApplicationID))
-                         uwpApps.Add(new ApplicationItem(uwpApp));
+                         uwpApps.Add(new UWPApplicationItem(uwpApp));
                     }
                     catch
                     {
@@ -94,7 +109,7 @@ namespace AutoActions.UWP
             }
         }
 
-        public static void StartUWPApp(string FamilyPackage, string applicationID)
+        public void StartUWPApp(string FamilyPackage, string applicationID)
         {
             Process process = new Process();
             process.StartInfo.FileName = "explorer.exe";
@@ -102,6 +117,5 @@ namespace AutoActions.UWP
             process.Start();
 
         }
-
     }
 }

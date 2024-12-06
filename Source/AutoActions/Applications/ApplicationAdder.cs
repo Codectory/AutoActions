@@ -19,11 +19,11 @@ namespace AutoActions
 
         private string _displayName = string.Empty;
         private string _filePath = string.Empty;
-        private ApplicationItem applicationItem = null;
+        private ApplicationItemBase applicationItem = null;
         private bool _editMode = false;
 
         public bool EditMode { get => _editMode; set { _editMode = value; OnPropertyChanged(); } }
-        public ApplicationItem ApplicationItem { get => applicationItem; private set { applicationItem = value; OnPropertyChanged(); } }
+        public ApplicationItemBase ApplicationItem { get => applicationItem; private set { applicationItem = value; OnPropertyChanged(); } }
 
         public RelayCommand GetFileCommand { get; private set; }
         public RelayCommand GetUWPAppCommand { get; private set; }
@@ -40,7 +40,7 @@ namespace AutoActions
             CreateRelayCommands();
         }
 
-        public ApplicationAdder(ApplicationItem application)
+        public ApplicationAdder(ApplicationItemBase application)
         {
             EditMode = true;
             Title = ProjectLocales.Edit;
@@ -86,7 +86,7 @@ namespace AutoActions
             FilePath = filePath;
             if (string.IsNullOrEmpty(DisplayName))
                 DisplayName = new FileInfo(FilePath).Name.Replace(".exe", "");
-            ApplicationItem = new ApplicationItem(DisplayName, FilePath);
+            ApplicationItem = new ApplicationItemBase(DisplayName, FilePath);
 
         }
 

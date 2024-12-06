@@ -1145,6 +1145,9 @@ Public License instead of this License.  But first, please read
   <data name="Updating" xml:space="preserve">
     <value>Updating AutoActions...</value>
   </data>
+  <data name="UWPProvider" xml:space="preserve">
+    <value>UWP apps</value>
+  </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>

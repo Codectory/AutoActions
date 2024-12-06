@@ -1,4 +1,5 @@
 ﻿using AutoActions.Audio;
+using AutoActions.Core;
 using AutoActions.Displays;
 using AutoActions.Info;
 using AutoActions.Info.Github;
@@ -30,7 +31,7 @@ namespace AutoActions
 
         readonly object _accessLock = new object();
         private bool _showView = false;
-        private ApplicationItem _currentApplication = null;
+        private ApplicationItemBase _currentApplication = null;
         private Profile _currentProfile = null;
         private ObservableCollection<IProfileAction> _lastActions;
 
@@ -74,7 +75,7 @@ namespace AutoActions
 
         #endregion RelayCommands
 
-        public UserAppSettings Settings { get => Globals.Instance.Settings; set { Globals.Instance.Settings = value; OnPropertyChanged(); } }
+        public UserAppSettings Settings { get => ProjectData.Instance.Settings; set { ProjectData.Instance.Settings = value; OnPropertyChanged(); } }
         public Profile CurrentProfile { get => _currentProfile; set { _currentProfile = value; OnPropertyChanged(); } }
         public ObservableCollection<IProfileAction> LastActions { get => _lastActions; set { _lastActions = value; OnPropertyChanged(); } }
 
@@ -83,7 +84,7 @@ namespace AutoActions
         public bool Initialized { get; private set; } = false;
         public bool ShowView { get => _showView; set { _showView = value; OnPropertyChanged(); } } 
 
-        public ApplicationItem CurrentApplication { get => _currentApplication; set { _currentApplication = value; OnPropertyChanged(); } }
+        public ApplicationItemBase CurrentApplication { get => _currentApplication; set { _currentApplication = value; OnPropertyChanged(); } }
 
         public bool HDRIsActive { get => _hdrIsActive; set { _hdrIsActive = value; OnPropertyChanged(); } }
         public Version Version
@@ -150,7 +151,7 @@ namespace AutoActions
                         if (Settings.CheckForNewVersion)
                         {
 
-                            CheckUpdateResult result = Globals.Instance.CheckUpdate();
+                            CheckUpdateResult result = ProjectData.Instance.CheckUpdate();
                             if (result.UpdateAvailable && Settings.AutoUpdate)
                             {
                             Application.Current.Dispatcher.Invoke(() =>
@@ -165,7 +166,7 @@ namespace AutoActions
                                 }
                             });
 
-                                Globals.Instance.AutoUpdate(result.GitHubData);
+                                ProjectData.Instance.AutoUpdate(result.GitHubData);
                             }
                         }
                     });
@@ -173,7 +174,7 @@ namespace AutoActions
                     InitializeDisplayManager();
                     InitializeAudioManager();
                     InitializeTrayMenuHelper();
-                    Globals.Instance.SaveSettings();
+                    ProjectData.Instance.SaveSettings();
                     CreateRelayCommands();
                     ShowView = !Settings.StartMinimizedToTray;
                     Initialized = true;
@@ -219,7 +220,7 @@ namespace AutoActions
             Globals.Logs.Add(e, false);
         }
 
-        private void UpdateCurrentProfile(ApplicationItem application, ApplicationChangedType changedType)
+        private void UpdateCurrentProfile(ApplicationItemBase application, ApplicationChangedType changedType)
         {
             lock (_accessLock)
             {
@@ -326,7 +327,7 @@ namespace AutoActions
             ShutdownCommand = new RelayCommand(Shutdown);
             StartApplicationCommand = new RelayCommand<ApplicationProfileAssignment>(LaunchApplication);
             ShowLicenseCommand = new RelayCommand(ShowLicense);
-            ShowInfoCommand = new RelayCommand(Globals.Instance.ShowInfo);
+            ShowInfoCommand = new RelayCommand(ProjectData.Instance.ShowInfo);
             ShowLogsCommand = new RelayCommand(ShowLogs);
 
             BuyBeerCommand = new RelayCommand(BuyBeer);
@@ -573,7 +574,7 @@ namespace AutoActions
                     Globals.Logs.AddException(ex);
                 }
                 Globals.Logs.LogFileEnabled = Settings.CreateLogFile;
-                Globals.Instance.SaveSettings();
+                ProjectData.Instance.SaveSettings();
             }
         }
 
@@ -600,13 +601,13 @@ namespace AutoActions
                     break;
             }
 
-            Globals.Instance.SaveSettings();
+            ProjectData.Instance.SaveSettings();
         }
 
         private void Monitor_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Display.Managed))
-                Globals.Instance.SaveSettings();
+                ProjectData.Instance.SaveSettings();
         }
         private void ApplicationProfiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -641,7 +642,7 @@ namespace AutoActions
                     }
                     break;
             }
-            Globals.Instance.SaveSettings();
+            ProjectData.Instance.SaveSettings();
 
         }
 
@@ -667,7 +668,7 @@ namespace AutoActions
                     }
                     break;
             }
-            Globals.Instance.SaveSettings();
+            ProjectData.Instance.SaveSettings();
         }
 
 
@@ -691,7 +692,7 @@ namespace AutoActions
                     }
                     break;
             }
-            Globals.Instance.SaveSettings();
+            ProjectData.Instance.SaveSettings();
         }
 
         readonly object _lockAssignments = new object();
@@ -765,7 +766,7 @@ namespace AutoActions
 
                         break;
                 }
-                Globals.Instance.SaveSettings();
+                ProjectData.Instance.SaveSettings();
             }
             finally
             {
@@ -778,7 +779,7 @@ namespace AutoActions
 
         private void SaveSettingsOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Globals.Instance.SaveSettings();
+            ProjectData.Instance.SaveSettings();
         }
 
 

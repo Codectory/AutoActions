@@ -22,7 +22,7 @@ namespace AutoActions.Profiles.Actions
         public override bool CanSave => ReferenceProfile != null && IsLoopFree();
 
         public override string CannotSaveMessage => CanSave ? string.Empty : ProjectLocales.MessageReferenceLoop;
-        public DispatchingObservableCollection<Profile> AllProfiles => Globals.Instance.Settings.ApplicationProfiles;
+        public DispatchingObservableCollection<Profile> AllProfiles => ProjectData.Instance.Settings.ApplicationProfiles;
         public override string ActionTypeName => ProjectResources.ProjectLocales.ReferenceProfileAction;
 
 

@@ -23,7 +23,7 @@ namespace AutoActions.Views
         {
             e.Cancel = true;
             Size size = new Size(Width, Height);
-            Globals.Instance.Settings.WindowSize = size;
+            ProjectData.Instance.Settings.WindowSize = size;
             this.Hide();
         }
 
@@ -34,11 +34,11 @@ namespace AutoActions.Views
         {
             try
             {
-                Globals.Instance.SettingsLoaded += Instance_SettingsLoaded;
-                if (Globals.Instance.SettingsLoadedOnce)
+                ProjectData.Instance.SettingsLoaded += Instance_SettingsLoaded;
+                if (ProjectData.Instance.SettingsLoadedOnce)
                 {
-                    Width = Globals.Instance.Settings.WindowSize.Width;
-                    Height = Globals.Instance.Settings.WindowSize.Height;
+                    Width = ProjectData.Instance.Settings.WindowSize.Width;
+                    Height = ProjectData.Instance.Settings.WindowSize.Height;
                 }
             }
             catch  { }       
@@ -46,8 +46,8 @@ namespace AutoActions.Views
 
         private void Instance_SettingsLoaded(object sender, EventArgs e)
         {
-            Width = Globals.Instance.Settings.WindowSize.Width;
-            Height = Globals.Instance.Settings.WindowSize.Height;
+            Width = ProjectData.Instance.Settings.WindowSize.Width;
+            Height = ProjectData.Instance.Settings.WindowSize.Height;
         }
     }
 }

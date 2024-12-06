@@ -56,11 +56,15 @@
     <Reference Include="CodectoryCore.UI.Wpf">
       <HintPath>..\Externals\CodectoryCore.UI.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="CodectoryCore.Windows">
+      <HintPath>..\Externals\CodectoryCore.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,10 +74,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Applications\ApplicationItemBase.cs" />
+    <Compile Include="Applications\ApplicationState.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AutoActions.ProjectResources\AutoActions.ProjectResources.csproj">
+      <Project>{bc368558-8b03-4310-b4d3-efe3ba7bccb6}</Project>
+      <Name>AutoActions.ProjectResources</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

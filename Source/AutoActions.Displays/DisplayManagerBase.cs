@@ -170,7 +170,6 @@ namespace AutoActions.Displays
             if (0 != NativeMethods.EnumDisplaySettings(
                 d.DeviceName, NativeMethods.ENUM_CURRENT_SETTINGS, ref dm))
             {
-
                 return (ColorDepth)dm.dmBitsPerPel;
             }
             return ColorDepth.BPCUnkown;

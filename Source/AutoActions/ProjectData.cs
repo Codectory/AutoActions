@@ -1,4 +1,5 @@
-﻿using AutoActions.Info;
+﻿using AutoActions.Core;
+using AutoActions.Info;
 using AutoActions.Info.Github;
 using AutoActions.Profiles;
 using CodectoryCore;
@@ -16,10 +17,9 @@ using System.Windows;
 
 namespace AutoActions
 {
-    public class Globals : BaseViewModel
+    public class ProjectData : BaseViewModel
     {
 
-        public static Logs Logs = new Logs($"{System.AppDomain.CurrentDomain.BaseDirectory}AutoActions.log", "AutoActions", Assembly.GetExecutingAssembly().GetName().Version.ToString(), false);
 
         public static int GlobalRefreshInterval = 500;
 
@@ -28,7 +28,7 @@ namespace AutoActions
         private string SettingsPath => $"{System.AppDomain.CurrentDomain.BaseDirectory}UserSettings.json";
 
 
-        public static Globals Instance = new Globals();
+        public static ProjectData Instance = new ProjectData();
 
         private UserAppSettings _settings;
         public UserAppSettings Settings { get => _settings; set { _settings = value; OnPropertyChanged(); } }

@@ -23,20 +23,28 @@ namespace AutoActions
         static Mutex mutex;
 
         [STAThread]
-        public static void Main()
+        public static void Main(params string[] parameters)
          {
          bool createNew = false;
-            mutex = new Mutex(true, "{2846416C-610B-4A6B-A31C-A4AA6826E9BE}", out createNew);
-            if (mutex.WaitOne(TimeSpan.Zero, true))
+            if (parameters.Length == 0)
             {
-                var application = new App();
-                application.InitializeComponent();
-                Globals.Instance.LoadSettings();
-                application.Run();
+                mutex = new Mutex(true, "{2846416C-610B-4A6B-A31C-A4AA6826E9BE}", out createNew);
+                if (mutex.WaitOne(TimeSpan.Zero, true))
+                {
+                    var application = new App();
+                    application.InitializeComponent();
+                    ProjectData.Instance.LoadSettings();
+                    application.Run();
+                }
+                else
+                {
+                    MessageBox.Show(ProjectLocales.AlreadyRunning);
+                }
             }
             else
             {
-                MessageBox.Show(ProjectLocales.AlreadyRunning);
+                ProjectData.Instance.LoadSettings();
+                CommandLineHandler.HandleArguments(parameters);
             }
         }
 
@@ -44,7 +52,7 @@ namespace AutoActions
         {
             base.OnStartup(e);
             Views.AutoActionsMainView mainView = new Views.AutoActionsMainView();
-            if (!Globals.Instance.Settings.StartMinimizedToTray)
+            if (!ProjectData.Instance.Settings.StartMinimizedToTray)
                 mainView.Show();
         }
 

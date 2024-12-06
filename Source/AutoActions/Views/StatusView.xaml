@@ -101,9 +101,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
 
             </Grid.RowDefinitions>
@@ -111,7 +111,7 @@
             <TextBlock Style="{StaticResource SubTitleTextBlock}"  Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentApplication}"   VerticalAlignment="Center"/>
             <TextBlock Style="{StaticResource SubTitleTextBlock}"  Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.CurrentProfile}"   VerticalAlignment="Center" />
             <TextBlock Style="{StaticResource SubTitleTextBlock}"  Grid.Row="3" Grid.Column="0"  HorizontalAlignment="Left"  Text="{x:Static pres:ProjectLocales.LastActions}" VerticalAlignment="Top"   />
-            <CheckBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Height="20" Margin="15,7,0,10" Style="{StaticResource ToggleStatus}" IsChecked="{Binding HDRIsActive}"/>
+            <CheckBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Height="20" Margin="5,7,0,10" Style="{StaticResource ToggleStatus}" IsChecked="{Binding HDRIsActive}"/>
 
             <Grid  Grid.Row="1" Grid.Column="1">
                 <Grid.ColumnDefinitions>
@@ -119,7 +119,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Width="50" Grid.Column="0"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="{StaticResource IconBackgroundBrush}">
+                <Border Width="50"  Height="50" Grid.Column="0"  CornerRadius="{StaticResource DefaultCornerRadius}" Background="{StaticResource IconBackgroundBrush}" Margin="5">
                     <Border  Height="49" Width="49" CornerRadius="{StaticResource DefaultCornerRadius}" Margin="1">
                         <Border.Background>
                             <ImageBrush Stretch="Fill" ImageSource="{Binding CurrentApplication.Icon, Converter={StaticResource BitmapToBitmapImageConverter}}"/>
