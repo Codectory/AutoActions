@@ -1,3 +1,5 @@
+//source https://github.com/thexai/xbmc
+
 #define WIN32_LEAN_AND_MEAN      // Exclude rarely-used stuff from Windows headers
 
 #include <windows.h>
@@ -11,12 +13,18 @@
 #include <wingdi.h>
 #include <stdexcept>
 #include <string> 
-
+#include <VersionHelpers.h>
+#include <dwmapi.h>
 #include <stdint.h>
 #include <cstdlib>
 #include <cstring>
 #include <conio.h>
 #include <vector>
+
+// @todo: Remove this and "SDK_26100.h" when Windows SDK updated to 10.0.26100.0 in builders
+#ifndef NTDDI_WIN11_GE // Windows SDK 10.0.26100.0 or newer
+#include "SDK_26100.h"
+#endif
 
 
 using namespace core;
@@ -375,12 +383,57 @@ static void _SetColorDepth(UINT32 uid, UINT32 colorDepth)
 		}
 	}
 }
+typedef LONG NTSTATUS;
 
-
-
-
-static bool HDRIsOn(UINT32 uid)
+static bool sysGetVersionExWByRef(OSVERSIONINFOEXW& osVerInfo)
 {
+	osVerInfo.dwOSVersionInfoSize = sizeof(osVerInfo);
+	typedef NTSTATUS(__stdcall* RtlGetVersionPtr)(RTL_OSVERSIONINFOEXW* pOsInfo);
+	static HMODULE hNtDll = GetModuleHandleW(L"ntdll.dll");
+	if (hNtDll != NULL)
+	{
+		static RtlGetVersionPtr RtlGetVer = (RtlGetVersionPtr)GetProcAddress(hNtDll, "RtlGetVersion");
+		if (RtlGetVer && RtlGetVer(&osVerInfo) == 0)
+			return true;
+	}
+	// failed to get OS information directly from ntdll.dll
+	// use GetVersionExW() as fallback
+	// note: starting from Windows 8.1 GetVersionExW() may return unfaithful information 
+     #pragma warning(disable : 4996)
+	if (GetVersionExW((OSVERSIONINFOW*)&osVerInfo) != 0)
+		return true;
+
+	ZeroMemory(&osVerInfo, sizeof(osVerInfo));
+	return false;
+}
+
+static bool UseNewApi()
+{
+	OSVERSIONINFOEXW current = {};
+	sysGetVersionExWByRef(current);
+
+	// Initialize the OSVERSIONINFOEX structure.
+
+	if (current.dwMajorVersion >= 10)
+		return true;
+	else if (current.dwMajorVersion == 10)
+	{
+		if (current.dwMinorVersion > 0)
+			return true;
+		else if (current.dwMinorVersion == 0)
+		{
+			if (current.dwBuildNumber >= 2600)
+				return true;
+		}
+	}
+	return false;
+}
+
+
+static bool GetHDRStatus(UINT32 uid)
+{
+	bool hdrSupported{ false };
+	bool hdrEnabled{ false };
 	uint32_t pathCount, modeCount;
 
 	uint8_t set[] = { 0x0A, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x14, 0x81, 0x00, 0x00,
@@ -412,46 +465,56 @@ static bool HDRIsOn(UINT32 uid)
 			if (ERROR_SUCCESS == queryRet)
 
 			{
-
-
-
-				DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO getColorInfo = {};
-				getColorInfo.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_ADVANCED_COLOR_INFO;
-				getColorInfo.header.size = sizeof(getColorInfo);
-
-				DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE setColorState = {};
-				setColorState.header.type = DISPLAYCONFIG_DEVICE_INFO_SET_ADVANCED_COLOR_STATE;
-				setColorState.header.size = sizeof(setColorState);
-
-
+	
 				for (int i = 0; i < modeCount; i++)
 				{
-					try
+
+   					DISPLAYCONFIG_MODE_INFO mode = modesArray[i];
+
+					// Windows 11 24H2 or newer (SDK 10.0.26100.0)
+					if (UseNewApi())
 					{
-						if (modesArray[i].id != uid)
-							continue;
-						if (modesArray[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
+						DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO_2 getColorInfo2 = {};
+						getColorInfo2.header.type = static_cast<DISPLAYCONFIG_DEVICE_INFO_TYPE>(
+							DISPLAYCONFIG_DEVICE_INFO_GET_ADVANCED_COLOR_INFO_2);
+						getColorInfo2.header.size = sizeof(getColorInfo2);
+						getColorInfo2.header.adapterId = mode.adapterId;
+						getColorInfo2.header.id = mode.id;
+
+						if (ERROR_SUCCESS == DisplayConfigGetDeviceInfo(&getColorInfo2.header))
 						{
-							DISPLAYCONFIG_MODE_INFO mode = modesArray[i];
-							getColorInfo.header.adapterId.HighPart = mode.adapterId.HighPart;
-							getColorInfo.header.adapterId.LowPart = mode.adapterId.LowPart;
-							getColorInfo.header.id = mode.id;
-
-							setColorState.header.adapterId.HighPart = mode.adapterId.HighPart;
-							setColorState.header.adapterId.LowPart = mode.adapterId.LowPart;
-							setColorState.header.id = mode.id;
-
-							if (ERROR_SUCCESS == DisplayConfigGetDeviceInfo(&getColorInfo.header))
-							{
-
-								return getColorInfo.advancedColorSupported == 1 && getColorInfo.advancedColorEnabled == 1;
-							}
-
+							if (getColorInfo2.activeColorMode == DISPLAYCONFIG_ADVANCED_COLOR_MODE_HDR)
+								return true;
 						}
 					}
-					catch (const std::exception)
+					else
 					{
 
+						DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO getColorInfo = {};
+						getColorInfo.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_ADVANCED_COLOR_INFO;
+						getColorInfo.header.size = sizeof(getColorInfo);
+
+						try
+						{
+							if (modesArray[i].id != uid)
+								continue;
+							if (modesArray[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
+							{
+
+								getColorInfo.header.adapterId = mode.adapterId;
+								getColorInfo.header.id = mode.id;
+
+								if (ERROR_SUCCESS == DisplayConfigGetDeviceInfo(&getColorInfo.header))
+								{
+									return getColorInfo.advancedColorSupported == 1 && getColorInfo.advancedColorEnabled == 1;
+								}
+
+							}
+						}
+						catch (const std::exception)
+						{
+
+						}
 					}
 				}
 
@@ -469,7 +532,49 @@ static bool HDRIsOn(UINT32 uid)
 }
 
 
-static bool HDRIsOn()
+
+//static bool UseNewApi()
+//{
+//	return WindowsVersionIsAtLeast(10, 0, 26100);
+//}
+//
+//static bool WindowsVersionIsAtLeast(DWORD majorVersion, DWORD minorVersion, DWORD build)
+//{
+//	DWORD dwVersion = 0;
+//	DWORD dwMajorVersion = 0;
+//	DWORD dwMinorVersion = 0;
+//	DWORD dwBuild = 0;
+//
+//	dwVersion = GetVersion();
+//
+//	// Get the Windows version.
+//
+//	dwMajorVersion = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+//	dwMinorVersion = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+//
+//	// Get the build number.
+//
+//	if (dwVersion < 0x80000000)
+//	{
+//		dwBuild = (DWORD)(HIWORD(dwVersion));
+//	}
+//	if (dwMajorVersion > majorVersion)
+//		return true;
+//	else if (dwMajorVersion == majorVersion)
+//	{
+//		if (dwMinorVersion > minorVersion)
+//			return true;
+//		else if (dwMinorVersion == minorVersion)
+//		{
+//			if (dwBuild >= build)
+//				return true;
+//		}
+//	}
+//	return false;
+//}
+
+
+static bool GetHDRStatus()
 {
 	bool returnValue = false;
 
@@ -512,7 +617,7 @@ static bool HDRIsOn()
 				{
 					try
 					{
-						returnValue = HDRIsOn(modesArray[i].id);
+						returnValue = GetHDRStatus(modesArray[i].id);
 						if (returnValue)
 							return returnValue;
 					}
@@ -539,7 +644,7 @@ extern "C"
 
 	__declspec(dllexport) bool GetGlobalHDRState()
 	{
-		return HDRIsOn();
+		return GetHDRStatus();
 	}
 
 	__declspec(dllexport) void SetHDRState(UINT32 uid, bool enabled)
@@ -549,7 +654,7 @@ extern "C"
 
 	__declspec(dllexport) bool GetHDRState(UINT32 uid)
 	{
-		return HDRIsOn(uid);
+		return GetHDRStatus(uid);
 	}
 
 	__declspec(dllexport) UINT32 GetUID(UINT32 id)

@@ -15,26 +15,23 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="HDRController.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="DisplayData.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="DisplayData.h">
+    <ClInclude Include="SDK_26100.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
