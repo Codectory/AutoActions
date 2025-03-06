@@ -4,12 +4,6 @@ using CodectoryCore.UI.Wpf;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace AutoActions.Profiles
 {
@@ -49,8 +43,8 @@ namespace AutoActions.Profiles
         public RelayCommand AddGotFocusActionCommand { get; private set; }
         public RelayCommand AddLostFocusActionCommand { get; private set; }
 
-        public RelayCommand<ProfileActionBase> EditProfileActionCommand { get; private set; }
-        public RelayCommand<ProfileActionBase> RemoveProfileActionCommand { get; private set; }
+        public RelayCommand<ActionBase> EditProfileActionCommand { get; private set; }
+        public RelayCommand<ActionBase> RemoveProfileActionCommand { get; private set; }
 
 
 
@@ -61,8 +55,8 @@ namespace AutoActions.Profiles
             AddClosedActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.Closed));
             AddGotFocusActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.GotFocus));
             AddLostFocusActionCommand = new RelayCommand(() => AddProfileAction(ProfileActionListType.LostFocus));
-            EditProfileActionCommand = new RelayCommand<ProfileActionBase>((pa) => EditProfileAction(pa));
-            RemoveProfileActionCommand = new RelayCommand<ProfileActionBase>((pa) => RemoveProfileAction(pa));
+            EditProfileActionCommand = new RelayCommand<ActionBase>((pa) => EditProfileAction(pa));
+            RemoveProfileActionCommand = new RelayCommand<ActionBase>((pa) => RemoveProfileAction(pa));
         }
 
         private Guid _guid = Guid.Empty;
@@ -156,7 +150,7 @@ namespace AutoActions.Profiles
                 DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
         }
 
-        public void EditProfileAction(ProfileActionBase profileAction)
+        public void EditProfileAction(ActionBase profileAction)
         {
             ProfileActionListType listType = GetProfileActionListType(profileAction);
             ProfileActionAdder adder = new ProfileActionAdder(profileAction);
@@ -166,7 +160,7 @@ namespace AutoActions.Profiles
                 DialogService.ShowDialogModal(adder, new System.Drawing.Size(800, 600));
         }
 
-        private ProfileActionListType GetProfileActionListType(ProfileActionBase profileAction)
+        private ProfileActionListType GetProfileActionListType(ActionBase profileAction)
         {
             if (ApplicationStarted.Contains(profileAction))
                 return ProfileActionListType.Started;
@@ -197,7 +191,7 @@ namespace AutoActions.Profiles
             }
         }
 
-        public void RemoveProfileAction(ProfileActionBase profileAction)
+        public void RemoveProfileAction(ActionBase profileAction)
         {
             if (ApplicationStarted.Contains(profileAction))
                 ApplicationStarted.Remove(profileAction);
@@ -210,7 +204,7 @@ namespace AutoActions.Profiles
         }
 
 
-        public void RemoveProfileAction(ProfileActionListType listType, ProfileActionBase profileAction)
+        public void RemoveProfileAction(ProfileActionListType listType, ActionBase profileAction)
         {
             switch (listType)
             {

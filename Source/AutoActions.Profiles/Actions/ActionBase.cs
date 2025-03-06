@@ -14,7 +14,7 @@ using System.Xml.Serialization;
 namespace AutoActions.Profiles.Actions
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class ProfileActionBase : BaseViewModel, IProfileAction
+    public abstract class ActionBase : BaseViewModel, IAction
     {
         public EventHandler<LogEntry> NewLog { get; set; }
         public abstract string ActionDescription { get; }
@@ -23,7 +23,7 @@ namespace AutoActions.Profiles.Actions
         public abstract string CannotSaveMessage { get; }
         public abstract ActionEndResult RunAction(ApplicationChangedType applicationChangedType);
 
-        public ProfileActionBase()
+        public ActionBase()
         {
             PropertyChanged += ProfileActionBase_PropertyChanged;
         }

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoActions.Audio", "AutoAc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoActions.Updater", "AutoActions.Updater\AutoActions.Updater.csproj", "{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoActions.Profiles", "AutoActions.Profiles\AutoActions.Profiles.csproj", "{D12450B3-03E4-41F4-97E9-105D2222AD21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -111,6 +113,18 @@ Global
 		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Test|x64.Build.0 = Release|x64
 		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Test|x86.ActiveCfg = Release|x86
 		{5DF058E2-C5AB-42DE-8EED-D22FF39960AD}.Test|x86.Build.0 = Release|x86
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Debug|x64.Build.0 = Debug|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Debug|x86.Build.0 = Debug|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Release|x64.ActiveCfg = Release|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Release|x64.Build.0 = Release|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Release|x86.ActiveCfg = Release|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Release|x86.Build.0 = Release|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Test|x64.ActiveCfg = Debug|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Test|x64.Build.0 = Debug|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Test|x86.ActiveCfg = Debug|Any CPU
+		{D12450B3-03E4-41F4-97E9-105D2222AD21}.Test|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -53,16 +53,16 @@ namespace AutoActions.Profiles.Actions
             {
                 _contentControlViewModel = value;
                 OnPropertyChanged();
-                ProfileAction = (IProfileAction)ContentControlViewModel;
+                ProfileAction = (IAction)ContentControlViewModel;
                 UpdateCanCreate();
 
             }
         }
     
 
-        private IProfileAction _profileAction = null;
+        private IAction _profileAction = null;
 
-        public IProfileAction ProfileAction { get => _profileAction; set { _profileAction = value; OnPropertyChanged(); } }
+        public IAction ProfileAction { get => _profileAction; set { _profileAction = value; OnPropertyChanged(); } }
 
         public List<ActionTypeDescription> ProfileActions
         {
@@ -89,7 +89,7 @@ namespace AutoActions.Profiles.Actions
             CreateRelayCommands();
         }
 
-        public ProfileActionAdder(IProfileAction action)
+        public ProfileActionAdder(IAction action)
         {
             EditMode = true;
             ActionType = ProfileActions.First(d => d.ActionType.Equals(action.GetType()));

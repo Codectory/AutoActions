@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace AutoActions.Profiles.Actions
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class RunProgramAction : ProfileActionBase
+    public class RunProgramAction : ActionBase
     {
 
         public override bool CanSave => !string.IsNullOrEmpty(FilePath) && File.Exists(FilePath);

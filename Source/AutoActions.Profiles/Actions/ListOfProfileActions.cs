@@ -12,7 +12,7 @@ namespace AutoActions.Profiles.Actions
 {
 
 
-    public class ListOfProfileActions : ObservableCollection<IProfileAction>/*, IXmlSerializable*/
+    public class ListOfProfileActions : ObservableCollection<IAction>/*, IXmlSerializable*/
     {
         public ListOfProfileActions() : base() { }
 
@@ -35,7 +35,7 @@ namespace AutoActions.Profiles.Actions
                 XmlSerializer serial = new XmlSerializer(type);
 
                 reader.ReadStartElement("IProfileAction");
-                this.Add((IProfileAction)serial.Deserialize(reader));
+                this.Add((IAction)serial.Deserialize(reader));
                 reader.ReadEndElement();
             }
             reader.ReadEndElement();
@@ -45,7 +45,7 @@ namespace AutoActions.Profiles.Actions
 
         public void WriteXml(XmlWriter writer)
         {
-            foreach (IProfileAction dispatcher in this)
+            foreach (IAction dispatcher in this)
             {
                 writer.WriteStartElement("IProfileAction");
                 writer.WriteAttributeString

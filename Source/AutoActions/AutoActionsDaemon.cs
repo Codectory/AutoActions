@@ -32,7 +32,7 @@ namespace AutoActions
         private bool _showView = false;
         private ApplicationItem _currentApplication = null;
         private Profile _currentProfile = null;
-        private ObservableCollection<IProfileAction> _lastActions;
+        private ObservableCollection<IAction> _lastActions;
 
 
         private bool _hdrIsActive;
@@ -76,7 +76,7 @@ namespace AutoActions
 
         public UserAppSettings Settings { get => Globals.Instance.Settings; set { Globals.Instance.Settings = value; OnPropertyChanged(); } }
         public Profile CurrentProfile { get => _currentProfile; set { _currentProfile = value; OnPropertyChanged(); } }
-        public ObservableCollection<IProfileAction> LastActions { get => _lastActions; set { _lastActions = value; OnPropertyChanged(); } }
+        public ObservableCollection<IAction> LastActions { get => _lastActions; set { _lastActions = value; OnPropertyChanged(); } }
 
 
 
@@ -140,7 +140,7 @@ namespace AutoActions
                     _threadManager = new ThreadManager();
                     _threadManager.NewLog += (o, e) => Globals.Logs.Add(e, false);
                     _logsStorage = new LogsStorage();
-                    _lastActions = new ObservableCollection<IProfileAction>();
+                    _lastActions = new ObservableCollection<IAction>();
                     InitializeApplicationWatcher();
                     InitializeSettings();
               
@@ -241,7 +241,7 @@ namespace AutoActions
                 CurrentProfile = profile;
                 if (profileChanged)
                     Globals.Logs.Add($"Profile changed to {profile.Name}", false);
-                List<IProfileAction> actions = new List<IProfileAction>();
+                List<IAction> actions = new List<IAction>();
                 switch (changedType)
                 {
                     case ApplicationChangedType.Started:
@@ -677,14 +677,14 @@ namespace AutoActions
             {
 
                 case NotifyCollectionChangedAction.Add:
-                    foreach (IProfileAction action in e.NewItems)
+                    foreach (IAction action in e.NewItems)
                     {
                         Globals.Logs.Add($"Action added: {action.ActionDescription}", false);
                         ((BaseViewModel)action).PropertyChanged += SaveSettingsOnPropertyChanged;
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (IProfileAction action in e.OldItems)
+                    foreach (IAction action in e.OldItems)
                     {
                         Globals.Logs.Add($"Action removed: {action.ActionDescription}", false);
                         ((BaseViewModel)action).PropertyChanged -= SaveSettingsOnPropertyChanged;

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace AutoActions.Profiles.Actions
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class CloseProgramAction : ProfileActionBase
+    public class CloseProgramAction : ActionBase
     {
         public override bool CanSave => !string.IsNullOrEmpty(ProcessName);
         public override string CannotSaveMessage => ProjectLocales.MessageMissingProcessName;

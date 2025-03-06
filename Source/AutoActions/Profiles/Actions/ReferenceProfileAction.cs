@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace AutoActions.Profiles.Actions
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class ReferenceProfileAction : ProfileActionBase
+    public class ReferenceProfileAction : ActionBase
     {
 
         public override bool CanSave => ReferenceProfile != null && IsLoopFree();

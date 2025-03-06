@@ -13,10 +13,10 @@ namespace AutoActions
     [JsonObject(MemberSerialization.OptIn)]
     public class ProfileActionShortcut : BaseViewModel
     {
-        private IProfileAction _action;
+        private IAction _action;
 
         [JsonProperty]
-        public IProfileAction Action
+        public IAction Action
         { 
             get => _action; 
             set { _action = value; OnPropertyChanged(); }
@@ -38,7 +38,7 @@ namespace AutoActions
             RunActionCommand = new RelayCommand(RunAction);
 
         }
-        public ProfileActionShortcut(IProfileAction action, string shortcutName) : this()
+        public ProfileActionShortcut(IAction action, string shortcutName) : this()
         {
             Action = action;
             ShortcutName = shortcutName;

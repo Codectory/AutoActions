@@ -7,7 +7,7 @@ using System.Linq;
 namespace AutoActions.Profiles.Actions
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class AudioDeviceAction : ProfileActionBase
+    public class AudioDeviceAction : ActionBase
     {
 
         public override bool CanSave => (ChangePlaybackDevice && PlaybackDevice!=null) || (ChangeRecordDevice && RecordDevice != null);

@@ -15,7 +15,7 @@ using System.Xml.Serialization;
 namespace AutoActions.Profiles.Actions
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class DisplayAction : ProfileActionBase
+    public class DisplayAction : ActionBase
     {
         public override bool CanSave => (!ChangeResolution || Resolution != null) && (!ChangeRefreshRate || RefreshRate != 0) && (!ChangeColorDepth || ColorDepth !=  ColorDepth.BPCUnkown);
         public override string CannotSaveMessage => ProjectLocales.MessageInvalidSettings;
