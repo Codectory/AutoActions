@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AutoActions.ProjectResources\AutoActions.ProjectResources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="CodectoryCore.UI.Wpf">
       <HintPath>..\Externals\CodectoryCore.UI.Wpf.dll</HintPath>
     </Reference>
