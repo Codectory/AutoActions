@@ -68,7 +68,7 @@ static bool UseNewApi()
 
 	// Initialize the OSVERSIONINFOEX structure.
 
-	if (current.dwMajorVersion >= 10)
+	if (current.dwMajorVersion > 10)
 		return true;
 	else if (current.dwMajorVersion == 10)
 	{
