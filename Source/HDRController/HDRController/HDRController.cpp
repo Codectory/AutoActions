@@ -264,8 +264,8 @@ static bool GetHDRStatus(UINT32 uid)
 			// For HDR screens means HDR is on
 			// For SDR screens means ACM (Automatic Color Management, Win 11 >= 22H2) is on
 
-			//if (getColorInfo.advancedColorSupported && !getColorInfo.wideColorEnforced)
-			//	hdrSupported = true;
+			if (getColorInfo.advancedColorSupported && !getColorInfo.wideColorEnforced)
+				hdrSupported = true;
 
 			if (hdrSupported && getColorInfo.advancedColorEnabled)
 				hdrEnabled = true;
