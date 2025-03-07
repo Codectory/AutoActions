@@ -163,6 +163,7 @@ namespace AutoActions
                 {
                     Process process = new Process();
                     process.StartInfo = new ProcessStartInfo(ApplicationFilePath);
+                    process.StartInfo.WorkingDirectory = Path.GetDirectoryName(ApplicationFilePath);
                     process.Start();
                 }
                 System.Threading.Thread.Sleep(2500);
