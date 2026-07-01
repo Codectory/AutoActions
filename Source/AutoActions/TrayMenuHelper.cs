@@ -25,6 +25,7 @@ namespace AutoActions
         private MenuItem _closeButton;
         private MenuItem _appplications;
         private MenuItem _actions;
+        private MenuItem _autoProfileSwitching;
 
 
         public event EventHandler OpenViewRequested;
@@ -60,6 +61,7 @@ namespace AutoActions
                 contextMenu.Items.Add(_openButton);
                 InitializeApplicationsMenuItem(contextMenu);
                 InitializeActionsMenuItem(contextMenu);
+                InitializeAutoProfileSwitchingMenuItem(contextMenu);
                 contextMenu.Items.Add(_closeButton);
                 _trayMenu.ContextMenu = contextMenu;
                 _trayMenu.TrayLeftMouseDown += TrayMenu_TrayLeftMouseDown;
@@ -76,6 +78,23 @@ namespace AutoActions
         }
 
         readonly object _lockActions = new object();
+
+        private void InitializeAutoProfileSwitchingMenuItem(ContextMenu contextMenu)
+        {
+            _autoProfileSwitching = new MenuItem()
+            {
+                Header = ProjectLocales.AutoProfileSwitching,
+                IsCheckable = true,
+                IsChecked = Globals.Instance.Settings.AutoProfileSwitchingEnabled
+            };
+            _autoProfileSwitching.Click += (o, e) => Globals.Instance.Settings.AutoProfileSwitchingEnabled = _autoProfileSwitching.IsChecked;
+            Globals.Instance.Settings.PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == nameof(UserAppSettings.AutoProfileSwitchingEnabled))
+                    _autoProfileSwitching.Dispatcher.Invoke(() => _autoProfileSwitching.IsChecked = Globals.Instance.Settings.AutoProfileSwitchingEnabled);
+            };
+            contextMenu.Items.Add(_autoProfileSwitching);
+        }
 
         private void InitializeActionsMenuItem(ContextMenu contextMenu)
         {

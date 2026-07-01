@@ -250,6 +250,15 @@ namespace AutoActions.ProjectResources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Automatic profile switching ähnelt.
+        /// </summary>
+        public static string AutoProfileSwitching {
+            get {
+                return ResourceManager.GetString("AutoProfileSwitching", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Auto-Start ähnelt.
         /// </summary>
         public static string AutoStart {

@@ -180,6 +180,9 @@
   <data name="AutoActionsToolTip" xml:space="preserve">
     <value>Enable HDR on this monitor, based on the applications</value>
   </data>
+  <data name="AutoProfileSwitching" xml:space="preserve">
+    <value>Automatic profile switching</value>
+  </data>
   <data name="AutoStart" xml:space="preserve">
     <value>Auto-Start</value>
   </data>

@@ -203,6 +203,11 @@ namespace AutoActions
             try
             {
                 Globals.Logs.Add($"Application {e.Application} changed: {e.ChangedType}", false);
+                if (!Settings.AutoProfileSwitchingEnabled)
+                {
+                    Globals.Logs.Add($"Automatic profile switching is disabled. Ignoring application change.", false);
+                    return;
+                }
                 CurrentApplication = e.Application;
                 UpdateCurrentProfile(e.Application, e.ChangedType);
                 if (e.ChangedType == ApplicationChangedType.Closed)

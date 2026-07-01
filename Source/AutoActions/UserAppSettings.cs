@@ -19,6 +19,7 @@ namespace AutoActions
         public static readonly object _settingsLock = new object();
 
         private bool _globalAutoActions = true;
+        private bool _autoProfileSwitchingEnabled = true;
         private bool _createLogFile = false;
         private bool _autoStart = false;
         private bool _autoUpdate = true;
@@ -47,6 +48,9 @@ namespace AutoActions
 
         [JsonProperty]
         public bool GlobalAutoActions { get => _globalAutoActions; set { _globalAutoActions = value; OnPropertyChanged(); } }
+
+        [JsonProperty]
+        public bool AutoProfileSwitchingEnabled { get => _autoProfileSwitchingEnabled; set { _autoProfileSwitchingEnabled = value; OnPropertyChanged(); } }
 
         [JsonProperty]
         public bool AutoStart { get => _autoStart; set { _autoStart = value; OnPropertyChanged(); } }
