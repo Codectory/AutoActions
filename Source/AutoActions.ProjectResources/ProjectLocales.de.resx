@@ -207,6 +207,18 @@
   <data name="CheckForNewVersion" xml:space="preserve">
     <value>Beim Start auf neuere Version prüfen</value>
   </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="ThemeSetting.System" xml:space="preserve">
+    <value>Automatisch</value>
+  </data>
+  <data name="ThemeSetting.Light" xml:space="preserve">
+    <value>Hell</value>
+  </data>
+  <data name="ThemeSetting.Dark" xml:space="preserve">
+    <value>Dunkel</value>
+  </data>
   <data name="ChooseApplication" xml:space="preserve">
     <value>Anwendungen wählen</value>
   </data>

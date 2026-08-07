@@ -66,7 +66,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Button Width="50" Margin="10" Style="{StaticResource AddActionButton}" Grid.Row="0" Grid.Column="0" Command="{Binding AddActionShortcutCommand }" VerticalAlignment="Top" HorizontalAlignment="Left" />
-            <ListView  Grid.ColumnSpan="3" Grid.Row="1" BorderThickness="0" Margin="5" ItemContainerStyle="{StaticResource ListBoxItemStyle}" x:Name="ActionsList"   ItemsPanel="{StaticResource WrapPanelTemplate}" ItemsSource="{Binding ActionShortcuts}"  ItemTemplate="{StaticResource ActionShortcutItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+            <ListView  Grid.ColumnSpan="3" Grid.Row="1" Background="Transparent" BorderThickness="0" Margin="5" ItemContainerStyle="{StaticResource ListBoxItemStyle}" x:Name="ActionsList"   ItemsPanel="{StaticResource WrapPanelTemplate}" ItemsSource="{Binding ActionShortcuts}"  ItemTemplate="{StaticResource ActionShortcutItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
         </Grid>
 
 

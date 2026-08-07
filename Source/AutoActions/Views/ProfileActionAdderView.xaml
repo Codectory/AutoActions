@@ -9,7 +9,7 @@
              xmlns:prflActns="clr-namespace:AutoActions.Profiles.Actions"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=prflActns:ProfileActionAdder, IsDesignTimeCreatable=False}"
-              MinWidth="414"  >
+              MinWidth="414" Background="{StaticResource WindowBackgroundBrush}" Foreground="{StaticResource TextForegroundBrush}"  >
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type prflActns:DisplayAction}">
             <local:DisplayActionView/>

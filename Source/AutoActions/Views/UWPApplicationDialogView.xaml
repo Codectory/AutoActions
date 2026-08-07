@@ -8,7 +8,7 @@
         xmlns:uwp="clr-namespace:AutoActions.UWP"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=uwp:UWPApplicationDialog, IsDesignTimeCreatable=False}"
-         MinWidth="414">
+         MinWidth="414" Background="{StaticResource WindowBackgroundBrush}" Foreground="{StaticResource TextForegroundBrush}">
     <UserControl.Resources>
         <ItemsPanelTemplate x:Key="StackListViewTemplate">
             <StackPanel/>
@@ -38,7 +38,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListBox  Grid.Row="0" x:Name="ApplicationList" SelectedItem="{Binding ApplicationItem}" ItemContainerStyle="{StaticResource ListBoxItemStyle}" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding UWPApplications}" ScrollViewer.VerticalScrollBarVisibility="Auto"   BorderThickness="0" Margin="0,0,0,5"/>
+        <ListBox  Grid.Row="0" x:Name="ApplicationList" Background="Transparent" SelectedItem="{Binding ApplicationItem}" ItemContainerStyle="{StaticResource ListBoxItemStyle}" HorizontalContentAlignment="Stretch" ItemsPanel="{StaticResource StackListViewTemplate}"  ItemTemplate="{StaticResource ApplicationItemTemplate}" ItemsSource="{Binding UWPApplications}" ScrollViewer.VerticalScrollBarVisibility="Auto"   BorderThickness="0" Margin="0,0,0,5"/>
 
         <Grid Grid.Row="1" Height="Auto">
             <Grid.ColumnDefinitions>

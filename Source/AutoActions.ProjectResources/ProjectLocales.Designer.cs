@@ -402,7 +402,16 @@ namespace AutoActions.ProjectResources {
                 return ResourceManager.GetString("ColorDepth", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Theme ähnelt.
+        /// </summary>
+        public static string Theme {
+            get {
+                return ResourceManager.GetString("Theme", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die 10-Bit ähnelt.
         /// </summary>

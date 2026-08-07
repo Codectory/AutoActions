@@ -1,10 +1,12 @@
 ﻿using AutoActions.Displays;
 using AutoActions.Profiles;
 using AutoActions.Profiles.Actions;
+using AutoActions.Theming;
 using CodectoryCore;
 using CodectoryCore.UI.Wpf;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -27,6 +29,7 @@ namespace AutoActions
         private bool _checkForNewVersion = true;
         private bool _hideSplashScreenOnStartup = false;
         private bool _hideSplashScreenOnAutoUpdate = false;
+        private ThemeSetting _themeSetting = ThemeSetting.System;
 
         readonly object _audioDevicesLock = new object();
         private Guid _defaultProfileGuid = Guid.Empty;
@@ -72,6 +75,16 @@ namespace AutoActions
 
         [JsonProperty]
         public bool CheckForNewVersion { get => _checkForNewVersion; set { _checkForNewVersion = value; OnPropertyChanged(); } }
+
+        [JsonProperty]
+        public ThemeSetting ThemeSetting
+        {
+            get => _themeSetting;
+            // Applied at next startup, so persist immediately (SaveSettings is a no-op until load finishes).
+            set { _themeSetting = value; OnPropertyChanged(); Globals.Instance.SaveSettings(); }
+        }
+
+        public IEnumerable<ThemeSetting> ThemeSettingValues => Enum.GetValues(typeof(ThemeSetting)).Cast<ThemeSetting>();
 
 
         [JsonProperty(Order = 2)]

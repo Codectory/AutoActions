@@ -8,7 +8,7 @@
         xmlns:pres="clr-namespace:AutoActions.ProjectResources;assembly=AutoActions.ProjectResources"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=root:ApplicationAdder, IsDesignTimeCreatable=False}"
-          MinWidth="414">
+          MinWidth="414" Background="{StaticResource WindowBackgroundBrush}" Foreground="{StaticResource TextForegroundBrush}">
 
     <Grid Margin="5">
         <Grid.RowDefinitions>

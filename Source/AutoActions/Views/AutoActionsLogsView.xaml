@@ -8,7 +8,7 @@
              xmlns:info="clr-namespace:AutoActions.Info"
              xmlns:local="clr-namespace:AutoActions.Views"
              d:DataContext="{d:DesignInstance Type=info:LogsStorage, IsDesignTimeCreatable=False}"
-             mc:Ignorable="d" MinWidth="300" MinHeight="600" Background="White" >
+             mc:Ignorable="d" MinWidth="300" MinHeight="600" Background="{StaticResource WindowBackgroundBrush}" Foreground="{StaticResource TextForegroundBrush}" >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

@@ -19,6 +19,8 @@
         <ResourceDictionary>
 
             <ResourceDictionary.MergedDictionaries>
+                <thm:ThemeResourceDirectory LightResource="/AutoActions;component/Theming/LightColors.xaml"
+                                            DarkResource="/AutoActions;component/Theming/DarkColors.xaml"/>
                 <ResourceDictionary Source="Controls\AppResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
@@ -49,7 +51,7 @@
                                 </DataTrigger>
 
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False" >
-                                    <Setter  TargetName="HeaderContent" Property="Foreground" Value="Black"/>
+                                    <Setter  TargetName="HeaderContent" Property="Foreground" Value="{StaticResource TextForegroundBrush}"/>
                                     <Setter TargetName="HeaderContent" Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
 
                                 </DataTrigger>
