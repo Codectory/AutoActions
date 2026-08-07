@@ -12,7 +12,7 @@
         xmlns:local="clr-namespace:AutoActions.Views"
         xmlns:root="clr-namespace:AutoActions"
         mc:Ignorable="d" 
-        Title="AutoActions" Name="MainWindow" MinHeight="480" MinWidth="480" Closing="Window_Closing"  Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
+        Title="AutoActions" Background="{StaticResource WindowBackgroundBrush}" Foreground="{StaticResource TextForegroundBrush}" Name="MainWindow" MinHeight="480" MinWidth="480" Closing="Window_Closing"  Visibility="{Binding ShowView, Mode=TwoWay, Converter={StaticResource VisibilityBooleanConverter}}"
          Loaded="MainWindow_Loaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -67,7 +67,7 @@
                 <RowDefinition Height="Auto"/>
 
             </Grid.RowDefinitions>
-            <TabControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" BorderBrush="{StaticResource AccentBrush}"  BorderThickness="0 5 0 0">
+            <TabControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Background="{StaticResource WindowBackgroundBrush}" BorderBrush="{StaticResource AccentBrush}"  BorderThickness="0 5 0 0">
                 <TabItem Header="{x:Static pres:ProjectLocales.Status}" HorizontalAlignment="Left" Width="58"  >
                     <local:StatusView DataContext="{Binding}"/>
                 </TabItem>
@@ -223,7 +223,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Width="Auto" Margin="5,0"  Grid.Row="1"  Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"  />
+                <TextBlock  Text="{Binding Path=Version, Mode=OneWay,  StringFormat= V\{0\} }"  Foreground="{StaticResource TextForegroundBrush}" Width="Auto" Margin="5,0"  Grid.Row="1"  Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center"  />
 
                 <Button  Grid.Column="1" Padding="0"  Command="{Binding ShowLicenseCommand}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" HorizontalAlignment="Left" >
                     <Button.Resources>

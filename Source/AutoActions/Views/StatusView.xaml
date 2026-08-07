@@ -91,7 +91,7 @@
         </ScrollViewer>
         <TextBlock Style="{StaticResource SubTitleTextBlock}"   Grid.Row="2" Grid.Column="1" Text="{x:Static pres:ProjectLocales.ActionShortcuts}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <Border Style="{StaticResource DefaultBorder}" Grid.Row="3" Grid.Column="1"  Margin="5"/>
-        <ListView Grid.Row="3" Grid.Column="1" BorderThickness="0" Margin="10" ItemContainerStyle="{StaticResource ListBoxItemStyle}" x:Name="ActionsList"   ItemsPanel="{StaticResource WrapPanelTemplate}" ItemsSource="{Binding Settings.ActionShortcuts}"  ItemTemplate="{StaticResource ActionShortcutItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+        <ListView Grid.Row="3" Grid.Column="1" Background="Transparent" BorderThickness="0" Margin="10" ItemContainerStyle="{StaticResource ListBoxItemStyle}" x:Name="ActionsList"   ItemsPanel="{StaticResource WrapPanelTemplate}" ItemsSource="{Binding Settings.ActionShortcuts}"  ItemTemplate="{StaticResource ActionShortcutItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
         <TextBlock Style="{StaticResource SubTitleTextBlock}"   Grid.Row="0" Grid.Column="1" Text="{x:Static pres:ProjectLocales.Status}" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <Border Style="{StaticResource DefaultBorder}" Grid.Row="1" Grid.Column="1"  Margin="5"/>
@@ -132,7 +132,7 @@
             <Border  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"  Style="{StaticResource DefaultBorder}"  >
             </Border>
 
-            <ListView Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"  BorderThickness="0" Margin="5" ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsPanel="{StaticResource WrapPanelTemplate}" ItemsSource="{Binding LastActions}"  ItemTemplate="{StaticResource ProfileActionTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+            <ListView Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="0" Margin="5" ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemsPanel="{StaticResource WrapPanelTemplate}" ItemsSource="{Binding LastActions}"  ItemTemplate="{StaticResource ProfileActionTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
         </Grid>
     </Grid>
 </UserControl>

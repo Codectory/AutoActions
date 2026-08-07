@@ -302,6 +302,7 @@
     <Compile Include="Profiles\Actions\ReferenceProfileAction.cs" />
     <Compile Include="Theming\ThemeResourceDirectory.cs" />
     <Compile Include="Theming\Theme.cs" />
+    <Compile Include="Theming\ThemeSetting.cs" />
     <Compile Include="UserAppSettings.cs" />
     <Compile Include="UWP\WWAHostHandler.cs" />
     <Compile Include="Views\StatusView.xaml.cs">
@@ -382,23 +383,23 @@
     <Compile Include="UWP\AppxManifest.cs" />
     <Compile Include="UWP\UWPAppsManager.cs" />
     <Compile Include="UWP\UWPApp.cs" />
-    <Page Include="Controls\1_Colors.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
     <Page Include="Controls\AppResources.xaml">
       <Generator>XamlIntelliSenseFileGenerator</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\2_DefaultControls.xaml">
+    <Page Include="Controls\1_DefaultControls.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="Controls\3_CustomComboBox.xaml">
+    <Page Include="Controls\2_CustomComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Theming\LightColors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Theming\DarkColors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

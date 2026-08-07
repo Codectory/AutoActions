@@ -30,8 +30,10 @@ namespace AutoActions
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 var application = new App();
-                application.InitializeComponent();
+                // Resolve the theme before InitializeComponent() so App.xaml merges the matching palette.
                 Globals.Instance.LoadSettings();
+                Theme = ResolveTheme(Globals.Instance.Settings.ThemeSetting);
+                application.InitializeComponent();
                 application.Run();
             }
             else
@@ -43,9 +45,32 @@ namespace AutoActions
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            // Dark theme: darken the native title bar of every window (main, dialogs, splash) as it loads.
+            if (App.Theme == Theme.Dark)
+                EventManager.RegisterClassHandler(typeof(Window), Window.LoadedEvent, new RoutedEventHandler(OnAnyWindowLoaded));
             Views.AutoActionsMainView mainView = new Views.AutoActionsMainView();
             if (!Globals.Instance.Settings.StartMinimizedToTray)
                 mainView.Show();
+        }
+
+        private static void OnAnyWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is Window window)
+                WinAPIFunctions.SetWindowDarkMode(window, true);
+        }
+
+        private static Theme ResolveTheme(ThemeSetting setting)
+        {
+            switch (setting)
+            {
+                case ThemeSetting.Light:
+                    return Theme.Light;
+                case ThemeSetting.Dark:
+                    return Theme.Dark;
+                default:
+                    return AutoActions.Windows.UI.GetWindowsTheme() == AutoActions.Windows.WindowsTheme.Dark
+                        ? Theme.Dark : Theme.Light;
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)

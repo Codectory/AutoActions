@@ -7,7 +7,7 @@
              xmlns:pres="clr-namespace:AutoActions.ProjectResources;assembly=AutoActions.ProjectResources"
              xmlns:info="clr-namespace:AutoActions.Info"
              xmlns:local="clr-namespace:AutoActions.Views"
-             mc:Ignorable="d" MinWidth="600" MinHeight="600"  >
+             mc:Ignorable="d" MinWidth="600" MinHeight="600" Background="{StaticResource WindowBackgroundBrush}" Foreground="{StaticResource TextForegroundBrush}"  >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

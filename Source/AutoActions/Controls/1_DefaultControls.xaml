@@ -51,18 +51,18 @@
     </Style>
     <Style x:Key="DefaultTextBlock" TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
-        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}"/>
         <Setter Property="Margin" Value="5"/>
 
     </Style>
     <Style x:Key="TitleTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}">
         <Setter Property="FontSize" Value="25"/>
-        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
     <Style x:Key="SubTitleTextBlock" TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}">
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}"/>
         <Setter Property="FontWeight" Value="DemiBold"/>
     </Style>
     <Style x:Key="ToggleStatus"  TargetType="{x:Type CheckBox}">
@@ -83,7 +83,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
-                    <Ellipse Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"   Stroke="Black" VerticalAlignment="Stretch" />
+                    <Ellipse Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"   Stroke="{StaticResource GlyphBrush}" VerticalAlignment="Stretch" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -99,12 +99,14 @@
     </Style>
     <Style x:Key="DefaultUserControl" TargetType="UserControl">
         <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}"/>
-        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}"/>
 
     </Style>
     <Style TargetType="UserControl" BasedOn="{StaticResource DefaultUserControl}"/>
     <Style x:Key="DefaultTextBox" TargetType="TextBox" >
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{StaticResource ControlLightBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextForegroundBrush}"/>
 		<Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
 		<Setter Property="FontWeight" Value="Normal" />
 		<Setter Property="Template">
