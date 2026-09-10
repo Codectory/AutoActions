@@ -282,6 +282,14 @@ namespace AutoActions.Displays
             {
                 dm.dmPelsHeight = Convert.ToInt32(resolution.Height);
                 dm.dmPelsWidth = Convert.ToInt32(resolution.Width);
+
+                // Some display drivers expose a fixed-output scaling mode for the
+                // current DSR/DLDSR resolution. That setting belongs to the current
+                // mode and can make an otherwise valid native resolution fail with
+                // DISP_CHANGE_BADMODE when it is carried over unchanged.
+                dm.dmFields |= DM.PelsWidth | DM.PelsHeight;
+                dm.dmFields &= ~DM.DisplayFixedOutput;
+                dm.dmDisplayFixedOutput = 0;
                 return dm;
             };
             ChangeDisplaySetting(display.ID, func);
@@ -308,6 +316,9 @@ namespace AutoActions.Displays
                 DISP_CHANGE iRet = NativeMethods.ChangeDisplaySettingsEx(
                     d.DeviceName, ref dm, IntPtr.Zero,
                     DisplaySettingsFlags.CDS_UPDATEREGISTRY, IntPtr.Zero);
+
+                if (iRet != DISP_CHANGE.Successful)
+                    throw new InvalidOperationException($"Unable to change display settings for {d.DeviceName}: {iRet}");
             }
         }
 
