@@ -131,7 +131,8 @@ namespace AutoActions.Profiles.Actions
         {
             get
             {
-                string returnValue = $"[{Display.Name}]:";
+                Display display = Display;
+                string returnValue = display != null ? $"[{display.Name}]:" : $"[{DisplayUID}]:";
                 if (ChangeHDR)
                     returnValue += $" {ProjectLocales.HDR} {(EnableHDR ? ProjectLocales.Yes : ProjectLocales.No)}";
                 if (ChangeResolution)
@@ -154,6 +155,9 @@ namespace AutoActions.Profiles.Actions
 
         public override ActionEndResult RunAction(ApplicationChangedType applicationChangedType)
         {
+            if (Display == null)
+                return new ActionEndResult(false,
+                    $"Display {DisplayUID} is not part of the current session's displays - action skipped.", null);
             try
             {
                 if (ChangeHDR)
